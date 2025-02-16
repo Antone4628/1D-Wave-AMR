@@ -86,82 +86,285 @@ class DGWaveSolver:
         self.PS1, self.PS2, self.PG1, self.PG2 = projections(
             RM, self.ngl, self.nq, self.wnq, self.xgl, self.xnq
         )
-        
+
+
+
+
+
+    # def _update_matrices(self):
+    #     self.Me = create_mass_matrix(
+    #         self.intma, self.coord, self.nelem, self.ngl, 
+    #         self.nq, self.wnq, self.psi
+    #     )
+    #     self.De = create_diff_matrix(self.ngl, self.nq, self.wnq, self.psi, self.dpsi)
+    #     self.M, self.D = Matrix_DSS(
+    #         self.Me, self.De, self.wave_speed, self.intma, 
+    #         self.periodicity, self.ngl, self.nelem, self.npoin_dg
+    #     )
+    #     self.F = Fmatrix_upwind_flux(
+    #         self.intma, self.nelem, self.npoin_dg, self.ngl, self.wave_speed
+    #     )
+    #     R = self.D - self.F
+    #     self.Dhat = np.linalg.solve(self.M, R)
     def _update_matrices(self):
+        """Update mass and differentiation matrices with condition number checking"""
         self.Me = create_mass_matrix(
             self.intma, self.coord, self.nelem, self.ngl, 
             self.nq, self.wnq, self.psi
         )
         self.De = create_diff_matrix(self.ngl, self.nq, self.wnq, self.psi, self.dpsi)
+        
         self.M, self.D = Matrix_DSS(
             self.Me, self.De, self.wave_speed, self.intma, 
             self.periodicity, self.ngl, self.nelem, self.npoin_dg
         )
+        
+        # Check condition number before proceeding
+        cond_num = np.linalg.cond(self.M)
+        print(f"Mass matrix condition number: {cond_num}")
+        
+        if cond_num > 1e10:  # Choose appropriate threshold
+            raise ValueError(f"Mass matrix condition number too high: {cond_num}")
+            
         self.F = Fmatrix_upwind_flux(
             self.intma, self.nelem, self.npoin_dg, self.ngl, self.wave_speed
         )
         R = self.D - self.F
-        self.Dhat = np.linalg.solve(self.M, R)
         
-    # def check_size_ratios(self, element_idx: int, action: int) -> bool:
-    #     elem = self.active[element_idx]
-    #     curr_size = self.info_mat[elem-1][4] - self.info_mat[elem-1][3]
-        
-    #     neighbors = []
-    #     for i in range(max(1, elem-2), elem):
-    #         idx = np.where(self.active == i)[0]
-    #         if len(idx) > 0:
-    #             neighbors.append(i)
-    #     for i in range(elem+1, min(elem+3, len(self.label_mat)+1)):
-    #         idx = np.where(self.active == i)[0]
-    #         if len(idx) > 0:
-    #             neighbors.append(i)
-                
-    #     if action == 1:
-    #         new_size = curr_size / 2
-    #         for neighbor in neighbors:
-    #             neighbor_size = self.info_mat[neighbor-1][4] - self.info_mat[neighbor-1][3]
-    #             if neighbor_size/new_size > 2:
-    #                 return False
-    #             if neighbor_size/new_size > 2:
-    #                 return False
-                    
-    #     elif action == -1:
-    #         new_size = curr_size * 2
-    #         for neighbor in neighbors:
-    #             neighbor_size = self.info_mat[neighbor-1][4] - self.info_mat[neighbor-1][3]
-    #             if new_size/neighbor_size > 2:
-    #                 return False
-    #             if new_size/neighbor_size > 2:
-    #                 return False
-        
-    #     return True
+        try:
+            self.Dhat = np.linalg.solve(self.M, R)
+        except np.linalg.LinAlgError:
+            print("Matrix solve failed. Current mesh configuration:")
+            print(f"Number of elements: {self.nelem}")
+            print(f"Element sizes: {np.diff(self.xelem)}")
+            raise    
   
+
+
+
+    # def adapt_mesh(self, criterion=1, marks_override=None, element_budget=None):
+    #     """
+    #     Perform mesh adaptation based on solution properties.
+    #     Respects element_budget constraint.
+    #     """
+    #     # Get refinement marks based on solution properties
+    #     marks = mark(self.active, self.label_mat, self.intma, self.q, criterion)
+
+    #     if marks_override is not None:
+    #         for idx, mark_val in marks_override.items():
+    #             # Check budget before refinement
+    #             if mark_val == 1 and element_budget is not None:
+    #                 if len(self.active) >= element_budget:
+    #                     print(f"Budget limit reached ({element_budget} elements). Canceling refinement.")
+    #                     marks[idx] = 0
+    #                     continue
+    #             marks[idx] = mark_val
+
+        
+    #     # Store pre-adaptation state
+    #     pre_grid = self.xelem
+    #     pre_active = self.active
+    #     pre_nelem = self.nelem
+    #     pre_coord = self.coord
+    #     pre_npoin_dg = self.npoin_dg
+        
+    #     # Adapt mesh
+    #     new_grid, new_active, _, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(
+    #         self.nop, pre_grid, pre_active, self.label_mat, 
+    #         self.info_mat, marks
+    #     )
+
+    #     # Create new grid
+    #     new_coord, new_intma, new_periodicity = create_grid_us(
+    #         self.ngl, new_nelem, npoin_cg, new_npoin_dg, 
+    #         self.xgl, new_grid
+    #     )
+
+    #     # Project solution
+    #     q_new = adapt_sol(
+    #         self.q, pre_coord, marks, pre_active, self.label_mat,
+    #         self.PS1, self.PS2, self.PG1, self.PG2, self.ngl
+    #     )
+
+    #     # Update solver state
+    #     self.q = q_new
+    #     self.active = new_active
+    #     self.nelem = new_nelem
+    #     self.intma = new_intma
+    #     self.coord = new_coord
+    #     self.xelem = new_grid
+    #     self.npoin_dg = new_npoin_dg
+    #     self.periodicity = new_periodicity
+
+    #     # Add balancing loop here
+    #     if not check_balance(self.active, self.label_mat):
+    #         bal_q, bal_active, bal_nelem, bal_intma, bal_coord, bal_grid, bal_npoin_dg, bal_periodicity = enforce_balance(self.active, 
+    #                                                                                             self.label_mat, 
+    #                                                                                             self.xelem, 
+    #                                                                                             self.info_mat, 
+    #                                                                                             self.nop, 
+    #                                                                                             self.coord, 
+    #                                                                                             self.PS1, self.PS2, self.PG1, self.PG2, 
+    #                                                                                             self.ngl, self.xgl, 
+    #                                                                                             self.q, self.max_level)
+
+        
+    #         self.q = bal_q
+    #         self.active = bal_active
+    #         self.nelem = bal_nelem
+    #         self.intma = bal_intma
+    #         self.coord = bal_coord
+    #         self.xelem = bal_grid
+    #         self.npoin_dg = bal_npoin_dg
+    #         self.periodicity = bal_periodicity
+
+
+        
+    #     # Update matrices
+    #     self._update_matrices()
+
+    def check_mesh_quality(self, grid):
+        """
+        Check if proposed mesh would be numerically stable.
+        
+        Args:
+            grid: Proposed grid coordinates
+            
+        Returns:
+            bool: True if mesh quality is acceptable
+            str: Description of any quality issues found
+        """
+        element_sizes = np.diff(grid)
+        size_ratio = np.max(element_sizes) / np.min(element_sizes)
+        
+        issues = []
+        
+        # Check size ratio
+        if size_ratio > 100:
+            issues.append(f"Element size ratio too large: {size_ratio:.2f}")
+        
+        # Check for very small elements
+        min_size = np.min(element_sizes)
+        if min_size < 1e-5:
+            issues.append(f"Elements too small: {min_size:.2e}")
+            
+        # Check for rapid size changes between neighbors
+        neighbor_ratios = element_sizes[1:] / element_sizes[:-1]
+        max_neighbor_ratio = max(max(neighbor_ratios), max(1/neighbor_ratios))
+        if max_neighbor_ratio > 4:  # Even stricter than 2:1
+            issues.append(f"Rapid size change between neighbors: ratio {max_neighbor_ratio:.2f}")
+        
+        return len(issues) == 0, "; ".join(issues)
+    
+    def verify_state(self):
+        """Verify solver state is valid"""
+        # Check element count
+        if len(self.active) > self.max_elements:
+            raise ValueError(f"Element count {len(self.active)} exceeds maximum {self.max_elements}")
+        
+        # Check element sizes
+        element_sizes = np.diff(self.xelem)
+        if np.any(element_sizes <= 0):
+            raise ValueError("Invalid element sizes detected")
+        
+        # Check mesh quality
+        quality_ok, issues = self.check_mesh_quality(self.xelem)
+        if not quality_ok:
+            raise ValueError(f"Mesh quality issues: {issues}")
+        
+        # Check solution values
+        if np.any(~np.isfinite(self.q)):
+            raise ValueError("Invalid solution values detected")
+
     def adapt_mesh(self, criterion=1, marks_override=None, element_budget=None):
         """
         Perform mesh adaptation based on solution properties.
         Respects element_budget constraint.
+        
+        Args:
+            criterion (int): Marking criterion to use
+            marks_override (dict): Override marking for specific elements
+            element_budget (int): Maximum allowed number of elements
+            
+        Returns:
+            None
+            
+        Raises:
+            ValueError: If adaptation would exceed element budget
         """
         # Get refinement marks based on solution properties
         marks = mark(self.active, self.label_mat, self.intma, self.q, criterion)
 
+        # if marks_override is not None:
+        #     for idx, mark_val in marks_override.items():
+        #         # Check budget before refinement
+        #         if mark_val == 1 and element_budget is not None:
+        #             # Calculate new elements after potential refinement
+        #             potential_new_elements = len(self.active) + 1
+                    
+        #             # Account for balance enforcement potentially adding elements
+        #             # We use a conservative estimate based on max_level
+        #             max_balance_additions = min(2, self.max_level)  # Conservative estimate
+        #             potential_new_elements += max_balance_additions
+                    
+        #             if potential_new_elements > element_budget:
+        #                 print(f"Budget limit reached ({element_budget} elements). Canceling refinement.")
+        #                 marks[idx] = 0
+        #                 continue
+                        
+        #         marks[idx] = mark_val
         if marks_override is not None:
             for idx, mark_val in marks_override.items():
-                # Check budget before refinement
-                if mark_val == 1 and element_budget is not None:
-                    if len(self.active) >= element_budget:
-                        print(f"Budget limit reached ({element_budget} elements). Canceling refinement.")
-                        marks[idx] = 0
-                        continue
+
+                # Before applying marks, check if resulting mesh would be valid
+                temp_grid = self.xelem.copy()
+                quality_ok, issues = self.check_mesh_quality(temp_grid)
+                if not quality_ok:
+                    print(f"Adaptation rejected: {issues}")
+                    marks[idx] = 0
+                    continue
+
+                if element_budget is not None:
+                    if mark_val == 1:  # Refinement
+                        # Check direct refinement
+                        potential_new_elements = len(self.active) + 1
+                        if potential_new_elements > element_budget:
+                            print(f"Budget limit reached ({element_budget} elements). Canceling refinement.")
+                            marks[idx] = 0
+                            continue
+                    elif mark_val == -1:  # Coarsening
+                        # Simulate coarsening and balance enforcement
+                        temp_marks = marks.copy()
+                        temp_marks[idx] = -1
+                        
+                        # Try coarsening
+                        temp_grid, temp_active, _, temp_nelem, _, _ = adapt_mesh(
+                            self.nop, self.xelem, self.active, self.label_mat, 
+                            self.info_mat, temp_marks
+                        )
+                        
+                        # Check if balance would be needed
+                        if not check_balance(temp_active, self.label_mat):
+                            # Estimate elements after balance
+                            max_balance_additions = min(2, self.max_level) 
+                            potential_balanced_elements = len(temp_active) + max_balance_additions
+                            
+                            if potential_balanced_elements > element_budget:
+                                print(f"Coarsening rejected: balance enforcement would exceed budget")
+                                marks[idx] = 0
+                                continue
+                                
                 marks[idx] = mark_val
 
-        
         # Store pre-adaptation state
+        pre_q = self.q
         pre_grid = self.xelem
         pre_active = self.active
         pre_nelem = self.nelem
+        pre_intma = self.intma
         pre_coord = self.coord
         pre_npoin_dg = self.npoin_dg
+        pre_periodicity = self.periodicity
         
         # Adapt mesh
         new_grid, new_active, _, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(
@@ -193,17 +396,37 @@ class DGWaveSolver:
 
         # Add balancing loop here
         if not check_balance(self.active, self.label_mat):
-            bal_q, bal_active, bal_nelem, bal_intma, bal_coord, bal_grid, bal_npoin_dg, bal_periodicity = enforce_balance(self.active, 
-                                                                                                self.label_mat, 
-                                                                                                self.xelem, 
-                                                                                                self.info_mat, 
-                                                                                                self.nop, 
-                                                                                                self.coord, 
-                                                                                                self.PS1, self.PS2, self.PG1, self.PG2, 
-                                                                                                self.ngl, self.xgl, 
-                                                                                                self.q, self.max_level)
-
-        
+            # Store state before balance enforcement
+            pre_balance_elements = len(self.active)
+            
+            bal_q, bal_active, bal_nelem, bal_intma, bal_coord, bal_grid, bal_npoin_dg, bal_periodicity = enforce_balance(
+                self.active, 
+                self.label_mat, 
+                self.xelem, 
+                self.info_mat, 
+                self.nop, 
+                self.coord, 
+                self.PS1, self.PS2, self.PG1, self.PG2, 
+                self.ngl, self.xgl, 
+                self.q, 
+                self.max_level
+            )
+            
+            # Check if balance enforcement would exceed budget
+            if element_budget is not None and len(bal_active) > element_budget:
+                print(f"Balance enforcement would exceed budget ({len(bal_active)} > {element_budget})")
+                # Revert to pre-adaptation state
+                self.q = pre_q
+                self.active = pre_active
+                self.nelem = pre_nelem
+                self.intma = pre_intma
+                self.coord = pre_coord
+                self.xelem = pre_grid
+                self.npoin_dg = pre_npoin_dg
+                self.periodicity = pre_periodicity
+                raise ValueError("Balance enforcement would exceed element budget")
+                
+            # Update with balanced state
             self.q = bal_q
             self.active = bal_active
             self.nelem = bal_nelem
@@ -213,10 +436,11 @@ class DGWaveSolver:
             self.npoin_dg = bal_npoin_dg
             self.periodicity = bal_periodicity
 
-
         
         # Update matrices
         self._update_matrices()
+        self.verify_state() 
+
 
     
     def step(self, dt=None):
@@ -329,15 +553,48 @@ class DGWaveSolver:
         qe, _ = exact_solution(self.coord, self.npoin_dg, self.time, self.icase)
         return qe
     
+
     def reset(self):
+        """Reset solver to initial state"""
+        # Reset to initial number of elements and grid
+        
+        self.xelem = np.array([-1, -0.4, 0, 0.4, 1])  # Reset to original grid
         self.nelem = len(self.xelem) - 1
+        
+        # Recalculate grid parameters
         self.npoin_cg = self.nop * self.nelem + 1
         self.npoin_dg = self.ngl * self.nelem
+        
+        # Reset AMR structures
         self.label_mat, self.info_mat, self.active = forest(self.xelem, self.max_level)
+        
+        # Create fresh grid
         self.coord, self.intma, self.periodicity = create_grid_us(
             self.ngl, self.nelem, self.npoin_cg, self.npoin_dg, self.xgl, self.xelem
         )
+        
+        # Reset solution to initial condition
         self.q, _ = exact_solution(self.coord, self.npoin_dg, 0.0, self.icase)
         self.time = 0.0
+        
+        # Verify mesh quality before updating matrices
+        quality_ok, issues = self.check_mesh_quality(self.xelem)
+        if not quality_ok:
+            raise ValueError(f"Initial mesh quality issues: {issues}")
+        
+        # Update matrices
         self._update_matrices()
+        self.verify_state()  # Add verification after reset
         return self.q
+    # def reset(self):
+    #     self.nelem = len(self.xelem) - 1
+    #     self.npoin_cg = self.nop * self.nelem + 1
+    #     self.npoin_dg = self.ngl * self.nelem
+    #     self.label_mat, self.info_mat, self.active = forest(self.xelem, self.max_level)
+    #     self.coord, self.intma, self.periodicity = create_grid_us(
+    #         self.ngl, self.nelem, self.npoin_cg, self.npoin_dg, self.xgl, self.xelem
+    #     )
+    #     self.q, _ = exact_solution(self.coord, self.npoin_dg, 0.0, self.icase)
+    #     self.time = 0.0
+    #     self._update_matrices()
+    #     return self.q

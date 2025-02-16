@@ -95,119 +95,106 @@ class DGAMREnv(gym.Env):
 
     def _get_element_jumps(self, element_idx: int) -> Tuple[np.ndarray, np.ndarray]:
         """
-        Compute solution jumps at element boundaries and interior nodes.
+        Compute solution jumps at element boundaries and interior nodes, accounting for periodicity.
+        
+        In a periodic domain, the first element's left neighbor is the last element,
+        and the last element's right neighbor is the first element. This creates a
+        continuous ring-like topology where jumps are calculated across all interfaces.
+        
+        Args:
+            element_idx: Index of element in active_grid
+                
+        Returns:
+            tuple: (local_jumps, neighbor_jumps)
+                local_jumps: Array of jumps at each node [ngl]
+                neighbor_jumps: Jumps at left and right interfaces [2]
         """
-        # Safety check
+        # Safety check for valid element index
         if element_idx >= len(self.solver.active):
             print(f"Warning: Invalid element index {element_idx}, active elements: {len(self.solver.active)}")
-            # Return zeros if invalid index
             return np.zeros(self.solver.ngl), np.zeros(2)
             
         # Get element number from active grid
         elem = self.solver.active[element_idx]
+        print(f"\nProcessing element {elem} (index {element_idx})")
         
         # Extract solution values for current element
         elem_nodes = self.solver.intma[:, element_idx]
         elem_sol = self.solver.q[elem_nodes]
+        print(f"Element solution values: {elem_sol}")
         
-        # Get boundary values
+        # Get boundary values for current element
         elem_left = elem_sol[0]
         elem_right = elem_sol[-1]
+        print(f"Element boundary values: left={elem_left:.6f}, right={elem_right:.6f}")
         
-        # Initialize arrays
+        # Initialize arrays for jumps
         local_jumps = np.zeros(self.solver.ngl)
         neighbor_jumps = np.zeros(2)
         
         try:
-            # Calculate jumps with left neighbor if exists
+            # ====== Handle Left Neighbor (with periodicity) ======
             if elem > 1:
+                # Normal case - left neighbor is element (elem-1)
                 left_active_idx = np.where(self.solver.active == elem-1)[0]
-                if len(left_active_idx) > 0:
-                    left_idx = left_active_idx[0]
-                    left_nodes = self.solver.intma[:, left_idx]
-                    left_sol = self.solver.q[left_nodes]
-                    local_jumps[0] = abs(elem_left - left_sol[-1])
-                    neighbor_jumps[0] = local_jumps[0]
-                    
-            # Calculate jumps with right neighbor if exists
+                print(f"Left neighbor is element {elem-1}")
+            else:
+                # Periodic case - first element's left neighbor is the last element
+                left_active_idx = np.where(self.solver.active == len(self.solver.label_mat))[0]
+                print(f"Periodic left neighbor: connecting element {elem} to last element")
+                
+            if len(left_active_idx) > 0:
+                left_idx = left_active_idx[0]
+                left_nodes = self.solver.intma[:, left_idx]
+                left_sol = self.solver.q[left_nodes]
+                print(f"Left neighbor solution values: {left_sol}")
+                
+                # Calculate jump at left interface
+                local_jumps[0] = abs(elem_left - left_sol[-1])
+                neighbor_jumps[0] = local_jumps[0]
+                print(f"Left interface jump: {local_jumps[0]:.6f}")
+                        
+            # ====== Handle Right Neighbor (with periodicity) ======
             if elem < len(self.solver.label_mat):
+                # Normal case - right neighbor is element (elem+1)
                 right_active_idx = np.where(self.solver.active == elem+1)[0]
-                if len(right_active_idx) > 0:
-                    right_idx = right_active_idx[0]
-                    right_nodes = self.solver.intma[:, right_idx]
-                    right_sol = self.solver.q[right_nodes]
-                    local_jumps[-1] = abs(elem_right - right_sol[0])
-                    neighbor_jumps[1] = local_jumps[-1]
-                    
-            # Calculate jumps between interior nodes
+                print(f"Right neighbor is element {elem+1}")
+            else:
+                # Periodic case - last element's right neighbor is the first element
+                right_active_idx = np.where(self.solver.active == 1)[0]
+                print(f"Periodic right neighbor: connecting element {elem} to first element")
+                
+            if len(right_active_idx) > 0:
+                right_idx = right_active_idx[0]
+                right_nodes = self.solver.intma[:, right_idx]
+                right_sol = self.solver.q[right_nodes]
+                print(f"Right neighbor solution values: {right_sol}")
+                
+                # Calculate jump at right interface
+                local_jumps[-1] = abs(elem_right - right_sol[0])
+                neighbor_jumps[1] = local_jumps[-1]
+                print(f"Right interface jump: {local_jumps[-1]:.6f}")
+                        
+            # ====== Calculate Interior Jumps ======
+            print("Calculating interior jumps...")
             for i in range(1, self.solver.ngl-1):
                 local_jumps[i] = abs(elem_sol[i] - elem_sol[i-1])
-                
+                print(f"Interior jump {i}: {local_jumps[i]:.6f}")
+                    
         except Exception as e:
             print(f"Error in _get_element_jumps: {e}")
             print(f"Element index: {element_idx}, Active elements: {len(self.solver.active)}")
+            print(f"Stack trace:")
+            import traceback
+            traceback.print_exc()
             return np.zeros(self.solver.ngl), np.zeros(2)
-            
+        
+        print("\nFinal jump values:")
+        print(f"Local jumps: {local_jumps}")
+        print(f"Neighbor jumps: {neighbor_jumps}")
+                
         return local_jumps, neighbor_jumps
-    # def _get_element_jumps(self, element_idx: int) -> Tuple[np.ndarray, np.ndarray]:
-    #     """
-    #     Compute solution jumps at element boundaries and interior nodes.
-        
-    #     For each element K, computes:
-    #     1. Local jumps |[uh]| at element interfaces and between nodes
-    #     2. Jumps at neighboring element interfaces
-        
-    #     Args:
-    #         element_idx: Index of element in active_grid
-            
-    #     Returns:
-    #         tuple: (local_jumps, neighbor_jumps)
-    #             local_jumps: Array of jumps at each node [ngl]
-    #             neighbor_jumps: Jumps at left and right interfaces [2]
-    #     """
-    #     # Get element number from active grid
-    #     elem = self.solver.active[element_idx]
-        
-    #     # Get solution values in current element
-    #     elem_nodes = self.solver.intma[:, element_idx]
-    #     elem_sol = self.solver.q[elem_nodes]
-        
-    #     # Get element's solution values at boundaries
-    #     elem_left = elem_sol[0]   # First LGL node
-    #     elem_right = elem_sol[-1]  # Last LGL node
-        
-    #     # Initialize arrays for jumps
-    #     local_jumps = np.zeros(self.solver.ngl)
-    #     neighbor_jumps = np.zeros(2)  # [left_neighbor, right_neighbor]
-        
-    #     # Find neighboring elements using label_mat
-    #     # Left neighbor
-    #     if elem > 1:
-    #         left_active_idx = np.where(self.solver.active == elem-1)[0]
-    #         if len(left_active_idx) > 0:  # If left neighbor is active
-    #             left_idx = left_active_idx[0]
-    #             left_nodes = self.solver.intma[:, left_idx]
-    #             left_sol = self.solver.q[left_nodes]
-    #             # Jump at left interface
-    #             local_jumps[0] = abs(elem_left - left_sol[-1])
-    #             neighbor_jumps[0] = local_jumps[0]
-                
-    #     # Right neighbor
-    #     if elem < len(self.solver.label_mat):
-    #         right_active_idx = np.where(self.solver.active == elem+1)[0]
-    #         if len(right_active_idx) > 0:  # If right neighbor is active
-    #             right_idx = right_active_idx[0]
-    #             right_nodes = self.solver.intma[:, right_idx]
-    #             right_sol = self.solver.q[right_nodes]
-    #             # Jump at right interface
-    #             local_jumps[-1] = abs(elem_right - right_sol[0])
-    #             neighbor_jumps[1] = local_jumps[-1]
-                
-    #     # For interior nodes, compute difference between adjacent nodes
-    #     for i in range(1, self.solver.ngl-1):
-    #         local_jumps[i] = abs(elem_sol[i] - elem_sol[i-1])
-            
-    #     return local_jumps, neighbor_jumps
+
     
     def _get_observation(self) -> Dict[str, np.ndarray]:
         """
@@ -318,6 +305,8 @@ class DGAMREnv(gym.Env):
         
         return float(accuracy - resource_penalty)
         
+
+
     def step(self, action: int) -> Tuple[Dict[str, np.ndarray], float, bool, bool, Dict[str, Any]]:
         """
         Execute one step of the environment.
@@ -349,16 +338,30 @@ class DGAMREnv(gym.Env):
         # Store initial state
         old_solution = self.solver.q.copy()
         old_grid = self.solver.coord.copy()
-        old_resources = len(self.solver.active) / self.solver.max_elements
-                # SAFETY CHECK: Ensure current_element is valid
+        old_active = self.solver.active.copy()
+        old_resources = len(self.solver.active)
+                    
+        # SAFETY CHECK: Ensure current_element is valid
         if self.current_element >= len(self.solver.active):
             self.current_element = len(self.solver.active) - 1
             print(f"Corrected current element to: {self.current_element}")
 
         # Apply AMR action to current element  
         marks_override = {self.current_element: action - 1}  # Convert to {-1, 0, 1}
-        # self.solver.adapt_mesh(marks_override=marks_override)
-        self.solver.adapt_mesh(marks_override=marks_override, element_budget=self.element_budget)
+        
+        try:
+            # adapt_mesh will handle budget checks internally
+            self.solver.adapt_mesh(marks_override=marks_override, element_budget=self.element_budget)
+        except ValueError as e:
+            # Balance enforcement would exceed budget
+            print(f"Adaptation failed: {e}")
+            return self._get_observation(), -1000.0, False, False, {
+                'delta_u': 0.0,
+                'resource_usage': old_resources / self.element_budget,
+                'n_elements': old_resources,
+                'budget_exceeded': True,
+                'error': str(e)
+            }
 
         self.current_element = min(self.current_element, len(self.solver.active) - 1)
         
@@ -371,18 +374,22 @@ class DGAMREnv(gym.Env):
         # Get new state
         new_solution = self.solver.q
         new_grid = self.solver.coord
-        new_resources = len(self.solver.active) / self.solver.max_elements
+        new_resources = len(self.solver.active)
 
-        # Check if budget exceeded
-        budget_exceeded = len(self.solver.active) > self.solver.max_elements
-
+        # Check if budget exceeded (this shouldn't happen due to adapt_mesh checks, but just in case)
+        budget_exceeded = new_resources > self.element_budget
+        
         if budget_exceeded:
-            # Apply large negative reward and end episode
+            # Revert to previous state
+            self.solver.q = old_solution
+            self.solver.coord = old_grid
+            self.solver.active = old_active
             reward = -1000.0  # Large penalty
-            truncated = True
+            # During training, we continue the episode
+            truncated = False  # Changed from True
             delta_u = 0.0
         else:
-            # Compare solutions
+            # Compare solutions on appropriate grid
             if len(new_solution) >= len(old_solution):
                 old_interpolated = np.interp(new_grid, old_grid, old_solution)
                 delta_u = np.linalg.norm(new_solution - old_interpolated)
@@ -391,7 +398,7 @@ class DGAMREnv(gym.Env):
                 delta_u = np.linalg.norm(new_interpolated - old_solution)
 
             # Compute reward using normal reward function
-            reward = self._compute_reward(delta_u, new_resources)
+            reward = self._compute_reward(delta_u, new_resources / self.element_budget)
             truncated = False
 
         # Get observation of new state
@@ -403,13 +410,12 @@ class DGAMREnv(gym.Env):
         # Collect diagnostic information
         info = {
             'delta_u': delta_u,
-            'resource_usage': new_resources,
-            'n_elements': len(self.solver.active),
+            'resource_usage': new_resources / self.element_budget,
+            'n_elements': new_resources,
             'budget_exceeded': budget_exceeded
         }
         
         # Randomly select next element if continuing
-                # Randomly select next element if continuing
         if not truncated:
             n_active = len(self.solver.active)
             if n_active > 0:
@@ -420,13 +426,140 @@ class DGAMREnv(gym.Env):
                 print("Warning: No active elements!")
                 self.current_element = 0
 
-    
-        # if not truncated:
-        #     new_current = np.random.randint(0, len(self.solver.active))
-        #     print(f"Selected new element: {new_current} out of {len(self.solver.active)}")
-        #     self.current_element = new_current
-        
         return observation, reward, terminated, truncated, info
+    # def step(self, action: int) -> Tuple[Dict[str, np.ndarray], float, bool, bool, Dict[str, Any]]:
+    #     """
+    #     Execute one step of the environment.
+        
+    #     Process:
+    #     1. Store current state
+    #     2. Apply AMR action to current element
+    #     3. Take solver timestep
+    #     4. Compute reward based on solution change and resource usage
+    #     5. Get new observation
+    #     6. Select next element randomly
+        
+    #     Args:
+    #         action: Element adaptation (0=coarsen, 1=no change, 2=refine)
+                
+    #     Returns:
+    #         tuple: (observation, reward, terminated, truncated, info)
+    #             observation: New environment state
+    #             reward: Reward for action taken  
+    #             terminated: Whether episode naturally ended (always False)
+    #             truncated: Whether resources exceeded
+    #             info: Additional diagnostics
+    #     """
+    #     print(f"\nStep debug:")
+    #     print(f"Current element: {self.current_element}")
+    #     print(f"Active elements: {len(self.solver.active)}")
+    #     print(f"Action: {action}")
+
+    #     # Store initial state
+    #     old_solution = self.solver.q.copy()
+    #     old_grid = self.solver.coord.copy()
+    #     old_active = self.solver.active.copy()
+    #     old_resources = len(self.solver.active)
+        
+    #     # SAFETY CHECK: Ensure current_element is valid
+    #     if self.current_element >= len(self.solver.active):
+    #         self.current_element = len(self.solver.active) - 1
+    #         print(f"Corrected current element to: {self.current_element}")
+
+    #     # Pre-check budget for refinement action
+    #     if action == 2:  # refine
+    #         potential_new_elements = old_resources + 1
+    #         if potential_new_elements > self.element_budget:
+    #             # Return early with penalty but don't truncate episode
+    #             print(f"Refinement rejected: would exceed budget ({potential_new_elements} > {self.element_budget})")
+    #             return self._get_observation(), -100.0, False, False, {
+    #                 'delta_u': 0.0,
+    #                 'resource_usage': old_resources / self.element_budget,
+    #                 'n_elements': old_resources,
+    #                 'budget_exceeded': True
+    #             }
+
+    #     # Apply AMR action with budget constraint
+    #     marks_override = {self.current_element: action - 1}  # Convert to {-1, 0, 1}
+    #     try:
+    #         self.solver.adapt_mesh(marks_override=marks_override, element_budget=self.element_budget)
+    #     except Exception as e:
+    #         print(f"Error in adapt_mesh: {e}")
+    #         # Revert to previous state
+    #         self.solver.q = old_solution
+    #         self.solver.coord = old_grid
+    #         self.solver.active = old_active
+    #         return self._get_observation(), -100.0, False, False, {
+    #             'delta_u': 0.0,
+    #             'resource_usage': old_resources / self.element_budget,
+    #             'n_elements': old_resources,
+    #             'error': str(e)
+    #         }
+
+    #     # Update current element index if mesh changed
+    #     self.current_element = min(self.current_element, len(self.solver.active) - 1)
+        
+    #     print(f"After adapt_mesh:")
+    #     print(f"New active elements: {len(self.solver.active)}")
+        
+    #     # Take solver timestep
+    #     self.solver.step()
+        
+    #     # Get new state
+    #     new_solution = self.solver.q
+    #     new_grid = self.solver.coord
+    #     new_resources = len(self.solver.active)
+
+    #     # Post-check budget (in case balance enforcement added elements)
+    #     budget_exceeded = new_resources > self.element_budget
+        
+    #     if budget_exceeded:
+    #         # Revert to previous state
+    #         self.solver.q = old_solution
+    #         self.solver.coord = old_grid
+    #         self.solver.active = old_active
+    #         reward = -1000.0  # Large penalty
+    #         truncated = True
+    #         delta_u = 0.0
+    #     else:
+    #         # Compare solutions on appropriate grid
+    #         if len(new_solution) >= len(old_solution):
+    #             old_interpolated = np.interp(new_grid, old_grid, old_solution)
+    #             delta_u = np.linalg.norm(new_solution - old_interpolated)
+    #         else:
+    #             new_interpolated = np.interp(old_grid, new_grid, new_solution)
+    #             delta_u = np.linalg.norm(new_interpolated - old_solution)
+
+    #         # Compute reward using normal reward function
+    #         reward = self._compute_reward(delta_u, new_resources / self.element_budget)
+    #         truncated = False
+
+    #     # Get observation of new state
+    #     observation = self._get_observation()
+        
+    #     # Episodes don't end naturally
+    #     terminated = False
+        
+    #     # Collect diagnostic information
+    #     info = {
+    #         'delta_u': delta_u,
+    #         'resource_usage': new_resources / self.element_budget,
+    #         'n_elements': new_resources,
+    #         'budget_exceeded': budget_exceeded
+    #     }
+        
+    #     # Randomly select next element if continuing
+    #     if not truncated:
+    #         n_active = len(self.solver.active)
+    #         if n_active > 0:
+    #             new_current = np.random.randint(0, n_active)
+    #             print(f"Selected new element: {new_current} out of {n_active}")
+    #             self.current_element = new_current
+    #         else:
+    #             print("Warning: No active elements!")
+    #             self.current_element = 0
+        
+    #     return observation, reward, terminated, truncated, info
     
     
     # def step(self, action: int) -> Tuple[Dict[str, np.ndarray], float, bool, bool, Dict[str, Any]]:
@@ -621,27 +754,150 @@ class DGAMREnv(gym.Env):
 
 
     
+    # def reset(self, seed=None, options=None) -> Tuple[Dict[str, np.ndarray], Dict[str, Any]]:
+    #     """
+    #     Reset environment to initial state.
+        
+    #     Args:
+    #         seed: Random seed for reproducibility
+    #         options: Additional options (unused)
+            
+    #     Returns:
+    #         tuple: (observation, info)
+    #     """
+    #     super().reset(seed=seed)
+        
+    #     # Reset solver
+    #     self.solver.reset()
+        
+    #     # Start with random element
+    #     self.current_element = np.random.randint(0, len(self.solver.active))
+        
+    #     return self._get_observation(), {}
+    
     def reset(self, seed=None, options=None) -> Tuple[Dict[str, np.ndarray], Dict[str, Any]]:
         """
-        Reset environment to initial state.
+        Reset environment with mesh quality checks and recovery strategies.
         
         Args:
-            seed: Random seed for reproducibility
-            options: Additional options (unused)
+            seed: Random seed
+            options: Additional options
             
         Returns:
             tuple: (observation, info)
         """
         super().reset(seed=seed)
         
-        # Reset solver
-        self.solver.reset()
+        max_attempts = 3
+        original_nelem = self.solver.nelem
         
-        # Start with random element
+        for attempt in range(max_attempts):
+            try:
+                # Try standard reset
+                self.solver.reset()
+                
+                # Check mesh quality
+                quality_ok, issues = self.solver.check_mesh_quality(self.solver.xelem)
+                if not quality_ok:
+                    print(f"Mesh quality issues detected: {issues}")
+                    if attempt < max_attempts - 1:
+                        raise ValueError(f"Poor mesh quality: {issues}")
+                    
+                # If we get here, reset was successful
+                break
+                
+            except ValueError as e:
+                if attempt < max_attempts - 1:
+                    print(f"Reset failed attempt {attempt + 1}: {str(e)}")
+                    
+                    # Try different recovery strategies based on the error
+                    if "condition number" in str(e):
+                        # Strategy 1: Reduce number of elements
+                        self.solver.nelem = max(4, self.solver.nelem - 2)
+                        print(f"Trying with fewer elements: {self.solver.nelem}")
+                        
+                    elif "Poor mesh quality" in str(e):
+                        # Strategy 2: Try uniform mesh
+                        print("Trying uniform mesh distribution")
+                        domain_size = self.solver.xelem[-1] - self.solver.xelem[0]
+                        self.solver.xelem = np.linspace(
+                            self.solver.xelem[0],
+                            self.solver.xelem[-1],
+                            self.solver.nelem + 1
+                        )
+                        
+                    elif "Matrix solve failed" in str(e):
+                        # Strategy 3: Increase polynomial order temporarily
+                        print("Trying with increased polynomial order")
+                        original_nop = self.solver.nop
+                        self.solver.nop += 1
+                        self.solver.ngl = self.solver.nop + 1
+                        # Note: Remember to reset nop after successful reset
+                    
+                    else:
+                        # Strategy 4: Reset to initial configuration
+                        print("Resetting to initial configuration")
+                        self.solver.nelem = original_nelem
+                        self.solver.xelem = np.linspace(-1, 1, self.solver.nelem + 1)
+                        
+                    continue
+                else:
+                    print("Max reset attempts reached. Final configuration:")
+                    print(f"Number of elements: {self.solver.nelem}")
+                    print(f"Element sizes: {np.diff(self.solver.xelem)}")
+                    raise
+        
+        # Reset was successful, get initial state
         self.current_element = np.random.randint(0, len(self.solver.active))
         
-        return self._get_observation(), {}
+        # Prepare info dict with mesh quality metrics
+        element_sizes = np.diff(self.solver.xelem)
+        info = {
+            'mesh_quality': {
+                'min_element_size': np.min(element_sizes),
+                'max_element_size': np.max(element_sizes),
+                'size_ratio': np.max(element_sizes) / np.min(element_sizes),
+                'n_elements': len(element_sizes)
+            }
+        }
+        
+        observation = self._get_observation()
+        
+        # Add visualization of current mesh state if needed
+        if self.render_mode == 'human':
+            self._render_mesh_state()
+            
+        return observation, info
 
+    def _render_mesh_state(self):
+        """Visualize current mesh state and quality metrics"""
+        import matplotlib.pyplot as plt
+        
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+        
+        # Plot mesh
+        element_sizes = np.diff(self.solver.xelem)
+        ax1.plot(self.solver.xelem[:-1], element_sizes, 'b.-')
+        ax1.set_title('Element Sizes')
+        ax1.set_xlabel('Position')
+        ax1.set_ylabel('Element Size')
+        
+        # Plot solution on mesh
+        ax2.plot(self.solver.coord, self.solver.q, 'r.-')
+        ax2.set_title('Solution')
+        ax2.set_xlabel('Position')
+        ax2.set_ylabel('Solution Value')
+        
+        # Add mesh quality metrics as text
+        quality_ok, issues = self.check_mesh_quality(self.solver.xelem)
+        if not quality_ok:
+            ax1.text(0.02, 0.98, f"Quality Issues:\n{issues}", 
+                    transform=ax1.transAxes, verticalalignment='top',
+                    color='red')
+        
+        plt.tight_layout()
+        plt.savefig(f'mesh_state_{self.reset_counter}.png')
+        plt.close()
 
 
 
