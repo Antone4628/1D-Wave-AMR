@@ -41,6 +41,17 @@
 │   │   ├── check_env.py
 │   │   ├── test_env.py
 │   │   └── train_test.py
+├── training/
+│   ├── configs/
+│   │   ├── default_config.yaml
+│   │   └── custom_configs
+│   ├── utils/
+│   │   ├── logger.py
+│   │   ├── visualization.py
+│   │   └── metrics.py
+│   ├── train.py
+│   ├── evaluate.py
+│   └── callbacks.py
 ├── CODESTRUCTURE.md
 ├── README.md
 ├── requirements.txt
