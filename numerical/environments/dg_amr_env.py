@@ -147,7 +147,8 @@ class DGAMREnv(gym.Env):
         solver: DGWaveSolver,
         element_budget: int,  # New parameter
         gamma_c: float = 25.0,
-        render_mode: str = None
+        render_mode: str = None,
+        max_episode_steps: int = 50
     ):
         """
         Initialize DG AMR environment with explicit element budget.
@@ -167,6 +168,7 @@ class DGAMREnv(gym.Env):
         self.current_element_index = 0  # Changed name to be more explicit
         self.current_element = 0
         self.machine_eps = 1e-16
+        self.max_episode_steps = max_episode_steps
 
         # Initialize step counter and timing
         self._step_counter = 0
@@ -227,6 +229,7 @@ class DGAMREnv(gym.Env):
                 dtype=np.float32
             )
         })
+
 
 
     def _get_element_jumps(self, element_idx: int) -> Tuple[np.ndarray, np.ndarray]:
@@ -406,7 +409,8 @@ class DGAMREnv(gym.Env):
         mapped_action = self.action_mapping[action_int]
 
         print(f"\n{'='*50}")
-        print(f"Step #{self.num_timesteps} (Episode step #{self._episode_steps})")
+        # print(f"Step #{self.num_timesteps} (Episode step #{self._episode_steps})")
+        print(f"Episode #{self._total_episodes + 1}, Step #{self._episode_steps} (Total step #{self.num_timesteps})")
         
         # Print initial state sizes
         print("\nInitial state:")
@@ -425,6 +429,24 @@ class DGAMREnv(gym.Env):
             truncated = True
             info = {
                 'budget_exceeded': True,
+                'episode_steps': self._episode_steps,
+                'total_steps': self.num_timesteps,
+                'episode': {
+                    'r': reward,
+                    'l': self._episode_steps
+                }
+            }
+            self._total_episodes += 1
+            return observation, reward, False, truncated, info
+        
+        # Check if we've exceeded max episode steps
+        if self._episode_steps >= self.max_episode_steps:
+            print(f"Maximum episode length ({self.max_episode_steps} steps) reached, ending episode")
+            observation = self._get_observation()
+            reward = 0.0  # Neutral reward for hitting step limit
+            truncated = True
+            info = {
+                'max_steps_exceeded': True,
                 'episode_steps': self._episode_steps,
                 'total_steps': self.num_timesteps,
                 'episode': {
@@ -601,6 +623,7 @@ class DGAMREnv(gym.Env):
         Returns:
             tuple: (observation, info)
         """
+        print(f"\n--- STARTING EPISODE #{self._total_episodes + 1} ---\n")
         self._episode_steps = 0  # Reset episode counter
         super().reset(seed=seed)
         
@@ -678,6 +701,11 @@ class DGAMREnv(gym.Env):
                 'total_steps': self.num_timesteps
             }
         }
+        # Make sure it's a valid index for the newly reset environment
+        self.current_element_index = 0
+        if len(self.solver.active) > 0:
+            self.current_element_index = np.random.randint(0, len(self.solver.active))
+    
         
         observation = self._get_observation()
         
