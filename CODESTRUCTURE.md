@@ -1,4 +1,11 @@
 1D_WAVE_AMR/
+├── animations/
+├── logs/
+│   ├── best_model/
+│   ├── checkpoints/
+│   ├── eval_results/
+│   └── tensorboard/
+│       └── A2C_1/
 ├── numerical/
 │   ├── __init__.py
 │   ├── amr/
@@ -41,6 +48,7 @@
 │   │   ├── check_env.py
 │   │   ├── test_env.py
 │   │   └── train_test.py
+├── tensorboard_logs/
 ├── training/
 │   ├── configs/
 │   │   ├── default_config.yaml
@@ -50,6 +58,7 @@
 │   │   ├── visualization.py
 │   │   └── metrics.py
 │   ├── train.py
+│   ├── trainer.py
 │   ├── evaluate.py
 │   └── callbacks.py
 ├── CODESTRUCTURE.md

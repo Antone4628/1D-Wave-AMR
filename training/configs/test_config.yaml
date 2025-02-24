@@ -1,0 +1,29 @@
+# Test configuration for DG AMR training
+# Uses minimal settings for quick verification
+
+# Algorithm settings
+algorithm: "A2C"
+total_timesteps: 1000  # Very small number of steps
+learning_rate: 0.0003
+n_steps: 32  # Replaces batch_size for A2C
+gamma: 0.99
+
+# Environment settings
+element_budget: 10  # Small element budget for testing
+gamma_c: 25.0
+
+# Training settings
+verbose: 1
+tensorboard_log: "./logs/test_tensorboard/"
+device: "auto"
+
+# Model architecture - smaller network
+policy_kwargs:
+  net_arch:
+    pi: [32]  # Simplified policy network
+    vf: [32]  # Simplified value function network
+  activation_fn: "torch.nn.Tanh"  # Full path to activation function
+
+# Logging settings - frequent updates for testing
+log_interval: 10
+checkpoint_freq: 100  # Save checkpoints more frequently during test

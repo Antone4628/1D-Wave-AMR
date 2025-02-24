@@ -293,69 +293,71 @@ class DGWaveSolver:
             ValueError: If adaptation would exceed element budget
         """
         # Get refinement marks based on solution properties
-        marks = mark(self.active, self.label_mat, self.intma, self.q, criterion)
-
+        # Check for marks_override first
         # if marks_override is not None:
+        #     # Create zero marks array
+        #     marks = np.zeros(len(self.active), dtype=int)
+        #     print(f'verify marks array is resetting before applying override values: {marks}')
+            
+        #     # Apply override values
         #     for idx, mark_val in marks_override.items():
         #         # Check budget before refinement
         #         if mark_val == 1 and element_budget is not None:
-        #             # Calculate new elements after potential refinement
-        #             potential_new_elements = len(self.active) + 1
-                    
-        #             # Account for balance enforcement potentially adding elements
-        #             # We use a conservative estimate based on max_level
-        #             max_balance_additions = min(2, self.max_level)  # Conservative estimate
-        #             potential_new_elements += max_balance_additions
-                    
-        #             if potential_new_elements > element_budget:
+        #             if len(self.active) >= element_budget:
         #                 print(f"Budget limit reached ({element_budget} elements). Canceling refinement.")
-        #                 marks[idx] = 0
         #                 continue
-                        
         #         marks[idx] = mark_val
+        #         print(f'verify marks array is applying override values: {marks}')
         if marks_override is not None:
-            for idx, mark_val in marks_override.items():
-
-                # Before applying marks, check if resulting mesh would be valid
-                temp_grid = self.xelem.copy()
-                quality_ok, issues = self.check_mesh_quality(temp_grid)
-                if not quality_ok:
-                    print(f"Adaptation rejected: {issues}")
-                    marks[idx] = 0
-                    continue
-
-                if element_budget is not None:
-                    if mark_val == 1:  # Refinement
-                        # Check direct refinement
-                        potential_new_elements = len(self.active) + 1
-                        if potential_new_elements > element_budget:
+                #     # Create zero marks array
+                marks = np.zeros(len(self.active), dtype=int)
+                # print(f'verify marks array is resetting before applying override values: {marks}')
+                for idx, mark_val in marks_override.items():
+                    # Handle refinement case with budget check
+                    if mark_val == 1 and element_budget is not None:
+                        if len(self.active) >= element_budget:
                             print(f"Budget limit reached ({element_budget} elements). Canceling refinement.")
-                            marks[idx] = 0
                             continue
-                    elif mark_val == -1:  # Coarsening
-                        # Simulate coarsening and balance enforcement
-                        temp_marks = marks.copy()
-                        temp_marks[idx] = -1
+                        # print(f'refining element at index: {idx}')
+                        marks[idx] = mark_val
+                        # print(f'marks for refining: {marks}')
                         
-                        # Try coarsening
-                        temp_grid, temp_active, _, temp_nelem, _, _ = adapt_mesh(
-                            self.nop, self.xelem, self.active, self.label_mat, 
-                            self.info_mat, temp_marks
-                        )
-                        
-                        # Check if balance would be needed
-                        if not check_balance(temp_active, self.label_mat):
-                            # Estimate elements after balance
-                            max_balance_additions = min(2, self.max_level) 
-                            potential_balanced_elements = len(temp_active) + max_balance_additions
+                    # Enhanced coarsening logic
+                    elif mark_val == -1:
+                        elem = self.active[idx]  # Get actual element number
+                        if elem > 0:  # Safety check
+                            parent = self.label_mat[elem-1][1]
                             
-                            if potential_balanced_elements > element_budget:
-                                print(f"Coarsening rejected: balance enforcement would exceed budget")
-                                marks[idx] = 0
-                                continue
+                            # Only proceed if element has a parent (level > 0)
+                            if parent != 0:
+                                # Find sibling by checking neighboring elements
+                                sibling = None
+                                sibling_idx = None
                                 
-                marks[idx] = mark_val
+                                # Check element before current one
+                                if elem > 1 and idx > 0 and self.label_mat[elem-2][1] == parent:
+                                    sibling = elem - 1
+                                    sibling_idx = idx - 1
+                                    
+                                # Check element after current one
+                                elif elem < len(self.label_mat) and idx < len(self.active)-1 and self.label_mat[elem][1] == parent:
+                                    sibling = elem + 1
+                                    sibling_idx = idx + 1
+                                
+                                # Mark both elements for coarsening if sibling found
+                                if sibling is not None and sibling in self.active:
+                                    print(f"Marking element {elem} and sibling {sibling} for coarsening")
+                                    marks[idx] = -1
+                                    marks[sibling_idx] = -1
+                                else:
+                                    print(f"No valid sibling found for element {elem}, skipping coarsening")
+                
+        else:
+            # If no override, get marks from criterion
+            marks = mark(self.active, self.label_mat, self.intma, self.q, criterion)
+        # marks = mark(self.active, self.label_mat, self.intma, self.q, criterion)
 
+       
         # Store pre-adaptation state
         pre_q = self.q
         pre_grid = self.xelem
@@ -365,13 +367,12 @@ class DGWaveSolver:
         pre_coord = self.coord
         pre_npoin_dg = self.npoin_dg
         pre_periodicity = self.periodicity
-        
+        # print(f'marks being passed into adapt_mesh(): {marks}')
         # Adapt mesh
         new_grid, new_active, _, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(
             self.nop, pre_grid, pre_active, self.label_mat, 
             self.info_mat, marks
         )
-
         # Create new grid
         new_coord, new_intma, new_periodicity = create_grid_us(
             self.ngl, new_nelem, npoin_cg, new_npoin_dg, 
@@ -398,6 +399,7 @@ class DGWaveSolver:
         if not check_balance(self.active, self.label_mat):
             # Store state before balance enforcement
             pre_balance_elements = len(self.active)
+            print(f'balancing.....')
             
             bal_q, bal_active, bal_nelem, bal_intma, bal_coord, bal_grid, bal_npoin_dg, bal_periodicity = enforce_balance(
                 self.active, 
@@ -412,19 +414,19 @@ class DGWaveSolver:
                 self.max_level
             )
             
-            # Check if balance enforcement would exceed budget
-            if element_budget is not None and len(bal_active) > element_budget:
-                print(f"Balance enforcement would exceed budget ({len(bal_active)} > {element_budget})")
-                # Revert to pre-adaptation state
-                self.q = pre_q
-                self.active = pre_active
-                self.nelem = pre_nelem
-                self.intma = pre_intma
-                self.coord = pre_coord
-                self.xelem = pre_grid
-                self.npoin_dg = pre_npoin_dg
-                self.periodicity = pre_periodicity
-                raise ValueError("Balance enforcement would exceed element budget")
+            # # Check if balance enforcement would exceed budget
+            # if element_budget is not None and len(bal_active) > element_budget:
+            #     print(f"Balance enforcement would exceed budget ({len(bal_active)} > {element_budget})")
+            #     # Revert to pre-adaptation state
+            #     self.q = pre_q
+            #     self.active = pre_active
+            #     self.nelem = pre_nelem
+            #     self.intma = pre_intma
+            #     self.coord = pre_coord
+            #     self.xelem = pre_grid
+            #     self.npoin_dg = pre_npoin_dg
+            #     self.periodicity = pre_periodicity
+            #     raise ValueError("Balance enforcement would exceed element budget")
                 
             # Update with balanced state
             self.q = bal_q
