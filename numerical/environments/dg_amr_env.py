@@ -148,7 +148,7 @@ class DGAMREnv(gym.Env):
         element_budget: int,  # New parameter
         gamma_c: float = 25.0,
         render_mode: str = None,
-        max_episode_steps: int = 500,
+        max_episode_steps: int = 5000,
         
     ):
         """
