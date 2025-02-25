@@ -148,7 +148,8 @@ class DGAMREnv(gym.Env):
         element_budget: int,  # New parameter
         gamma_c: float = 25.0,
         render_mode: str = None,
-        max_episode_steps: int = 50
+        max_episode_steps: int = 500,
+        
     ):
         """
         Initialize DG AMR environment with explicit element budget.
@@ -169,15 +170,19 @@ class DGAMREnv(gym.Env):
         self.current_element = 0
         self.machine_eps = 1e-16
         self.max_episode_steps = max_episode_steps
+        self.episode_callback = None  # Add this line
 
         # Initialize step counter and timing
         self._step_counter = 0
         self._step_start_time = time()
 
         # Add step tracking
+        self.episode_rewards = []
+        self.episode_lengths = []
         self.num_timesteps = 0
         self._episode_steps = 0
         self._total_episodes = 0
+
         # Initialize reward calculator
         self.reward_calculator = RewardCalculator(gamma_c=gamma_c)
         
@@ -230,6 +235,10 @@ class DGAMREnv(gym.Env):
             )
         })
 
+    def register_callback(self, callback):
+        """Register a callback to be called when episodes end."""
+        self.episode_callback = callback
+        print(f"Environment registered episode callback: {callback.__class__.__name__}")
 
 
     def _get_element_jumps(self, element_idx: int) -> Tuple[np.ndarray, np.ndarray]:
@@ -447,10 +456,18 @@ class DGAMREnv(gym.Env):
                     'l': int(max(1, self._episode_steps))  # Ensure positive integer length
                 }
             }
+            self.episode_rewards.append(float(reward))
+            self.episode_lengths.append(int(self._episode_steps))
 
             # Add debug prints
             print(f"ENV: Episode ending early - budget exceeded or max steps reached")
             print(f"ENV: Episode reward: {reward:.2f}, length: {self._episode_steps}")
+            # Call the callback directly if registered
+            if self.episode_callback is not None:
+                print(f"ENV: Calling episode callback")
+                self.episode_callback(reward, self._episode_steps)
+            else:
+                print(f"ENV: No episode callback registered")
 
             self._total_episodes += 1
             return observation, reward, False, truncated, info
@@ -482,11 +499,19 @@ class DGAMREnv(gym.Env):
                     'l': int(max(1, self._episode_steps))  # Ensure positive integer length
                 }
             }
+            self.episode_rewards.append(float(reward))
+            self.episode_lengths.append(int(self._episode_steps))
 
             # Add debug prints
             print(f"ENV: Episode ending early - budget exceeded or max steps reached")
             print(f"ENV: Episode reward: {reward:.2f}, length: {self._episode_steps}")
 
+            # Call the callback directly if registered
+            if self.episode_callback is not None:
+                print(f"ENV: Calling episode callback")
+                self.episode_callback(reward, self._episode_steps)
+            else:
+                print(f"ENV: No episode callback registered")
             self._total_episodes += 1
             return observation, reward, False, truncated, info
         
@@ -644,16 +669,41 @@ class DGAMREnv(gym.Env):
             eps_len = max(1, self._episode_steps)  # Ensure positive length
             
             # Add episode info directly to the info dictionary
-            info['episode'] = {
-                'r': float(reward),  # Ensure reward is a float
-                'l': int(eps_len)    # Ensure length is an integer
+            # info['episode'] = {
+            #     'r': float(reward),  # Ensure reward is a float
+            #     'l': int(eps_len)    # Ensure length is an integer
+            # }
+            # self.episode_rewards.append(float(reward))
+            # self.episode_lengths.append(int(self._episode_steps))
+            
+            # # Add debug prints to verify info structure
+            # print(f"ENV: Episode complete - adding episode info to info dict")
+            # print(f"ENV: Episode reward: {reward:.2f}, length: {eps_len}")
+            
+            # # Increment episode counter
+            # self._total_episodes += 1
+            info = {
+                'budget_exceeded': True,  # or 'max_steps_exceeded': True
+                'episode_steps': self._episode_steps,
+                'total_steps': self.num_timesteps,
+                'episode': {
+                    'r': float(reward),  # Ensure reward is a float
+                    'l': int(max(1, self._episode_steps))  # Ensure positive integer length
+                }
             }
-            
-            # Add debug prints to verify info structure
-            print(f"ENV: Episode complete - adding episode info to info dict")
-            print(f"ENV: Episode reward: {reward:.2f}, length: {eps_len}")
-            
-            # Increment episode counter
+            self.episode_rewards.append(float(reward))
+            self.episode_lengths.append(int(self._episode_steps))
+
+            # Add debug prints
+            print(f"ENV: Episode ending early - budget exceeded or max steps reached")
+            print(f"ENV: Episode reward: {reward:.2f}, length: {self._episode_steps}")
+
+            # Call the callback directly if registered
+            if self.episode_callback is not None:
+                print(f"ENV: Calling episode callback")
+                self.episode_callback(reward, self._episode_steps)
+            else:
+                print(f"ENV: No episode callback registered")
             self._total_episodes += 1
 
         # Get new observation
@@ -676,7 +726,34 @@ class DGAMREnv(gym.Env):
         # print(f"{'='*50}\n")
         
         # return observation, reward, terminated, truncated, info
+    def plot_episodes(self, save_path):
+        """Create a plot of tracked episodes."""
+        if len(self.episode_rewards) == 0:
+            return None
+            
+        plt.figure(figsize=(12, 5))
         
+        # Plot rewards
+        plt.subplot(1, 2, 1)
+        plt.plot(self.episode_rewards, 'bo-')
+        plt.title(f"Episode Rewards (Total: {self.episode_count})")
+        plt.xlabel("Episode")
+        plt.ylabel("Reward")
+        plt.grid(True, alpha=0.3)
+        
+        # Plot lengths
+        plt.subplot(1, 2, 2)
+        plt.plot(self.episode_lengths, 'ro-')
+        plt.title("Episode Lengths")
+        plt.xlabel("Episode")
+        plt.ylabel("Steps")
+        plt.grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        plt.savefig(save_path)
+        plt.close()
+        
+        return save_path   
 
     
     def reset(self, seed=None, options=None) -> Tuple[Dict[str, np.ndarray], Dict[str, Any]]:
