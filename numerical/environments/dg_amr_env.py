@@ -427,15 +427,31 @@ class DGAMREnv(gym.Env):
             observation = self._get_observation()
             reward = -1000.0
             truncated = True
+            # info = {
+            #     'budget_exceeded': True,
+            #     'episode_steps': self._episode_steps,
+            #     'total_steps': self.num_timesteps,
+            #     'episode': {
+            #         'r': reward,
+            #         'l': self._episode_steps
+            #     }
+            # }
+            # self._total_episodes += 1
+            # return observation, reward, False, truncated, info
             info = {
-                'budget_exceeded': True,
+                'budget_exceeded': True,  # or 'max_steps_exceeded': True
                 'episode_steps': self._episode_steps,
                 'total_steps': self.num_timesteps,
                 'episode': {
-                    'r': reward,
-                    'l': self._episode_steps
+                    'r': float(reward),  # Ensure reward is a float
+                    'l': int(max(1, self._episode_steps))  # Ensure positive integer length
                 }
             }
+
+            # Add debug prints
+            print(f"ENV: Episode ending early - budget exceeded or max steps reached")
+            print(f"ENV: Episode reward: {reward:.2f}, length: {self._episode_steps}")
+
             self._total_episodes += 1
             return observation, reward, False, truncated, info
         
@@ -445,15 +461,32 @@ class DGAMREnv(gym.Env):
             observation = self._get_observation()
             reward = 0.0  # Neutral reward for hitting step limit
             truncated = True
+            # info = {
+            #     'max_steps_exceeded': True,
+            #     'episode_steps': self._episode_steps,
+            #     'total_steps': self.num_timesteps,
+            #     'episode': {
+            #         'r': reward,
+            #         'l': self._episode_steps
+            #     }
+            # }
+        
+            # self._total_episodes += 1
+            # return observation, reward, False, truncated, info
             info = {
-                'max_steps_exceeded': True,
+                'budget_exceeded': True,  # or 'max_steps_exceeded': True
                 'episode_steps': self._episode_steps,
                 'total_steps': self.num_timesteps,
                 'episode': {
-                    'r': reward,
-                    'l': self._episode_steps
+                    'r': float(reward),  # Ensure reward is a float
+                    'l': int(max(1, self._episode_steps))  # Ensure positive integer length
                 }
             }
+
+            # Add debug prints
+            print(f"ENV: Episode ending early - budget exceeded or max steps reached")
+            print(f"ENV: Episode reward: {reward:.2f}, length: {self._episode_steps}")
+
             self._total_episodes += 1
             return observation, reward, False, truncated, info
         
@@ -595,20 +628,54 @@ class DGAMREnv(gym.Env):
 
         print(f"Step {self.num_timesteps} completed. New current_element: {self.solver.active[self.current_element_index]}")
 
+        # Collect diagnostic information
+        info = {
+            'delta_u': delta_u,
+            'resource_usage': new_resources if 'new_resources' in locals() else old_resources,
+            'n_elements': len(self.solver.active),
+            'step_call': self._step_counter,
+            'episode_steps': self._episode_steps,
+            'total_steps': self.num_timesteps
+        }
+
+        # Handle episode completion - make sure episode info is properly structured
+        if terminated or truncated:
+            # Ensure values are of correct types to avoid serialization issues
+            eps_len = max(1, self._episode_steps)  # Ensure positive length
+            
+            # Add episode info directly to the info dictionary
+            info['episode'] = {
+                'r': float(reward),  # Ensure reward is a float
+                'l': int(eps_len)    # Ensure length is an integer
+            }
+            
+            # Add debug prints to verify info structure
+            print(f"ENV: Episode complete - adding episode info to info dict")
+            print(f"ENV: Episode reward: {reward:.2f}, length: {eps_len}")
+            
+            # Increment episode counter
+            self._total_episodes += 1
 
         # Get new observation
-        observation = self._get_observation()       
-        # Handle episode completion
-        if terminated or truncated:
-            self._total_episodes += 1
-            info['episode'] = {
-                'r': reward,
-                'l': self._episode_steps
-            }
-        
+        observation = self._get_observation()
+
+        print(f"Step {self.num_timesteps} completed. New current_element: {self.solver.active[self.current_element_index]}")
         print(f"{'='*50}\n")
-        
+
         return observation, reward, terminated, truncated, info
+        # # Get new observation
+        # observation = self._get_observation()       
+        # # Handle episode completion
+        # if terminated or truncated:
+        #     self._total_episodes += 1
+        #     info['episode'] = {
+        #         'r': reward,
+        #         'l': self._episode_steps
+        #     }
+        
+        # print(f"{'='*50}\n")
+        
+        # return observation, reward, terminated, truncated, info
         
 
     

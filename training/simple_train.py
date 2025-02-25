@@ -41,122 +41,169 @@ class SimpleTrainingCallback(BaseCallback):
         print(f"\nInitializing callback...")
         print(f"Log directory: {self.log_dir}")
         os.makedirs(self.log_dir, exist_ok=True)
-        
-    # def _on_step(self) -> bool:
-    #     self.step_count += 1
-    #     print(f"\nTraining Timestep {self.step_count} (Total requested: {self.locals['total_timesteps']})")
-        
-    #     # Check for episode completion
-    #     info = self.locals.get('info')
-    #     if info is not None and 'episode' in info:
-    #         self.episode_count += 1
-    #         episode_info = info['episode']
-    #         self.rewards.append(episode_info['r'])
-    #         self.episode_lengths.append(episode_info['l'])
-    #         self.last_info = info
-            
-    #         print(f"\nEpisode {self.episode_count} completed:")
-    #         print(f"Reward: {episode_info['r']:.2f}")
-    #         print(f"Length: {episode_info['l']}")
-            
-    #         # Create a plot after each episode (check_freq = 1)
-    #         if self.episode_count % self.check_freq == 0:
-    #             plot_path = self._plot_training_progress()
-    #             if plot_path:
-    #                 print(f"Saved training plot to: {plot_path}")
-    #             else:
-    #                 print("Failed to create training plot")
-        
-    #     return True
-    def _on_step(self) -> bool:
-        self.step_count += 1
-        print(f"\nCallback step: {self.num_timesteps}")
     
-        # Print locals to see what's available
-        info = self.locals.get("info", {})
-        dones = self.locals.get("dones", [])
-        print(f"Info keys: {info.keys() if isinstance(info, dict) else 'not a dict'}")
-        print(f"Dones: {dones if hasattr(dones, '__iter__') else 'not iterable'}")
-        print(f"Episode info: {info.get('episode', 'none')}")
+
+
+
+    def _on_step(self) -> bool:
+        """Called at each step."""
+        # Debug output to understand what's available
+        print(f"Callback step: {self.num_timesteps}")
         
-        # If we detect episode completion
-        if 'episode' in info:
-            print("*** EPISODE DETECTED IN CALLBACK ***")
+        # Check if this step completed an episode
+        episode_info = None
+        
+        # Try to get episode info from 'dones' and 'infos'
+        dones = self.locals.get('dones', [])
+        infos = self.locals.get('infos', [])
+        
+        if isinstance(dones, list) and isinstance(infos, list) and len(dones) == len(infos):
+            for i, (done, info) in enumerate(zip(dones, infos)):
+                if done and isinstance(info, dict) and 'episode' in info:
+                    episode_info = info['episode']
+                    print(f"*** EPISODE COMPLETED (from infos) - Reward: {episode_info['r']}, Length: {episode_info['l']} ***")
+                    break
+        
+        # Second approach: directly check the done and info values
+        done = self.locals.get('done', False)
+        info = self.locals.get('info', {})
+        
+        if done and isinstance(info, dict) and 'episode' in info:
             episode_info = info['episode']
-            
-            # Save the reward and episode length
+            print(f"*** EPISODE COMPLETED (from info) - Reward: {episode_info['r']}, Length: {episode_info['l']} ***")
+        
+        # If we found episode info, store it and maybe create a plot
+        if episode_info:
             reward = episode_info.get('r', 0)
-            ep_len = episode_info.get('l', 0)
-            self.rewards.append(reward)
-            self.episode_lengths.append(ep_len)
+            length = episode_info.get('l', 0)
             
-            # Create immediate test plot regardless of check_freq
-            print("Creating direct test plot in callback...")
+            self.rewards.append(reward)
+            self.episode_lengths.append(length)
+            self.episode_count += 1
+            
+            print(f"Added episode #{self.episode_count} to records. Total rewards stored: {len(self.rewards)}")
+            
+            # Create an immediate test plot regardless of check_freq
             try:
-                import matplotlib.pyplot as plt
-                plt.figure()
-                plt.plot(self.rewards)
-                test_path = os.path.join(self.log_dir, f"direct_test_{len(self.rewards)}.png")
-                plt.savefig(test_path)
+                # Create plots directory
+                plots_dir = os.path.join(self.log_dir, "plots")
+                os.makedirs(plots_dir, exist_ok=True)
+                
+                # Create simple test plot
+                plt.figure(figsize=(8, 6))
+                plt.plot(self.rewards, 'b.-')
+                plt.title(f"Episodes Rewards (Total: {self.episode_count})")
+                
+                # Save plot
+                test_plot_path = os.path.join(plots_dir, f"episode_rewards_{self.episode_count}.png")
+                plt.savefig(test_plot_path)
                 plt.close()
-                print(f"Direct test plot saved: {test_path}")
-                print(f"File exists: {os.path.exists(test_path)}")
+                
+                print(f"Direct test plot saved to: {test_plot_path}")
+                print(f"File exists: {os.path.exists(test_plot_path)}")
             except Exception as e:
-                print(f"Direct plot error: {e}")
+                print(f"Error saving direct plot: {e}")
+                import traceback
+                traceback.print_exc()
         
         return True
+    # def _on_step(self) -> bool:
+    #     self.step_count += 1
+    #     print(f"\nCallback step: {self.num_timesteps}")
         
-        # # Check for episode completion
-        # info = self.locals.get('info')
-        # if info is not None and 'episode' in info:
-        #     self.episode_count += 1
-        #     episode_info = info['episode']
-        #     self.rewards.append(episode_info['r'])
-        #     self.episode_lengths.append(episode_info['l'])
-            
-        #     print(f"\nEpisode {self.episode_count} completed:")
-        #     print(f"Reward: {episode_info['r']:.2f}")
-        #     print(f"Length: {episode_info['l']}")
-        #     print(f"Total rewards collected: {len(self.rewards)}")
-            
-        #     # Add logic to check plot creation condition
-        #     should_create_plot = self.episode_count % self.check_freq == 0
-        #     print(f"Should create plot? episode_count={self.episode_count}, check_freq={self.check_freq}, result={should_create_plot}")
-            
-        #     if should_create_plot:
-        #         plot_path = self._plot_training_progress()
-        #         if plot_path:
-        #             print(f"Saved training plot to: {plot_path}")
-        #         else:
-        #             print("Failed to create training plot")
+    #     # In Stable Baselines3, episode information is passed through the 'infos' list
+    #     infos = self.locals.get('infos', [])
+    #     dones = self.locals.get('dones', [])
         
-        # return True
+    #     # Print debug information
+    #     print(f"Infos type: {type(infos)}, length: {len(infos) if hasattr(infos, '__len__') else 'N/A'}")
+    #     if isinstance(infos, list) and len(infos) > 0:
+    #         print(f"First info keys: {infos[0].keys() if isinstance(infos[0], dict) else 'not a dict'}")
+        
+    #     # Check if any environment completed an episode
+    #     episode_detected = False
+    #     for i, (info, done) in enumerate(zip(infos, dones) if len(infos) == len(dones) else []):
+    #         if done and isinstance(info, dict) and 'episode' in info:
+    #             episode_detected = True
+    #             print("*** EPISODE DETECTED IN CALLBACK ***")
+    #             episode_info = info['episode']
+                
+    #             # Save episode statistics
+    #             reward = episode_info.get('r', 0)
+    #             ep_len = episode_info.get('l', 0)
+    #             self.rewards.append(reward)
+    #             self.episode_lengths.append(ep_len)
+    #             self.episode_count += 1
+                
+    #             print(f"\nEpisode {self.episode_count} completed:")
+    #             print(f"Reward: {reward:.2f}")
+    #             print(f"Length: {ep_len}")
+    #             print(f"Total rewards collected: {len(self.rewards)}")
+                
+    #             # Create plot if we've reached check frequency
+    #             if self.episode_count % self.check_freq == 0:
+    #                 plot_path = self._plot_training_progress()
+    #                 if plot_path:
+    #                     print(f"Saved training plot to: {plot_path}")
+    #                 else:
+    #                     print("Failed to create training plot")
+                
+    #             # Only handle one episode completion per step
+    #             break
+        
+    #     # If no episode detected through standard means, check for a single info dict
+    #     if not episode_detected:
+    #         info = self.locals.get('info')
+    #         done = self.locals.get('done', False)
+            
+    #         if done and isinstance(info, dict) and 'episode' in info:
+    #             print("*** EPISODE DETECTED IN CALLBACK (single info) ***")
+    #             episode_info = info['episode']
+                
+    #             # Save episode statistics
+    #             reward = episode_info.get('r', 0)
+    #             ep_len = episode_info.get('l', 0)
+    #             self.rewards.append(reward)
+    #             self.episode_lengths.append(ep_len)
+    #             self.episode_count += 1
+                
+    #             print(f"\nEpisode {self.episode_count} completed:")
+    #             print(f"Reward: {reward:.2f}")
+    #             print(f"Length: {ep_len}")
+    #             print(f"Total rewards collected: {len(self.rewards)}")
+                
+    #             # Create plot if we've reached check frequency 
+    #             if self.episode_count % self.check_freq == 0:
+    #                 plot_path = self._plot_training_progress()
+    #                 if plot_path:
+    #                     print(f"Saved training plot to: {plot_path}")
+    #                 else:
+    #                     print("Failed to create training plot")
+        
+    #     return True
+
+
 
     def _plot_training_progress(self):
         """Create simple training progress plot with enhanced debugging."""
         try:
             print("\n=== DEBUG: PLOT CREATION ATTEMPT ===")
-            print(f"Working directory: {os.getcwd()}")
             
-            # Create plots directory with absolute path
+            # Create plots directory with absolute path - make sure this exists
             plots_dir = os.path.join(os.path.abspath(self.log_dir), "plots")
             os.makedirs(plots_dir, exist_ok=True)
             print(f"Created plots directory: {plots_dir}")
             print(f"Directory exists: {os.path.exists(plots_dir)}")
             
             # Check rewards data
-            print(f"Rewards data: {self.rewards}")
-            print(f"Episode lengths data: {self.episode_lengths}")
             if len(self.rewards) == 0:
                 print("No reward data to plot yet")
                 return None
             
             # Create figure
-            print("Creating matplotlib figure...")
             plt.figure(figsize=(10, 5))
             
             # Plot rewards
-            print("Adding rewards subplot...")
             plt.subplot(1, 2, 1)
             plt.plot(self.rewards, 'bo-')
             plt.title("Episode Rewards")
@@ -164,7 +211,6 @@ class SimpleTrainingCallback(BaseCallback):
             plt.ylabel("Reward")
             
             # Plot episode lengths
-            print("Adding episode lengths subplot...")
             plt.subplot(1, 2, 2)
             plt.plot(self.episode_lengths, 'ro-')
             plt.title("Episode Lengths")
@@ -173,18 +219,17 @@ class SimpleTrainingCallback(BaseCallback):
             
             plt.tight_layout()
             
-            # Save plot with timestamp
+            # Save plot with a unique filename
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            plot_path = os.path.join(plots_dir, f'training_progress_{timestamp}.png')
+            plot_path = os.path.join(plots_dir, f'training_progress_ep{self.episode_count}_{timestamp}.png')
             print(f"Attempting to save plot to: {plot_path}")
             
             plt.savefig(plot_path)
             print(f"Plot saved successfully: {os.path.exists(plot_path)}")
             
             # Check file size to verify it's not empty
-            if os.path.exists(plot_path):
-                file_size = os.path.getsize(plot_path)
-                print(f"Plot file size: {file_size} bytes")
+            file_size = os.path.getsize(plot_path) if os.path.exists(plot_path) else 0
+            print(f"Plot file size: {file_size} bytes")
             
             plt.close()
             print("=== PLOT CREATION COMPLETE ===\n")
@@ -197,6 +242,162 @@ class SimpleTrainingCallback(BaseCallback):
             print(f"Current directory: {os.getcwd()}")
             print(f"Log directory: {self.log_dir}")
             return None
+
+    # def _plot_training_progress(self):
+    #     """Create simple training progress plot with enhanced debugging."""
+    #     try:
+    #         print("\n=== DEBUG: PLOT CREATION ATTEMPT ===")
+            
+    #         # Check if we have enough data to plot
+    #         if len(self.rewards) == 0:
+    #             print("No reward data to plot yet")
+    #             return None
+                
+    #         print(f"Creating plot with {len(self.rewards)} episodes of reward data")
+    #         print(f"Reward data: {self.rewards}")
+    #         print(f"Episode length data: {self.episode_lengths}")
+            
+    #         # Create plots directory with absolute path
+    #         plots_dir = os.path.join(os.path.abspath(self.log_dir), "plots")
+    #         os.makedirs(plots_dir, exist_ok=True)
+    #         print(f"Created plots directory: {plots_dir}")
+    #         print(f"Directory exists: {os.path.exists(plots_dir)}")
+            
+    #         # Create figure with error handling
+    #         try:
+    #             plt.figure(figsize=(10, 5))
+    #             print("Successfully created matplotlib figure")
+    #         except Exception as fig_error:
+    #             print(f"Error creating figure: {fig_error}")
+    #             return None
+            
+    #         # Create plots with error handling
+    #         try:
+    #             # Plot rewards
+    #             plt.subplot(1, 2, 1)
+    #             plt.plot(self.rewards, 'bo-')
+    #             plt.title("Episode Rewards")
+    #             plt.xlabel("Episode")
+    #             plt.ylabel("Reward")
+    #             print("Successfully created rewards subplot")
+                
+    #             # Plot episode lengths
+    #             plt.subplot(1, 2, 2)
+    #             plt.plot(self.episode_lengths, 'ro-')
+    #             plt.title("Episode Lengths")
+    #             plt.xlabel("Episode")
+    #             plt.ylabel("Length")
+    #             print("Successfully created episode lengths subplot")
+                
+    #             plt.tight_layout()
+    #             print("Applied tight_layout")
+    #         except Exception as plot_error:
+    #             print(f"Error creating subplots: {plot_error}")
+    #             plt.close()
+    #             return None
+            
+    #         # Save plot with informative filename
+    #         try:
+    #             # Use both timestamp and episode count in filename
+    #             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    #             plot_path = os.path.join(
+    #                 plots_dir, 
+    #                 f'training_progress_ep{self.episode_count}_{timestamp}.png'
+    #             )
+    #             print(f"Attempting to save plot to: {plot_path}")
+                
+    #             plt.savefig(plot_path)
+                
+    #             # Verify file was created
+    #             if os.path.exists(plot_path):
+    #                 file_size = os.path.getsize(plot_path)
+    #                 print(f"Plot saved successfully! File size: {file_size} bytes")
+    #             else:
+    #                 print("File was not created despite no exception")
+                    
+    #         except Exception as save_error:
+    #             print(f"Error saving plot: {save_error}")
+    #             plt.close()
+    #             return None
+                
+    #         # Clean up
+    #         plt.close()
+    #         print("=== PLOT CREATION COMPLETE ===\n")
+    #         return plot_path
+            
+    #     except Exception as e:
+    #         import traceback
+    #         print(f"ERROR in _plot_training_progress: {str(e)}")
+    #         traceback.print_exc()
+    #         print(f"Current directory: {os.getcwd()}")
+    #         print(f"Log directory: {self.log_dir}")
+    #         return None
+
+    # def _plot_training_progress(self):
+    #     """Create simple training progress plot with enhanced debugging."""
+    #     try:
+    #         print("\n=== DEBUG: PLOT CREATION ATTEMPT ===")
+    #         print(f"Working directory: {os.getcwd()}")
+            
+    #         # Create plots directory with absolute path
+    #         plots_dir = os.path.join(os.path.abspath(self.log_dir), "plots")
+    #         os.makedirs(plots_dir, exist_ok=True)
+    #         print(f"Created plots directory: {plots_dir}")
+    #         print(f"Directory exists: {os.path.exists(plots_dir)}")
+            
+    #         # Check rewards data
+    #         print(f"Rewards data: {self.rewards}")
+    #         print(f"Episode lengths data: {self.episode_lengths}")
+    #         if len(self.rewards) == 0:
+    #             print("No reward data to plot yet")
+    #             return None
+            
+    #         # Create figure
+    #         print("Creating matplotlib figure...")
+    #         plt.figure(figsize=(10, 5))
+            
+    #         # Plot rewards
+    #         print("Adding rewards subplot...")
+    #         plt.subplot(1, 2, 1)
+    #         plt.plot(self.rewards, 'bo-')
+    #         plt.title("Episode Rewards")
+    #         plt.xlabel("Episode")
+    #         plt.ylabel("Reward")
+            
+    #         # Plot episode lengths
+    #         print("Adding episode lengths subplot...")
+    #         plt.subplot(1, 2, 2)
+    #         plt.plot(self.episode_lengths, 'ro-')
+    #         plt.title("Episode Lengths")
+    #         plt.xlabel("Episode")
+    #         plt.ylabel("Length")
+            
+    #         plt.tight_layout()
+            
+    #         # Save plot with timestamp
+    #         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    #         plot_path = os.path.join(plots_dir, f'training_progress_{timestamp}.png')
+    #         print(f"Attempting to save plot to: {plot_path}")
+            
+    #         plt.savefig(plot_path)
+    #         print(f"Plot saved successfully: {os.path.exists(plot_path)}")
+            
+    #         # Check file size to verify it's not empty
+    #         if os.path.exists(plot_path):
+    #             file_size = os.path.getsize(plot_path)
+    #             print(f"Plot file size: {file_size} bytes")
+            
+    #         plt.close()
+    #         print("=== PLOT CREATION COMPLETE ===\n")
+    #         return plot_path
+            
+    #     except Exception as e:
+    #         import traceback
+    #         print(f"ERROR creating/saving plot: {str(e)}")
+    #         traceback.print_exc()
+    #         print(f"Current directory: {os.getcwd()}")
+    #         print(f"Log directory: {self.log_dir}")
+    #         return None
     
     # def _plot_training_progress(self):
     #     """Create simple training progress plot."""
@@ -387,26 +588,45 @@ def train_amr_agent(total_timesteps=15, element_budget=25):
     """
     Train AMR agent with simplified setup.
     """
-    try:
-        import matplotlib.pyplot as plt
-        plt.figure()
-        plt.plot([1, 2, 3], [4, 5, 6])
-        test_plot_path = os.path.join(".", "test_plot.png")
-        plt.savefig(test_plot_path)
-        plt.close()
-        print(f"Test plot saved to: {test_plot_path}")
-        print(f"Test plot exists: {os.path.exists(test_plot_path)}")
-    except Exception as e:
-        print(f"Matplotlib test failed: {e}")
     print(f"\nStarting training for {total_timesteps} timesteps...")
     
-    # Create timestamp for this training run
+        # Create timestamp for this training run
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     
     # Create logs directory structure
     log_dir = os.path.join(PROJECT_ROOT, "logs", f"training_{timestamp}")
     os.makedirs(log_dir, exist_ok=True)
     print(f"Created log directory: {log_dir}")
+    
+    # ====== TEST PLOT CREATION DIRECTLY ======
+    print("\n=== TESTING DIRECT PLOT CREATION ===")
+    test_plots_dir = os.path.join(log_dir, "plots")
+    os.makedirs(test_plots_dir, exist_ok=True)
+    print(f"Test plots directory created: {test_plots_dir}")
+    print(f"Directory exists: {os.path.exists(test_plots_dir)}")
+    
+    # Create a simple test plot
+    try:
+        plt.figure(figsize=(8, 6))
+        plt.plot([1, 2, 3, 4], [10, 20, 15, 25], 'bo-')
+        plt.title("Test Plot")
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        
+        # Save to test location
+        test_plot_path = os.path.join(test_plots_dir, "test_plot.png")
+        plt.savefig(test_plot_path)
+        plt.close()
+        
+        print(f"Test plot saved to: {test_plot_path}")
+        print(f"Test plot file exists: {os.path.exists(test_plot_path)}")
+        print(f"Test plot file size: {os.path.getsize(test_plot_path) if os.path.exists(test_plot_path) else 0} bytes")
+    except Exception as e:
+        print(f"Error creating test plot: {e}")
+        import traceback
+        traceback.print_exc()
+    print("=== TEST PLOT CREATION COMPLETE ===\n")
+    # ==========================================
     
     # Initialize solver and environment
     xelem = np.array([-1, -0.4, 0, 0.4, 1])
@@ -432,7 +652,7 @@ def train_amr_agent(total_timesteps=15, element_budget=25):
     
     # Create callbacks
     training_callback = SimpleTrainingCallback(
-        check_freq=5,
+        check_freq=1,
         log_dir=log_dir,
         verbose=1
     )
