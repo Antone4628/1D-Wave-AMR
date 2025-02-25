@@ -20,7 +20,8 @@ PROJECT_ROOT = os.path.abspath(os.path.join(
 sys.path.append(PROJECT_ROOT)
 
 from numerical.solvers.dg_wave_solver import DGWaveSolver
-from numerical.environments.dg_amr_env import DGAMREnv
+# from numerical.environments.dg_amr_env import DGAMREnv
+from numerical.environments.dg_amr_env_clean import DGAMREnv
 
 
 
@@ -39,7 +40,7 @@ class TimestepLimitCallback(BaseCallback):
         return True
     
 
-def train_amr_agent(total_timesteps=5000, element_budget=25):
+def train_amr_agent(total_timesteps=50, element_budget=25):
     """
     Train AMR agent with simplified setup and TensorBoard logging.
     """
