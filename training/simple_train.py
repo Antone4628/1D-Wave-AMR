@@ -19,8 +19,9 @@ PROJECT_ROOT = os.path.abspath(os.path.join(
 ))
 sys.path.append(PROJECT_ROOT)
 
-from numerical.solvers.dg_wave_solver import DGWaveSolver
+# from numerical.solvers.dg_wave_solver import DGWaveSolver
 # from numerical.environments.dg_amr_env import DGAMREnv
+from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
 from numerical.environments.dg_amr_env_clean import DGAMREnv
 
 
