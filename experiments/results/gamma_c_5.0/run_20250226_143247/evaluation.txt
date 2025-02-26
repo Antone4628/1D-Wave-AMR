@@ -1,0 +1,9 @@
+Evaluation over 5 episodes:
+Mean reward: 3279.64 ± 0.00
+Mean episode length: 100.0 ± 0.0
+
+Episode 1: reward=3279.64, length=100
+Episode 2: reward=3279.64, length=100
+Episode 3: reward=3279.64, length=100
+Episode 4: reward=3279.64, length=100
+Episode 5: reward=3279.64, length=100

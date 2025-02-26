@@ -1,5 +1,22 @@
 1D_WAVE_AMR/
 ├── animations/
+├── experiments/
+│   ├── configs/
+│   │   ├── gamma_c_5.0.yaml
+│   │   ├── gamma_c_10.0.yaml
+│   │   ├── gamma_c_25.0.yaml
+│   │   ├── gamma_c_50.0.yaml
+│   │   ├── gamma_c_1000.0.yaml
+│   │   └── test_config.yaml
+│   ├── results/
+│   │   ├── gamma_c_10.0/
+│   │   │   ├──run_20250226_101107
+│   │   │   │   ├──models/
+│   │   │   │   ├──tensorboard/
+│   │   │   │   ├──evaluation.txt
+│   │   │   │   └── monitor.csv
+│   │   └── gamma_c_25.0/
+│   └── run_experiments.py
 ├── logs/
 │   ├── best_model/
 │   ├── checkpoints/
@@ -32,9 +49,7 @@
 │       └── dg_amr_env.py
 ├── scripts/
 │    ├── 1D_wave_amr.py
-│    ├── forest_example.py
-│    ├── snippets.py
-│    └── train_amr.py
+│    └── forest_example.py
 ├── tests/
 │   ├── __init__.py
 │   ├── test_amr/
@@ -53,20 +68,11 @@
 ├── tensorboard_logs/
 ├── training/
 │   ├── configs/
-│   │   ├── config.yaml
-│   │   ├── default_config.yaml
-│   │   └── custom_configs
+│   │   └── config.yaml
 │   ├── utils/
-│   │   ├── config_loader.py
-│   │   ├── logger.py
-│   │   ├── visualization.py
-│   │   └── metrics.py
+│   │   └── config_loader.py
 │   ├── simple_train_config.py
-│   ├── simple_train.py
-│   ├── train.py
-│   ├── trainer.py
-│   ├── evaluate.py
-│   └── callbacks.py
+│   └── simple_train.py
 ├── CODESTRUCTURE.md
 ├── README.md
 ├── requirements.txt
