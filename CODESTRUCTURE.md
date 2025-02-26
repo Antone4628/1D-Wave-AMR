@@ -23,10 +23,12 @@
 │   ├── solvers/
 │   │   ├── __init__.py
 │   │   ├── dg_wave_solver.py  
+│   │   ├── dg_wave_solver_clean.py 
 │   │   ├── wave.py           
 │   │   └── utils.py
 │   └── environments/
 │       ├── __init__.py
+│       ├── dg_amr_env_clean.py
 │       └── dg_amr_env.py
 ├── scripts/
 │    ├── 1D_wave_amr.py
@@ -51,12 +53,16 @@
 ├── tensorboard_logs/
 ├── training/
 │   ├── configs/
+│   │   ├── config.yaml
 │   │   ├── default_config.yaml
 │   │   └── custom_configs
 │   ├── utils/
+│   │   ├── config_loader.py
 │   │   ├── logger.py
 │   │   ├── visualization.py
 │   │   └── metrics.py
+│   ├── simple_train_config.py
+│   ├── simple_train.py
 │   ├── train.py
 │   ├── trainer.py
 │   ├── evaluate.py
