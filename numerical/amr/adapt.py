@@ -4,7 +4,7 @@ from ..grid.mesh import create_grid_us
 
 #~~~~~~~~~~~~~~~~~~~ single refine/coarsen routine ~~~~~~~~~~~~~~~~~~~~~~~~
 
-def mark(active_grid, label_mat, intma, q, criterion):
+def mark(active_grid, label_mat, intma, q, criterion, threshold):
     """
     Mark elements for refinement/coarsening based on solution criteria.
     
@@ -43,14 +43,14 @@ def mark(active_grid, label_mat, intma, q, criterion):
         
         # Check refinement criteria
         if (criterion == 1):
-            if max_sol >= 0.9 and children[idx, 0] != 0:
+            if max_sol >= threshold and children[idx, 0] != 0:
             # if max_sol >= - 0.5 and children[idx, 0] != 0:
                 refs.append(elem)
                 marks[idx] = 1
                 continue
                 
             # Check coarsening criteria
-            if max_sol < 0.9 and parent != 0:
+            if max_sol < threshold and parent != 0:
                 # Find sibling
                 sibling = None
                 if elem > 1 and label_mat[elem-2, 1] == parent:

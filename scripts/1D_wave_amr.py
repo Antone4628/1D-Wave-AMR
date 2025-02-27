@@ -58,6 +58,7 @@ print(f'smallest element has dx: {min_interval}')
 
 max_level = 4         #Max level of refinement
 criterion = 1        #AMR Criterion type
+amr_threshold = 0.5  #threshold for amr marking criterion
 cur_level = 0
 nop = 4
 ngl = nop + 1
@@ -159,11 +160,11 @@ Dmatrix_hat = np.linalg.solve(Mmatrix,Rmatrix)
 
 
 #Time Integration
-q0, time, plots, exact, grids, xelems, nelem_history = ti_LSRK_amr(q0, Dmatrix_hat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, time_final, dt, 1, max_level, criterion)
+q0, time, plots, exact, grids, xelems, nelem_history = ti_LSRK_amr(q0, Dmatrix_hat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, time_final, dt, 1, max_level, criterion, amr_threshold)
    
 # coord, q0, qe, L2_norm, err, plots, grids, xelems = wave_solve(nop, nelem, xelem, integration_points, integration_type, space_method_type, icase, Courant_max, flux_type, time_final, max_level)
 
-error = norm(q0-qe)/norm(qe)
+error = L2_err_norm(nop, nelem, q0, qe)
 
 # Creatte animation
 plt.rcParams['animation.html'] = 'jshtml'
@@ -204,7 +205,7 @@ anim = FuncAnimation(fig = fig,
 gif_title = '1D_Wave_AMR_refdef'+'_GIF.gif'
 # Save as gif file
 # anim.save(gif_title, writer = "pillow", fps=50 )
-gif_title = os.path.join(ANIMATIONS_DIR, '1D_Wave_AMR_refdef_09_GIF.gif')
+gif_title = os.path.join(ANIMATIONS_DIR, '1D_Wave_AMR_refdef_05_GIF.gif')
 anim.save(gif_title, writer="pillow", fps=50)
 # plt.show()
 # plt.close()

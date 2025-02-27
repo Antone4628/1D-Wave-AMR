@@ -12,7 +12,7 @@ from .utils import *
 
 
 def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, time_final, dt, 
-                icase, max_level, criterion):
+                icase, max_level, criterion, amr_threshold):
     """
     Low-storage Runge-Kutta time integration with AMR.
     
@@ -169,7 +169,7 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
         level = 0
         while(level <= max_level):
         #     # Get refinement marks
-            marks = mark(active, label_mat, intma, qp, criterion)
+            marks = mark(active, label_mat, intma, qp, criterion, amr_threshold)
 
             # print(f'pre ratio enforcement marks: {marks}')
 
