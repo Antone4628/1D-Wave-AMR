@@ -58,7 +58,7 @@ print(f'smallest element has dx: {min_interval}')
 
 max_level = 4         #Max level of refinement
 criterion = 1        #AMR Criterion type
-amr_threshold = 0.5  #threshold for amr marking criterion
+amr_threshold = 0.9  #threshold for amr marking criterion
 cur_level = 0
 nop = 4
 ngl = nop + 1
@@ -78,7 +78,7 @@ space_method_type = 'dg'    #CG or DG
 flux_type = 2               #1=centered flux and 2=upwind
 
 Courant_max = 0.1           #dt controlled by courant_max
-time_final = 1.0        #final time in revolutions
+time_final = 0.2        #final time in revolutions
 iplot_solution = 1          #Switch to Plor of Not
 iplot_matrices = 0          #??????
 

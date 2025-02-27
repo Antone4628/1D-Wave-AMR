@@ -43,14 +43,18 @@ def mark(active_grid, label_mat, intma, q, criterion, threshold):
         
         # Check refinement criteria
         if (criterion == 1):
-            if max_sol >= threshold and children[idx, 0] != 0:
+            S = max_sol
+        elif (criterion == 2):
+            S = max_sol
+        
+        if S >= threshold and children[idx, 0] != 0:
             # if max_sol >= - 0.5 and children[idx, 0] != 0:
                 refs.append(elem)
                 marks[idx] = 1
                 continue
                 
             # Check coarsening criteria
-            if max_sol < threshold and parent != 0:
+        if S < threshold and parent != 0:
                 # Find sibling
                 sibling = None
                 if elem > 1 and label_mat[elem-2, 1] == parent:
@@ -70,36 +74,6 @@ def mark(active_grid, label_mat, intma, q, criterion, threshold):
                         marks[idx] = marks[sib_idx] = -1
                         defs.extend([elem, sibling])
         
-        if (criterion == 2):
-            if max_sol >= 0.5 and children[idx, 0] != 0:
-            # if max_sol >= - 0.5 and children[idx, 0] != 0:
-                refs.append(elem)
-                marks[idx] = 1
-                continue
-                
-            # Check coarsening criteria
-            if max_sol < 0.5 and parent != 0:
-                # Find sibling
-                sibling = None
-                if elem > 1 and label_mat[elem-2, 1] == parent:
-                    sibling = elem - 1
-                    sib_idx = idx - 1
-                elif elem < len(label_mat) and label_mat[elem, 1] == parent:
-                    sibling = elem + 1
-                    sib_idx = idx + 1
-                    
-                # Verify sibling status
-                if sibling in active_grid:
-                    sib_nodes = intma[:, sib_idx]
-                    sib_sols = q[sib_nodes]
-                    
-                    # Mark for coarsening if sibling also qualifies
-                    if np.max(sib_sols) < 0.5 and sibling not in defs:
-                        marks[idx] = marks[sib_idx] = -1
-                        defs.extend([elem, sibling])
-            pass
-
-    
     return  marks
 
 
