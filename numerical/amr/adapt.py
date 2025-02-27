@@ -38,14 +38,23 @@ def mark(active_grid, label_mat, intma, q, criterion, threshold):
     for idx, (elem, parent) in enumerate(zip(active_grid, parents)):
         # Get element solution values
         elem_nodes = intma[:, idx]
+        elem_nodes_left = intma[:,idx-1]
+
+
         elem_sols = q[elem_nodes]
-        max_sol = np.max(elem_sols)
+        elem_sols_left = q[elem_nodes_left]
+
         
+        max_sol = np.max(elem_sols)
+
+        jump_left = abs(elem_sols[0]-elem_sols_left[-1])
+        jump_right = 0
+
         # Check refinement criteria
         if (criterion == 1):
             S = max_sol
         elif (criterion == 2):
-            S = max_sol
+            S = max(jump_left,jump_right)
         
         if S >= threshold and children[idx, 0] != 0:
             # if max_sol >= - 0.5 and children[idx, 0] != 0:
