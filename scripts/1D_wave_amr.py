@@ -28,12 +28,12 @@ from numerical.solvers.wave import *
 # from numerical.amr.projection import create_S_matrix, create_scatters, create_gathers
 
 
-# xelem=np.array([-1,  0 ,0.3 ,1])
-# nelem = 3                 #Initial number of elements in level zero
+#xelem=np.array([-1,  0 ,0.3 ,1])
+#nelem = 3                 #Initial number of elements in level zero
 
-# xelem=np.array([-1, -0.3 ,0 ,0.3 ,1])
+#xelem=np.array([-1, -0.3 ,0 ,0.3 ,1])
 xelem=np.array([-1, -0.4, 0 ,0.4 ,1])
-nelem = 4                 #Initial number of elements in level zero
+nelem = 4                #Initial number of elements in level zero
 
 
 # xelem=np.array([-1, -0.6 ,-0.2, 0.2 ,0.6 ,1])
@@ -77,7 +77,7 @@ space_method_type = 'dg'    #CG or DG
 flux_type = 2               #1=centered flux and 2=upwind
 
 Courant_max = 0.1           #dt controlled by courant_max
-time_final = .2        #final time in revolutions
+time_final = 1.0        #final time in revolutions
 iplot_solution = 1          #Switch to Plor of Not
 iplot_matrices = 0          #??????
 
@@ -159,10 +159,11 @@ Dmatrix_hat = np.linalg.solve(Mmatrix,Rmatrix)
 
 
 #Time Integration
-q0, time, plots, exact, grids, xelems = ti_LSRK_amr(q0, Dmatrix_hat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, time_final, dt, 1, max_level, criterion)
+q0, time, plots, exact, grids, xelems, nelem_history = ti_LSRK_amr(q0, Dmatrix_hat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, time_final, dt, 1, max_level, criterion)
    
 # coord, q0, qe, L2_norm, err, plots, grids, xelems = wave_solve(nop, nelem, xelem, integration_points, integration_type, space_method_type, icase, Courant_max, flux_type, time_final, max_level)
 
+error = norm(q0-qe)/norm(qe)
 
 # Creatte animation
 plt.rcParams['animation.html'] = 'jshtml'
@@ -203,7 +204,7 @@ anim = FuncAnimation(fig = fig,
 gif_title = '1D_Wave_AMR_refdef'+'_GIF.gif'
 # Save as gif file
 # anim.save(gif_title, writer = "pillow", fps=50 )
-gif_title = os.path.join(ANIMATIONS_DIR, '1D_Wave_AMR_refdef_GIF.gif')
+gif_title = os.path.join(ANIMATIONS_DIR, '1D_Wave_AMR_refdef_09_GIF.gif')
 anim.save(gif_title, writer="pillow", fps=50)
 # plt.show()
 # plt.close()

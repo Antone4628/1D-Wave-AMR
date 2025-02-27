@@ -61,7 +61,7 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
     grids = []
     xelems = []
     # exact = np.zeros((rows, cols))
-
+    nelem_history = []
 
 
 
@@ -153,10 +153,10 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
 
     # qp, u = exact_solution(coord, npoin_dg, time, icase)
     # # qp = qe
-
-
+    
     while (time < time_final):
         time = time + dt
+        
         if (time > time_final):
             time = time -dt
             dt = time_final-time
@@ -349,7 +349,7 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
         grids.append(coord.copy())
         xelems.append(grid.copy())
 
-
+        nelem_history.append(nelem)
 
         # print(f'\ntimestep: {anim}\n active: {active}\n marks: {marks}')
         #         print(f'plots[i]: {plots[anim]}')
@@ -359,7 +359,7 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
 
 
 
-    return q0, time, plots, exact, grids, xelems, 
+    return q0, time, plots, exact, grids, xelems, nelem_history,
 
 
 
