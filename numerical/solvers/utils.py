@@ -41,7 +41,7 @@ def exact_solution(coord, npoin, time, icase):
         r = x-xbar
         
         if(icase == 1):
-            qe[i] = np.exp(-264.0*(x-xbar)**2)
+            qe[i] = np.exp(-64.0*(x-xbar)**2)
         elif(icase == 2):
             if(abs(r) <= rc):
                 qe[i] = 1
