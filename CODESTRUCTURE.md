@@ -16,6 +16,7 @@
 │   │   │   │   ├──evaluation.txt
 │   │   │   │   └── monitor.csv
 │   │   └── gamma_c_25.0/
+│   ├── test_training_cycle.py
 │   └── run_experiments.py
 ├── logs/
 │   ├── best_model/

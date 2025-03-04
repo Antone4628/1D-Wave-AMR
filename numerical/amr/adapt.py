@@ -132,7 +132,7 @@ def enforce_balance(active, label_mat, grid, info_mat, nop, coord, PS1, PS2, PG1
             pre_grid = grid
             pre_coord = coord
 
-            bal_grid, bal_active, ref_marks, bal_nelem, npoin_cg, bal_npoin_dg = adapt_mesh(nop, grid, active, label_mat, info_mat, bal_marks)
+            bal_grid, bal_active, ref_marks, bal_nelem, npoin_cg, bal_npoin_dg = adapt_mesh(nop, grid, active, label_mat, info_mat, bal_marks, max_level)
             bal_coord, bal_intma, bal_periodicity = create_grid_us(ngl, bal_nelem, npoin_cg, bal_npoin_dg, xgl, bal_grid)
             bal_q = adapt_sol(qp, pre_coord, bal_marks, pre_active, label_mat, PS1, PS2, PG1, PG2, ngl)
 
@@ -150,7 +150,7 @@ def enforce_balance(active, label_mat, grid, info_mat, nop, coord, PS1, PS2, PG1
 
     return bal_q, bal_active, bal_nelem, bal_intma, bal_coord, bal_grid, bal_npoin_dg, bal_periodicity
 
-def adapt_mesh(nop, cur_grid, active, label_mat, info_mat, marks):
+def adapt_mesh(nop, cur_grid, active, label_mat, info_mat, marks, max_level):
     """
     Unified mesh adaptation routine that handles both refinement and derefinement.
     
@@ -185,6 +185,12 @@ def adapt_mesh(nop, cur_grid, active, label_mat, info_mat, marks):
             # Handle refinement
             elem = active[i]
             # print(f'refining element {elem}')
+            level = label_mat[elem-1][4]
+            if level >= max_level:
+                print(f'Warning: Element {elem} is already at max refinement level {max_level}. Cancelling refinement.')
+                marks[i] = 0
+                i += 1
+                continue
             parent_idx = elem - 1
             c1, c2 = label_mat[parent_idx][2:4]
             # print(f'elemenet {elem} has children {c1} and {c2} ')
@@ -210,7 +216,7 @@ def adapt_mesh(nop, cur_grid, active, label_mat, info_mat, marks):
             # Skip the newly added element
             i += 2
             
-        else:  # marks[i] < 0
+        elif marks[i] < 0:  
             # Handle derefinement
             elem = active[i]
             parent = label_mat[elem-1][1]

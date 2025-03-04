@@ -19,7 +19,8 @@ PROJECT_ROOT = os.path.abspath(os.path.join(
 sys.path.append(PROJECT_ROOT)
 
 from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
-from numerical.environments.dg_amr_env_clean import DGAMREnv
+from numerical.environments.dg_amr_env import DGAMREnv
+# from numerical.environments.dg_amr_env_clean import DGAMREnv
 from stable_baselines3 import A2C, PPO, DQN
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
@@ -100,7 +101,7 @@ def run_experiment(config_path, results_dir=None):
     # Extract key parameters with defaults
     gamma_c = get_parameter(config, "environment.gamma_c", 25.0)
     element_budget = get_parameter(config, "environment.element_budget", 25)
-    max_episode_steps = get_parameter(config, "environment.max_episode_steps", 100)
+    max_episode_steps = get_parameter(config, "environment.max_episode_steps", 200)
     
     total_timesteps = get_parameter(config, "training.total_timesteps", 100000)
     algorithm = get_parameter(config, "training.algorithm", "A2C")
@@ -114,6 +115,11 @@ def run_experiment(config_path, results_dir=None):
     icase = get_parameter(config, "solver.icase", 1)
     initial_elements = get_parameter(config, "solver.initial_elements", np.array([-1, -0.4, 0, 0.4, 1]))
     verbose = get_parameter(config, "solver.verbose", False)
+    
+
+    # Add new parameters to config or provide defaults
+    rl_iterations_per_timestep = get_parameter(config, "environment.rl_iterations_per_timestep", "random")
+    max_rl_iterations = get_parameter(config, "environment.max_rl_iterations", 200)
     
     # Create experiment name
     experiment_name = f"gamma_c_{gamma_c}"
@@ -162,7 +168,11 @@ def run_experiment(config_path, results_dir=None):
         solver=solver,
         element_budget=element_budget,
         gamma_c=gamma_c,
-        max_episode_steps=max_episode_steps
+        max_episode_steps=max_episode_steps,
+        verbose = False,
+        rl_iterations_per_timestep = "random",  # Use random number of iterations before time-stepping
+        max_rl_iterations=200,  # Maximum number of RL iterations before time-stepping
+        debug_training_cycle = False
     )
     
     # Add monitoring

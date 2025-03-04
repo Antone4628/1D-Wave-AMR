@@ -192,7 +192,7 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
             # print_active_levels(active, label_mat)
 
 
-            new_grid, new_active, ref_marks, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(nop, pre_grid, pre_active, label_mat, info_mat, marks)
+            new_grid, new_active, ref_marks, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(nop, pre_grid, pre_active, label_mat, info_mat, marks, max_level)
             new_coord, new_intma, periodicity = create_grid_us(ngl, new_nelem, npoin_cg, new_npoin_dg, xgl, new_grid)
 
 
