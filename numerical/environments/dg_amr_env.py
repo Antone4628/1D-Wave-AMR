@@ -14,7 +14,7 @@ from gymnasium import spaces
 from time import time
 from typing import Optional, Dict, Tuple, Any
 import matplotlib.pyplot as plt
-from ..solvers.dg_wave_solver import DGWaveSolver
+from ..solvers.dg_wave_solver_clean import DGWaveSolver
 
 
 class RewardCalculator:
@@ -25,33 +25,54 @@ class RewardCalculator:
         self.gamma_c = gamma_c
         self.machine_eps = machine_eps
 
-    def calculate_resource_penalty(self, new_resources):
-        """Calculate penalty for resource usage"""
-        if new_resources >= 1.0:
-            return 1000.0
-        elif new_resources <= 0.0:
+    def calculate_barrier(self, resources):
+        """Calculate barrier function B(p)"""
+        if resources >= 1.0:
+            return float('inf')  # Or a very large value
+        elif resources <= 0.0:
             return 0.0
         else:
-            return self.gamma_c * np.sqrt(new_resources) / (1 - new_resources)
+            return np.sqrt(resources) / (1 - resources)  # Non-hortative barrier function
 
-    def calculate_reward(self, delta_u: float, new_resources: float) -> float:
+    # def calculate_resource_penalty(self, new_resources):
+    #     """Calculate penalty for resource usage"""
+    #     if new_resources >= 1.0:
+    #         return 1000.0
+    #     elif new_resources <= 0.0:
+    #         return 0.0
+    #     else:
+    #         return self.gamma_c * np.sqrt(new_resources) / (1 - new_resources)
+        
+    def calculate_reward(self, delta_u: float, action: int, old_resources: float, new_resources: float) -> float:
         """
         Compute reward following paper's formulation.
         
         Args:
             delta_u: Change in solution after adaptation
+            action: The action taken (-1: coarsen, 0: do nothing, 1: refine)
+            old_resources: Previous resource usage fraction
             new_resources: New resource usage fraction
             
         Returns:
             float: Computed reward value
         """
-        # Accuracy reward (log of solution change)
-        accuracy = np.log(abs(delta_u) + self.machine_eps) - np.log(self.machine_eps)
+        # Base accuracy term (before applying sign)
+        accuracy_term = np.log(abs(delta_u) + self.machine_eps) - np.log(self.machine_eps)
         
-        # Resource penalty using barrier function
-        resource_penalty = self.calculate_resource_penalty(new_resources)
+        # Apply sign based on action (equation 5)
+        if action == 1:  # refine
+            accuracy = +accuracy_term
+        elif action == -1:  # coarsen
+            accuracy = -accuracy_term
+        else:  # do nothing
+            accuracy = 0.0
         
-        return float(accuracy - resource_penalty)
+        # Resource penalty using barrier function difference (equation 4)
+        old_barrier = self.calculate_barrier(old_resources)
+        new_barrier = self.calculate_barrier(new_resources)
+        resource_penalty = new_barrier - old_barrier
+        
+        return float(accuracy - self.gamma_c * resource_penalty)
 
 
 class DGAMREnv(gym.Env):
@@ -71,8 +92,11 @@ class DGAMREnv(gym.Env):
         element_budget: int,
         gamma_c: float = 25.0,
         render_mode: str = None,
-        max_episode_steps: int = 50,
-        verbose: bool = False
+        max_episode_steps: int = 200,
+        verbose: bool = False,
+        rl_iterations_per_timestep = "random",
+        max_rl_iterations = 200,
+        debug_training_cycle=False
     ):
         """
         Initialize DG AMR environment with explicit element budget.
@@ -112,6 +136,13 @@ class DGAMREnv(gym.Env):
             1: 0,   # do nothing
             2: 1    # refine
         }
+
+        # Add new parameters
+        self.rl_iterations_per_timestep = rl_iterations_per_timestep  # Can be "random" or an integer
+        self.max_rl_iterations = max_rl_iterations
+        self.current_rl_iteration = 0
+        self.should_timestep = False
+        self.debug_training_cycle = debug_training_cycle  # Store the debug flag
         
         # Define observation space components
         self.observation_space = spaces.Dict({
@@ -297,90 +328,114 @@ class DGAMREnv(gym.Env):
         """
         self.num_timesteps += 1
         self._episode_steps += 1
-
-        # Map action
+        
+        # Map action and handle budget checks as you do currently
         action_int = action.item() if hasattr(action, 'item') else int(action)
         mapped_action = self.action_mapping[action_int]
-
-        if self.verbose:
-            print(f"\n{'='*50}")
-            print(f"Episode #{self._total_episodes + 1}, Step #{self._episode_steps} (Total step #{self.num_timesteps})")
-            print(f"Action: {mapped_action} ({'coarsen' if mapped_action == -1 else 'no change' if mapped_action == 0 else 'refine'})")
+        current_element = self.solver.active[self.current_element_index]
         
-        # Check budget constraint
+        # Check budget and episode length constraints
         if len(self.solver.active) >= self.element_budget:
             return self._end_episode(-1000.0, False, True, "Budget exceeded")
         
-        # Check episode length constraint
         if self._episode_steps >= self.max_episode_steps:
             return self._end_episode(0.0, False, True, "Maximum episode steps reached")
         
-        # Apply action to current element
-        marks_override = {self.current_element_index: mapped_action}
-        
-        # Store initial state for reward calculation
+        # Store current state for reward calculation
         old_solution = self.solver.q.copy()
         old_grid = self.solver.coord.copy()
         old_resources = len(self.solver.active) / self.solver.max_elements
-
+        
         try:
             # Apply adaptation
+            if self.debug_training_cycle:
+                print(f"Applying adaptation for element {current_element} with action {mapped_action}")
+                print(f"pre adapt active: {self.solver.active}")
+            marks_override = {self.current_element_index: mapped_action}
             self.solver.adapt_mesh(marks_override=marks_override, element_budget=self.element_budget)
+            if self.debug_training_cycle:
+                # print(f"Applying adaptation for element {self.current_element_index} with action {mapped_action}")
+                print(f"post adapt active: {self.solver.active}")
             
-            # Take solver timestep
-            self.solver.step()
+            # Determine if we should take a time step
+            if self.rl_iterations_per_timestep == "random":
+                # Randomly decide if we should take a time step
+                if self.current_rl_iteration == 0:
+                    self.iterations_before_timestep = np.random.randint(1, self.max_rl_iterations + 1)
+                
+                self.current_rl_iteration += 1
+                self.should_timestep = (self.current_rl_iteration >= self.iterations_before_timestep)
+                # After determining if we should take a time step
+                if self.debug_training_cycle:
+                    print(f"RL iteration {self.current_rl_iteration}/{self.iterations_before_timestep if self.rl_iterations_per_timestep == 'random' else self.rl_iterations_per_timestep}")
+                    if self.should_timestep:
+                        print("Taking solver time step")
+            else:
+                # Use fixed number of iterations
+                self.current_rl_iteration = (self.current_rl_iteration + 1) % self.rl_iterations_per_timestep
+                self.should_timestep = (self.current_rl_iteration == 0)
+            
+            # Take solver timestep only if it's time to do so
+            if self.should_timestep:
+                self.solver.step()
+                self.current_rl_iteration = 0
             
             # Get new state
             new_solution = self.solver.q
             new_grid = self.solver.coord
             new_resources = len(self.solver.active) / self.solver.max_elements
-
+            
             # Compare solutions to calculate reward
+            # Note: For accuracy, we should use the solution after mesh adaptation
+            # but before time-stepping to isolate the effect of the adaptation
             if len(new_solution) >= len(old_solution):
                 old_interpolated = np.interp(new_grid, old_grid, old_solution)
                 delta_u = np.linalg.norm(new_solution - old_interpolated)
             else:
                 new_interpolated = np.interp(old_grid, new_grid, new_solution)
                 delta_u = np.linalg.norm(new_interpolated - old_solution)
-
+                
             # Compute reward
-            reward = self.reward_calculator.calculate_reward(delta_u, new_resources)
+            reward = self.reward_calculator.calculate_reward(
+                delta_u, 
+                mapped_action,  # Pass the mapped action (-1, 0, 1)
+                old_resources, 
+                new_resources
+            )
             terminated = False
             truncated = False
-
+            # After calculating reward
+            if self.debug_training_cycle:
+                print(f"Active elements: {self.solver.active}")
+                print(f"element: {current_element} | Action: {mapped_action} | Delta_u: {delta_u:.6f} | Reward: {reward:.4f}")
+                print(f"Elements: {len(self.solver.active)}/{self.element_budget}")
+            
+            # Prepare info dictionary
+            info = {
+                'delta_u': delta_u,
+                'resource_usage': new_resources,
+                'n_elements': len(self.solver.active),
+                'episode_steps': self._episode_steps,
+                'total_steps': self.num_timesteps,
+                'took_timestep': self.should_timestep
+            }
+            
+            # Select next element randomly
+            n_active = len(self.solver.active)
+            if n_active > 0:
+                self.current_element_index = np.random.randint(0, n_active)
+            else:
+                return self._end_episode(-100.0, False, True, "No active elements")
+                
+            # Get observation of new state
+            observation = self._get_observation()
+            
+            return observation, reward, terminated, truncated, info
+            
         except Exception as e:
             if self.verbose:
                 print(f"Error in step: {e}")
             return self._end_episode(-100.0, False, True, f"Error: {str(e)}")
-        
-        # Prepare info dictionary
-        info = {
-            'delta_u': delta_u,
-            'resource_usage': new_resources,
-            'n_elements': len(self.solver.active),
-            'episode_steps': self._episode_steps,
-            'total_steps': self.num_timesteps
-        }
-        
-        # Select next element randomly
-        n_active = len(self.solver.active)
-        if n_active > 0:
-            self.current_element_index = np.random.randint(0, n_active)
-            if self.verbose:
-                print(f"Selected new element: {self.solver.active[self.current_element_index]} (index {self.current_element_index})")
-        else:
-            if self.verbose:
-                print("Warning: No active elements!")
-            return self._end_episode(-100.0, False, True, "No active elements")
-
-        # Get observation of new state
-        observation = self._get_observation()
-        
-        if self.verbose:
-            print(f"Step {self.num_timesteps} completed.")
-            print(f"{'='*50}\n")
-        
-        return observation, reward, terminated, truncated, info
     
     def reset(self, seed=None, options=None) -> Tuple[Dict[str, np.ndarray], Dict[str, Any]]:
         """
@@ -467,6 +522,10 @@ class DGAMREnv(gym.Env):
         self.current_element_index = 0
         if len(self.solver.active) > 0:
             self.current_element_index = np.random.randint(0, len(self.solver.active))
+
+        # Reset time-stepping variables
+        self.current_rl_iteration = 0
+        self.should_timestep = False
     
         # Prepare info dict with mesh quality metrics
         element_sizes = np.diff(self.solver.xelem)
