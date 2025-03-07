@@ -31,6 +31,7 @@ from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
 
 # Define initial mesh
 xelem = np.array([-1, -0.4, 0, 0.4, 1])
+# xelem = np.array([ 0, 0.3, 0.5, 0.7, 1])
 nelem = len(xelem) - 1
 
 # Print initial mesh information
@@ -73,7 +74,7 @@ plt.style.use('ggplot')
 
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.set_xlim([-1, 1])
-ax.set_ylim([-0.1, 1.2])
+ax.set_ylim([-0.1, 2.2])
 ax.set_xticks(xelem)
 ax.tick_params(axis='x', rotation=90, labelsize=8)
 ax.set_title(f'{nelem} initial elements, full AMR to level {max_level}, dt = {solver.dt:.6f}')

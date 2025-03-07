@@ -56,6 +56,13 @@ class ExperimentCallback(BaseCallback):
             if self.verbose > 0:
                 print(f"Reached {self.total_timesteps} timesteps, stopping training")
             return False
+        
+        # Track new metrics if available in info
+        if 'took_timestep' in self.locals['infos'][0]:
+            self.logger.record('time_step/took_timestep', 
+                              float(self.locals['infos'][0].get('took_timestep', False)))
+        
+        
         return True
 
 
@@ -256,6 +263,9 @@ def evaluate_model(model, env, num_episodes=5, log_dir=None):
     """Basic model evaluation."""
     rewards = []
     episode_lengths = []
+    # Track time step related metrics
+    total_rl_iterations = 0
+    total_time_steps = 0
     
     for episode in range(num_episodes):
         obs = env.reset()[0]
@@ -271,10 +281,18 @@ def evaluate_model(model, env, num_episodes=5, log_dir=None):
             
             if truncated:
                 break
+                       # Track time steps
+            if info.get('took_timestep', False):
+                total_time_steps += 1
+            total_rl_iterations += 1
+
                 
         rewards.append(total_reward)
         episode_lengths.append(steps)
         print(f"Episode {episode + 1}: reward={total_reward:.2f}, length={steps}")
+
+    avg_rl_per_time = total_rl_iterations / max(1, total_time_steps)
+    print(f"Average RL iterations per time step: {avg_rl_per_time:.2f}")
     
     print(f"\nEvaluation results:")
     print(f"Mean reward: {np.mean(rewards):.2f} ± {np.std(rewards):.2f}")
@@ -283,6 +301,7 @@ def evaluate_model(model, env, num_episodes=5, log_dir=None):
     # Save evaluation results
     if log_dir:
         with open(os.path.join(log_dir, "evaluation.txt"), "w") as f:
+            f.write(f"Average RL iterations per time step: {avg_rl_per_time:.2f}\n")
             f.write(f"Evaluation over {num_episodes} episodes:\n")
             f.write(f"Mean reward: {np.mean(rewards):.2f} ± {np.std(rewards):.2f}\n")
             f.write(f"Mean episode length: {np.mean(episode_lengths):.1f} ± {np.std(episode_lengths):.1f}\n\n")

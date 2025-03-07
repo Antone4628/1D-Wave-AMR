@@ -187,7 +187,7 @@ def adapt_mesh(nop, cur_grid, active, label_mat, info_mat, marks, max_level):
             # print(f'refining element {elem}')
             level = label_mat[elem-1][4]
             if level >= max_level:
-                print(f'Warning: Element {elem} is already at max refinement level {max_level}. Cancelling refinement.')
+                # print(f'Warning: Element {elem} is already at max refinement level {max_level}. Cancelling refinement.')
                 marks[i] = 0
                 i += 1
                 continue

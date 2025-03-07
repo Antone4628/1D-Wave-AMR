@@ -74,6 +74,45 @@ class RewardCalculator:
         
         return float(accuracy - self.gamma_c * resource_penalty)
 
+# def calculate_delta_u(old_solution, new_solution, old_grid, new_grid):
+#     # Interpolate the solution with fewer points onto the grid with more points
+#     if len(new_solution) >= len(old_solution):
+#         old_interpolated = np.interp(new_grid, old_grid, old_solution)
+#         # Calculate absolute differences and approximate integral
+#         delta_u = np.sum(np.abs(new_solution - old_interpolated) * np.diff(np.append(new_grid, new_grid[-1])))
+#     else:
+#         new_interpolated = np.interp(old_grid, new_grid, new_solution)
+#         delta_u = np.sum(np.abs(new_interpolated - old_solution) * np.diff(np.append(old_grid, old_grid[-1])))
+#     return delta_u
+def calculate_delta_u(old_solution, new_solution, old_grid, new_grid):
+        """
+        Calculate the L1 norm of the difference between solutions according to equation 3.
+        
+        Args:
+            old_solution: Solution before adaptation
+            new_solution: Solution after adaptation
+            old_grid: Grid coordinates before adaptation
+            new_grid: Grid coordinates after adaptation
+            
+        Returns:
+            float: The integral of absolute difference between solutions
+        """
+        # Interpolate the solution with fewer points onto the grid with more points
+        if len(new_solution) >= len(old_solution):
+            old_interpolated = np.interp(new_grid, old_grid, old_solution)
+            # Calculate element-wise differences
+            point_differences = np.abs(new_solution - old_interpolated)
+            # Calculate approximate element widths for integration
+            element_widths = np.diff(np.append(new_grid, new_grid[-1] + (new_grid[-1] - new_grid[-2])))
+            # Approximate the integral using element widths
+            delta_u = np.sum(point_differences * element_widths)
+        else:
+            new_interpolated = np.interp(old_grid, new_grid, new_solution)
+            point_differences = np.abs(new_interpolated - old_solution)
+            element_widths = np.diff(np.append(old_grid, old_grid[-1] + (old_grid[-1] - old_grid[-2])))
+            delta_u = np.sum(point_differences * element_widths)
+            
+        return delta_u
 
 class DGAMREnv(gym.Env):
     """
@@ -146,21 +185,21 @@ class DGAMREnv(gym.Env):
         
         # Define observation space components
         self.observation_space = spaces.Dict({
-            'local_jumps': spaces.Box(
+            'avg_local_jump': spaces.Box(
                 low=0.0,
                 high=1e3,
-                shape=(self.solver.ngl,), 
-                dtype=np.float32
-            ),
-            'neighbor_jumps': spaces.Box(
-                low=0.0,
-                high=1e3,
-                shape=(2,),
+                shape=(1,),
                 dtype=np.float32
             ),
             'avg_jump': spaces.Box(
                 low=0.0,
                 high=1e3,
+                shape=(1,),
+                dtype=np.float32
+            ),
+            'jump_ratio': spaces.Box(
+                low=0.0,
+                high=10.0,  # Can be adjusted based on your problem
                 shape=(1,),
                 dtype=np.float32
             ),
@@ -170,6 +209,7 @@ class DGAMREnv(gym.Env):
                 shape=(1,),
                 dtype=np.float32
             ),
+            # Keep solution_values if you need them, but consider removing for simplicity
             'solution_values': spaces.Box(
                 low=-1e3,
                 high=1e3,
@@ -177,12 +217,46 @@ class DGAMREnv(gym.Env):
                 dtype=np.float32
             )
         })
+        # self.observation_space = spaces.Dict({
+        #     'local_jumps': spaces.Box(
+        #         low=0.0,
+        #         high=1e3,
+        #         shape=(self.solver.ngl,), 
+        #         dtype=np.float32
+        #     ),
+        #     'neighbor_jumps': spaces.Box(
+        #         low=0.0,
+        #         high=1e3,
+        #         shape=(2,),
+        #         dtype=np.float32
+        #     ),
+        #     'avg_jump': spaces.Box(
+        #         low=0.0,
+        #         high=1e3,
+        #         shape=(1,),
+        #         dtype=np.float32
+        #     ),
+        #     'resource_usage': spaces.Box(
+        #         low=0.0,
+        #         high=1.0,
+        #         shape=(1,),
+        #         dtype=np.float32
+        #     ),
+        #     'solution_values': spaces.Box(
+        #         low=-1e3,
+        #         high=1e3,
+        #         shape=(self.solver.ngl,),
+        #         dtype=np.float32
+        #     )
+        # })
 
     def register_callback(self, callback):
         """Register a callback to be called when episodes end."""
         self.episode_callback = callback
         if self.verbose:
             print(f"Environment registered episode callback: {callback.__class__.__name__}")
+
+    
 
     def _get_element_jumps(self, element_idx: int) -> Tuple[np.ndarray, np.ndarray]:
         """
@@ -259,47 +333,142 @@ class DGAMREnv(gym.Env):
                 
         return local_jumps, neighbor_jumps
     
+    # def _get_observation(self) -> Dict[str, np.ndarray]:
+    #     """
+    #     Get current observation of the environment state.
+        
+    #     Returns:
+    #         dict: Observation space components
+    #     """
+    #     # Get local solution jumps
+    #     local_jumps, neighbor_jumps = self._get_element_jumps(self.current_element_index)
+
+    #     # Compute average jump across all elements
+    #     all_jumps = []
+    #     for i in range(len(self.solver.active)):
+    #         jumps, _ = self._get_element_jumps(i)
+    #         if not np.any(np.isnan(jumps)):
+    #             all_jumps.append(jumps.mean())
+    
+    #     avg_jump = np.mean(all_jumps) if all_jumps else 0.0
+
+    #     # Safety check for NaN values
+    #     local_jumps = np.nan_to_num(local_jumps, 0.0)
+    #     neighbor_jumps = np.nan_to_num(neighbor_jumps, 0.0)
+        
+    #     # Current resource usage
+    #     resource_usage = len(self.solver.active) / self.element_budget
+
+    #     # Get local solution values
+    #     element_nodes = self.solver.intma[:, self.current_element_index]
+    #     solution_values = self.solver.q[element_nodes]
+    
+    #     return {
+    #         'local_jumps': local_jumps.astype(np.float32),
+    #         'neighbor_jumps': neighbor_jumps.astype(np.float32),
+    #         'avg_jump': np.array([avg_jump], dtype=np.float32),
+    #         'resource_usage': np.array([resource_usage], dtype=np.float32),
+    #         'solution_values': solution_values.astype(np.float32)
+    #     }
     def _get_observation(self) -> Dict[str, np.ndarray]:
         """
-        Get current observation of the environment state.
+        Get current observation of the environment state with simplified features.
         
         Returns:
             dict: Observation space components
         """
         # Get local solution jumps
         local_jumps, neighbor_jumps = self._get_element_jumps(self.current_element_index)
-
+        
+        # Calculate average of local jumps for this element
+        avg_local_jump = np.mean(local_jumps) if np.any(local_jumps) else 0.0
+        
         # Compute average jump across all elements
         all_jumps = []
         for i in range(len(self.solver.active)):
             jumps, _ = self._get_element_jumps(i)
             if not np.any(np.isnan(jumps)):
-                all_jumps.append(jumps.mean())
-    
+                all_jumps.append(np.mean(jumps))
+        
         avg_jump = np.mean(all_jumps) if all_jumps else 0.0
-
-        # Safety check for NaN values
-        local_jumps = np.nan_to_num(local_jumps, 0.0)
-        neighbor_jumps = np.nan_to_num(neighbor_jumps, 0.0)
+        
+        # Calculate jump ratio (how this element compares to global average)
+        # Avoid division by zero by adding a small epsilon
+        epsilon = 1e-10
+        jump_ratio = avg_local_jump / (avg_jump + epsilon) if avg_jump > 0 else 1.0
+        
+        # Safety check to keep ratio in reasonable bounds
+        jump_ratio = min(jump_ratio, 10.0)
         
         # Current resource usage
         resource_usage = len(self.solver.active) / self.element_budget
-
+        
         # Get local solution values
         element_nodes = self.solver.intma[:, self.current_element_index]
         solution_values = self.solver.q[element_nodes]
-    
+        
         return {
-            'local_jumps': local_jumps.astype(np.float32),
-            'neighbor_jumps': neighbor_jumps.astype(np.float32),
+            'avg_local_jump': np.array([avg_local_jump], dtype=np.float32),
             'avg_jump': np.array([avg_jump], dtype=np.float32),
+            'jump_ratio': np.array([jump_ratio], dtype=np.float32),
             'resource_usage': np.array([resource_usage], dtype=np.float32),
             'solution_values': solution_values.astype(np.float32)
         }
 
+    # def _end_episode(self, reward, terminated, truncated, reason=""):
+    #     """Helper method to handle episode ending logic"""
+    #     observation = self._get_observation()
+        
+    #     info = {
+    #         'episode_steps': self._episode_steps,
+    #         'total_steps': self.num_timesteps,
+    #         'reason': reason,
+    #         'episode': {
+    #             'r': float(reward),
+    #             'l': int(max(1, self._episode_steps))
+    #         }
+    #     }
+        
+    #     if self.verbose:
+    #         print(f"Episode ending: {reason}")
+    #         print(f"Episode reward: {reward:.2f}, length: {self._episode_steps}")
+
+    #     # Call callback if registered
+    #     if self.episode_callback is not None:
+    #         self.episode_callback(reward, self._episode_steps)
+            
+    #     self._total_episodes += 1
+    #     return observation, reward, terminated, truncated, info
     def _end_episode(self, reward, terminated, truncated, reason=""):
-        """Helper method to handle episode ending logic"""
+        """Helper method to handle episode ending logic with enhanced logging"""
         observation = self._get_observation()
+        
+        # Track termination reasons for analysis
+        if not hasattr(self, 'termination_stats'):
+            self.termination_stats = {
+                'budget_exceeded': 0,
+                'max_steps_reached': 0,
+                'other': 0
+            }
+        
+        # Update termination statistics
+        if reason == "Budget exceeded":
+            self.termination_stats['budget_exceeded'] += 1
+        elif reason == "Maximum episode steps reached":
+            self.termination_stats['max_steps_reached'] += 1
+        else:
+            self.termination_stats['other'] += 1
+        
+        # Calculate and log termination percentages
+        total_episodes = sum(self.termination_stats.values())
+        if total_episodes % 10 == 0:  # Log every 10 episodes
+            budget_pct = self.termination_stats['budget_exceeded'] / total_episodes * 100
+            steps_pct = self.termination_stats['max_steps_reached'] / total_episodes * 100
+            other_pct = self.termination_stats['other'] / total_episodes * 100
+            print(f"Episode termination statistics after {total_episodes} episodes:")
+            print(f"  Budget exceeded: {budget_pct:.1f}%")
+            print(f"  Max steps reached: {steps_pct:.1f}%")
+            print(f"  Other reasons: {other_pct:.1f}%")
         
         info = {
             'episode_steps': self._episode_steps,
@@ -307,7 +476,8 @@ class DGAMREnv(gym.Env):
             'reason': reason,
             'episode': {
                 'r': float(reward),
-                'l': int(max(1, self._episode_steps))
+                'l': int(max(1, self._episode_steps)),
+                'termination_reason': reason
             }
         }
         
@@ -344,6 +514,7 @@ class DGAMREnv(gym.Env):
         # Store current state for reward calculation
         old_solution = self.solver.q.copy()
         old_grid = self.solver.coord.copy()
+        old_active_elements = self.solver.active.copy()  # Track elements before adaptation
         old_resources = len(self.solver.active) / self.solver.max_elements
         
         try:
@@ -353,6 +524,15 @@ class DGAMREnv(gym.Env):
                 print(f"pre adapt active: {self.solver.active}")
             marks_override = {self.current_element_index: mapped_action}
             self.solver.adapt_mesh(marks_override=marks_override, element_budget=self.element_budget)
+
+            # Check if action was actually applied by comparing element count before and after
+            action_was_canceled = False
+            if mapped_action == 1 and np.array_equal(old_active_elements, self.solver.active):
+                action_was_canceled = True
+                if self.debug_training_cycle:
+                    print(f"Refinement was canceled for element {current_element}")
+            
+
             if self.debug_training_cycle:
                 # print(f"Applying adaptation for element {self.current_element_index} with action {mapped_action}")
                 print(f"post adapt active: {self.solver.active}")
@@ -384,16 +564,35 @@ class DGAMREnv(gym.Env):
             new_solution = self.solver.q
             new_grid = self.solver.coord
             new_resources = len(self.solver.active) / self.solver.max_elements
+
+            # Special handling for canceled actions
+            if action_was_canceled:
+                # If the action was canceled, there should be no solution change
+                delta_u = 0.0
+                
+                # Optional debugging to verify there's no solution change
+                if self.debug_training_cycle:
+                    # Calculate what delta_u would be normally
+                    normal_delta_u = calculate_delta_u(old_solution, new_solution, old_grid, new_grid)
+                    print(f"Action canceled but normal delta_u would be {normal_delta_u:.6f}")
+                    print(f"Setting delta_u = 0 for canceled action")
+            else:
+                # Normal delta_u calculation for actions that were applied
+                delta_u = calculate_delta_u(old_solution, new_solution, old_grid, new_grid)
+            
+
+
+            # delta_u = calculate_delta_u(old_solution, new_solution, old_grid, new_grid)
             
             # Compare solutions to calculate reward
             # Note: For accuracy, we should use the solution after mesh adaptation
             # but before time-stepping to isolate the effect of the adaptation
-            if len(new_solution) >= len(old_solution):
-                old_interpolated = np.interp(new_grid, old_grid, old_solution)
-                delta_u = np.linalg.norm(new_solution - old_interpolated)
-            else:
-                new_interpolated = np.interp(old_grid, new_grid, new_solution)
-                delta_u = np.linalg.norm(new_interpolated - old_solution)
+            # if len(new_solution) >= len(old_solution):
+            #     old_interpolated = np.interp(new_grid, old_grid, old_solution)
+            #     delta_u = np.linalg.norm(new_solution - old_interpolated)
+            # else:
+            #     new_interpolated = np.interp(old_grid, new_grid, new_solution)
+            #     delta_u = np.linalg.norm(new_interpolated - old_solution)
                 
             # Compute reward
             reward = self.reward_calculator.calculate_reward(
