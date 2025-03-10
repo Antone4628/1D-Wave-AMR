@@ -26,44 +26,46 @@ from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
 import numpy as np
 import matplotlib.pyplot as plt
+from numerical.callbacks.enhanced_callback import EnhancedMonitorCallback
 
 
-class ExperimentCallback(BaseCallback):
-    """
-    Custom callback for logging and saving experiment progress.
-    """
-    def __init__(self, total_timesteps, log_dir, save_freq=10000, verbose=1):
-        super().__init__(verbose)
-        self.total_timesteps = total_timesteps
-        self.log_dir = log_dir
-        self.save_freq = save_freq
-        self.best_mean_reward = -float('inf')
+
+# class ExperimentCallback(BaseCallback):
+#     """
+#     Custom callback for logging and saving experiment progress.
+#     """
+#     def __init__(self, total_timesteps, log_dir, save_freq=10000, verbose=1):
+#         super().__init__(verbose)
+#         self.total_timesteps = total_timesteps
+#         self.log_dir = log_dir
+#         self.save_freq = save_freq
+#         self.best_mean_reward = -float('inf')
         
-    def _on_step(self) -> bool:
-        # Print current progress periodically
-        if self.n_calls % 100 == 0:  
-            print(f"Progress: {self.num_timesteps}/{self.total_timesteps} steps ({self.num_timesteps/self.total_timesteps*100:.1f}%)")
+#     def _on_step(self) -> bool:
+#         # Print current progress periodically
+#         if self.n_calls % 100 == 0:  
+#             print(f"Progress: {self.num_timesteps}/{self.total_timesteps} steps ({self.num_timesteps/self.total_timesteps*100:.1f}%)")
         
-        # Save model periodically
-        if self.num_timesteps % self.save_freq == 0:
-            model_path = os.path.join(self.log_dir, f"model_{self.num_timesteps}_steps")
-            self.model.save(model_path)
-            if self.verbose > 0:
-                print(f"Saved model at {model_path}")
+#         # Save model periodically
+#         if self.num_timesteps % self.save_freq == 0:
+#             model_path = os.path.join(self.log_dir, f"model_{self.num_timesteps}_steps")
+#             self.model.save(model_path)
+#             if self.verbose > 0:
+#                 print(f"Saved model at {model_path}")
         
-        # Check if we've exceeded total timesteps
-        if self.num_timesteps >= self.total_timesteps:
-            if self.verbose > 0:
-                print(f"Reached {self.total_timesteps} timesteps, stopping training")
-            return False
+#         # Check if we've exceeded total timesteps
+#         if self.num_timesteps >= self.total_timesteps:
+#             if self.verbose > 0:
+#                 print(f"Reached {self.total_timesteps} timesteps, stopping training")
+#             return False
         
-        # Track new metrics if available in info
-        if 'took_timestep' in self.locals['infos'][0]:
-            self.logger.record('time_step/took_timestep', 
-                              float(self.locals['infos'][0].get('took_timestep', False)))
+#         # Track new metrics if available in info
+#         if 'took_timestep' in self.locals['infos'][0]:
+#             self.logger.record('time_step/took_timestep', 
+#                               float(self.locals['infos'][0].get('took_timestep', False)))
         
         
-        return True
+#         return True
 
 
 def load_config(config_path):
@@ -219,10 +221,18 @@ def run_experiment(config_path, results_dir=None):
         raise ValueError(f"Unsupported algorithm: {algorithm}")
     
     # Create callback
-    callback = ExperimentCallback(
+    # callback = ExperimentCallback(
+    #     total_timesteps=total_timesteps,
+    #     log_dir=model_dir,
+    #     save_freq=total_timesteps // 10  # Save 10 times during training
+    # )
+    # Create callback
+    callback = EnhancedMonitorCallback(
         total_timesteps=total_timesteps,
-        log_dir=model_dir,
-        save_freq=total_timesteps // 10  # Save 10 times during training
+        log_dir=log_dir,
+        save_freq=total_timesteps // 10,  # Save 10 times during training
+        window_size=100,  # Size of sliding window for metrics
+        log_freq=1000     # Log statistics every 1000 steps
     )
     
     # Print training configuration

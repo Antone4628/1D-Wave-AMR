@@ -209,7 +209,26 @@ class DGAMREnv(gym.Env):
                 shape=(1,),
                 dtype=np.float32
             ),
-            # Keep solution_values if you need them, but consider removing for simplicity
+            # Add new budget proximity features
+            'budget_proximity': spaces.Box(
+                low=0.0,
+                high=1.0,
+                shape=(1,),
+                dtype=np.float32
+            ),
+            'budget_headroom': spaces.Box(
+                low=0, 
+                high=self.element_budget,
+                shape=(1,),
+                dtype=np.float32
+            ),
+            'refinement_safety': spaces.Box(
+                low=0.0,
+                high=1.0,
+                shape=(1,),
+                dtype=np.float32
+            ),
+            # Keep solution_values for continuity
             'solution_values': spaces.Box(
                 low=-1e3,
                 high=1e3,
@@ -217,6 +236,43 @@ class DGAMREnv(gym.Env):
                 dtype=np.float32
             )
         })
+        
+        # Add an action name dictionary for logging
+        self.action_names = {-1: "Coarsen", 0: "No Change", 1: "Refine"}
+
+        # self.observation_space = spaces.Dict({
+        #     'avg_local_jump': spaces.Box(
+        #         low=0.0,
+        #         high=1e3,
+        #         shape=(1,),
+        #         dtype=np.float32
+        #     ),
+        #     'avg_jump': spaces.Box(
+        #         low=0.0,
+        #         high=1e3,
+        #         shape=(1,),
+        #         dtype=np.float32
+        #     ),
+        #     'jump_ratio': spaces.Box(
+        #         low=0.0,
+        #         high=10.0,  # Can be adjusted based on your problem
+        #         shape=(1,),
+        #         dtype=np.float32
+        #     ),
+        #     'resource_usage': spaces.Box(
+        #         low=0.0,
+        #         high=1.0,
+        #         shape=(1,),
+        #         dtype=np.float32
+        #     ),
+        #     # Keep solution_values if you need them, but consider removing for simplicity
+        #     'solution_values': spaces.Box(
+        #         low=-1e3,
+        #         high=1e3,
+        #         shape=(self.solver.ngl,),
+        #         dtype=np.float32
+        #     )
+        # })
         # self.observation_space = spaces.Dict({
         #     'local_jumps': spaces.Box(
         #         low=0.0,
@@ -372,12 +428,12 @@ class DGAMREnv(gym.Env):
     #     }
     def _get_observation(self) -> Dict[str, np.ndarray]:
         """
-        Get current observation of the environment state with simplified features.
+        Get current observation with enhanced budget proximity features.
         
         Returns:
             dict: Observation space components
         """
-        # Get local solution jumps
+        # Get existing features
         local_jumps, neighbor_jumps = self._get_element_jumps(self.current_element_index)
         
         # Calculate average of local jumps for this element
@@ -393,27 +449,82 @@ class DGAMREnv(gym.Env):
         avg_jump = np.mean(all_jumps) if all_jumps else 0.0
         
         # Calculate jump ratio (how this element compares to global average)
-        # Avoid division by zero by adding a small epsilon
         epsilon = 1e-10
         jump_ratio = avg_local_jump / (avg_jump + epsilon) if avg_jump > 0 else 1.0
-        
-        # Safety check to keep ratio in reasonable bounds
-        jump_ratio = min(jump_ratio, 10.0)
+        jump_ratio = min(jump_ratio, 10.0)  # Cap at 10.0
         
         # Current resource usage
-        resource_usage = len(self.solver.active) / self.element_budget
+        current_elements = len(self.solver.active)
+        resource_usage = current_elements / self.element_budget
         
         # Get local solution values
         element_nodes = self.solver.intma[:, self.current_element_index]
         solution_values = self.solver.q[element_nodes]
+        
+        # New budget proximity features
+        budget_proximity = resource_usage  # Raw proximity (0.0 to 1.0)
+        budget_headroom = self.element_budget - current_elements  # Absolute headroom
+        
+        # Refinement safety - probability of staying under budget if we refine
+        # This depends on how many elements might be created due to balance constraints
+        # Simple heuristic: 1.0 if plenty of headroom, 0.0 if at/over budget
+        safe_headroom_threshold = 5  # Arbitrary threshold - adjust based on problem
+        refinement_safety = min(1.0, max(0.0, budget_headroom / safe_headroom_threshold))
         
         return {
             'avg_local_jump': np.array([avg_local_jump], dtype=np.float32),
             'avg_jump': np.array([avg_jump], dtype=np.float32),
             'jump_ratio': np.array([jump_ratio], dtype=np.float32),
             'resource_usage': np.array([resource_usage], dtype=np.float32),
+            'budget_proximity': np.array([budget_proximity], dtype=np.float32),
+            'budget_headroom': np.array([budget_headroom], dtype=np.float32),
+            'refinement_safety': np.array([refinement_safety], dtype=np.float32),
             'solution_values': solution_values.astype(np.float32)
         }
+    # def _get_observation(self) -> Dict[str, np.ndarray]:
+    #     """
+    #     Get current observation of the environment state with simplified features.
+        
+    #     Returns:
+    #         dict: Observation space components
+    #     """
+    #     # Get local solution jumps
+    #     local_jumps, neighbor_jumps = self._get_element_jumps(self.current_element_index)
+        
+    #     # Calculate average of local jumps for this element
+    #     avg_local_jump = np.mean(local_jumps) if np.any(local_jumps) else 0.0
+        
+    #     # Compute average jump across all elements
+    #     all_jumps = []
+    #     for i in range(len(self.solver.active)):
+    #         jumps, _ = self._get_element_jumps(i)
+    #         if not np.any(np.isnan(jumps)):
+    #             all_jumps.append(np.mean(jumps))
+        
+    #     avg_jump = np.mean(all_jumps) if all_jumps else 0.0
+        
+    #     # Calculate jump ratio (how this element compares to global average)
+    #     # Avoid division by zero by adding a small epsilon
+    #     epsilon = 1e-10
+    #     jump_ratio = avg_local_jump / (avg_jump + epsilon) if avg_jump > 0 else 1.0
+        
+    #     # Safety check to keep ratio in reasonable bounds
+    #     jump_ratio = min(jump_ratio, 10.0)
+        
+    #     # Current resource usage
+    #     resource_usage = len(self.solver.active) / self.element_budget
+        
+    #     # Get local solution values
+    #     element_nodes = self.solver.intma[:, self.current_element_index]
+    #     solution_values = self.solver.q[element_nodes]
+        
+    #     return {
+    #         'avg_local_jump': np.array([avg_local_jump], dtype=np.float32),
+    #         'avg_jump': np.array([avg_jump], dtype=np.float32),
+    #         'jump_ratio': np.array([jump_ratio], dtype=np.float32),
+    #         'resource_usage': np.array([resource_usage], dtype=np.float32),
+    #         'solution_values': solution_values.astype(np.float32)
+    #     }
 
     # def _end_episode(self, reward, terminated, truncated, reason=""):
     #     """Helper method to handle episode ending logic"""
@@ -439,7 +550,114 @@ class DGAMREnv(gym.Env):
             
     #     self._total_episodes += 1
     #     return observation, reward, terminated, truncated, info
-    def _end_episode(self, reward, terminated, truncated, reason=""):
+
+    # def _end_episode(self, reward, terminated, truncated, reason=""):
+    #     """Helper method to handle episode ending logic with enhanced logging"""
+    #     observation = self._get_observation()
+        
+    #     # Track termination reasons for analysis
+    #     if not hasattr(self, 'termination_stats'):
+    #         self.termination_stats = {
+    #             'budget_exceeded': 0,
+    #             'max_steps_reached': 0,
+    #             'other': 0
+    #         }
+        
+    #     # Update termination statistics
+    #     if reason == "Budget exceeded":
+    #         self.termination_stats['budget_exceeded'] += 1
+    #     elif reason == "Maximum episode steps reached":
+    #         self.termination_stats['max_steps_reached'] += 1
+    #     else:
+    #         self.termination_stats['other'] += 1
+        
+    #     # Calculate and log termination percentages
+    #     total_episodes = sum(self.termination_stats.values())
+    #     if total_episodes % 10 == 0:  # Log every 10 episodes
+    #         budget_pct = self.termination_stats['budget_exceeded'] / total_episodes * 100
+    #         steps_pct = self.termination_stats['max_steps_reached'] / total_episodes * 100
+    #         other_pct = self.termination_stats['other'] / total_episodes * 100
+    #         print(f"Episode termination statistics after {total_episodes} episodes:")
+    #         print(f"  Budget exceeded: {budget_pct:.1f}%")
+    #         print(f"  Max steps reached: {steps_pct:.1f}%")
+    #         print(f"  Other reasons: {other_pct:.1f}%")
+        
+    #     info = {
+    #         'episode_steps': self._episode_steps,
+    #         'total_steps': self.num_timesteps,
+    #         'reason': reason,
+    #         'episode': {
+    #             'r': float(reward),
+    #             'l': int(max(1, self._episode_steps)),
+    #             'termination_reason': reason
+    #         }
+    #     }
+        
+    #     if self.verbose:
+    #         print(f"Episode ending: {reason}")
+    #         print(f"Episode reward: {reward:.2f}, length: {self._episode_steps}")
+
+    #     # Call callback if registered
+    #     if self.episode_callback is not None:
+    #         self.episode_callback(reward, self._episode_steps)
+            
+    #     self._total_episodes += 1
+    #     return observation, reward, terminated, truncated, info
+
+    def _is_refinement_safe(self, element_idx: int) -> bool:
+        """
+        Check if refining an element is likely to stay within budget constraints.
+        
+        Args:
+            element_idx: Index of element in active_grid
+            
+        Returns:
+            bool: True if refinement is likely safe, False otherwise
+        """
+        current_elements = len(self.solver.active)
+        
+        # If already at or near budget, refinement is unsafe
+        if current_elements >= self.element_budget - 1:
+            return False
+        
+        # Get element and check if it can be refined (has no children yet)
+        element = self.solver.active[element_idx]
+        element_data = self.solver.label_mat[element-1]
+        children = element_data[2:4]
+        
+        # If element already has children, it can't be refined
+        if children[0] != 0:
+            return False
+        
+        # Simple estimation of balance cascading effects 
+        # In a highly imbalanced mesh, refinement might trigger multiple balance refinements
+        # This is a simplified heuristic - real balance enforcement is complex
+        current_level = element_data[4]  # Get element level
+        
+        # Get neighbor levels
+        neighbor_levels = []
+        if element_idx > 0:
+            left_elem = self.solver.active[element_idx-1]
+            left_level = self.solver.label_mat[left_elem-1][4]
+            neighbor_levels.append(left_level)
+        
+        if element_idx < len(self.solver.active) - 1:
+            right_elem = self.solver.active[element_idx+1]
+            right_level = self.solver.label_mat[right_elem-1][4]
+            neighbor_levels.append(right_level)
+        
+        # Estimate potential balance refinements
+        potential_new_elements = 1  # Start with 1 for the direct refinement
+        for level in neighbor_levels:
+            level_diff = current_level + 1 - level
+            if level_diff > 1:
+                # This neighbor would need refinement for balance
+                potential_new_elements += 1
+        
+        # Check if budget can accommodate all potential new elements
+        return current_elements + potential_new_elements <= self.element_budget
+
+    def _end_episode(self, reward, terminated, truncated, reason="", pre_term_info=None):
         """Helper method to handle episode ending logic with enhanced logging"""
         observation = self._get_observation()
         
@@ -481,9 +699,20 @@ class DGAMREnv(gym.Env):
             }
         }
         
+        # Add pre-termination metrics if available
+        if pre_term_info is not None:
+            for key, value in pre_term_info.items():
+                info[key] = value
+        
         if self.verbose:
             print(f"Episode ending: {reason}")
             print(f"Episode reward: {reward:.2f}, length: {self._episode_steps}")
+            
+            # Print pre-termination info if available
+            if pre_term_info is not None and reason == "Budget exceeded":
+                print(f"  Pre-termination elements: {pre_term_info.get('pre_termination_elements', 'N/A')}")
+                print(f"  Budget usage: {pre_term_info.get('budget_usage_percent', 'N/A'):.1f}%")
+                print(f"  Violation action: {pre_term_info.get('violation_action', 'N/A')}")
 
         # Call callback if registered
         if self.episode_callback is not None:
@@ -491,7 +720,7 @@ class DGAMREnv(gym.Env):
             
         self._total_episodes += 1
         return observation, reward, terminated, truncated, info
-
+    
     def step(self, action: int) -> Tuple[Dict[str, np.ndarray], float, bool, bool, Dict[str, Any]]:
         """
         Execute one step of the environment.
@@ -503,13 +732,65 @@ class DGAMREnv(gym.Env):
         action_int = action.item() if hasattr(action, 'item') else int(action)
         mapped_action = self.action_mapping[action_int]
         current_element = self.solver.active[self.current_element_index]
+
+            # Add budget awareness for refinement - penalize unsafe refinements
+        if mapped_action == 1:  # Refine
+            refinement_safe = self._is_refinement_safe(self.current_element_index)
+            
+            # If refinement would exceed budget, apply a penalty and change to no-op
+            if not refinement_safe:
+                if self.debug_training_cycle:
+                    print(f"Unsafe refinement detected. Elements: {len(self.solver.active)}/{self.element_budget}")
+                
+                # Option 1: Change action to no-op to prevent budget violation
+                # mapped_action = 0  # No change
+                
+                # Option 2: Keep action but add penalty to the reward later
+                unsafe_refinement = True
+            else:
+                unsafe_refinement = False
+        else:
+            unsafe_refinement = False
         
         # Check budget and episode length constraints
+        # if len(self.solver.active) >= self.element_budget:
+        #     return self._end_episode(-1000.0, False, True, "Budget exceeded")
+
+
+        # pre_action_elements = len(self.solver.active)
+        # print(f"PRE-ACTION: {mapped_action} | Elements: {pre_action_elements}")
+
+
         if len(self.solver.active) >= self.element_budget:
-            return self._end_episode(-1000.0, False, True, "Budget exceeded")
+            # Log detailed information about the budget violation
+            element_count = len(self.solver.active)
+            budget_usage_percent = (element_count / self.element_budget) * 100
+            
+            if self.verbose or self.debug_training_cycle:
+                print(f"\n===== BUDGET EXCEEDED =====")
+                print(f"Current elements: {element_count}/{self.element_budget} ({budget_usage_percent:.1f}%)")
+                print(f"Action that triggered violation: {mapped_action} ({self.action_names[mapped_action]})")
+                print(f"Element being processed: {current_element}")
+                print(f"Current step in episode: {self._episode_steps}")
+                
+                # Log last few actions to see what led to the violation
+                recent_actions = self.mapped_action_history[-min(10, len(self.mapped_action_history)):]
+                recent_action_names = [self.action_names[a] for a in recent_actions]
+                print(f"Recent actions: {recent_action_names}")
+                print("===========================\n")
+            
+            # Store pre-termination metrics
+            info = {
+                'pre_termination_elements': element_count,
+                'budget_usage_percent': budget_usage_percent,
+                'violation_action': mapped_action,
+                'episode_steps': self._episode_steps
+            }
+            
+            return self._end_episode(-1000.0, False, True, "Budget exceeded", info)
         
         if self._episode_steps >= self.max_episode_steps:
-            return self._end_episode(0.0, False, True, "Maximum episode steps reached")
+            return self._end_episode(0.0, False, True, "Maximum episode steps reached", None)
         
         # Store current state for reward calculation
         old_solution = self.solver.q.copy()
@@ -525,12 +806,81 @@ class DGAMREnv(gym.Env):
             marks_override = {self.current_element_index: mapped_action}
             self.solver.adapt_mesh(marks_override=marks_override, element_budget=self.element_budget)
 
+
+            # After applying the action but before checking budget:
+            # post_action_elements = len(self.solver.active)
+            # print(f"POST-ACTION: {mapped_action} | Elements: {post_action_elements} | Change: {post_action_elements - pre_action_elements}")
+            
+            # Add this after the post-action print statement
+            if len(self.solver.active) >= self.element_budget:
+                # Log detailed information about the budget violation after action
+                element_count = len(self.solver.active)
+                budget_usage_percent = (element_count / self.element_budget) * 100
+                
+                print(f"\n===== POST-ACTION BUDGET EXCEEDED =====")
+                print(f"Current elements: {element_count}/{self.element_budget} ({budget_usage_percent:.1f}%)")
+                print(f"Action that caused violation: {mapped_action} ({self.action_names[mapped_action]})")
+                print(f"Change in elements: {pre_action_elements} -> {post_action_elements}")
+                print("=======================================\n")
+                
+                # Store pre-termination metrics
+                info = {
+                    'pre_termination_elements': element_count,
+                    'budget_usage_percent': budget_usage_percent,
+                    'violation_action': mapped_action,
+                    'episode_steps': self._episode_steps
+                }
+                
+                return self._end_episode(-1000.0, False, True, "Budget exceeded", info)
+            
+
+            # After adaptation and budget check, get post-adaptation state
+            post_adapt_solution = self.solver.q.copy()
+            post_adapt_grid = self.solver.coord.copy()
+            post_adapt_resources = len(self.solver.active) / self.solver.max_elements
+
             # Check if action was actually applied by comparing element count before and after
             action_was_canceled = False
             if mapped_action == 1 and np.array_equal(old_active_elements, self.solver.active):
                 action_was_canceled = True
                 if self.debug_training_cycle:
                     print(f"Refinement was canceled for element {current_element}")
+                
+                # For canceled actions, set delta_u to 0
+                delta_u_adapt = 0.0
+            else:
+                # Normal delta_u calculation for actions that were applied
+                delta_u_adapt = calculate_delta_u(old_solution, post_adapt_solution, old_grid, post_adapt_grid)
+
+            # Calculate adaptation-only reward
+            reward = self.reward_calculator.calculate_reward(
+                delta_u_adapt, 
+                mapped_action,
+                old_resources, 
+                post_adapt_resources
+            )
+            
+            # # Get post-adaptation state
+            # post_adapt_solution = self.solver.q.copy()
+            # post_adapt_grid = self.solver.coord.copy()
+            # post_adapt_resources = len(self.solver.active) / self.solver.max_elements
+
+            # # Calculate adaptation-only reward
+            # delta_u_adapt = calculate_delta_u(old_solution, post_adapt_solution, old_grid, post_adapt_grid)
+
+            # reward = self.reward_calculator.calculate_reward(
+            #     delta_u_adapt, 
+            #     mapped_action,
+            #     old_resources, 
+            #     post_adapt_resources
+            # )
+
+            # # Check if action was actually applied by comparing element count before and after
+            # action_was_canceled = False
+            # if mapped_action == 1 and np.array_equal(old_active_elements, self.solver.active):
+            #     action_was_canceled = True
+            #     if self.debug_training_cycle:
+            #         print(f"Refinement was canceled for element {current_element}")
             
 
             if self.debug_training_cycle:
@@ -559,6 +909,26 @@ class DGAMREnv(gym.Env):
             if self.should_timestep:
                 self.solver.step()
                 self.current_rl_iteration = 0
+                # Check if timestep caused budget violation
+                if len(self.solver.active) >= self.element_budget:
+                    element_count = len(self.solver.active)
+                    budget_usage_percent = (element_count / self.element_budget) * 100
+                    
+                    print(f"\n===== TIMESTEP BUDGET EXCEEDED =====")
+                    print(f"Current elements: {element_count}/{self.element_budget} ({budget_usage_percent:.1f}%)")
+                    print(f"Previous action: {mapped_action} ({self.action_names[mapped_action]})")
+                    print(f"Element progression: {pre_action_elements} -> {post_action_elements} -> {element_count}")
+                    print("====================================\n")
+                    
+                    info = {
+                        'pre_termination_elements': element_count,
+                        'budget_usage_percent': budget_usage_percent,
+                        'violation_action': mapped_action,
+                        'timestep_violation': True,
+                        'episode_steps': self._episode_steps
+                    }
+                    
+                    return self._end_episode(-1000.0, False, True, "Budget exceeded (timestep)", info)
             
             # Get new state
             new_solution = self.solver.q
@@ -593,20 +963,26 @@ class DGAMREnv(gym.Env):
             # else:
             #     new_interpolated = np.interp(old_grid, new_grid, new_solution)
             #     delta_u = np.linalg.norm(new_interpolated - old_solution)
+                # When calculating reward, add penalty for unsafe refinement if needed
+
+            # reward = self.reward_calculator.calculate_reward(
+            #     delta_u, 
+            #     mapped_action,  # Pass the mapped action (-1, 0, 1)
+            #     old_resources, 
+            #     new_resources
+            # )
+
+            if unsafe_refinement:
+                reward -= 15.0  # Significant penalty for trying unsafe refinement
+                if self.debug_training_cycle:
+                    print(f"Applied unsafe refinement penalty. Reward: {reward:.2f}")
                 
-            # Compute reward
-            reward = self.reward_calculator.calculate_reward(
-                delta_u, 
-                mapped_action,  # Pass the mapped action (-1, 0, 1)
-                old_resources, 
-                new_resources
-            )
             terminated = False
             truncated = False
             # After calculating reward
             if self.debug_training_cycle:
                 print(f"Active elements: {self.solver.active}")
-                print(f"element: {current_element} | Action: {mapped_action} | Delta_u: {delta_u:.6f} | Reward: {reward:.4f}")
+                print(f"element: {current_element} | Action: {mapped_action} | Delta_u: {delta_u_adapt:.6f} | Reward: {reward:.4f}")
                 print(f"Elements: {len(self.solver.active)}/{self.element_budget}")
             
             # Prepare info dictionary
@@ -624,7 +1000,7 @@ class DGAMREnv(gym.Env):
             if n_active > 0:
                 self.current_element_index = np.random.randint(0, n_active)
             else:
-                return self._end_episode(-100.0, False, True, "No active elements")
+                return self._end_episode(-100.0, False, True, "No active elements", None)
                 
             # Get observation of new state
             observation = self._get_observation()
@@ -634,7 +1010,7 @@ class DGAMREnv(gym.Env):
         except Exception as e:
             if self.verbose:
                 print(f"Error in step: {e}")
-            return self._end_episode(-100.0, False, True, f"Error: {str(e)}")
+            return self._end_episode(-100.0, False, True, f"Error: {str(e)}", None)
     
     def reset(self, seed=None, options=None) -> Tuple[Dict[str, np.ndarray], Dict[str, Any]]:
         """
