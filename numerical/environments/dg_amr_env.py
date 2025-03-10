@@ -757,7 +757,7 @@ class DGAMREnv(gym.Env):
         #     return self._end_episode(-1000.0, False, True, "Budget exceeded")
 
 
-        # pre_action_elements = len(self.solver.active)
+        pre_action_elements = len(self.solver.active)
         # print(f"PRE-ACTION: {mapped_action} | Elements: {pre_action_elements}")
 
 
@@ -808,7 +808,7 @@ class DGAMREnv(gym.Env):
 
 
             # After applying the action but before checking budget:
-            # post_action_elements = len(self.solver.active)
+            post_action_elements = len(self.solver.active)
             # print(f"POST-ACTION: {mapped_action} | Elements: {post_action_elements} | Change: {post_action_elements - pre_action_elements}")
             
             # Add this after the post-action print statement
