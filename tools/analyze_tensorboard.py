@@ -95,6 +95,14 @@ def load_tensorboard_data(log_dir: str, scalars_only: bool = True) -> Dict[str, 
     print(f"  Loaded {len(dfs)} metrics")
     return dfs
 
+def list_available_tags(log_dir):
+    """Print all available tags in the log directory."""
+    dfs = load_tensorboard_data(log_dir)
+    print("\nAvailable tags in", log_dir)
+    for tag in sorted(dfs.keys()):
+        print(f"  - {tag}")
+    print("\n")
+
 
 def extract_experiment_name(log_dir: str) -> str:
     """Extract experiment name from log directory path."""
@@ -435,6 +443,9 @@ def main():
     parser.add_argument("--compare", action="store_true", help="Compare multiple runs")
     parser.add_argument("--correlations", action="store_true", help="Analyze correlations between metrics")
     parser.add_argument("--dashboard", action="store_true", help="Create multi-panel dashboard")
+    parser.add_argument("--list-tags", action="store_true", help="List all available tags in the log directories")
+
+
     
     args = parser.parse_args()
     
@@ -461,6 +472,12 @@ def main():
         for log_dir in args.log_dirs:
             analyze_correlations(log_dir, args.tags, args.output_dir)
         create_multi_panel_dashboard(args.log_dirs, args.output_dir, args.smooth)
+
+    
+    if args.list_tags:
+        for log_dir in args.log_dirs:
+            list_available_tags(log_dir)
+        return
 
 
 if __name__ == "__main__":

@@ -33,28 +33,21 @@ class RewardCalculator:
             return 0.0
         else:
             return np.sqrt(resources) / (1 - resources)  # Non-hortative barrier function
-
-    # def calculate_resource_penalty(self, new_resources):
-    #     """Calculate penalty for resource usage"""
-    #     if new_resources >= 1.0:
-    #         return 1000.0
-    #     elif new_resources <= 0.0:
-    #         return 0.0
-    #     else:
-    #         return self.gamma_c * np.sqrt(new_resources) / (1 - new_resources)
         
+    def calculate_resource_penalty(self, resource_usage):
+        """Calculate penalty for resource usage with progressive scaling"""
+        if resource_usage < 0.7:  # Plenty of resources
+            return self.gamma_c * 0.1 * resource_usage  # Very small penalty
+        elif resource_usage < 0.9:  # Getting closer
+            return self.gamma_c * (0.1 * 0.7 + 0.5 * (resource_usage - 0.7))  # Moderate penalty
+        else:  # Very close to budget
+            base_penalty = self.gamma_c * (0.1 * 0.7 + 0.5 * 0.2)  # Previous ranges
+            return base_penalty + self.gamma_c * 2.0 * (resource_usage - 0.9)  # Sharp increase
+        
+
     def calculate_reward(self, delta_u: float, action: int, old_resources: float, new_resources: float) -> float:
         """
-        Compute reward following paper's formulation.
-        
-        Args:
-            delta_u: Change in solution after adaptation
-            action: The action taken (-1: coarsen, 0: do nothing, 1: refine)
-            old_resources: Previous resource usage fraction
-            new_resources: New resource usage fraction
-            
-        Returns:
-            float: Computed reward value
+        Compute reward with progressive penalties
         """
         # Base accuracy term (before applying sign)
         accuracy_term = np.log(abs(delta_u) + self.machine_eps) - np.log(self.machine_eps)
@@ -67,12 +60,53 @@ class RewardCalculator:
         else:  # do nothing
             accuracy = 0.0
         
-        # Resource penalty using barrier function difference (equation 4)
-        old_barrier = self.calculate_barrier(old_resources)
-        new_barrier = self.calculate_barrier(new_resources)
-        resource_penalty = new_barrier - old_barrier
+        # Resource penalty using progressive function
+        old_penalty = self.calculate_resource_penalty(old_resources)
+        new_penalty = self.calculate_resource_penalty(new_resources)
+        resource_penalty = new_penalty - old_penalty
         
-        return float(accuracy - self.gamma_c * resource_penalty)
+        return float(accuracy - resource_penalty)
+
+
+    # def calculate_resource_penalty(self, new_resources):
+    #     """Calculate penalty for resource usage"""
+    #     if new_resources >= 1.0:
+    #         return 1000.0
+    #     elif new_resources <= 0.0:
+    #         return 0.0
+    #     else:
+    #         return self.gamma_c * np.sqrt(new_resources) / (1 - new_resources)
+        
+    # def calculate_reward(self, delta_u: float, action: int, old_resources: float, new_resources: float) -> float:
+    #     """
+    #     Compute reward following paper's formulation.
+        
+    #     Args:
+    #         delta_u: Change in solution after adaptation
+    #         action: The action taken (-1: coarsen, 0: do nothing, 1: refine)
+    #         old_resources: Previous resource usage fraction
+    #         new_resources: New resource usage fraction
+            
+    #     Returns:
+    #         float: Computed reward value
+    #     """
+    #     # Base accuracy term (before applying sign)
+    #     accuracy_term = np.log(abs(delta_u) + self.machine_eps) - np.log(self.machine_eps)
+        
+    #     # Apply sign based on action (equation 5)
+    #     if action == 1:  # refine
+    #         accuracy = +accuracy_term
+    #     elif action == -1:  # coarsen
+    #         accuracy = -accuracy_term
+    #     else:  # do nothing
+    #         accuracy = 0.0
+        
+    #     # Resource penalty using barrier function difference (equation 4)
+    #     old_barrier = self.calculate_barrier(old_resources)
+    #     new_barrier = self.calculate_barrier(new_resources)
+    #     resource_penalty = new_barrier - old_barrier
+        
+    #     return float(accuracy - self.gamma_c * resource_penalty)
 
 # def calculate_delta_u(old_solution, new_solution, old_grid, new_grid):
 #     # Interpolate the solution with fewer points onto the grid with more points
@@ -84,6 +118,7 @@ class RewardCalculator:
 #         new_interpolated = np.interp(old_grid, new_grid, new_solution)
 #         delta_u = np.sum(np.abs(new_interpolated - old_solution) * np.diff(np.append(old_grid, old_grid[-1])))
 #     return delta_u
+
 def calculate_delta_u(old_solution, new_solution, old_grid, new_grid):
         """
         Calculate the L1 norm of the difference between solutions according to equation 3.
@@ -817,11 +852,11 @@ class DGAMREnv(gym.Env):
                 element_count = len(self.solver.active)
                 budget_usage_percent = (element_count / self.element_budget) * 100
                 
-                print(f"\n===== POST-ACTION BUDGET EXCEEDED =====")
-                print(f"Current elements: {element_count}/{self.element_budget} ({budget_usage_percent:.1f}%)")
-                print(f"Action that caused violation: {mapped_action} ({self.action_names[mapped_action]})")
-                print(f"Change in elements: {pre_action_elements} -> {post_action_elements}")
-                print("=======================================\n")
+                # print(f"\n===== POST-ACTION BUDGET EXCEEDED =====")
+                # print(f"Current elements: {element_count}/{self.element_budget} ({budget_usage_percent:.1f}%)")
+                # print(f"Action that caused violation: {mapped_action} ({self.action_names[mapped_action]})")
+                # print(f"Change in elements: {pre_action_elements} -> {post_action_elements}")
+                # print("=======================================\n")
                 
                 # Store pre-termination metrics
                 info = {
@@ -973,7 +1008,7 @@ class DGAMREnv(gym.Env):
             # )
 
             if unsafe_refinement:
-                reward -= 15.0  # Significant penalty for trying unsafe refinement
+                reward -= 10.0  # Significant penalty for trying unsafe refinement
                 if self.debug_training_cycle:
                     print(f"Applied unsafe refinement penalty. Reward: {reward:.2f}")
                 

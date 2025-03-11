@@ -161,10 +161,21 @@ class EnhancedMonitorCallback(BaseCallback):
         # Update resource tracking
         resource_usage = info.get('resource_usage', 0)
         element_count = info.get('n_elements', 0)
-        if hasattr(self.model.env, 'element_budget'):
-            budget = self.model.env.element_budget
-        else:
-            budget = self.model.env.envs[0].element_budget
+
+        # if hasattr(self.model.env, 'element_budget'):
+        #     budget = self.model.env.element_budget
+        # else:
+        #     budget = self.model.env.envs[0].element_budget
+        try:
+            budget = self.model.env.unwrapped.element_budget
+        except (AttributeError, KeyError):
+            # Fallback for vectorized environments
+            try:
+                budget = self.model.env.get_wrapper_attr('element_budget')
+            except (AttributeError, KeyError):
+                # Last resort for vectorized envs
+                budget = self.model.env.envs[0].unwrapped.element_budget
+
         budget_proximity = element_count / budget if budget > 0 else 0
         
         self.resource_usage_history.append(resource_usage)
@@ -332,9 +343,23 @@ class EnhancedMonitorCallback(BaseCallback):
             self.logger.record("resources/usage", avg_resource)
             self.logger.record("training/episodes_completed", self.episodes_completed)
             
+            # for reason, count in self.termination_reasons.items():
+            #     sanitized_reason = reason.lower().replace(" ", "_")
+            #     self.logger.record(f"termination/{sanitized_reason}", count)
             for reason, count in self.termination_reasons.items():
-                sanitized_reason = reason.lower().replace(" ", "_")
+                # Create a shorter, hash-based key for long termination reasons
+                if len(reason) > 30:
+                    import hashlib
+                    short_hash = hashlib.md5(reason.encode()).hexdigest()[:8]
+                    sanitized_reason = f"error_type_{short_hash}"
+                else:
+                    sanitized_reason = reason.lower().replace(" ", "_")
+                
                 self.logger.record(f"termination/{sanitized_reason}", count)
+                
+                # Also log the mapping for reference (optional)
+                if len(reason) > 30:
+                    print(f"Mapped long error '{reason}' to '{sanitized_reason}'")
     
     def _save_datasets(self) -> None:
         """Save collected data to CSV files."""
@@ -465,10 +490,21 @@ class EnhancedMonitorCallback(BaseCallback):
         plt.plot(range(len(self.element_count_history)), self.element_count_history)
         
         # Add reference line at budget
-        if hasattr(self.model.env, 'element_budget'):
-            budget = self.model.env.element_budget
-        else:
-            budget = self.model.env.envs[0].element_budget
+        # if hasattr(self.model.env, 'element_budget'):
+        #     budget = self.model.env.element_budget
+        # else:
+        #     budget = self.model.env.envs[0].element_budget
+        try:
+            budget = self.model.env.unwrapped.element_budget
+        except (AttributeError, KeyError):
+            # Fallback for vectorized environments
+            try:
+                budget = self.model.env.get_wrapper_attr('element_budget')
+            except (AttributeError, KeyError):
+                # Last resort for vectorized envs
+                budget = self.model.env.envs[0].unwrapped.element_budget
+
+
         plt.axhline(y=budget, color='r', linestyle='--', label='Element budget')
         
         plt.xlabel('Timestep')
@@ -490,10 +526,21 @@ class EnhancedMonitorCallback(BaseCallback):
                     alpha=0.7, color='purple')
             
             # Add reference line at budget
-            if hasattr(self.model.env, 'element_budget'):
-                budget = self.model.env.element_budget
-            else:
-                budget = self.model.env.envs[0].element_budget
+            # if hasattr(self.model.env, 'element_budget'):
+            #     budget = self.model.env.element_budget
+            # else:
+            #     budget = self.model.env.envs[0].element_budget
+            try:
+                budget = self.model.env.unwrapped.element_budget
+            except (AttributeError, KeyError):
+                # Fallback for vectorized environments
+                try:
+                    budget = self.model.env.get_wrapper_attr('element_budget')
+                except (AttributeError, KeyError):
+                    # Last resort for vectorized envs
+                    budget = self.model.env.envs[0].unwrapped.element_budget
+
+
             plt.axvline(x=budget, color='r', linestyle='--', label='Element budget')
             
             plt.xlabel('Elements at Budget Violation')
@@ -677,6 +724,8 @@ class EnhancedMonitorCallback(BaseCallback):
                 reasons = list(self.termination_reasons.keys())
                 counts = list(self.termination_reasons.values())
                 ax3.bar(reasons, counts)
+                positions = np.arange(len(reasons))
+                ax3.set_xticks(positions)
                 ax3.set_xticklabels(reasons, rotation=45, ha='right')
                 ax3.set_xlabel('Reason')
                 ax3.set_ylabel('Count')
@@ -691,6 +740,8 @@ class EnhancedMonitorCallback(BaseCallback):
                 # Boxplot of final resource usage by termination reason
                 if len(term_groups) > 0:
                     sns.boxplot(x='termination_reason', y='final_resource_usage', data=self.episode_df, ax=ax4)
+                    current_ticks = ax4.get_xticks()  # Get current tick positions
+                    ax4.set_xticks(current_ticks)
                     ax4.set_xticklabels(ax4.get_xticklabels(), rotation=45, ha='right')
                     ax4.set_xlabel('Termination Reason')
                     ax4.set_ylabel('Final Resource Usage')
@@ -916,10 +967,20 @@ class EnhancedMonitorCallback(BaseCallback):
                 plt.plot(range(len(self.element_count_history)), self.element_count_history, 'b-')
                 
                 # Add reference line at budget
-                if hasattr(self.model.env, 'element_budget'):
-                    budget = self.model.env.element_budget
-                else:
-                    budget = self.model.env.envs[0].element_budget
+                # if hasattr(self.model.env, 'element_budget'):
+                #     budget = self.model.env.element_budget
+                # else:
+                #     budget = self.model.env.envs[0].element_budget
+                try:
+                    budget = self.model.env.unwrapped.element_budget
+                except (AttributeError, KeyError):
+                    # Fallback for vectorized environments
+                    try:
+                        budget = self.model.env.get_wrapper_attr('element_budget')
+                    except (AttributeError, KeyError):
+                        # Last resort for vectorized envs
+                        budget = self.model.env.envs[0].unwrapped.element_budget
+
                 plt.axhline(y=budget, color='r', linestyle='--', label='Element budget')
                 
                 plt.xlabel('Timestep')
