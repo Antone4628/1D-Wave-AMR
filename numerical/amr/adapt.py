@@ -344,6 +344,61 @@ def adapt_sol(q, coord, marks, active, label_mat, PS1, PS2, PG1, PG2, ngl):
     return result
 
 
+#AMR driver function to performa all necessary adaptation
+def adapt_all(qp,intma,active,grid,nelem,nop,ngl,coord,npoin_dg,npoin_cg,xgl,label_mat,info_mat,max_level,criterion,PS1,PS2,PG1,PG2):
+    level = 0
+    while(level <= max_level):
+        #     # Get refinement marks
+        marks = mark(active, label_mat, intma, qp, criterion)
+
+        pre_marks = marks
+        pre_active = active  
+        pre_grid = grid
+        pre_nelem = nelem
+        pre_intma = intma
+        pre_coord = coord
+        pre_npoin_dg = npoin_dg
+
+        new_grid, new_active, ref_marks, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(nop, pre_grid, pre_active, label_mat, info_mat, marks, max_level)
+        print("size grid",len(new_grid))
+        new_coord, new_intma, periodicity = create_grid_us(ngl, new_nelem, npoin_cg, new_npoin_dg, xgl, new_grid)
+        
+        # Project solution
+        q_ad = adapt_sol(qp, pre_coord, marks, pre_active, label_mat, PS1, PS2, PG1, PG2, ngl)
+        
+        # Update for next level
+        qp = q_ad
+        active = new_active
+        nelem = new_nelem
+        intma = new_intma
+        coord = new_coord
+        grid = new_grid
+        npoin_dg = new_npoin_dg
+
+        # Enforce balance:
+        if not check_balance(active, label_mat):
+            bal_q, bal_active, bal_nelem, bal_intma, bal_coord, bal_grid, bal_npoin_dg, bal_periodicity = enforce_balance(active, 
+                                                                                                                          label_mat, 
+                                                                                                                          grid, 
+                                                                                                                          info_mat, 
+                                                                                                                          nop, 
+                                                                                                                          coord, 
+                                                                                                                          PS1, PS2, PG1, PG2, 
+                                                                                                                          ngl, xgl, 
+                                                                                                                          qp, max_level)
+            
+            qp = bal_q
+            active = bal_active
+            nelem = bal_nelem
+            intma = bal_intma
+            coord = bal_coord
+            grid = bal_grid
+            npoin_dg = bal_npoin_dg
+            periodicity = bal_periodicity
+            
+        level += 1
+            
+    return qp, active, nelem, intma, coord, grid, npoin_dg, periodicity
 
 # def enforce_balance(active, label_mat, cur_grid, info_mat, nop, cur_coords, PS1, PS2, PG1, PG2, ngl, xgl, qp):
 #     """
