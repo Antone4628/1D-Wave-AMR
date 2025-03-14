@@ -231,7 +231,7 @@ def Matrix_DSS(Me, De, u, intma, periodicity, ngl, nelem, npoin):
                 M[ip][jp] = M[ip][jp] + Me[e][i][j]
                 D[ip][jp] = D[ip][jp] + u*De[i][j]
                 
-    print(f"Mass matrix condition number: {np.linalg.cond(M)}")
+    # print(f"Mass matrix condition number: {np.linalg.cond(M)}")
     return M, D
     # # print(f'npoin passed to DSS: {npoin}')
     # M=np.zeros([npoin,npoin])

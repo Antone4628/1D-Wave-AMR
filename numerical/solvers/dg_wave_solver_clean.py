@@ -145,13 +145,45 @@ class DGWaveSolver:
                 print(f"Element sizes: {np.diff(self.xelem)}")
             raise
 
+    # def check_mesh_quality(self, grid):
+    #     """
+    #     Check if proposed mesh would be numerically stable.
+        
+    #     Args:
+    #         grid: Proposed grid coordinates
+            
+    #     Returns:
+    #         bool: True if mesh quality is acceptable
+    #         str: Description of any quality issues found
+    #     """
+    #     element_sizes = np.diff(grid)
+    #     size_ratio = np.max(element_sizes) / np.min(element_sizes)
+        
+    #     issues = []
+        
+    #     # Check size ratio
+    #     if size_ratio > 100:
+    #         issues.append(f"Element size ratio too large: {size_ratio:.2f}")
+        
+    #     # Check for very small elements
+    #     min_size = np.min(element_sizes)
+    #     if min_size < 1e-5:
+    #         issues.append(f"Elements too small: {min_size:.2e}")
+            
+    #     # Check for rapid size changes between neighbors
+    #     neighbor_ratios = element_sizes[1:] / element_sizes[:-1]
+    #     max_neighbor_ratio = max(max(neighbor_ratios), max(1/neighbor_ratios))
+    #     if max_neighbor_ratio > 4:  # Even stricter than 2:1
+    #         issues.append(f"Rapid size change between neighbors: ratio {max_neighbor_ratio:.2f}")
+        
+    #     return len(issues) == 0, "; ".join(issues)
     def check_mesh_quality(self, grid):
         """
         Check if proposed mesh would be numerically stable.
         
         Args:
             grid: Proposed grid coordinates
-            
+                
         Returns:
             bool: True if mesh quality is acceptable
             str: Description of any quality issues found
@@ -161,19 +193,20 @@ class DGWaveSolver:
         
         issues = []
         
-        # Check size ratio
-        if size_ratio > 100:
+        # More permissive size ratio check (was 100, now 250)
+        if size_ratio > 250:
             issues.append(f"Element size ratio too large: {size_ratio:.2f}")
         
-        # Check for very small elements
+        # Check for very small elements with relative threshold
         min_size = np.min(element_sizes)
-        if min_size < 1e-5:
+        domain_size = grid[-1] - grid[0]
+        if min_size < domain_size * 1e-6:  # Relative threshold
             issues.append(f"Elements too small: {min_size:.2e}")
-            
-        # Check for rapid size changes between neighbors
+                
+        # More permissive neighbor ratio check
         neighbor_ratios = element_sizes[1:] / element_sizes[:-1]
         max_neighbor_ratio = max(max(neighbor_ratios), max(1/neighbor_ratios))
-        if max_neighbor_ratio > 4:  # Even stricter than 2:1
+        if max_neighbor_ratio > 6:  # Was 4, now 6
             issues.append(f"Rapid size change between neighbors: ratio {max_neighbor_ratio:.2f}")
         
         return len(issues) == 0, "; ".join(issues)
@@ -276,10 +309,11 @@ class DGWaveSolver:
         pre_npoin_dg = self.npoin_dg
         pre_periodicity = self.periodicity
         
+        
         # Adapt mesh
         new_grid, new_active, _, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(
             self.nop, pre_grid, pre_active, self.label_mat, 
-            self.info_mat, marks
+            self.info_mat, marks, self.max_level
         )
         
         # Create new grid

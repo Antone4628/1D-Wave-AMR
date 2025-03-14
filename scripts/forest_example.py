@@ -15,9 +15,9 @@ from numerical.amr.forest_documented import *
 
 xelem=np.array([-1, -0.4 ,0 ,0.4 ,1])
 
-max_level = 3
+max_level = 4
 
 label_mat, info_mat, active = forest(xelem, max_level)
-print(f'label_mat {label_mat}')
-print(f'info_mat {info_mat}')
+print(f'label_mat: \n {label_mat}')
+print(f'info_mat: \n {info_mat}')
 print(f'active {active}')

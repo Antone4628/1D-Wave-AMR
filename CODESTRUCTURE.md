@@ -10,12 +10,9 @@
 │   │   └── test_config.yaml
 │   ├── results/
 │   │   ├── gamma_c_10.0/
-│   │   │   ├──run_20250226_101107
-│   │   │   │   ├──models/
-│   │   │   │   ├──tensorboard/
-│   │   │   │   ├──evaluation.txt
-│   │   │   │   └── monitor.csv
 │   │   └── gamma_c_25.0/
+│   ├── analyze_model.py
+│   ├── test_training_cycle.py
 │   └── run_experiments.py
 ├── logs/
 │   ├── best_model/
@@ -30,6 +27,9 @@
 │   │   ├── adapt.py
 │   │   ├── forest.py
 │   │   └── projection.py
+│   ├── callbacks/
+│   │   ├── __init__.py
+│   │   └── enhanced_callback.py
 │   ├── dg/
 │   │   ├── __init__.py
 │   │   ├── basis.py
@@ -50,6 +50,7 @@
 ├── scripts/
 │    ├── 1D_wave_amr.py
 │    └── forest_example.py
+├── tensorboard_logs/
 ├── tests/
 │   ├── __init__.py
 │   ├── test_amr/
@@ -61,11 +62,13 @@
 │   │   ├── __init__.py
 │   │   └── manim_test.py
 │   ├── test_RL/
-│   │   ├── __init__.py
-│   │   ├── check_env.py
-│   │   ├── test_env.py
-│   │   └── train_test.py
-├── tensorboard_logs/
+│       ├── __init__.py
+│       ├── check_env.py
+│       ├── test_env.py
+│       └── train_test.py
+├── tools/
+│   ├── __init__.py
+│   └── analyze_tensorboard.py
 ├── training/
 │   ├── configs/
 │   │   └── config.yaml

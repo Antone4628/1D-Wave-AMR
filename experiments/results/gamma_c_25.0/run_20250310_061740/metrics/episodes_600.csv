@@ -1,0 +1,8 @@
+episode,total_reward,length,termination_reason,final_element_count,final_resource_usage,refine_count,coarsen_count,no_change_count,refine_pct,coarsen_pct,no_change_pct
+1,-330.984344,84,Error: name 'pre_action_elements' is not defined,0,0,32,20,32,0.38095238095238093,0.23809523809523808,0.38095238095238093
+2,-191.363584,95,Error: name 'pre_action_elements' is not defined,0,0,35,25,35,0.3684210526315789,0.2631578947368421,0.3684210526315789
+3,-11.042729,68,Error: name 'pre_action_elements' is not defined,0,0,24,8,36,0.35294117647058826,0.11764705882352941,0.5294117647058824
+4,-249.006899,70,Error: name 'pre_action_elements' is not defined,0,0,24,12,34,0.34285714285714286,0.17142857142857143,0.4857142857142857
+5,-307.285358,78,Error: name 'pre_action_elements' is not defined,0,0,29,11,38,0.3717948717948718,0.14102564102564102,0.48717948717948717
+6,26.482018,51,Error: name 'pre_action_elements' is not defined,0,0,23,5,23,0.45098039215686275,0.09803921568627451,0.45098039215686275
+7,-113.29718,65,Error: name 'pre_action_elements' is not defined,0,0,27,5,33,0.4153846153846154,0.07692307692307693,0.5076923076923077

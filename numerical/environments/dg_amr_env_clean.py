@@ -46,7 +46,7 @@ class RewardCalculator:
             float: Computed reward value
         """
         # Accuracy reward (log of solution change)
-        accuracy = 3.0*np.log(abs(delta_u) + self.machine_eps) - np.log(self.machine_eps)
+        accuracy = np.log(abs(delta_u) + self.machine_eps) - np.log(self.machine_eps)
         
         # Resource penalty using barrier function
         resource_penalty = self.calculate_resource_penalty(new_resources)

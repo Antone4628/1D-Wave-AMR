@@ -57,8 +57,8 @@ min_interval = np.min(differences)
 print(f'smallest element has dx: {min_interval}')
 
 max_level = 4         #Max level of refinement
-criterion = 2        #AMR Criterion type
-amr_threshold = 0.01  #threshold for amr marking criterion
+criterion = 1        #AMR Criterion type
+amr_threshold = 0.5  #threshold for amr marking criterion
 cur_level = 0
 nop = 4
 ngl = nop + 1

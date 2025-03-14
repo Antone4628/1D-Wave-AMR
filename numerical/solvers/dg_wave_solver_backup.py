@@ -371,7 +371,7 @@ class DGWaveSolver:
         # Adapt mesh
         new_grid, new_active, _, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(
             self.nop, pre_grid, pre_active, self.label_mat, 
-            self.info_mat, marks
+            self.info_mat, marks, self.max_level
         )
         # Create new grid
         new_coord, new_intma, new_periodicity = create_grid_us(

@@ -19,43 +19,53 @@ PROJECT_ROOT = os.path.abspath(os.path.join(
 sys.path.append(PROJECT_ROOT)
 
 from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
-from numerical.environments.dg_amr_env_clean import DGAMREnv
+from numerical.environments.dg_amr_env import DGAMREnv
+# from numerical.environments.dg_amr_env_clean import DGAMREnv
 from stable_baselines3 import A2C, PPO, DQN
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
 import numpy as np
 import matplotlib.pyplot as plt
+from numerical.callbacks.enhanced_callback import EnhancedMonitorCallback
 
 
-class ExperimentCallback(BaseCallback):
-    """
-    Custom callback for logging and saving experiment progress.
-    """
-    def __init__(self, total_timesteps, log_dir, save_freq=10000, verbose=1):
-        super().__init__(verbose)
-        self.total_timesteps = total_timesteps
-        self.log_dir = log_dir
-        self.save_freq = save_freq
-        self.best_mean_reward = -float('inf')
+
+# class ExperimentCallback(BaseCallback):
+#     """
+#     Custom callback for logging and saving experiment progress.
+#     """
+#     def __init__(self, total_timesteps, log_dir, save_freq=10000, verbose=1):
+#         super().__init__(verbose)
+#         self.total_timesteps = total_timesteps
+#         self.log_dir = log_dir
+#         self.save_freq = save_freq
+#         self.best_mean_reward = -float('inf')
         
-    def _on_step(self) -> bool:
-        # Print current progress periodically
-        if self.n_calls % 100 == 0:  
-            print(f"Progress: {self.num_timesteps}/{self.total_timesteps} steps ({self.num_timesteps/self.total_timesteps*100:.1f}%)")
+#     def _on_step(self) -> bool:
+#         # Print current progress periodically
+#         if self.n_calls % 100 == 0:  
+#             print(f"Progress: {self.num_timesteps}/{self.total_timesteps} steps ({self.num_timesteps/self.total_timesteps*100:.1f}%)")
         
-        # Save model periodically
-        if self.num_timesteps % self.save_freq == 0:
-            model_path = os.path.join(self.log_dir, f"model_{self.num_timesteps}_steps")
-            self.model.save(model_path)
-            if self.verbose > 0:
-                print(f"Saved model at {model_path}")
+#         # Save model periodically
+#         if self.num_timesteps % self.save_freq == 0:
+#             model_path = os.path.join(self.log_dir, f"model_{self.num_timesteps}_steps")
+#             self.model.save(model_path)
+#             if self.verbose > 0:
+#                 print(f"Saved model at {model_path}")
         
-        # Check if we've exceeded total timesteps
-        if self.num_timesteps >= self.total_timesteps:
-            if self.verbose > 0:
-                print(f"Reached {self.total_timesteps} timesteps, stopping training")
-            return False
-        return True
+#         # Check if we've exceeded total timesteps
+#         if self.num_timesteps >= self.total_timesteps:
+#             if self.verbose > 0:
+#                 print(f"Reached {self.total_timesteps} timesteps, stopping training")
+#             return False
+        
+#         # Track new metrics if available in info
+#         if 'took_timestep' in self.locals['infos'][0]:
+#             self.logger.record('time_step/took_timestep', 
+#                               float(self.locals['infos'][0].get('took_timestep', False)))
+        
+        
+#         return True
 
 
 def load_config(config_path):
@@ -100,7 +110,7 @@ def run_experiment(config_path, results_dir=None):
     # Extract key parameters with defaults
     gamma_c = get_parameter(config, "environment.gamma_c", 25.0)
     element_budget = get_parameter(config, "environment.element_budget", 25)
-    max_episode_steps = get_parameter(config, "environment.max_episode_steps", 100)
+    max_episode_steps = get_parameter(config, "environment.max_episode_steps", 200)
     
     total_timesteps = get_parameter(config, "training.total_timesteps", 100000)
     algorithm = get_parameter(config, "training.algorithm", "A2C")
@@ -114,6 +124,11 @@ def run_experiment(config_path, results_dir=None):
     icase = get_parameter(config, "solver.icase", 1)
     initial_elements = get_parameter(config, "solver.initial_elements", np.array([-1, -0.4, 0, 0.4, 1]))
     verbose = get_parameter(config, "solver.verbose", False)
+    
+
+    # Add new parameters to config or provide defaults
+    rl_iterations_per_timestep = get_parameter(config, "environment.rl_iterations_per_timestep", "random")
+    max_rl_iterations = get_parameter(config, "environment.max_rl_iterations", 200)
     
     # Create experiment name
     experiment_name = f"gamma_c_{gamma_c}"
@@ -162,7 +177,11 @@ def run_experiment(config_path, results_dir=None):
         solver=solver,
         element_budget=element_budget,
         gamma_c=gamma_c,
-        max_episode_steps=max_episode_steps
+        max_episode_steps=max_episode_steps,
+        verbose = False,
+        rl_iterations_per_timestep = "random",  # Use random number of iterations before time-stepping
+        max_rl_iterations=200,  # Maximum number of RL iterations before time-stepping
+        debug_training_cycle = False
     )
     
     # Add monitoring
@@ -202,10 +221,18 @@ def run_experiment(config_path, results_dir=None):
         raise ValueError(f"Unsupported algorithm: {algorithm}")
     
     # Create callback
-    callback = ExperimentCallback(
+    # callback = ExperimentCallback(
+    #     total_timesteps=total_timesteps,
+    #     log_dir=model_dir,
+    #     save_freq=total_timesteps // 10  # Save 10 times during training
+    # )
+    # Create callback
+    callback = EnhancedMonitorCallback(
         total_timesteps=total_timesteps,
-        log_dir=model_dir,
-        save_freq=total_timesteps // 10  # Save 10 times during training
+        log_dir=log_dir,
+        save_freq=total_timesteps // 10,  # Save 10 times during training
+        window_size=100,  # Size of sliding window for metrics
+        log_freq=1000     # Log statistics every 1000 steps
     )
     
     # Print training configuration
@@ -246,6 +273,9 @@ def evaluate_model(model, env, num_episodes=5, log_dir=None):
     """Basic model evaluation."""
     rewards = []
     episode_lengths = []
+    # Track time step related metrics
+    total_rl_iterations = 0
+    total_time_steps = 0
     
     for episode in range(num_episodes):
         obs = env.reset()[0]
@@ -261,10 +291,18 @@ def evaluate_model(model, env, num_episodes=5, log_dir=None):
             
             if truncated:
                 break
+                       # Track time steps
+            if info.get('took_timestep', False):
+                total_time_steps += 1
+            total_rl_iterations += 1
+
                 
         rewards.append(total_reward)
         episode_lengths.append(steps)
         print(f"Episode {episode + 1}: reward={total_reward:.2f}, length={steps}")
+
+    avg_rl_per_time = total_rl_iterations / max(1, total_time_steps)
+    print(f"Average RL iterations per time step: {avg_rl_per_time:.2f}")
     
     print(f"\nEvaluation results:")
     print(f"Mean reward: {np.mean(rewards):.2f} ± {np.std(rewards):.2f}")
@@ -273,6 +311,7 @@ def evaluate_model(model, env, num_episodes=5, log_dir=None):
     # Save evaluation results
     if log_dir:
         with open(os.path.join(log_dir, "evaluation.txt"), "w") as f:
+            f.write(f"Average RL iterations per time step: {avg_rl_per_time:.2f}\n")
             f.write(f"Evaluation over {num_episodes} episodes:\n")
             f.write(f"Mean reward: {np.mean(rewards):.2f} ± {np.std(rewards):.2f}\n")
             f.write(f"Mean episode length: {np.mean(episode_lengths):.1f} ± {np.std(episode_lengths):.1f}\n\n")

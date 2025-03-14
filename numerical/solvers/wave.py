@@ -6,7 +6,7 @@ from ..dg.matrices import create_mass_matrix, create_diff_matrix, Fmatrix_upwind
 from ..dg.basis import *
 from ..grid.mesh import create_grid_us
 from ..amr.forest import forest
-from ..amr.adapt import adapt_mesh, adapt_sol, mark, balance_mark, check_balance, enforce_balance
+from ..amr.adapt import adapt_mesh, adapt_sol, mark, balance_mark, check_balance, enforce_balance, adapt_all
 from ..amr.projection import*
 from .utils import *
 
@@ -99,60 +99,50 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
     RM = create_RM_matrix(ngl, nq, wnq, psi)
     PS1, PS2, PG1, PG2 = projections(RM, ngl, nq, wnq, xgl, xnq)
 
+    #Fully refine grid to create appropriate IC
+    level = 0
+    while(level < max_level):
+        #     # Get refinement marks
+        marks1 = mark(active, label_mat, intma, qp, criterion, amr_threshold)
+        #MAK hack
+        marks = np.ones_like(marks1)
+        pre_marks = marks
+        pre_active = active  
+        pre_grid = grid
+        pre_nelem = nelem
+        pre_intma = intma
+        pre_coord = coord
+        pre_npoin_dg = npoin_dg
+    
+        new_grid, new_active, ref_marks, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(nop, pre_grid, pre_active, label_mat, info_mat, marks, max_level)
+        new_coord, new_intma, periodicity = create_grid_us(ngl, new_nelem, npoin_cg, new_npoin_dg, xgl, new_grid)
+        
+        # Project solution
+        q_ad = adapt_sol(qp, pre_coord, marks, pre_active, label_mat, PS1, PS2, PG1, PG2, ngl)
+        
+        # Update for next level
+        qp = q_ad
+        active = new_active
+        nelem = new_nelem
+        intma = new_intma
+        coord = new_coord
+        grid = new_grid
+        npoin_dg = new_npoin_dg        
+            
+        level += 1
+    
+
+
+    qe, u = exact_solution(coord, npoin_dg, time, icase)
+    q0 = qe
+    qp = q0
+    
     # # first fram will be IC
     plots.append(qp.copy())
     exact.append(qe.copy())
     grids.append(coord.copy())
     xelems.append(grid.copy())
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # level = 0
-    # while(level <= max_level):
-    #     # Get refinement marks
-    #     marks = mark(active, label_mat, intma, qp)
-
-    #     pre_marks = marks
-    #     pre_active = active  
-    #     pre_grid = grid
-    #     pre_nelem = nelem
-    #     pre_intma = intma
-    #     pre_coord = coord
-    #     pre_npoin_dg = npoin_dg
-
-
-    #     # Adapt mesh
-    #     new_grid, new_active, ref_marks, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(nop, pre_grid, pre_active, label_mat, info_mat, marks)
-    #     new_coord, new_intma, periodicity = create_grid_us(ngl, new_nelem, npoin_cg, new_npoin_dg, xgl, new_grid)
-        
-
-    #     # Project solution
-    #     # q_ad = adapt_sol(qp, pre_coord, marks, pre_active, label_mat, PS1, PS2, PG1, PG2, ngl)
-
-    #     # Update for next level
-    #     # qp = q_ad
-    #     active = new_active
-    #     nelem = new_nelem
-    #     intma = new_intma
-    #     coord = new_coord
-    #     grid = new_grid
-    #     npoin_dg = new_npoin_dg
-
-    #     qp, u = exact_solution(new_coord, new_npoin_dg, time, icase)
-
-
-
-    #     level += 1
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # qp, u = exact_solution(new_coord, new_npoin_dg, time, icase)
-    # plots.append(qp.copy())
-    # exact.append(qe.copy())
-    # grids.append(coord.copy())
-    # xelems.append(grid.copy())
-
-
-
-    # qp, u = exact_solution(coord, npoin_dg, time, icase)
-    # # qp = qe
     
     while (time < time_final):
         time = time + dt
@@ -165,6 +155,7 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
         #~~~~~~~~~~~~~~~~
 
         #Insert refinement routines here
+
 
         level = 0
         while(level <= max_level):
@@ -192,7 +183,7 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
             # print_active_levels(active, label_mat)
 
 
-            new_grid, new_active, ref_marks, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(nop, pre_grid, pre_active, label_mat, info_mat, marks)
+            new_grid, new_active, ref_marks, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(nop, pre_grid, pre_active, label_mat, info_mat, marks, max_level)
             new_coord, new_intma, periodicity = create_grid_us(ngl, new_nelem, npoin_cg, new_npoin_dg, xgl, new_grid)
 
 
@@ -231,73 +222,12 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
                 grid = bal_grid
                 npoin_dg = bal_npoin_dg
                 periodicity = bal_periodicity
-
-            # #~~~~~~~~~~~~~~~~~~~~~~~~~~~``
-            # bal_ctr = 0
-            # while (bal_ctr <= max_level):
-            #     if check_balance(active, label_mat):
-            #         # print(f'grid is balanced. level: {level}')
-            #         bal_ctr = max_level + 1
-            #     else:
-            #         print(f'balancing grid. time step: {anim}, adaptation step: {level}, balance step: {bal_ctr}')
-
-            #         bal_q, bal_active, bal_nelem, bal_intma, bal_coord, bal_grid, bal_npoin_dg, bal_periodicity = enforce_balance(active, 
-            #                                                                                                      label_mat, 
-            #                                                                                                      grid, 
-            #                                                                                                      info_mat, 
-            #                                                                                                      nop, 
-            #                                                                                                      coord, 
-            #                                                                                                      PS1, PS2, PG1, PG2, 
-            #                                                                                                      ngl, xgl, 
-            #                                                                                                      qp)
-
-            #         # bal_marks = balance_mark(active, label_mat)
-            #         # pre_active = active  
-            #         # pre_grid = grid
-            #         # pre_coord = coord
-
-            #         # bal_grid, bal_active, ref_marks, bal_nelem, npoin_cg, bal_npoin_dg = adapt_mesh(nop, grid, active, label_mat, info_mat, bal_marks)
-            #         # bal_coord, bal_intma, periodicity = create_grid_us(ngl, bal_nelem, npoin_cg, bal_npoin_dg, xgl, bal_grid)
-            #         # bal_q = adapt_sol(qp, pre_coord, bal_marks, pre_active, label_mat, PS1, PS2, PG1, PG2, ngl)
-
-            #         # Update for next level
-            #         qp = bal_q
-            #         active = bal_active
-            #         nelem = bal_nelem
-            #         intma = bal_intma
-            #         coord = bal_coord
-            #         grid = bal_grid
-            #         npoin_dg = bal_npoin_dg
-            #         periodicity = bal_periodicity
-
-            #         bal_ctr += 1
-            # #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
-
-            # print(f'balance marks: {balance_marks}')
-            # new_grid, new_active, ref_marks, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(nop, grid, active, label_mat, info_mat, balance_marks)
-            # new_coord, new_intma, periodicity = create_grid_us(ngl, new_nelem, npoin_cg, new_npoin_dg, xgl, new_grid)
-
-            
-
-
-            # plots.append(qp.copy())
-            # exact.append(qe.copy())
-            # grids.append(coord.copy())
-            # xelems.append(grid.copy())
             
             level += 1
         
-        # print(f'coord size: {coord.shape}')
-        # print(f'grid size: {grid.shape}')
-        # print(f'active size: {active.shape}')
-        # print(f'intma size: {intma.shape}')
-        # print(f'intma:')
-        # print(intma)
-        # print(f'qp size: {qp.shape}')
-
-
+        #AMR 
+        #qp, active, nelem, intma, coord, grod, npoin_dg, periodicity = adapt_all(qp,intma,active,grid,nelem,nop,ngl,coord,npoin_dg,npoin_cg,xgl,label_mat,info_mat,max_level,criterion,PS1,PS2,PG1,PG2)        
         
-
         Me = create_mass_matrix(intma, coord, nelem, ngl, nq, wnq, psi)
         # print(f'Me good')
         De = create_diff_matrix(ngl, nq, wnq, psi, dpsi)
@@ -356,7 +286,10 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
         anim +=1
 
 
+    qe, u = exact_solution(coord, npoin_dg, time, icase)
 
+    print("L2 norm = ",norm(qp-qe)/norm(qe))
+    
 
 
     return q0, time, plots, exact, grids, xelems, nelem_history,
