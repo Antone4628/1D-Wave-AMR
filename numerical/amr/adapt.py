@@ -36,19 +36,24 @@ def mark(active_grid, label_mat, intma, q, criterion, threshold):
     
     # Process each active element
     for idx, (elem, parent) in enumerate(zip(active_grid, parents)):
+
         # Get element solution values
         elem_nodes = intma[:, idx]
-        elem_nodes_left = intma[:,idx-1]
-
+        elem_nodes_left  = intma[:,idx-1]
+        if idx<n_active-1:
+            elem_nodes_right = intma[:,idx+1]
+        else:
+            elem_nodes_right = intma[:,0] #needs proper periodicity treatment - MAK
 
         elem_sols = q[elem_nodes]
-        elem_sols_left = q[elem_nodes_left]
+        elem_sols_left  = q[elem_nodes_left]
+        elem_sols_right = q[elem_nodes_right]
 
         
         max_sol = np.max(elem_sols)
 
         jump_left = abs(elem_sols[0]-elem_sols_left[-1])
-        jump_right = 0
+        jump_right = abs(elem_sols[-1]-elem_sols_right[0])
 
         # Check refinement criteria
         if (criterion == 1):

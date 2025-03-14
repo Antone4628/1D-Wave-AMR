@@ -288,8 +288,8 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
 
     qe, u = exact_solution(coord, npoin_dg, time, icase)
 
-    print("L2 norm = ",norm(qp-qe)/norm(qe))
-    
+    print("L2 norm   = ",norm(qp-qe)/norm(qe))
+    print("Avg nelem = ",np.mean(nelem_history)) 
 
 
     return q0, time, plots, exact, grids, xelems, nelem_history,
