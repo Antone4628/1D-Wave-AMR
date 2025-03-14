@@ -33,6 +33,30 @@ def mark(active_grid, label_mat, intma, q, criterion, threshold):
     # Pre-compute label matrix lookups
     parents = label_mat[active_grid - 1, 1]
     children = label_mat[active_grid - 1, 2:4]
+
+    # Pre-compute average jump
+    if (criterion==2):
+        avg_jump = 0
+        for idx, (elem, parent) in enumerate(zip(active_grid, parents)):
+            
+            # Get element solution values
+            elem_nodes = intma[:, idx]
+            elem_nodes_left  = intma[:,idx-1]
+            if idx<n_active-1:
+                elem_nodes_right = intma[:,idx+1]
+            else:
+                elem_nodes_right = intma[:,0] #needs proper periodicity treatment - MAK
+                
+                elem_sols = q[elem_nodes]
+                elem_sols_left  = q[elem_nodes_left]
+                elem_sols_right = q[elem_nodes_right]
+                
+                jump_left = abs(elem_sols[0]-elem_sols_left[-1])
+                jump_right = abs(elem_sols[-1]-elem_sols_right[0])
+                
+                avg_jump += max(jump_left,jump_right)
+
+
     
     # Process each active element
     for idx, (elem, parent) in enumerate(zip(active_grid, parents)):
@@ -59,7 +83,7 @@ def mark(active_grid, label_mat, intma, q, criterion, threshold):
         if (criterion == 1):
             S = max_sol
         elif (criterion == 2):
-            S = max(jump_left,jump_right)
+            S = max(jump_left,jump_right)/(avg_jump+1e-16)
         
         if S >= threshold and children[idx, 0] != 0:
             # if max_sol >= - 0.5 and children[idx, 0] != 0:
