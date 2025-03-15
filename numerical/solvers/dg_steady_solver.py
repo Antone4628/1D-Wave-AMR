@@ -4,8 +4,6 @@ Discontinuous Galerkin Wave Solver with Adaptive Mesh Refinement
 This module implements a high-order Discontinuous Galerkin (DG) solver for the 1D wave equation
 with h-adaptation capabilities using hierarchical mesh refinement. The solver uses:
 - Legendre-Gauss-Lobatto (LGL) nodal basis functions
-- Upwind numerical fluxes for interface treatment
-- Low-storage Runge-Kutta time integration
 - Hierarchical mesh refinement with solution projection
 """
 
@@ -17,7 +15,7 @@ from ..grid.mesh import create_grid_us
 from ..amr.forest import forest
 from ..amr.adapt import adapt_mesh, adapt_sol, mark, check_balance, enforce_balance
 from ..amr.projection import projections
-from .utils import exact_solution
+from .utils import exact_solution, eff
 
 class DGWaveSolver:
     """
@@ -43,7 +41,7 @@ class DGWaveSolver:
         q (array): Current solution vector
         wave_speed (float): Wave propagation speed for the equation
     """
-    def __init__(self, nop, xelem, max_elements, max_level, courant_max=0.1, icase=1):
+    def __init__(self, nop, xelem, max_elements, max_level, icase=7):
         self.nop = nop
         self.xelem = xelem
         self.max_elements = max_elements 
@@ -59,7 +57,8 @@ class DGWaveSolver:
         self.psi, self.dpsi = Lagrange_basis(self.ngl, self.nq, self.xgl, self.xnq)
         self._initialize_mesh()
         self.q = self._initialize_solution()
-        self._compute_timestep(courant_max)
+        self.f = self._initialize_f()
+        # self._compute_timestep(courant_max)
         self._initialize_projections()
         
     def _initialize_mesh(self):
@@ -76,10 +75,15 @@ class DGWaveSolver:
             self.coord, self.npoin_dg, self.time, self.icase
         )
         return q
+    
+    def _initialize_f(self):
+        f = eff(self.coord, self.npoin_dg, 1)
+        return f
+    
         
-    def _compute_timestep(self, courant_max):
-        dx_min = np.min(np.diff(self.xelem)) / (2**self.max_level)
-        self.dt = courant_max * dx_min / self.wave_speed
+    # def _compute_timestep(self, courant_max):
+    #     dx_min = np.min(np.diff(self.xelem)) / (2**self.max_level)
+    #     self.dt = courant_max * dx_min / self.wave_speed
         
     def _initialize_projections(self):
         RM = create_RM_matrix(self.ngl, self.nq, self.wnq, self.psi)
@@ -89,23 +93,6 @@ class DGWaveSolver:
 
 
 
-
-
-    # def _update_matrices(self):
-    #     self.Me = create_mass_matrix(
-    #         self.intma, self.coord, self.nelem, self.ngl, 
-    #         self.nq, self.wnq, self.psi
-    #     )
-    #     self.De = create_diff_matrix(self.ngl, self.nq, self.wnq, self.psi, self.dpsi)
-    #     self.M, self.D = Matrix_DSS(
-    #         self.Me, self.De, self.wave_speed, self.intma, 
-    #         self.periodicity, self.ngl, self.nelem, self.npoin_dg
-    #     )
-    #     self.F = Fmatrix_upwind_flux(
-    #         self.intma, self.nelem, self.npoin_dg, self.ngl, self.wave_speed
-    #     )
-    #     R = self.D - self.F
-    #     self.Dhat = np.linalg.solve(self.M, R)
     def _update_matrices(self):
         """Update mass and differentiation matrices with condition number checking"""
         self.Me = create_mass_matrix(
@@ -126,102 +113,15 @@ class DGWaveSolver:
         if cond_num > 1e10:  # Choose appropriate threshold
             raise ValueError(f"Mass matrix condition number too high: {cond_num}")
             
-        self.F = Fmatrix_upwind_flux(
-            self.intma, self.nelem, self.npoin_dg, self.ngl, self.wave_speed
-        )
-        R = self.D - self.F
-        
-        try:
-            self.Dhat = np.linalg.solve(self.M, R)
-        except np.linalg.LinAlgError:
-            print("Matrix solve failed. Current mesh configuration:")
-            print(f"Number of elements: {self.nelem}")
-            print(f"Element sizes: {np.diff(self.xelem)}")
-            raise    
+        # self.F = Fmatrix_upwind_flux(
+        #     self.intma, self.nelem, self.npoin_dg, self.ngl, self.wave_speed
+        # )
+        # R = self.D - self.F
+
+        Dinv = np.linalg.inv(self.D)
+        self.R = np.matmul(Dinv, self.M)
+           
   
-
-
-
-    # def adapt_mesh(self, criterion=1, marks_override=None, element_budget=None):
-    #     """
-    #     Perform mesh adaptation based on solution properties.
-    #     Respects element_budget constraint.
-    #     """
-    #     # Get refinement marks based on solution properties
-    #     marks = mark(self.active, self.label_mat, self.intma, self.q, criterion)
-
-    #     if marks_override is not None:
-    #         for idx, mark_val in marks_override.items():
-    #             # Check budget before refinement
-    #             if mark_val == 1 and element_budget is not None:
-    #                 if len(self.active) >= element_budget:
-    #                     print(f"Budget limit reached ({element_budget} elements). Canceling refinement.")
-    #                     marks[idx] = 0
-    #                     continue
-    #             marks[idx] = mark_val
-
-        
-    #     # Store pre-adaptation state
-    #     pre_grid = self.xelem
-    #     pre_active = self.active
-    #     pre_nelem = self.nelem
-    #     pre_coord = self.coord
-    #     pre_npoin_dg = self.npoin_dg
-        
-    #     # Adapt mesh
-    #     new_grid, new_active, _, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(
-    #         self.nop, pre_grid, pre_active, self.label_mat, 
-    #         self.info_mat, marks
-    #     )
-
-    #     # Create new grid
-    #     new_coord, new_intma, new_periodicity = create_grid_us(
-    #         self.ngl, new_nelem, npoin_cg, new_npoin_dg, 
-    #         self.xgl, new_grid
-    #     )
-
-    #     # Project solution
-    #     q_new = adapt_sol(
-    #         self.q, pre_coord, marks, pre_active, self.label_mat,
-    #         self.PS1, self.PS2, self.PG1, self.PG2, self.ngl
-    #     )
-
-    #     # Update solver state
-    #     self.q = q_new
-    #     self.active = new_active
-    #     self.nelem = new_nelem
-    #     self.intma = new_intma
-    #     self.coord = new_coord
-    #     self.xelem = new_grid
-    #     self.npoin_dg = new_npoin_dg
-    #     self.periodicity = new_periodicity
-
-    #     # Add balancing loop here
-    #     if not check_balance(self.active, self.label_mat):
-    #         bal_q, bal_active, bal_nelem, bal_intma, bal_coord, bal_grid, bal_npoin_dg, bal_periodicity = enforce_balance(self.active, 
-    #                                                                                             self.label_mat, 
-    #                                                                                             self.xelem, 
-    #                                                                                             self.info_mat, 
-    #                                                                                             self.nop, 
-    #                                                                                             self.coord, 
-    #                                                                                             self.PS1, self.PS2, self.PG1, self.PG2, 
-    #                                                                                             self.ngl, self.xgl, 
-    #                                                                                             self.q, self.max_level)
-
-        
-    #         self.q = bal_q
-    #         self.active = bal_active
-    #         self.nelem = bal_nelem
-    #         self.intma = bal_intma
-    #         self.coord = bal_coord
-    #         self.xelem = bal_grid
-    #         self.npoin_dg = bal_npoin_dg
-    #         self.periodicity = bal_periodicity
-
-
-        
-    #     # Update matrices
-    #     self._update_matrices()
 
     def check_mesh_quality(self, grid):
         """
@@ -371,7 +271,7 @@ class DGWaveSolver:
         # Adapt mesh
         new_grid, new_active, _, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(
             self.nop, pre_grid, pre_active, self.label_mat, 
-            self.info_mat, marks
+            self.info_mat, marks, self.max_level
         )
         # Create new grid
         new_coord, new_intma, new_periodicity = create_grid_us(
@@ -413,21 +313,7 @@ class DGWaveSolver:
                 self.q, 
                 self.max_level
             )
-            
-            # # Check if balance enforcement would exceed budget
-            # if element_budget is not None and len(bal_active) > element_budget:
-            #     print(f"Balance enforcement would exceed budget ({len(bal_active)} > {element_budget})")
-            #     # Revert to pre-adaptation state
-            #     self.q = pre_q
-            #     self.active = pre_active
-            #     self.nelem = pre_nelem
-            #     self.intma = pre_intma
-            #     self.coord = pre_coord
-            #     self.xelem = pre_grid
-            #     self.npoin_dg = pre_npoin_dg
-            #     self.periodicity = pre_periodicity
-            #     raise ValueError("Balance enforcement would exceed element budget")
-                
+               
             # Update with balanced state
             self.q = bal_q
             self.active = bal_active
@@ -444,71 +330,32 @@ class DGWaveSolver:
         self.verify_state() 
 
 
-    
-    def step(self, dt=None):
+
+    def step(self):
         """
         Take single time step with balance verification.
         """
-        if dt is None:
-            dt = self.dt
-                
-        # Check balance before step
+        print(f'shape of R: {np.shape(self.R)}')
+        print(f'shape of f: {np.shape(self.f)}')
+        self.q = self.R @ self.f
         
-        RKA = np.array([0,
-                    -567301805773.0/1357537059087,
-                    -2404267990393.0/2016746695238,
-                    -3550918686646.0/2091501179385,
-                    -1275806237668.0/842570457699])
-        
-        RKB = np.array([1432997174477.0/9575080441755,
-                    5161836677717.0/13612068292357,
-                    1720146321549.0/2090206949498,
-                    3134564353537.0/4481467310338,
-                    2277821191437.0/14882151754819])
-        
-        dq = np.zeros(self.npoin_dg)
-        qp = self.q.copy()
-        
-        for s in range(len(RKA)):
-            R = self.Dhat @ qp
-            
-            for i in range(self.npoin_dg):
-                dq[i] = RKA[s]*dq[i] + dt*R[i]
-                qp[i] = qp[i] + RKB[s]*dq[i]
-                
-            if self.periodicity[-1] == self.periodicity[0]:
-                qp[-1] = qp[0]
-                
-        self.q = qp
-        self.time += dt
-
         # Check balance after step  
 
-    def solve(self, time_final):
-        times = [self.time]
+    def solve(self, max_cycles=6):
         solutions = [self.q.copy()]
         grids = [self.xelem.copy()]
         coords = [self.coord.copy()]
         
-        step_count = 0
-        while self.time < time_final:
-            dt = min(self.dt, time_final - self.time)
-            # print(f"\nTimestep {step_count}, Time: {self.time:.3f}")
-            
-            # Single adapt_mesh call 
+        # Multiple adapt_mesh cycles for convergence
+        for cycle in range(max_cycles):
             self.adapt_mesh()
+            self.step()  # Update solution with new mesh
             
-            # Take time step
-            self.step(dt)
-            
-            # Store results
-            times.append(self.time)
             solutions.append(self.q.copy())
             grids.append(self.xelem.copy())
             coords.append(self.coord.copy())
-            step_count += 1
             
-        return times, solutions, grids, coords 
+        return solutions, grids, coords
     # def solve(self, time_final):
     #     times = [self.time]
     #     solutions = [self.q.copy()]

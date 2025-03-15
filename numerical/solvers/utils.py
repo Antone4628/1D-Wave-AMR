@@ -25,7 +25,7 @@ def exact_solution(coord, npoin, time, icase):
     rc = 0.125
     sigma = np.sqrt(sigma0**2 + 2*visc*time)
     u = w*x1
-    alph = 10.0
+    alph = 3.0
     # beta = 64.0
     beta = 256.0
     
@@ -59,13 +59,59 @@ def exact_solution(coord, npoin, time, icase):
             qe[i] = np.sin(((x + 1)*np.pi)/2.0)
 
         elif(icase ==7):
-            qe[i] = 1-np.tanh(alph*(1-4*((x-xbar)-1/4)))
+            qe[i] = 1-np.tanh(alph*(1-4*((x)-1/4)))
+
+        elif(icase == 8):
+            qe[i]= np.sin(np.pi * x)
             # print(f"Just assigned qe[{i}] = {qe[i]}")  # Debug print
         
         # print(f"After iteration {i}, qe = {qe}")  # Debug print
     
     # print("Final qe before return:", qe)  # Debug print
     return qe, u
+
+def eff(coord, npoin, fcase, u):
+    """
+    Computes exact solution for test cases.
+    
+    Args:
+        coord (array): Grid coordinates
+        npoin (int): Number of points
+        time (float): Current time
+        icase (int): Test case number (1-6)
+        
+    Returns:
+        tuple: (qe, u) Solution values and wave speed
+    """
+    # constants
+    w = 1
+    xc = 0
+    xmin = -1
+    xmax = 1
+    x1 = xmax-xmin
+    sigma0 = 0.125
+    rc = 0.125
+    u = w*x1
+    alph = 3.0
+    # beta = 64.0
+    beta = 256.0
+    
+    # initialize
+    f = np.zeros(npoin)
+    # print("Initial qe:", qe)  # Debug print
+    
+    # timec = time - np.floor(time)
+
+    
+    for i in range(npoin):
+        x = coord[i]
+        
+        if(fcase == 7):
+            f[i] = (4*alph)/((np.cosh(alph*(1-4*(x-1/4))))**2)
+        elif(fcase == 8 ):
+            f[i] =  2*np.pi * np.cos(np.pi * x)
+
+    return f
 
 def L2_err_norm(nop, nelem, q0, qe):
     """

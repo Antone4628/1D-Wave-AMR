@@ -154,9 +154,47 @@ def create_mass_matrix_vectorized(intma, coord, nelem, ngl, nq, wnq, psi):
 
     return e_mass
 
+# def Fmatrix_upwind_flux(intma, nelem, npoin, ngl, u):
+#     """
+#     Creates upwind flux matrix for DG formulation.
+    
+#     Args:
+#         intma (array): Element-node connectivity
+#         nelem (int): Number of elements  
+#         npoin (int): Number of global points
+#         ngl (int): Points per element
+#         u (float): Wave speed
+        
+#     Returns:
+#         array: Flux matrix [npoin,npoin]
+#     """
+#     Fmat = np.zeros([npoin,npoin], dtype=int)
+
+#     for e in range(nelem):
+#         #Visit the left-most DOF of each element
+#         i=0
+#         I=intma[i][e]
+#         #shift left
+#         Im = I-1
+#         if(Im < 1):
+#             Im = npoin-1 #periodicity
+#         Fmat[I][Im]=-1
+
+#         #Visit right-most DOF of each element
+#         i=ngl-1
+#         I=intma[i][e]
+#         #shift left
+#         Ip = I+1
+#         if(Ip > npoin):
+#             Ip=1 #periodicity
+#         Fmat[I][I]=1
+
+#     Fmat = Fmat*u
+#     return Fmat
+
 def Fmatrix_upwind_flux(intma, nelem, npoin, ngl, u):
     """
-    Creates upwind flux matrix for DG formulation.
+    Creates upwind flux matrix for DG formulation with fixed indexing.
     
     Args:
         intma (array): Element-node connectivity
@@ -168,28 +206,33 @@ def Fmatrix_upwind_flux(intma, nelem, npoin, ngl, u):
     Returns:
         array: Flux matrix [npoin,npoin]
     """
-    Fmat = np.zeros([npoin,npoin], dtype=int)
+    # Change 1: Use float instead of int for numerical precision
+    Fmat = np.zeros([npoin, npoin], dtype=float)
 
     for e in range(nelem):
-        #Visit the left-most DOF of each element
-        i=0
-        I=intma[i][e]
-        #shift left
-        Im = I-1
-        if(Im < 1):
-            Im = npoin-1 #periodicity
-        Fmat[I][Im]=-1
+        # Visit the left-most DOF of each element
+        i = 0
+        I = intma[i][e]
+        # shift left
+        Im = I - 1
+        # Change 2: Correct check for 0-based indexing
+        if Im < 0:
+            # Change 3: Correct periodic wrapping
+            Im = npoin - 1  # Last index in 0-based indexing
+        Fmat[I][Im] = -1
 
-        #Visit right-most DOF of each element
-        i=ngl-1
-        I=intma[i][e]
-        #shift left
-        Ip = I+1
-        if(Ip > npoin):
-            Ip=1 #periodicity
-        Fmat[I][I]=1
+        # Visit right-most DOF of each element
+        i = ngl - 1
+        I = intma[i][e]
+        # shift right (not left as the comment incorrectly states)
+        Ip = I + 1
+        # Change 4: Correct check for 0-based indexing
+        if Ip >= npoin:
+            # Change 5: Correct periodic wrapping
+            Ip = 0  # First index in 0-based indexing
+        Fmat[I][I] = 1
 
-    Fmat = Fmat*u
+    Fmat = Fmat * u
     return Fmat
 
 def Matrix_DSS(Me, De, u, intma, periodicity, ngl, nelem, npoin):
