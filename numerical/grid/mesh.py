@@ -53,8 +53,10 @@ def create_grid_us(ngl, nelem, npoin_cg, npoin_dg, xgl, xelem):
 
 
     #Constants
-    xmin = -1
-    xmax = 1
+    # xmin = -1
+    xmin = xelem[0]
+    # xmax = 1
+    xmax = xelem[-1]
 #     dx = (xmax-xmin)/nelem
     coord_cg = np.zeros(npoin_cg)
     coord_dg = np.zeros(npoin_dg)

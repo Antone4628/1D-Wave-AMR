@@ -1,0 +1,2 @@
+episode,total_reward,length,termination_reason,final_element_count,final_resource_usage,refine_count,coarsen_count,no_change_count,refine_pct,coarsen_pct,no_change_pct
+1,-1305.655495,65,Budget exceeded (pre-action),0,0,23,17,25,0.35384615384615387,0.26153846153846155,0.38461538461538464

@@ -43,8 +43,9 @@ print(f'Smallest initial element has dx: {np.min(differences)}')
 max_level = 4         # Max level of refinement
 nop = 4              # Polynomial order
 courant_max = 0.1    # CFL number
-time_final = 0.2    # Final time
+time_final = 1    # Final time
 icase = 1            # Test case number (1: Gaussian)
+periodic = True
 
 # Calculate smallest possible element size after refinement
 dx_min = np.min(differences)/(2**max_level)
@@ -57,7 +58,8 @@ solver = DGWaveSolver(
     max_elements=40,
     max_level=max_level,
     courant_max=courant_max,
-    icase=icase
+    icase=icase,
+    periodic = periodic
 )
 
 print(f'Courant: {solver.wave_speed*solver.dt/dx_min:.6f}')
@@ -74,7 +76,7 @@ plt.style.use('ggplot')
 
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.set_xlim([-1, 1])
-ax.set_ylim([-0.1, 2.2])
+ax.set_ylim([-0.1, 1.2])
 ax.set_xticks(xelem)
 ax.tick_params(axis='x', rotation=90, labelsize=8)
 ax.set_title(f'{nelem} initial elements, full AMR to level {max_level}, dt = {solver.dt:.6f}')

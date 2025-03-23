@@ -19,7 +19,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(
 sys.path.append(PROJECT_ROOT)
 
 from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
-from numerical.environments.dg_amr_env import DGAMREnv
+from numerical.environments.dg_amr_env_clean import DGAMREnv
 # from numerical.environments.dg_amr_env_clean import DGAMREnv
 from stable_baselines3 import A2C, PPO, DQN
 from stable_baselines3.common.monitor import Monitor

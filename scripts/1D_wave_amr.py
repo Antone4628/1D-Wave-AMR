@@ -56,7 +56,7 @@ print(f'element sizes: {differences}')
 min_interval = np.min(differences)
 print(f'smallest element has dx: {min_interval}')
 
-max_level = 4         #Max level of refinement
+max_level = 1         #Max level of refinement
 criterion = 1        #AMR Criterion type
 cur_level = 0
 nop = 4
@@ -82,6 +82,7 @@ iplot_solution = 1          #Switch to Plor of Not
 iplot_matrices = 0          #??????
 
 icase = 1                 #case number: 1 is a Gaussian, 2 is a square wave, 3 is a Gaussian with source, and 4 is a square wave with source
+periodic = True
 xmu = 0.05                  #filtering strength: 1 is full strength and 0 is no filter
 ifilter = 0                 #time-step frequency that the filter is applied. 0=never, 1 = every time-step
 
@@ -121,7 +122,8 @@ qe, u = exact_solution(coord, npoin, time, icase)
 #Compute Courant Number
 dx = coord[1]-coord[0]
 
-# dt = Courant_max*dx/u
+
+dt = Courant_max*dx/u
 dt_opt = Courant_max*dx_min/u
 print(f'dt formula value: {dt_opt}')
 
@@ -149,7 +151,7 @@ Mmatrix, Dmatrix = Matrix_DSS(Me, De, u, intma, periodicity, ngl, nelem, npoin)
 
 #Apply BCs
 if(flux_type == 2):
-    Fmatrix = Fmatrix_upwind_flux(intma, nelem, npoin, ngl, u)
+    Fmatrix = Fmatrix_upwind_flux(intma, nelem, npoin, ngl, u, periodic)
 
 Rmatrix = Dmatrix - Fmatrix
 
@@ -159,7 +161,7 @@ Dmatrix_hat = np.linalg.solve(Mmatrix,Rmatrix)
 
 
 #Time Integration
-q0, time, plots, exact, grids, xelems = ti_LSRK_amr(q0, Dmatrix_hat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, time_final, dt, 1, max_level, criterion)
+q0, time, plots, exact, grids, xelems = ti_LSRK_amr(q0, Dmatrix_hat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, time_final, dt, 1, max_level, criterion, periodic)
    
 # coord, q0, qe, L2_norm, err, plots, grids, xelems = wave_solve(nop, nelem, xelem, integration_points, integration_type, space_method_type, icase, Courant_max, flux_type, time_final, max_level)
 

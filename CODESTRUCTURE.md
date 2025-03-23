@@ -10,7 +10,11 @@
 │   │   └── test_config.yaml
 │   ├── results/
 │   │   ├── gamma_c_10.0/
-│   │   └── gamma_c_25.0/
+│   │   ├── gamma_c_25.0/
+│   │   └── gamma_c_50.0/
+│   │       ├── run_20250321_201810/
+│   │           ├── models/
+│   │               └── final_model.zip
 │   ├── analyze_model.py
 │   ├── test_training_cycle.py
 │   └── run_experiments.py

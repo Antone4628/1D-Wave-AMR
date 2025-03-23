@@ -12,7 +12,7 @@ from .utils import *
 
 
 def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, time_final, dt, 
-                icase, max_level, criterion):
+                icase, max_level, criterion, periodic):
     """
     Low-storage Runge-Kutta time integration with AMR.
     
@@ -304,7 +304,7 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
         # print(f'De good')
         Mmatrix, Dmatrix = Matrix_DSS(Me, De, u, intma, periodicity, ngl, nelem, npoin_dg)
         # print(f'DSS good')
-        Fmatrix = Fmatrix_upwind_flux(intma, nelem, npoin_dg, ngl, u)
+        Fmatrix = Fmatrix_upwind_flux(intma, nelem, npoin_dg, ngl, u, periodic)
         Rmatrix = Dmatrix - Fmatrix
         
         Dhat = np.linalg.solve(Mmatrix,Rmatrix)
@@ -473,3 +473,354 @@ def ti_LSRK_amr(q0, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, 
 #     err = []
 
 #     return coord, q0, qe, L2_norm, err, plots, grids, xelems
+
+
+def ti_LSRK_steady(q0, fe, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, time_final, dt, 
+                icase, max_level, criterion):
+    """
+    Low-storage Runge-Kutta time integration with AMR.
+    
+    Args:
+        q0 (array): Initial solution
+        Dhat (array): Spatial operator matrix
+        periodicity (array): Periodic boundary mapping
+        xgl (array): LGL nodes
+        xelem (array): Element boundaries
+        wnq (array): Quadrature weights
+        psi, dpsi (array): Basis functions and derivatives
+        u (float): Wave speed
+        time (float): Current time
+        time_final (float): End time
+        dt (float): Time step
+        icase (int): Test case
+        max_level (int): Max refinement level
+        criterion (int): Marking criterion
+        
+    Returns:
+        tuple: (q0, time, plots, exact, grids, xelems)
+    """
+# qe, u = exact_solution(coord, npoin, time, icase)
+
+    ngl = int(len(xgl))
+    nop = ngl - 1
+    nq  = int(len(wnq))
+    nelem = int(len(q0)/ngl)
+    print(f'nelem: {nelem}')
+    npoin_cg = nop*nelem + 1
+    npoin_dg = ngl*nelem
+    Npoin = npoin_dg
+    label_mat, info_mat, active = forest(xelem, max_level)
+    coord,  intma, periodicity  = create_grid_us(ngl,nelem,npoin_cg, Npoin ,xgl, xelem)
+    qe, u = exact_solution(coord, npoin_dg, time, icase)
+
+
+#     print(f'timesteps: {time_final/dt}')
+    frames = np.ceil(time_final/dt)
+#     print(f'frames: {frames}')
+    cols = int(len(q0))
+    rows = int(frames)
+    # plots = np.zeros((rows, cols))
+    plots = []
+    exact = []
+    grids = []
+    xelems = []
+    # exact = np.zeros((rows, cols))
+
+
+
+
+    RKA = np.array([0,
+       (-567301805773) / (1357537059087),
+       (-2404267990393) / (2016746695238),
+       (-3550918686646) / (2091501179385),
+       (-1275806237668) / (842570457699 )])
+
+    RKB = np.array([(1432997174477) / (9575080441755 ),
+       (5161836677717) / (13612068292357),
+       (1720146321549) / (2090206949498 ),
+       (3134564353537) / (4481467310338 ),
+       (2277821191437) / (14882151754819)])
+
+    RKC = np.array([0,
+       (1432997174477) / (9575080441755),
+       (2526269341429) / (6820363962896),
+       (2006345519317) / (3224310063776),
+       (2802321613138) / (2924317926251)])
+
+    Npoin = len(q0) #also use for npoin_dg
+#     print(f'Npoin = {Npoin}')
+    # dq = np.zeros(Npoin)
+    qp=q0
+    stages=len(RKA)
+#     print(f'stages = {stages}')
+
+    #time integration:
+    anim = 0
+    grid = xelem
+
+
+    # # Get Red Mass matrix and projection matrices
+    RM = create_RM_matrix(ngl, nq, wnq, psi)
+    PS1, PS2, PG1, PG2 = projections(RM, ngl, nq, wnq, xgl, xnq)
+
+    # # first fram will be IC
+    plots.append(qp.copy())
+    exact.append(qe.copy())
+    grids.append(coord.copy())
+    xelems.append(grid.copy())
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # level = 0
+    # while(level <= max_level):
+    #     # Get refinement marks
+    #     marks = mark(active, label_mat, intma, qp)
+
+    #     pre_marks = marks
+    #     pre_active = active  
+    #     pre_grid = grid
+    #     pre_nelem = nelem
+    #     pre_intma = intma
+    #     pre_coord = coord
+    #     pre_npoin_dg = npoin_dg
+
+
+    #     # Adapt mesh
+    #     new_grid, new_active, ref_marks, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(nop, pre_grid, pre_active, label_mat, info_mat, marks)
+    #     new_coord, new_intma, periodicity = create_grid_us(ngl, new_nelem, npoin_cg, new_npoin_dg, xgl, new_grid)
+        
+
+    #     # Project solution
+    #     # q_ad = adapt_sol(qp, pre_coord, marks, pre_active, label_mat, PS1, PS2, PG1, PG2, ngl)
+
+    #     # Update for next level
+    #     # qp = q_ad
+    #     active = new_active
+    #     nelem = new_nelem
+    #     intma = new_intma
+    #     coord = new_coord
+    #     grid = new_grid
+    #     npoin_dg = new_npoin_dg
+
+    #     qp, u = exact_solution(new_coord, new_npoin_dg, time, icase)
+
+
+
+    #     level += 1
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # qp, u = exact_solution(new_coord, new_npoin_dg, time, icase)
+    # plots.append(qp.copy())
+    # exact.append(qe.copy())
+    # grids.append(coord.copy())
+    # xelems.append(grid.copy())
+
+
+
+    # qp, u = exact_solution(coord, npoin_dg, time, icase)
+    # # qp = qe
+
+
+    while (time < time_final):
+        time = time + dt
+        if (time > time_final):
+            time = time -dt
+            dt = time_final-time
+            time = time+dt
+
+        #~~~~~~~~~~~~~~~~
+
+        #Insert refinement routines here
+
+        # level = 0
+        # while(level <= max_level):
+        # #     # Get refinement marks
+        #     marks = mark(active, label_mat, intma, qp, criterion)
+
+        #     # print(f'pre ratio enforcement marks: {marks}')
+
+        
+
+        #     # print(f'post ratio enforcement marks: {marks}')
+
+        #     pre_marks = marks
+        #     pre_active = active  
+        #     pre_grid = grid
+        #     pre_nelem = nelem
+        #     pre_intma = intma
+        #     pre_coord = coord
+        #     pre_npoin_dg = npoin_dg
+
+
+        #     # Adapt mesh
+        #     # print(f'pre-adaptation:')
+        #     # get_active_levels(active, label_mat)
+        #     # print_active_levels(active, label_mat)
+
+
+        #     new_grid, new_active, ref_marks, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(nop, pre_grid, pre_active, label_mat, info_mat, marks, max_level)
+        #     new_coord, new_intma, periodicity = create_grid_us(ngl, new_nelem, npoin_cg, new_npoin_dg, xgl, new_grid)
+
+
+        #     # get_active_levels(new_active, label_mat)
+        #     # print_active_levels(new_active, label_mat)
+
+        #     # Project solution
+        #     q_ad = adapt_sol(qp, pre_coord, marks, pre_active, label_mat, PS1, PS2, PG1, PG2, ngl)
+
+        #     # Update for next level
+        #     qp = q_ad
+        #     active = new_active
+        #     nelem = new_nelem
+        #     intma = new_intma
+        #     coord = new_coord
+        #     grid = new_grid
+        #     npoin_dg = new_npoin_dg
+
+        #     # Enforce balance:
+        #     if not check_balance(active, label_mat):
+        #         bal_q, bal_active, bal_nelem, bal_intma, bal_coord, bal_grid, bal_npoin_dg, bal_periodicity = enforce_balance(active, 
+        #                                                                                             label_mat, 
+        #                                                                                             grid, 
+        #                                                                                             info_mat, 
+        #                                                                                             nop, 
+        #                                                                                             coord, 
+        #                                                                                             PS1, PS2, PG1, PG2, 
+        #                                                                                             ngl, xgl, 
+        #                                                                                             qp, max_level)
+            
+        #         qp = bal_q
+        #         active = bal_active
+        #         nelem = bal_nelem
+        #         intma = bal_intma
+        #         coord = bal_coord
+        #         grid = bal_grid
+        #         npoin_dg = bal_npoin_dg
+        #         periodicity = bal_periodicity
+
+        #     # #~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+        #     # bal_ctr = 0
+        #     # while (bal_ctr <= max_level):
+        #     #     if check_balance(active, label_mat):
+        #     #         # print(f'grid is balanced. level: {level}')
+        #     #         bal_ctr = max_level + 1
+        #     #     else:
+        #     #         print(f'balancing grid. time step: {anim}, adaptation step: {level}, balance step: {bal_ctr}')
+
+        #     #         bal_q, bal_active, bal_nelem, bal_intma, bal_coord, bal_grid, bal_npoin_dg, bal_periodicity = enforce_balance(active, 
+        #     #                                                                                                      label_mat, 
+        #     #                                                                                                      grid, 
+        #     #                                                                                                      info_mat, 
+        #     #                                                                                                      nop, 
+        #     #                                                                                                      coord, 
+        #     #                                                                                                      PS1, PS2, PG1, PG2, 
+        #     #                                                                                                      ngl, xgl, 
+        #     #                                                                                                      qp)
+
+        #     #         # bal_marks = balance_mark(active, label_mat)
+        #     #         # pre_active = active  
+        #     #         # pre_grid = grid
+        #     #         # pre_coord = coord
+
+        #     #         # bal_grid, bal_active, ref_marks, bal_nelem, npoin_cg, bal_npoin_dg = adapt_mesh(nop, grid, active, label_mat, info_mat, bal_marks)
+        #     #         # bal_coord, bal_intma, periodicity = create_grid_us(ngl, bal_nelem, npoin_cg, bal_npoin_dg, xgl, bal_grid)
+        #     #         # bal_q = adapt_sol(qp, pre_coord, bal_marks, pre_active, label_mat, PS1, PS2, PG1, PG2, ngl)
+
+        #     #         # Update for next level
+        #     #         qp = bal_q
+        #     #         active = bal_active
+        #     #         nelem = bal_nelem
+        #     #         intma = bal_intma
+        #     #         coord = bal_coord
+        #     #         grid = bal_grid
+        #     #         npoin_dg = bal_npoin_dg
+        #     #         periodicity = bal_periodicity
+
+        #     #         bal_ctr += 1
+        #     # #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+
+        #     # print(f'balance marks: {balance_marks}')
+        #     # new_grid, new_active, ref_marks, new_nelem, npoin_cg, new_npoin_dg = adapt_mesh(nop, grid, active, label_mat, info_mat, balance_marks)
+        #     # new_coord, new_intma, periodicity = create_grid_us(ngl, new_nelem, npoin_cg, new_npoin_dg, xgl, new_grid)
+
+            
+
+
+        #     # plots.append(qp.copy())
+        #     # exact.append(qe.copy())
+        #     # grids.append(coord.copy())
+        #     # xelems.append(grid.copy())
+            
+        #     level += 1
+        
+        # # print(f'coord size: {coord.shape}')
+        # # print(f'grid size: {grid.shape}')
+        # # print(f'active size: {active.shape}')
+        # # print(f'intma size: {intma.shape}')
+        # # print(f'intma:')
+        # # print(intma)
+        # # print(f'qp size: {qp.shape}')
+
+
+        
+
+        Me = create_mass_matrix(intma, coord, nelem, ngl, nq, wnq, psi)
+        # print(f'Me good')
+        De = create_diff_matrix(ngl, nq, wnq, psi, dpsi)
+        # print(f'De good')
+        Mmatrix, Dmatrix = Matrix_DSS(Me, De, u, intma, periodicity, ngl, nelem, npoin_dg)
+        # print(f'DSS good')
+        Fmatrix = Fmatrix_upwind_flux(intma, nelem, npoin_dg, ngl, u, periodic = False)
+        Rmatrix = Dmatrix - Fmatrix
+        
+        Dhat = np.linalg.solve(Mmatrix,Rmatrix)
+        
+        dq = np.zeros(npoin_dg)
+
+
+        #~~~~~~~~~~~~~~~
+        # plots.append(qp)
+        # exact.append(qe)
+        # grids.append(coord)
+        # xelems.append(grid)
+
+        #RK stages
+        for s in range(stages):
+            #Create RHS Matrix
+            R = Dhat@qp #only valid for cg
+            #solve system
+            for I in range(npoin_dg):
+#                 print(f'I: {I}')
+#                 print(f'dt: {dt}')
+                dq[I] = RKA[s]*dq[I] + dt*R[I]
+                qp[I] = qp[I] + RKB[s]*dq[I]
+
+            if(periodicity[-1] == periodicity[0]):
+                qp[-1]=qp[0]
+
+
+
+        # print(f'time step: {anim}')
+        q0 = qp
+        # qe, u = exact_solution(coord, npoin, time, icase)
+        #         print(f'timestep: {anim}\n plot: {qp}')
+        #         if (anim%10 == 0):
+        # plots[anim][:] = q0
+        # exact[anim][:] = qe
+
+
+
+        plots.append(q0.copy())
+        exact.append(qe.copy())
+        grids.append(coord.copy())
+        xelems.append(grid.copy())
+
+
+
+        # print(f'\ntimestep: {anim}\n active: {active}\n marks: {marks}')
+        #         print(f'plots[i]: {plots[anim]}')
+        anim +=1
+
+
+
+
+
+    return q0, time, plots, exact, grids, xelems 

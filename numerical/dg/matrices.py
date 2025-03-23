@@ -192,7 +192,7 @@ def create_mass_matrix_vectorized(intma, coord, nelem, ngl, nq, wnq, psi):
 #     Fmat = Fmat*u
 #     return Fmat
 
-def Fmatrix_upwind_flux(intma, nelem, npoin, ngl, u):
+def Fmatrix_upwind_flux(intma, nelem, npoin, ngl, u, periodic = True):
     """
     Creates upwind flux matrix for DG formulation with fixed indexing.
     
@@ -218,7 +218,10 @@ def Fmatrix_upwind_flux(intma, nelem, npoin, ngl, u):
         # Change 2: Correct check for 0-based indexing
         if Im < 0:
             # Change 3: Correct periodic wrapping
-            Im = npoin - 1  # Last index in 0-based indexing
+            if periodic:
+                Im = npoin - 1  # Last index in 0-based indexing
+            elif not periodic:# This is a hack for non-periodic
+                Im = 0
         Fmat[I][Im] = -1
 
         # Visit right-most DOF of each element
@@ -229,7 +232,11 @@ def Fmatrix_upwind_flux(intma, nelem, npoin, ngl, u):
         # Change 4: Correct check for 0-based indexing
         if Ip >= npoin:
             # Change 5: Correct periodic wrapping
-            Ip = 0  # First index in 0-based indexing
+            if periodic:
+                Ip = 0  # First index in 0-based indexing
+            # This is a hack for non-periodic
+            elif not periodic:
+                Ip = npoin
         Fmat[I][I] = 1
 
     Fmat = Fmat * u

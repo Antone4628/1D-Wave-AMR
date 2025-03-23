@@ -1,0 +1,1 @@
+/Users/antonechacartegui/Desktop/1D_wave_AMR/experiments/results/gamma_c_50.0/run_20250321_201810/training_report.pdf

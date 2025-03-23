@@ -10,13 +10,13 @@ import traceback
 
 PROJECT_ROOT = os.path.abspath(os.path.join(
     os.path.dirname(__file__), 
-    # '..',
+    '..',
     '..'
 ))
 sys.path.append(PROJECT_ROOT)
 
 from numerical.dg.basis import lgl_gen, Lagrange_basis
-from numerical.dg.matrices import create_mass_matrix
+from numerical.dg.matrices import *
 from numerical.grid.mesh import create_grid_us
 from numerical.amr.forest import forest
 from numerical.amr.adapt import adapt_mesh, adapt_sol
@@ -32,6 +32,7 @@ integration_points = 1      #=1 for LGL and =2 for LG
 integration_type = 2        #=1 is inexact and =2 is exact
 space_method_type = 'dg'    #CG or DG
 flux_type = 2
+max_level = 3
 
 # nelem = 4
 nelem0 = len(xelem0) - 1                 #Initial number of elements in level zero
@@ -109,7 +110,7 @@ defs =[]
 og_marks = marks0
 og_active = active0
 print(f'~~~~~~~~~~~~~~\n\n adapting mesh for first round')
-xelem1, active1, new_marks, nelem1, new_npoin_cg, npoin_dg1 = adapt_mesh(nop, xelem0, active0, label_mat, info_mat, marks0)
+xelem1, active1, new_marks, nelem1, new_npoin_cg, npoin_dg1 = adapt_mesh(nop, xelem0, active0, label_mat, info_mat, marks0, max_level)
 coord1,  intma1, periodicity  = create_grid_us(ngl, nelem1, new_npoin_cg, npoin_dg1,xgl, xelem1)
 # emass = create_mass_matrix(new_intma, new_coord, new_nelem, ngl, nq, wnq, psi)
 
@@ -122,7 +123,8 @@ for i in xelem1:
 
 
 
-
+RM = create_RM_matrix(ngl, nq, wnq, psi)
+PS1, PS2, PG1, PG2 = projections(RM, ngl, nq, wnq, xgl, xnq)
 
 print(f'project data onto children:')
 
@@ -132,9 +134,9 @@ print(f'creating projections using emass0, inttma0, coord0, nelem0')
 
 emass0 = create_mass_matrix(intma0, coord0, nelem0, ngl, nq, wnq, psi)
 print(f'emass0 shape: {np.shape(emass0)}')
-PS1_0, PS2_0, PG1_0, PG2_0 = projections(emass0, intma0, coord0, nelem0, ngl, nq, wnq, xgl, xnq)
+# PS1_0, PS2_0, PG1_0, PG2_0 = projections(emass0, intma0, coord0, nelem0, ngl, nq, wnq, xgl, xnq)
 
-q1 = adapt_sol(q0, coord0, og_marks, og_active, label_mat, PS1_0, PS2_0, PG1_0, PG2_0, ngl)
+q1 = adapt_sol(q0, coord0, og_marks, og_active, label_mat, PS1, PS2, PG1, PG2, ngl)
 print(f'done with new solution!')
 print(f'new solution length: {len(q1)}')
 print(f'new coord length: {len(coord1)}')
@@ -161,7 +163,7 @@ og_active = active1
 # emass = create_mass_matrix(new_intma, new_coord, new_nelem, ngl, nq, wnq, psi)
 
 print(f'~~~~~~~~~~~~~~\n\n adapting mesh for second round')
-xelem2, active2, new_marks, nelem2, new_npoin_cg, npoin_dg2 = adapt_mesh(nop, xelem1, active1, label_mat, info_mat, marks1)
+xelem2, active2, new_marks, nelem2, new_npoin_cg, npoin_dg2 = adapt_mesh(nop, xelem1, active1, label_mat, info_mat, marks1, max_level)
 coord2,  intma2, periodicity  = create_grid_us(ngl, nelem2, new_npoin_cg, npoin_dg2,xgl, xelem2)
 
 # for i in xelem1:
@@ -190,10 +192,10 @@ print(f'project data onto children:')
 print(f'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`\n\n')
 print(f'creating projections using emass1, intma1, coord1, nelem1')
 # PS1_1, PS2_1, PG1_1, PG2_1 = projections(emass1, intma2, coord2, nelem2, ngl, nq, wnq, xgl, xnq)
-PS1_1, PS2_1, PG1_1, PG2_1 = projections(emass1, intma1, coord1, nelem1, ngl, nq, wnq, xgl, xnq)
+# PS1_1, PS2_1, PG1_1, PG2_1 = projections(emass1, intma1, coord1, nelem1, ngl, nq, wnq, xgl, xnq)
 
 
-q2 = adapt_sol(q1, coord1, og_marks, og_active, label_mat, PS1_1, PS2_1, PG1_1, PG2_1, ngl)
+q2 = adapt_sol(q1, coord1, og_marks, og_active, label_mat, PS1, PS2, PG1, PG2, ngl)
 
 print(f'q_ad: {np.shape(q2)}')
 print(f'new_cord: {np.shape(coord2)}')
@@ -227,7 +229,7 @@ marks2 = np.array([0,-1,-1,1,1,-1,-1,0])
 
 og_marks = marks2
 og_active = active2
-xelem3, active3, new_marks, nelem3, new_npoin_cg, npoin_dg3 = adapt_mesh(nop, xelem2, active2, label_mat, info_mat, marks2)
+xelem3, active3, new_marks, nelem3, new_npoin_cg, npoin_dg3 = adapt_mesh(nop, xelem2, active2, label_mat, info_mat, marks2, max_level)
 coord3,  intma3, periodicity  = create_grid_us(ngl, nelem3, new_npoin_cg, npoin_dg3,xgl, xelem3)
 
 print(f'nelem3: {nelem3}')
@@ -246,11 +248,11 @@ print(f'creating emass2 for third time to use on third projection (gather). usin
 emass2 = create_mass_matrix(intma2, coord2, nelem2, ngl, nq, wnq, psi)
 print(f'emass12shape: {np.shape(emass2)}')
 # PS1_2, PS2_2, PG1_2, PG2_2 = projections(emass2, intma3, coord3, nelem3, ngl, nq, wnq, xgl, xnq)
-PS1_2, PS2_2, PG1_2, PG2_2 = projections(emass2, intma2, coord2, nelem2, ngl, nq, wnq, xgl, xnq)
+# PS1_2, PS2_2, PG1_2, PG2_2 = projections(emass2, intma2, coord2, nelem2, ngl, nq, wnq, xgl, xnq)
 
 
 
-q_gath = adapt_sol(q2, coord2, og_marks, og_active, label_mat, PS1_2, PS2_2, PG1_2, PG2_2, ngl)
+q_gath = adapt_sol(q2, coord2, og_marks, og_active, label_mat, PS1, PS2, PG1, PG2, ngl)
 
 y3 = np.zeros(len(coord3))-0.35
 ax.scatter(coord3,y3, color = 'magenta', label = 'third refinement')
