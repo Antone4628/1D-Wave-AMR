@@ -36,13 +36,13 @@ print(f'Initial element sizes: {differences}')
 print(f'Smallest initial element has dx: {np.min(differences)}')
 
 # Solver parameters
-max_level = 4       # Max level of refinement
+max_level = 5       # Max level of refinement
 nop = 4              # Polynomial order
 courant_max = 0.1    # CFL number
 time_final = .2       # Final time
 icase = 1            # Test case number (1: Gaussian)
 periodic = True
-max_elements = 250    # Maximum number of elements
+max_elements = 30    # Maximum number of elements
 
 # Calculate smallest possible element size after refinement
 dx_min = np.min(differences)/(2**max_level)

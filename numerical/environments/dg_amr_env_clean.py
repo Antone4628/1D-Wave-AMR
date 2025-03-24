@@ -67,6 +67,10 @@ class RewardCalculator:
         # Final calculation with safety
         reward = float(accuracy - self.gamma_c * resource_penalty)
         
+        print(f'delta_u: {delta_u}')
+        print(f'resource penalty: {resource_penalty}')
+        print(f'reward: {reward}')
+        
         # Final safety check
         reward = 0.0 if np.isnan(reward) or np.isinf(reward) else reward
         
@@ -498,7 +502,8 @@ class DGAMREnv(gym.Env):
             # Apply adaptation
             if self.debug_training_cycle:
                 print(f"Applying action {mapped_action} to element {self.current_element_index}")
-                
+
+            print(f"Applying action {mapped_action} to element {self.current_element_index}") 
             marks_override = {self.current_element_index: mapped_action}
             self.solver.adapt_mesh(marks_override=marks_override, element_budget=self.element_budget)
             

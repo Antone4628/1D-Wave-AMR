@@ -15,7 +15,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(
 ))
 sys.path.append(PROJECT_ROOT)
 from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
-from numerical.environments.dg_amr_env import DGAMREnv
+from numerical.environments.dg_amr_env_clean import DGAMREnv
 
 # Set up a simple test case
 solver = DGWaveSolver(
@@ -94,6 +94,7 @@ total_rl_iterations = 0
 
 for i in range(30):
     action = 2  # Always refine
+    # action = 0  # Always coarsen
     
     obs, reward, terminated, truncated, info = env.step(action)
     total_rl_iterations += 1

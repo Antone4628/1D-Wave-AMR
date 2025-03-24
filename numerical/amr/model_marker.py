@@ -63,6 +63,10 @@ class ModelMarker:
         
         # Current resource usage
         resource_usage = len(self.solver.active) / self.element_budget
+
+        if self.verbose and element_idx == 0:  # Only print for first element to avoid spam
+            print(f"Active elements: {len(self.solver.active)}/{self.element_budget}")
+            print(f"Resource usage: {resource_usage:.2f}")
         
         # Get local solution values
         element_nodes = self.solver.intma[:, element_idx]
