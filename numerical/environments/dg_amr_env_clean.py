@@ -67,9 +67,9 @@ class RewardCalculator:
         # Final calculation with safety
         reward = float(accuracy - self.gamma_c * resource_penalty)
         
-        print(f'delta_u: {delta_u}')
-        print(f'resource penalty: {resource_penalty}')
-        print(f'reward: {reward}')
+        # print(f'delta_u: {delta_u}')
+        # print(f'resource penalty: {resource_penalty}')
+        # print(f'reward: {reward}')
         
         # Final safety check
         reward = 0.0 if np.isnan(reward) or np.isinf(reward) else reward
@@ -159,6 +159,7 @@ class DGAMREnv(gym.Env):
         verbose: bool = False,
         rl_iterations_per_timestep = "random",
         max_rl_iterations = 200,
+        max_consecutive_no_action = 10,
         debug_training_cycle=False
     ):
         """
@@ -190,6 +191,10 @@ class DGAMREnv(gym.Env):
         self.num_timesteps = 0
         self._episode_steps = 0
         self._total_episodes = 0
+
+        # Initialize no-action counter
+        self.do_nothing_counter = 0
+        self.max_consecutive_no_action = max_consecutive_no_action
 
         # Initialize reward calculator
         self.reward_calculator = RewardCalculator(gamma_c=gamma_c)
@@ -473,11 +478,23 @@ class DGAMREnv(gym.Env):
         """
         self.num_timesteps += 1
         self._episode_steps += 1
+        if self.debug_training_cycle:
+            print("-" * 50)
+            print(f'timestep: {self.num_timesteps}')
         
         # Map action and log it for debugging
         action_int = action.item() if hasattr(action, 'item') else int(action)
         mapped_action = self.action_mapping[action_int]
         self.mapped_action_history.append(mapped_action)
+
+            # Update do-nothing counter based on action
+        if mapped_action == 0:  # do nothing
+            self.do_nothing_counter += 1
+            # Check if too many consecutive no-actions
+            if self.do_nothing_counter > self.max_consecutive_no_action:
+                return self._end_episode(0.0, False, True, "Maximum consecutive no-actions reached")
+        else:
+            self.do_nothing_counter = 0  # Reset counter when action is taken
         
         # Check episode length limit
         if self._episode_steps >= self.max_episode_steps:
@@ -501,9 +518,12 @@ class DGAMREnv(gym.Env):
         try:
             # Apply adaptation
             if self.debug_training_cycle:
-                print(f"Applying action {mapped_action} to element {self.current_element_index}")
+                cur_elem = self.solver.active[self.current_element_index]
+                # print(f"Applying action {mapped_action} to element {self.current_element_index}")
+                print(f"Applying action {mapped_action} to element {cur_elem}")
+                print(f"pre-action active: {self.solver.active}")
 
-            print(f"Applying action {mapped_action} to element {self.current_element_index}") 
+            # print(f"Applying action {mapped_action} to element {self.current_element_index}") 
             marks_override = {self.current_element_index: mapped_action}
             self.solver.adapt_mesh(marks_override=marks_override, element_budget=self.element_budget)
             
@@ -535,8 +555,10 @@ class DGAMREnv(gym.Env):
             )
             
             if self.debug_training_cycle:
+                print(f"post-action active: {self.solver.active}")
                 print(f"Delta_u: {delta_u_adapt}, Reward: {reward}")
                 print(f"Elements: {len(self.solver.active)}/{self.element_budget}")
+                
             
             # Determine if we should take a time step
             if self.rl_iterations_per_timestep == "random":
@@ -546,6 +568,8 @@ class DGAMREnv(gym.Env):
                 
                 self.current_rl_iteration += 1
                 self.should_timestep = (self.current_rl_iteration >= self.iterations_before_timestep)
+                if self.debug_training_cycle:
+                    print(f'Take timestep?: {self.should_timestep}')
                 
                 if self.debug_training_cycle and self.should_timestep:
                     print(f"Taking solver time step after {self.current_rl_iteration} RL iterations")
@@ -584,6 +608,9 @@ class DGAMREnv(gym.Env):
                 'took_timestep': self.should_timestep
             }
             
+            if self.debug_training_cycle:
+                print("-" * 50)
+                print('\n\n')
             # Select next element randomly
             n_active = len(self.solver.active)
             if n_active > 0:
@@ -619,6 +646,7 @@ class DGAMREnv(gym.Env):
         
         self._episode_steps = 0  # Reset episode counter
         self.mapped_action_history = []  # Reset action history
+        self.do_nothing_counter = 0  # Reset do-nothing counter
         super().reset(seed=seed)
         
         try:

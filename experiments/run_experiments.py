@@ -129,6 +129,7 @@ def run_experiment(config_path, results_dir=None):
     # Add new parameters to config or provide defaults
     rl_iterations_per_timestep = get_parameter(config, "environment.rl_iterations_per_timestep", "random")
     max_rl_iterations = get_parameter(config, "environment.max_rl_iterations", 200)
+    max_consecutive_no_action = get_parameter(config, "environment.max_consecutive_no_action", 10)
     
     # Create experiment name
     experiment_name = f"gamma_c_{gamma_c}"
@@ -170,6 +171,7 @@ def run_experiment(config_path, results_dir=None):
         icase=icase,
         verbose=verbose
     )
+
     
     # Initialize environment
     print("Setting up environment...")
@@ -181,6 +183,7 @@ def run_experiment(config_path, results_dir=None):
         verbose = False,
         rl_iterations_per_timestep = "random",  # Use random number of iterations before time-stepping
         max_rl_iterations=200,  # Maximum number of RL iterations before time-stepping
+        max_consecutive_no_action=max_consecutive_no_action,  # Add this parameter
         debug_training_cycle = False
     )
     

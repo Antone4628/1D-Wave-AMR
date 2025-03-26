@@ -22,7 +22,7 @@ solver = DGWaveSolver(
     nop=3,
     xelem=np.array([-1, -0.4, 0, 0.4, 1]),
     max_elements=50,
-    max_level=3,
+    max_level=5,
     courant_max=0.1,
     icase=1,
     verbose=False
@@ -75,8 +75,9 @@ print("\nNow testing with random RL iterations per time step...")
 # Reset with random iterations per time step
 env = DGAMREnv(
     solver=solver,
-    element_budget=25,
-    gamma_c=25.0,
+    element_budget=35,
+    # gamma_c=25.0,
+    gamma_c=50.0,
     max_episode_steps=50,
     verbose=False,
     rl_iterations_per_timestep="random",
@@ -93,7 +94,11 @@ time_steps_taken = 0
 total_rl_iterations = 0
 
 for i in range(30):
-    action = 2  # Always refine
+
+    if i < 20:
+        action = 2  # Always refine
+    else:
+        action = 0
     # action = 0  # Always coarsen
     
     obs, reward, terminated, truncated, info = env.step(action)

@@ -54,6 +54,80 @@ def calculate_delta_u(old_solution, new_solution, old_grid, new_grid):
             
         return delta_u
 
+def calculate_delta_u_lgl(old_solution, new_solution, old_grid, old_elem, new_grid, new_elem, xgl, wgl):
+    """
+    Calculate the L1 norm of the difference between solutions using LGL quadrature.
+    
+    Args:
+        old_solution: Solution before adaptation
+        new_solution: Solution after adaptation
+        old_grid: Grid coordinates before adaptation
+        old_elem: Element boundaries before adaptation
+        new_grid: Grid coordinates after adaptation
+        new_elem: Element boundaries after adaptation
+        xgl: LGL nodes on the reference element [-1,1]
+        wgl: LGL weights corresponding to the nodes
+        
+    Returns:
+        float: The integral of absolute difference between solutions
+    """
+    import numpy as np
+    
+    # Determine which solution has more points
+    if len(new_grid) >= len(old_grid):
+        # Map to higher resolution grid
+        target_grid = new_grid
+        target_elem = new_elem
+        target_solution = new_solution
+        other_solution = np.interp(new_grid, old_grid, old_solution)
+    else:
+        # Map to higher resolution grid
+        target_grid = old_grid
+        target_elem = old_elem
+        target_solution = old_solution
+        other_solution = np.interp(old_grid, new_grid, new_solution)
+    
+    # Calculate point-wise differences
+    point_differences = np.abs(target_solution - other_solution)
+    
+    # Initialize the integral result
+    delta_u = 0.0
+    
+    # Number of points per element
+    ngl = len(xgl)
+    
+    # Loop over elements to do the integration element by element
+    for i in range(len(target_elem) - 1):
+        # Get element boundaries
+        a = target_elem[i]
+        b = target_elem[i+1]
+        
+        # Calculate Jacobian for this element
+        jacobian = (b - a) / 2.0
+        
+        # Get solution differences in this element
+        elem_indices = slice(i * ngl, (i + 1) * ngl)
+        if i < len(target_elem) - 2:
+            # Don't double-count shared points
+            elem_indices = slice(i * ngl, (i + 1) * ngl - (ngl - 1))
+        
+        elem_diffs = point_differences[elem_indices]
+        
+        # Apply quadrature rule for this element
+        # Use weights that correspond to the element node indices
+        if i < len(target_elem) - 2:
+            # For interior elements, the last point is shared with next element
+            # so we exclude the last weight to avoid double counting
+            elem_weights = wgl[:-1]
+            elem_integral = np.sum(elem_diffs * elem_weights) * jacobian
+        else:
+            # For the last element, use all weights
+            elem_integral = np.sum(elem_diffs * wgl) * jacobian
+        
+        delta_u += elem_integral
+    
+    return delta_u
+
 # examine mass matrix
 print(f'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n New Test')
 xelem0=np.array([-1, -0.4 ,0 ,0.4 ,1])
@@ -183,6 +257,8 @@ print(f'xelem1: {xelem1}')
 
 delta_u_1 = calculate_delta_u(q0,q1,coord0,coord1)
 print(f'\n\n delta_u: {delta_u_1}')
+delta_u_1_lgl = calculate_delta_u_lgl(q0,q1,coord0, xelem0, coord1,xelem1, xgl,wgl)
+print(f'delta_u_lgl: {delta_u_1_lgl}')
 
 
 # active = new_active

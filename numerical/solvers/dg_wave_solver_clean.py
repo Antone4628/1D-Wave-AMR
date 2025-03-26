@@ -65,6 +65,7 @@ class DGWaveSolver:
         self.icase = icase
         self.time = 0.0
         self.dx_min = np.min(np.diff(xelem)) / (2**max_level)
+        self.courant_max = courant_max
         self.xgl, self.wgl = lgl_gen(self.ngl)
         self.nq = self.nop + 2
         self.xnq, self.wnq = lgl_gen(self.nq)
@@ -74,7 +75,8 @@ class DGWaveSolver:
         
         self._initialize_mesh()
         self.q = self._initialize_solution()
-        self._compute_timestep(courant_max)
+        self._compute_timestep(use_actual_max_level=False)
+        # self._compute_timestep(courant_max)
         self._initialize_projections()
         
     def _initialize_mesh(self):
@@ -93,12 +95,14 @@ class DGWaveSolver:
             self.coord, self.npoin_dg, self.time, self.icase
         )
         return q
-        
-    def _compute_timestep(self, courant_max):
-        """Compute time step size based on Courant condition."""
-        dx_min = np.min(np.diff(self.xelem)) / (2**self.max_level)
-        self.dt = courant_max * dx_min / self.wave_speed
-        # self.dt = 0.003
+    
+
+    
+    # def _compute_timestep(self, courant_max):
+    #     """Compute time step size based on Courant condition."""
+    #     dx_min = np.min(np.diff(self.xelem)) / (2**self.max_level)
+    #     self.dt = courant_max * dx_min / self.wave_speed
+    #     # self.dt = 0.003
         
     def _initialize_projections(self):
         """Initialize projection matrices for AMR operations."""
@@ -106,6 +110,38 @@ class DGWaveSolver:
         self.PS1, self.PS2, self.PG1, self.PG2 = projections(
             RM, self.ngl, self.nq, self.wnq, self.xgl, self.xnq
         )
+    def _compute_timestep(self, use_actual_max_level=False):
+        """
+        Compute time step size based on Courant condition.
+        
+        Args:
+            use_actual_max_level (bool): If True, use actual maximum refinement level
+                                        present in the mesh instead of max_level
+        """
+        if use_actual_max_level:
+            current_max_level = self.get_current_max_refinement_level()
+            # print(f'current max level = {current_max_level}')
+            # if current_max_level == 0:
+            # dx_min = np.min(np.diff(self.xelem))/2
+            # #     # dx_min = np.min(np.diff(self.xelem)) 
+            # else:
+            #     # dx_min = np.min(np.diff(self.xelem)) / (2**current_max_level)
+            dx_min = np.min(np.diff(self.xelem))
+
+            if self.verbose:
+                print(f"Using max refinement level: {current_max_level}/{self.max_level}")
+        else:
+            dx_min = np.min(np.diff(self.xelem)) / (2**self.max_level)
+            
+        old_dt = getattr(self, 'dt', None)
+        self.dt = self.courant_max * dx_min / self.wave_speed
+        if use_actual_max_level == False:
+            print(f'dt: {self.dt}')
+        # if old_dt is not None and abs(old_dt - self.dt) > 1e-10:
+        #     print(f"\nTime step updated: {old_dt:.6e} -> {self.dt:.6e}")
+        #     print(f'current max level: {current_max_level}, dx_min: {dx_min}\n')
+        if self.verbose and old_dt is not None and abs(old_dt - self.dt) > 1e-10:
+            print(f"Time step updated: {old_dt:.6e} -> {self.dt:.6e}")
 
     def _update_matrices(self):
         """
@@ -146,6 +182,21 @@ class DGWaveSolver:
                 print(f"Number of elements: {self.nelem}")
                 print(f"Element sizes: {np.diff(self.xelem)}")
             raise
+
+    def get_current_max_refinement_level(self):
+        """
+        Determine the maximum refinement level currently present in the active mesh.
+        
+        Returns:
+            int: Maximum refinement level among active elements
+        """
+        active_levels = np.zeros(len(self.active), dtype=int)
+        
+        for i, elem in enumerate(self.active):
+            # Element IDs in label_mat are 1-indexed, hence elem-1
+            active_levels[i] = self.label_mat[elem-1][4]  # Level is in column 4
+            
+        return np.max(active_levels) if len(active_levels) > 0 else 0
 
     # def check_mesh_quality(self, grid):
     #     """
@@ -208,7 +259,7 @@ class DGWaveSolver:
         # More permissive neighbor ratio check
         neighbor_ratios = element_sizes[1:] / element_sizes[:-1]
         max_neighbor_ratio = max(max(neighbor_ratios), max(1/neighbor_ratios))
-        if max_neighbor_ratio > 6:  # Was 4, now 6
+        if max_neighbor_ratio > 256:  # Was 4, now 32
             issues.append(f"Rapid size change between neighbors: ratio {max_neighbor_ratio:.2f}")
         
         return len(issues) == 0, "; ".join(issues)
@@ -238,7 +289,7 @@ class DGWaveSolver:
         if np.any(~np.isfinite(self.q)):
             raise ValueError("Invalid solution values detected")
 
-    def adapt_mesh(self, criterion=1, marks_override=None, element_budget=None):
+    def adapt_mesh(self, criterion=1, marks_override=None, element_budget=None, update_dt = True):
         """
         Perform mesh adaptation based on solution properties.
         Respects element_budget constraint.
@@ -342,6 +393,8 @@ class DGWaveSolver:
 
         # Add balancing loop here
         if not check_balance(self.active, self.label_mat):
+            print("Enforcing mesh balance...")
+            print(f'pre-balance active elements: {len(self.active)}')
             if self.verbose:
                 print("Enforcing mesh balance...")
             
@@ -367,10 +420,14 @@ class DGWaveSolver:
             self.xelem = bal_grid
             self.npoin_dg = bal_npoin_dg
             self.periodicity = bal_periodicity
+            print(f'post-balance active elements: {len(self.active)}')
 
         # Update matrices
         self._update_matrices()
         self.verify_state() 
+
+        if update_dt:
+            self._compute_timestep(use_actual_max_level=True)
 
     def step(self, dt=None):
         """
@@ -543,5 +600,7 @@ class DGWaveSolver:
         
         # Update matrices
         self._update_matrices()
+        # Calculate time step based on actual refinement level
+        self._compute_timestep(use_actual_max_level=True)
         self.verify_state()
         return self.q

@@ -193,6 +193,7 @@ class ModelMarker:
             
             # Apply budget constraints - can't refine if at max elements
             if mark_value == 1 and resource_usage >= 1.0:
+                print(f'refinement cancelled: would exceed budget.')
                 mark_value = 0
                 
             # Handle coarsening case - ensures sibling is also marked
@@ -230,5 +231,13 @@ class ModelMarker:
             
             # Set the mark value
             marks[idx] = mark_value
+
+            # Update resource usage based on this action
+            if mark_value == 1:  # refine adds an element
+                resource_usage += 1 / self.element_budget
+            elif mark_value == -1:  # coarsen (potentially) removes an element
+                resource_usage -= 1 / self.element_budget
+                # Note: This is an approximation since coarsening removes 2 elements and adds 1
+    
             
         return marks
