@@ -25,8 +25,8 @@ sys.path.append(PROJECT_ROOT)
 ANIMATIONS_DIR = os.path.join(PROJECT_ROOT, 'animations')
 os.makedirs(ANIMATIONS_DIR, exist_ok=True)
 
-# from numerical.solvers.dg_wave_solver_documented import DGWaveSolver
-from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
+from numerical.solvers.dg_wave_solver_free import DGWaveSolver
+# from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
 
 
 # Define initial mesh

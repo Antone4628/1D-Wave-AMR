@@ -1,0 +1,10 @@
+Average RL iterations per time step: 15.90
+Evaluation over 5 episodes:
+Mean reward: 246.30 ± 51.02
+Mean episode length: 300.0 ± 0.0
+
+Episode 1: reward=172.01, length=300
+Episode 2: reward=318.84, length=300
+Episode 3: reward=257.97, length=300
+Episode 4: reward=209.34, length=300
+Episode 5: reward=273.35, length=300

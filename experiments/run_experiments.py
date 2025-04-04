@@ -18,7 +18,8 @@ PROJECT_ROOT = os.path.abspath(os.path.join(
 ))
 sys.path.append(PROJECT_ROOT)
 
-from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
+# from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
+from numerical.solvers.dg_wave_solver_free import DGWaveSolver
 from numerical.environments.dg_amr_env_clean import DGAMREnv
 # from numerical.environments.dg_amr_env_clean import DGAMREnv
 from stable_baselines3 import A2C, PPO, DQN
@@ -122,7 +123,15 @@ def run_experiment(config_path, results_dir=None):
     max_level = get_parameter(config, "solver.max_level", 4)
     courant_max = get_parameter(config, "solver.courant_max", 0.1)
     icase = get_parameter(config, "solver.icase", 1)
+
+
+
+
     initial_elements = get_parameter(config, "solver.initial_elements", np.array([-1, -0.4, 0, 0.4, 1]))
+
+
+
+    
     verbose = get_parameter(config, "solver.verbose", False)
     
 
@@ -182,7 +191,7 @@ def run_experiment(config_path, results_dir=None):
         max_episode_steps=max_episode_steps,
         verbose = False,
         rl_iterations_per_timestep = "random",  # Use random number of iterations before time-stepping
-        max_rl_iterations=200,  # Maximum number of RL iterations before time-stepping
+        max_rl_iterations=30,  # Maximum number of RL iterations before time-stepping
         max_consecutive_no_action=max_consecutive_no_action,  # Add this parameter
         debug_training_cycle = False
     )
@@ -197,7 +206,7 @@ def run_experiment(config_path, results_dir=None):
         model = A2C(
             "MultiInputPolicy",
             env,
-            verbose=1,
+            verbose=0,
             learning_rate=learning_rate,
             n_steps=n_steps,
             ent_coef=ent_coef,
@@ -257,6 +266,8 @@ def run_experiment(config_path, results_dir=None):
         )
     except Exception as e:
         print(f"\nTraining error: {e}")
+        import traceback
+        traceback.print_exc()
     finally:
         print(f"\nTraining completed or stopped.")
         

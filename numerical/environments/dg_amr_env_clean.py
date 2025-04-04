@@ -13,7 +13,8 @@ from gymnasium import spaces
 from time import time
 from typing import Optional, Dict, Tuple, Any
 import matplotlib.pyplot as plt
-from ..solvers.dg_wave_solver_clean import DGWaveSolver
+# from ..solvers.dg_wave_solver_clean import DGWaveSolver
+from ..solvers.dg_wave_solver_free import DGWaveSolver
 
 
 class RewardCalculator:
@@ -52,7 +53,9 @@ class RewardCalculator:
         if action == 1:  # refine
             accuracy = +accuracy_term
         elif action == -1:  # coarsen
-            accuracy = -accuracy_term
+            # coarsening_factor = 1.0
+            coarsening_factor = 1.0
+            accuracy = -accuracy_term*coarsening_factor
         else:  # do nothing
             accuracy = 0.0
         
@@ -60,6 +63,11 @@ class RewardCalculator:
         old_barrier = self.calculate_barrier(old_resources)
         new_barrier = self.calculate_barrier(new_resources)
         resource_penalty = new_barrier - old_barrier
+
+            # Apply multiplier to resource penalty for coarsening
+        if action == -1 and resource_penalty < 0:  # If coarsening and successful
+            resource_multiplier = 1.0  # Increase the positive contribution by 50%
+            resource_penalty *= resource_multiplier
         
         # Safety check for resource penalty
         resource_penalty = 0.0 if np.isnan(resource_penalty) or np.isinf(resource_penalty) else resource_penalty
@@ -492,7 +500,9 @@ class DGAMREnv(gym.Env):
             self.do_nothing_counter += 1
             # Check if too many consecutive no-actions
             if self.do_nothing_counter > self.max_consecutive_no_action:
-                return self._end_episode(0.0, False, True, "Maximum consecutive no-actions reached")
+                # return self._end_episode(0.0, False, True, "Maximum consecutive no-actions reached")
+                self.do_nothing_counter = 0 #reset the counter
+                return self._end_episode(-100.0, False, True, "Maximum consecutive no-actions reached")
         else:
             self.do_nothing_counter = 0  # Reset counter when action is taken
         
@@ -524,6 +534,11 @@ class DGAMREnv(gym.Env):
                 print(f"pre-action active: {self.solver.active}")
 
             # print(f"Applying action {mapped_action} to element {self.current_element_index}") 
+
+            if self.current_element_index >= len(self.solver.active):
+                print(f"ERROR: current_element_index ({self.current_element_index}) >= active length ({len(self.solver.active)}) ENVIRONMENT STEP")
+                return self._end_episode(-100.0, False, True, "Index out of bounds")
+            
             marks_override = {self.current_element_index: mapped_action}
             self.solver.adapt_mesh(marks_override=marks_override, element_budget=self.element_budget)
             
@@ -629,15 +644,21 @@ class DGAMREnv(gym.Env):
                 import traceback
                 traceback.print_exc()
             return self._end_episode(-100.0, False, True, f"Error: {str(e)}")
-    
+
+
+
+
     def reset(self, seed=None, options=None) -> Tuple[Dict[str, np.ndarray], Dict[str, Any]]:
         """
-        Reset environment to initial state.
+        Reset environment to initial state with optional mesh refinement.
         
         Args:
             seed: Random seed
-            options: Additional options
-            
+            options: Additional options including:
+                - refinement_mode: Mode for initial mesh refinement ('none', 'fixed', 'random')
+                - refinement_level: Level of initial refinement
+                - refinement_probability: Probability for random refinement
+                
         Returns:
             tuple: (observation, info)
         """
@@ -650,8 +671,21 @@ class DGAMREnv(gym.Env):
         super().reset(seed=seed)
         
         try:
-            # Reset solver to initial condition
-            self.solver.reset()
+            # Extract refinement options to pass to solver
+            refinement_options = {}
+            if options is not None:
+                if 'refinement_mode' in options:
+                    refinement_options['refinement_mode'] = options['refinement_mode']
+                if 'refinement_level' in options:
+                    refinement_options['refinement_level'] = options['refinement_level']
+                if 'refinement_probability' in options:
+                    refinement_options['refinement_probability'] = options['refinement_probability']
+                
+                if self.verbose:
+                    print(f"Applying initial refinement: {refinement_options}")
+            
+            # Reset solver with refinement options
+            self.solver.reset(**refinement_options)
             
             # Reset time-stepping variables
             self.current_rl_iteration = 0
@@ -659,6 +693,13 @@ class DGAMREnv(gym.Env):
         
             # Prepare info dict
             element_sizes = np.diff(self.solver.xelem)
+            active_levels = self._get_active_levels()
+            
+            # Add level distribution to info
+            level_distribution = {}
+            for level in range(self.solver.max_level + 1):
+                level_distribution[level] = active_levels.count(level) if active_levels else 0
+            
             info = {
                 'mesh_quality': {
                     'min_element_size': np.min(element_sizes),
@@ -667,6 +708,13 @@ class DGAMREnv(gym.Env):
                     'n_elements': len(element_sizes),
                     'total_episodes': self._total_episodes,
                     'total_steps': self.num_timesteps
+                },
+                'refinement_info': {
+                    'mode': refinement_options.get('refinement_mode', 'none'),
+                    'level': refinement_options.get('refinement_level', 0),
+                    'resource_usage': len(self.solver.active) / self.element_budget,
+                    'initial_elements': len(self.solver.active),
+                    'level_distribution': level_distribution
                 }
             }
             
@@ -690,6 +738,156 @@ class DGAMREnv(gym.Env):
             info = {'reset_error': str(e)}
             
             return observation, info
+
+    def _get_active_levels(self):
+        """Get refinement levels for active elements."""
+        active_levels = []
+        for elem in self.solver.active:
+            # Element number in active grid is 1-indexed, so subtract 1 for label_mat
+            level = self.solver.label_mat[elem-1][4]  # Level is stored in column 4
+            active_levels.append(level)
+        return active_levels   
+    # def reset(self, seed=None, options=None):
+    #     """
+    #     Reset environment to initial state.
+        
+    #     Args:
+    #         seed: Random seed
+    #         options: Additional options including:
+    #             - refinement_mode: Mode for initial mesh refinement
+    #             - refinement_level: Level of initial refinement
+    #             - refinement_probability: Probability for random refinement
+                
+    #     Returns:
+    #         tuple: (observation, info)
+    #     """
+    #     if self.verbose:
+    #         print(f"\n--- STARTING EPISODE #{self._total_episodes + 1} ---\n")
+        
+    #     self._episode_steps = 0  # Reset episode counter
+    #     self.mapped_action_history = []  # Reset action history
+    #     self.do_nothing_counter = 0  # Reset do-nothing counter
+    #     super().reset(seed=seed)
+        
+    #     # Extract refinement options
+    #     if options is None:
+    #         options = {}
+        
+    #     refinement_mode = options.get('refinement_mode', 'none')
+    #     refinement_level = options.get('refinement_level', 0)
+    #     refinement_probability = options.get('refinement_probability', 0.5)
+        
+    #     try:
+    #         # Reset solver with specified refinement
+    #         self.solver.reset(
+    #             refinement_mode=refinement_mode,
+    #             refinement_level=refinement_level,
+    #             refinement_probability=refinement_probability
+    #         )
+            
+    #         # Reset time-stepping variables
+    #         self.current_rl_iteration = 0
+    #         self.should_timestep = False
+        
+    #         # Prepare info dict
+    #         element_sizes = np.diff(self.solver.xelem)
+    #         info = {
+    #             'mesh_quality': {
+    #                 'min_element_size': np.min(element_sizes),
+    #                 'max_element_size': np.max(element_sizes),
+    #                 'size_ratio': np.max(element_sizes) / np.min(element_sizes),
+    #                 'n_elements': len(element_sizes),
+    #                 'total_episodes': self._total_episodes,
+    #                 'total_steps': self.num_timesteps
+    #             },
+    #             'refinement_info': {
+    #                 'mode': refinement_mode,
+    #                 'level': refinement_level,
+    #                 'resource_usage': len(self.solver.active) / self.element_budget
+    #             }
+    #         }
+            
+    #         # Randomly select initial element
+    #         if len(self.solver.active) > 0:
+    #             self.current_element_index = np.random.randint(0, len(self.solver.active))
+        
+    #         # Get initial observation
+    #         observation = self._get_observation()
+            
+    #         return observation, info
+            
+    #     except Exception as e:
+    #         if self.verbose:
+    #             print(f"Reset error: {e}")
+    #             import traceback
+    #             traceback.print_exc()
+            
+    #         # Create a basic observation in case of error
+    #         observation = self._get_observation()
+    #         info = {'reset_error': str(e)}
+            
+    #         return observation, info
+    
+    # def reset(self, seed=None, options=None) -> Tuple[Dict[str, np.ndarray], Dict[str, Any]]:
+    #     """
+    #     Reset environment to initial state.
+        
+    #     Args:
+    #         seed: Random seed
+    #         options: Additional options
+            
+    #     Returns:
+    #         tuple: (observation, info)
+    #     """
+    #     if self.verbose:
+    #         print(f"\n--- STARTING EPISODE #{self._total_episodes + 1} ---\n")
+        
+    #     self._episode_steps = 0  # Reset episode counter
+    #     self.mapped_action_history = []  # Reset action history
+    #     self.do_nothing_counter = 0  # Reset do-nothing counter
+    #     super().reset(seed=seed)
+        
+    #     try:
+    #         # Reset solver to initial condition
+    #         self.solver.reset()
+            
+    #         # Reset time-stepping variables
+    #         self.current_rl_iteration = 0
+    #         self.should_timestep = False
+        
+    #         # Prepare info dict
+    #         element_sizes = np.diff(self.solver.xelem)
+    #         info = {
+    #             'mesh_quality': {
+    #                 'min_element_size': np.min(element_sizes),
+    #                 'max_element_size': np.max(element_sizes),
+    #                 'size_ratio': np.max(element_sizes) / np.min(element_sizes),
+    #                 'n_elements': len(element_sizes),
+    #                 'total_episodes': self._total_episodes,
+    #                 'total_steps': self.num_timesteps
+    #             }
+    #         }
+            
+    #         # Randomly select initial element
+    #         if len(self.solver.active) > 0:
+    #             self.current_element_index = np.random.randint(0, len(self.solver.active))
+        
+    #         # Get initial observation
+    #         observation = self._get_observation()
+            
+    #         return observation, info
+            
+    #     except Exception as e:
+    #         if self.verbose:
+    #             print(f"Reset error: {e}")
+    #             import traceback
+    #             traceback.print_exc()
+            
+    #         # Create a basic observation in case of error
+    #         observation = self._get_observation()
+    #         info = {'reset_error': str(e)}
+            
+    #         return observation, info
             
     def render(self):
         """Rendering is not implemented for this environment."""

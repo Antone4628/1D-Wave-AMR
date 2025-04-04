@@ -23,7 +23,9 @@ ANIMATIONS_DIR = os.path.join(PROJECT_ROOT, 'animations')
 os.makedirs(ANIMATIONS_DIR, exist_ok=True)
 
 # from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
-from numerical.solvers.dg_wave_solver_model import DGWaveSolver
+# from numerical.solvers.dg_wave_solver_model import DGWaveSolver
+from numerical.solvers.dg_wave_solver_model_free import DGWaveSolver
+# from numerical.solvers.dg_wave_solver_model_options import DGWaveSolver
 from numerical.amr.model_marker import ModelMarker
 
 # Define initial mesh
@@ -39,10 +41,10 @@ print(f'Smallest initial element has dx: {np.min(differences)}')
 max_level = 5       # Max level of refinement
 nop = 4              # Polynomial order
 courant_max = 0.1    # CFL number
-time_final = .2       # Final time
+time_final = .05       # Final time
 icase = 1            # Test case number (1: Gaussian)
 periodic = True
-max_elements = 30    # Maximum number of elements
+max_elements = 25    # Maximum number of elements
 
 # Calculate smallest possible element size after refinement
 dx_min = np.min(differences)/(2**max_level)
@@ -59,13 +61,18 @@ solver = DGWaveSolver(
     periodic=periodic
 )
 
-print(f'Courant: {solver.wave_speed*solver.dt/dx_min:.6f}')
-print(f'dt = {solver.dt:.6f}')
-print(f'time_final = {time_final}')
-print(f'timesteps = {time_final/solver.dt:.1f}')
+# print(f'Courant: {solver.wave_speed*solver.dt/dx_min:.6f}')
+# print(f'dt = {solver.dt:.6f}')
+# print(f'time_final = {time_final}')
+# print(f'timesteps = {time_final/solver.dt:.1f}')
 
 # Path to the trained model
-model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_50.0', 'run_20250321_201810', 'models', 'final_model.zip')
+
+#this is the first model deployment.
+# model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_50.0', 'run_20250321_201810', 'models', 'final_model.zip')
+
+model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_50.0', 'run_20250403_151230', 'models', 'final_model.zip')
+# model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_100.0', 'run_20250327_130053', 'models', 'final_model.zip')
 
 # Initialize ModelMarker with trained model
 model_marker = ModelMarker(

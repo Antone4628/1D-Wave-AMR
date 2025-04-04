@@ -1,0 +1,60 @@
+# gamma_c_50.0_fixed_level2.yaml
+environment:
+  max_episode_steps: 300
+  element_budget: 25
+  gamma_c: 50.0
+  rl_iterations_per_timestep: "random"
+  max_rl_iterations: 30
+  max_consecutive_no_action: 100
+  initial_refinement:
+    mode: "fixed"
+    fixed_level: 2
+    max_level: 3
+    probability: 0.7
+
+training:
+  total_timesteps: 10000  # Reduced for testing
+  algorithm: "A2C"
+  learning_rate: 0.0003
+  n_steps: 5
+  ent_coef: 0.01
+
+solver:
+  nop: 4
+  max_level: 8
+  courant_max: 0.1
+  icase: 1
+  initial_elements: [-1, -0.4, 0, 0.4, 1]
+  verbose: false
+
+
+# environment:
+#   max_episode_steps: 300
+#   element_budget: 25
+#   gamma_c: 50.0
+#   rl_iterations_per_timestep: "random"
+#   max_rl_iterations: 30
+#   max_consecutive_no_action: 100
+#   initial_refinement:
+#     mode: "curriculum"  # none, fixed, random, wave_centered, curriculum
+#     fixed_level: 2      # Level for fixed mode
+#     max_level: 8        # Max level for random/wave modes
+#     probability: 0.7    # Probability for random mode
+
+# Curriculum settings define how refinement changes during training
+# curriculum:
+#   enable: true
+#   phases:
+#     - timesteps: 10000  # First 10k steps
+#       refinement:
+#         mode: "fixed"
+#         level: 0
+#     - timesteps: 20000  # Next 20k steps
+#       refinement: 
+#         mode: "random"
+#         level: 2
+#         probability: 0.5
+#     - timesteps: 30000  # Final phase
+#       refinement:
+#         mode: "fixed"
+#         level: 3

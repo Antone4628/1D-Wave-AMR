@@ -29,7 +29,7 @@ class EnhancedMonitorCallback(BaseCallback):
         total_timesteps: int,
         log_dir: str,
         save_freq: int = 10000,
-        verbose: int = 1,
+        verbose: int = 0,
         window_size: int = 100,
         action_mapping: Dict[int, int] = {0: -1, 1: 0, 2: 1},
         log_freq: int = 1000
@@ -54,6 +54,11 @@ class EnhancedMonitorCallback(BaseCallback):
         self.log_freq = log_freq
         self.action_mapping = action_mapping
         self.action_names = {-1: "Coarsen", 0: "No Change", 1: "Refine"}
+
+        # Add new variables to track refinement configuration
+        self.refinement_mode = "unknown"
+        self.refinement_level = "unknown"
+        self.refinement_probability = "unknown"
         
         # Create metrics directory
         self.metrics_dir = os.path.join(log_dir, "metrics")

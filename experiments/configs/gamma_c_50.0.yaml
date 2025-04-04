@@ -1,11 +1,11 @@
 # gamma_c_50.0.yaml
 environment:
-  max_episode_steps: 200
+  max_episode_steps: 300
   element_budget: 25
   gamma_c: 50.0  # This varies per configuration file
   rl_iterations_per_timestep: "random"  # or a fixed number like 3
-  max_rl_iterations: 300
-  max_consecutive_no_action: 10
+  max_rl_iterations: 30
+  max_consecutive_no_action: 100
 
 training:
   total_timesteps: 50000
@@ -21,3 +21,4 @@ solver:
   icase: 1
   initial_elements: [-1, -0.4, 0, 0.4, 1]
   verbose: false
+  balance: true  # Add this line - set to false to disable balance enforcement

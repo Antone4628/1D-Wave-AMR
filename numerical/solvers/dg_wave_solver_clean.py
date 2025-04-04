@@ -429,55 +429,6 @@ class DGWaveSolver:
         if update_dt:
             self._compute_timestep(use_actual_max_level=True)
 
-    def step(self, dt=None):
-        """
-        Take single time step using low-storage Runge-Kutta method.
-        
-        Args:
-            dt (float, optional): Time step size. If None, use the solver's dt
-        """
-        if dt is None:
-            dt = self.dt
-                
-        # Low-storage Runge-Kutta coefficients
-        RKA = np.array([0,
-                    -567301805773.0/1357537059087,
-                    -2404267990393.0/2016746695238,
-                    -3550918686646.0/2091501179385,
-                    -1275806237668.0/842570457699])
-        
-        RKB = np.array([1432997174477.0/9575080441755,
-                    5161836677717.0/13612068292357,
-                    1720146321549.0/2090206949498,
-                    3134564353537.0/4481467310338,
-                    2277821191437.0/14882151754819])
-        
-        dq = np.zeros(self.npoin_dg)
-        qp = self.q.copy()
-        
-        for s in range(len(RKA)):
-            R = self.Dhat @ qp
-            
-            for i in range(self.npoin_dg):
-                dq[i] = RKA[s]*dq[i] + dt*R[i]
-                qp[i] = qp[i] + RKB[s]*dq[i]
-                
-            # Enforce periodicity after EACH RK stage
-            if self.periodic:
-                # Find matching nodes at domain boundaries
-                for i in range(self.ngl):
-                    left_bdry_idx = self.intma[i, 0]  # First element, all nodes
-                    right_bdry_idx = self.intma[i, -1]  # Last element, all nodes
-                    if left_bdry_idx == right_bdry_idx:
-                        # These are the same point in the mesh, enforce equality
-                        avg_val = 0.5 * (qp[left_bdry_idx] + qp[right_bdry_idx])
-                        qp[left_bdry_idx] = avg_val
-                        qp[right_bdry_idx] = avg_val
-        
-        self.q = qp
-        self.time += dt
-
-
     # def step(self, dt=None):
     #     """
     #     Take single time step using low-storage Runge-Kutta method.
@@ -511,11 +462,60 @@ class DGWaveSolver:
     #             dq[i] = RKA[s]*dq[i] + dt*R[i]
     #             qp[i] = qp[i] + RKB[s]*dq[i]
                 
-    #         if self.periodicity[-1] == self.periodicity[0]:
-    #             qp[-1] = qp[0]
-                
+    #         # Enforce periodicity after EACH RK stage
+    #         if self.periodic:
+    #             # Find matching nodes at domain boundaries
+    #             for i in range(self.ngl):
+    #                 left_bdry_idx = self.intma[i, 0]  # First element, all nodes
+    #                 right_bdry_idx = self.intma[i, -1]  # Last element, all nodes
+    #                 if left_bdry_idx == right_bdry_idx:
+    #                     # These are the same point in the mesh, enforce equality
+    #                     avg_val = 0.5 * (qp[left_bdry_idx] + qp[right_bdry_idx])
+    #                     qp[left_bdry_idx] = avg_val
+    #                     qp[right_bdry_idx] = avg_val
+        
     #     self.q = qp
     #     self.time += dt
+
+
+    def step(self, dt=None):
+        """
+        Take single time step using low-storage Runge-Kutta method.
+        
+        Args:
+            dt (float, optional): Time step size. If None, use the solver's dt
+        """
+        if dt is None:
+            dt = self.dt
+                
+        # Low-storage Runge-Kutta coefficients
+        RKA = np.array([0,
+                    -567301805773.0/1357537059087,
+                    -2404267990393.0/2016746695238,
+                    -3550918686646.0/2091501179385,
+                    -1275806237668.0/842570457699])
+        
+        RKB = np.array([1432997174477.0/9575080441755,
+                    5161836677717.0/13612068292357,
+                    1720146321549.0/2090206949498,
+                    3134564353537.0/4481467310338,
+                    2277821191437.0/14882151754819])
+        
+        dq = np.zeros(self.npoin_dg)
+        qp = self.q.copy()
+        
+        for s in range(len(RKA)):
+            R = self.Dhat @ qp
+            
+            for i in range(self.npoin_dg):
+                dq[i] = RKA[s]*dq[i] + dt*R[i]
+                qp[i] = qp[i] + RKB[s]*dq[i]
+                
+            if self.periodicity[-1] == self.periodicity[0]:
+                qp[-1] = qp[0]
+                
+        self.q = qp
+        self.time += dt
 
     def solve(self, time_final):
         """

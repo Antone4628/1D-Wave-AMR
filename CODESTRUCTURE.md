@@ -6,6 +6,7 @@
 │   │   ├── gamma_c_10.0.yaml
 │   │   ├── gamma_c_25.0.yaml
 │   │   ├── gamma_c_50.0.yaml
+│   │   ├── gamma_c_50.0_refine_fixed_level2.yaml
 │   │   ├── gamma_c_1000.0.yaml
 │   │   └── test_config.yaml
 │   ├── results/
@@ -17,6 +18,7 @@
 │   │               └── final_model.zip
 │   ├── analyze_model.py
 │   ├── test_training_cycle.py
+│   ├── run_experiments_options.py
 │   └── run_experiments.py
 ├── logs/
 │   ├── best_model/
@@ -47,6 +49,8 @@
 │   │   ├── dg_steady_solver.py
 │   │   ├── dg_wave_solver.py  
 │   │   ├── dg_wave_solver_clean.py 
+│   │   ├── dg_wave_solver_free.py 
+│   │   ├── dg_wave_solver_options.py 
 │   │   ├── wave.py           
 │   │   └── utils.py
 │   └── environments/

@@ -1,0 +1,2575 @@
+DEBUGGING COARSENING BEHAVIOR
+============================================================
+
+
+----------------------------------------
+Configuration: No Refinement
+----------------------------------------
+
+Initial state:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Level distribution: {0: 4, 1: 0, 2: 0, 3: 0, 4: 0}
+  Element count by level: [0, 0, 0, 0]
+  Initial observation resource usage: 0.1333
+Step 0 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 0 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 1 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 1 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 2 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 2 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 3 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 3 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 4 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 4 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+
+Step 5 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 5 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 6 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 6 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 7 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 7 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 8 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 8 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 9 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 9 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 31.139
+  Delta_u: 0.018545
+  Took timestep: False
+
+Step 10 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 10 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -31.139
+  Delta_u: 0.018545
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 11 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 11 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 12 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 12 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 13 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 13 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 14 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 14 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: True
+
+Step 15 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 15 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 16 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 16 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 17 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 17 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 18 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 18 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 19 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 19 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 30.141
+  Delta_u: 0.006831
+  Took timestep: False
+
+Step 20 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 20 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 21 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 21 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 22 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 22 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -30.187
+  Delta_u: 0.007155
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 23 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 23 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 24 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 24 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+
+Step 25 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 25 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 26 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 26 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 27 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 27 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 28 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 28 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 29 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 29 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 29.672
+  Delta_u: 0.004277
+  Took timestep: True
+
+Step 30 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 30 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 31 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 31 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -29.707
+  Delta_u: 0.004428
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 32 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 32 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 33 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 33 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 34 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 34 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+
+Step 35 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 35 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 36 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 36 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 37 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 37 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 38 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 38 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 39 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 39 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 31.200
+  Delta_u: 0.019709
+  Took timestep: False
+
+Step 40 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 40 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -31.200
+  Delta_u: 0.019709
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 41 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 41 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 42 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 42 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 43 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 43 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 44 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 44 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 28.825
+  Delta_u: 0.001833
+  Took timestep: True
+
+Step 45 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 45 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 46 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 46 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 47 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 47 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 48 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 48 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 49 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 2 (maps to 1)
+Step 49 - Post-action:
+  Elements: 6/30
+  Resource usage: 20.0%
+  Reward: 30.626
+  Delta_u: 0.011250
+  Took timestep: False
+
+Step 50 - Pre-action:
+  Elements: 6/30
+  Resource usage: 20.0%
+  Action chosen: 0 (maps to -1)
+Step 50 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -30.626
+  Delta_u: 0.011250
+  Took timestep: True
+  Coarsening succeeded
+  Element change: -1
+
+Step 51 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 51 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -28.556
+  Delta_u: 0.001401
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 52 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 52 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 53 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 53 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 54 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 54 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+
+Step 55 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 55 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 56 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 56 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 57 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 57 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 58 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 58 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 59 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 59 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: True
+
+Step 60 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 60 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 61 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 61 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 62 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 62 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 63 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 63 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 64 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 64 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 27.198
+  Delta_u: 0.000360
+  Took timestep: False
+
+Step 65 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 65 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -27.198
+  Delta_u: 0.000360
+  Took timestep: True
+  Coarsening succeeded
+  Element change: -1
+
+Step 66 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 66 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 67 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 67 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 68 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 68 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 69 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 69 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 27.012
+  Delta_u: 0.000299
+  Took timestep: False
+
+Step 70 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 70 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 71 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 71 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -27.012
+  Delta_u: 0.000299
+  Took timestep: True
+  Coarsening succeeded
+  Element change: -1
+
+Step 72 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 72 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 73 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 73 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 74 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 74 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: True
+
+Step 75 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 75 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 76 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 76 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 77 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 77 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 78 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 78 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 79 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 79 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 28.367
+  Delta_u: 0.001159
+  Took timestep: False
+
+Step 80 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 80 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -28.367
+  Delta_u: 0.001159
+  Took timestep: True
+  Coarsening succeeded
+  Element change: -1
+
+Step 81 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 81 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 82 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 82 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 83 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 83 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 84 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 84 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+
+Step 85 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 85 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 86 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 86 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 87 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 87 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 88 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 88 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 89 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 89 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 29.556
+  Delta_u: 0.003808
+  Took timestep: True
+
+Step 90 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 90 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -30.324
+  Delta_u: 0.008201
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 91 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 91 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 92 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 92 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 93 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 93 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 94 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 94 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 29.507
+  Delta_u: 0.003625
+  Took timestep: False
+
+Step 95 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 95 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 96 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 96 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 97 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 97 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -29.471
+  Delta_u: 0.003495
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 98 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 98 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 99 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 99 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Episode ended at step 100.
+  Termination: False, Truncation: True
+  Reason: Maximum episode steps reached
+
+
+Summary for No Refinement:
+  Steps completed: 100
+  Initial elements: 4
+  Final elements: 4
+  Action distribution:
+    Coarsen: 80.0%
+    No Change: 8.0%
+    Refine: 12.0%
+  Average coarsening reward: -4.047
+  Coarsening success rate: 13.8%
+
+
+----------------------------------------
+Configuration: Highly Refined (Lvl 3)
+----------------------------------------
+
+Initial state:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Level distribution: {0: 4, 1: 0, 2: 0, 3: 0, 4: 0}
+  Element count by level: [0, 0, 0, 0]
+  Initial observation resource usage: 0.1333
+Step 0 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 0 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 1 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 1 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 2 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 2 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 3 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 3 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 4 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 4 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 31.449
+  Delta_u: 0.025283
+  Took timestep: False
+
+Step 5 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 5 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 6 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 6 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 7 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 7 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 8 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 8 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 9 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 2 (maps to 1)
+Step 9 - Post-action:
+  Elements: 6/30
+  Resource usage: 20.0%
+  Reward: 31.318
+  Delta_u: 0.022476
+  Took timestep: False
+
+Step 10 - Pre-action:
+  Elements: 6/30
+  Resource usage: 20.0%
+  Action chosen: 0 (maps to -1)
+Step 10 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -31.231
+  Delta_u: 0.020603
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 11 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 11 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -31.332
+  Delta_u: 0.022476
+  Took timestep: True
+  Coarsening succeeded
+  Element change: -1
+
+Step 12 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 12 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 13 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 13 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 14 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 14 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: True
+
+Step 15 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 15 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 16 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 16 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 17 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 17 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 18 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 18 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 19 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 19 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 31.433
+  Delta_u: 0.024870
+  Took timestep: False
+
+Step 20 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 20 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -31.433
+  Delta_u: 0.024870
+  Took timestep: True
+  Coarsening succeeded
+  Element change: -1
+
+Step 21 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 21 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 22 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 22 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 23 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 23 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 24 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 24 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+
+Step 25 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 25 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 26 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 26 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 27 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 27 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 28 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 28 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 29 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 29 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 31.742
+  Delta_u: 0.033884
+  Took timestep: True
+
+Step 30 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 30 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -31.778
+  Delta_u: 0.035122
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 31 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 31 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 32 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 32 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 33 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 33 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 34 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 34 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 31.613
+  Delta_u: 0.029785
+  Took timestep: False
+
+Step 35 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 35 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 36 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 36 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 37 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 37 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -31.630
+  Delta_u: 0.030293
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 38 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 38 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 39 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 39 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+
+Step 40 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 40 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 41 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 41 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 42 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 42 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 43 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 43 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 44 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 44 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 31.207
+  Delta_u: 0.019842
+  Took timestep: True
+
+Step 45 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 45 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 46 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 46 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -31.406
+  Delta_u: 0.024215
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 47 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 47 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 48 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 48 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 49 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 49 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+
+Step 50 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 50 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 51 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 51 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 52 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 52 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 53 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 53 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 54 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 54 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 29.340
+  Delta_u: 0.003067
+  Took timestep: False
+
+Step 55 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 55 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -29.340
+  Delta_u: 0.003067
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 56 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 56 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 57 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 57 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 58 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 58 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 59 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 59 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: True
+
+Step 60 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 60 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 61 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 61 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 62 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 62 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 63 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 63 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 64 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 64 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 31.680
+  Delta_u: 0.031847
+  Took timestep: False
+
+Step 65 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 65 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -31.680
+  Delta_u: 0.031847
+  Took timestep: True
+  Coarsening succeeded
+  Element change: -1
+
+Step 66 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 66 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 67 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 67 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 68 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 68 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 69 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 69 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+
+Step 70 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 70 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 71 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 71 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 72 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 72 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 73 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 73 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 74 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 74 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: 30.116
+  Delta_u: 0.006664
+  Took timestep: True
+
+Step 75 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 75 - Post-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 76 - Pre-action:
+  Elements: 5/30
+  Resource usage: 16.7%
+  Action chosen: 0 (maps to -1)
+Step 76 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -30.207
+  Delta_u: 0.007297
+  Took timestep: False
+  Coarsening succeeded
+  Element change: -1
+
+Step 77 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 77 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 78 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 78 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 79 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 79 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+
+Step 80 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 80 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 81 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 81 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 82 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 82 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 83 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 83 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 84 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 84 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+
+Step 85 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 85 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 86 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 86 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 87 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 87 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 88 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 88 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 89 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 89 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: True
+
+Step 90 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 90 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 91 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 91 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 92 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 92 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 93 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 93 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 94 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 1 (maps to 0)
+Step 94 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+
+Step 95 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 95 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 96 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 96 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 97 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 97 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Coarsening failed
+  Element change: 0
+
+Step 98 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 0 (maps to -1)
+Step 98 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: -0.000
+  Delta_u: 0.000000
+  Took timestep: True
+  Coarsening failed
+  Element change: 0
+
+Step 99 - Pre-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Action chosen: 2 (maps to 1)
+Step 99 - Post-action:
+  Elements: 4/30
+  Resource usage: 13.3%
+  Reward: 0.000
+  Delta_u: 0.000000
+  Took timestep: False
+  Episode ended at step 100.
+  Termination: False, Truncation: True
+  Reason: Maximum episode steps reached
+
+
+Summary for Highly Refined (Lvl 3):
+  Steps completed: 100
+  Initial elements: 4
+  Final elements: 4
+  Action distribution:
+    Coarsen: 80.0%
+    No Change: 10.0%
+    Refine: 10.0%
+  Average coarsening reward: -3.500
+  Coarsening success rate: 11.2%
+

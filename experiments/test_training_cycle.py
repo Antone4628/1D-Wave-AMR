@@ -14,7 +14,8 @@ PROJECT_ROOT = os.path.abspath(os.path.join(
     '..'
 ))
 sys.path.append(PROJECT_ROOT)
-from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
+# from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
+from numerical.solvers.dg_wave_solver_free import DGWaveSolver
 from numerical.environments.dg_amr_env_clean import DGAMREnv
 
 # Set up a simple test case
@@ -33,7 +34,7 @@ print("Testing with fixed RL iterations per time step...")
 env = DGAMREnv(
     solver=solver,
     element_budget=25,
-    gamma_c=25.0,
+    gamma_c=50.0,
     max_episode_steps=50,
     verbose=False,
     rl_iterations_per_timestep=3,  # Fixed for testing
@@ -93,7 +94,7 @@ print("-" * 50)
 time_steps_taken = 0
 total_rl_iterations = 0
 
-for i in range(30):
+for i in range(40):
 
     if i < 20:
         action = 2  # Always refine

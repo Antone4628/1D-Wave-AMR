@@ -1,0 +1,23 @@
+{
+  "training_steps": 50000,
+  "episodes_completed": 1022,
+  "element_budget": 25,
+  "gamma_c": 50.0,
+  "max_episode_steps": 200,
+  "termination_reasons": {
+    "Budget exceeded (pre-action)": 252,
+    "Maximum episode steps reached": 9,
+    "Error: Mesh quality issues: Element size ratio too large: 384.00": 750,
+    "Error: Mesh quality issues: Element size ratio too large: 256.00": 11
+  },
+  "action_counts": {
+    "-1": 14961,
+    "0": 9624,
+    "1": 25415
+  },
+  "reward_stats": {
+    "mean": -409.75057442670357,
+    "min": -2107.682980309713,
+    "max": 268.7880953550339
+  }
+}
