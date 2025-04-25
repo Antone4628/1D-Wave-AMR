@@ -236,10 +236,99 @@ def Fmatrix_upwind_flux(intma, nelem, npoin, ngl, u, periodic = True):
                 Ip = 0  # First index in 0-based indexing
             # This is a hack for non-periodic
             elif not periodic:
-                Ip = npoin
+                Ip = npoin - 1
         Fmat[I][I] = 1
 
     Fmat = Fmat * u
+    return Fmat
+
+
+def Fmatrix_upwind_flux_bc(intma, nelem, npoin, ngl, u, periodic=False):
+    """
+    Creates upwind flux matrix for DG formulation with boundary condition support.
+    
+    Args:
+        intma (array): Element-node connectivity
+        nelem (int): Number of elements  
+        npoin (int): Number of global points
+        ngl (int): Points per element
+        u (float): Wave speed
+        periodic (bool): Whether to use periodic boundary conditions
+        
+    Returns:
+        array: Flux matrix [npoin,npoin]
+    """
+    # Main flux matrix
+    Fmat = np.zeros([npoin, npoin], dtype=float)
+    
+    # Get indices of boundary nodes
+    left_boundary_idx = intma[0, 0]  # First node in first element
+    right_boundary_idx = intma[ngl-1, nelem-1]  # Last node in last element
+    
+    for e in range(nelem):
+        # Visit the left-most DOF of each element
+        i = 0
+        I = intma[i][e]
+        # shift left
+        Im = I - 1
+        
+        if Im < 0 and not periodic:
+            # Non-periodic case - use explicit boundary value
+            # Set flux to come from boundary node
+            Fmat[I][left_boundary_idx] = -1
+        elif Im < 0 and periodic:
+            # Periodic case - wrap around
+            Im = npoin - 1
+            Fmat[I][Im] = -1
+        else:
+            # Interior flux
+            Fmat[I][Im] = -1
+
+        # Visit right-most DOF of each element
+        i = ngl - 1
+        I = intma[i][e]
+        
+        # For upwind with positive u, node depends on itself
+        Fmat[I][I] = 1
+    
+    # Scale by wave speed
+    Fmat = Fmat * u
+    
+    return Fmat
+
+def Fmatrix_centered_flux(intma, nelem, npoin, ngl, u):
+    """Creates centered flux matrix for DG formulation."""
+    Fmat = np.zeros([npoin, npoin], dtype=float)
+    
+    for e in range(nelem):
+        # Visit the left-most DOF of each element
+        i = 0
+        I = intma[i][e]
+        Im = I - 1
+        
+        if Im < 0:
+            # Boundary treatment still uses upwind for stability
+            if u > 0:
+                Fmat[I][0] = -u  # Inflow boundary influence
+        else:
+            # Centered flux: average from both sides
+            Fmat[I][Im] = -u/2
+            Fmat[I][I] = -u/2
+            
+        # Visit right-most DOF of each element
+        i = ngl - 1
+        I = intma[i][e]
+        Ip = I + 1
+        
+        if Ip >= npoin:
+            # Boundary treatment
+            if u > 0:
+                Fmat[I][I] = u  # Outflow boundary
+        else:
+            # Centered flux: average from both sides
+            Fmat[I][I] = u/2
+            Fmat[I][Ip] = u/2
+            
     return Fmat
 
 def Matrix_DSS(Me, De, u, intma, periodicity, ngl, nelem, npoin):

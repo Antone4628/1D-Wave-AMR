@@ -34,9 +34,13 @@ from numerical.solvers.wave import *
 # xelem=np.array([-1, -0.3 ,0 ,0.3 ,1])
 # xelem=np.array([-1, -0.4, 0 ,0.4 ,1])
 # nelem = 4                 #Initial number of elements in level zero
-xelem=np.array([-1, -0.5, 0 ,0.5 ,1])
-nelem = 4                 #Initial number of elements in level zero
 
+# xelem=np.array([-1, -0.5, 0 ,0.5 ,1])
+# nelem = 4                 #Initial number of elements in level zero
+# xelem = np.array([-1, -0.6, -0.3,  0,  0.3, 0.6, 1])
+xelem=np.array([-1, -0.5, -0.25, 0,0.5 ,1])
+nelem = len(xelem) - 1
+# 
 # xelem = np.array([-1, -0.6, -0.3, -0.15, 0, 0.15, 0.3, 0.6, 1])
 # nelem = len(xelem) - 1
 
@@ -85,7 +89,7 @@ time_final = .1        #final time in revolutions
 # iplot_solution = 1          #Switch to Plor of Not
 # iplot_matrices = 0          #??????
 
-icase = 7                #case number: 1 is a Gaussian, 2 is a square wave, 3 is a Gaussian with source, and 4 is a square wave with source
+icase = 1                #case number: 1 is a Gaussian, 2 is a square wave, 3 is a Gaussian with source, and 4 is a square wave with source
 xmu = 0.05                  #filtering strength: 1 is full strength and 0 is no filter
 ifilter = 0                 #time-step frequency that the filter is applied. 0=never, 1 = every time-step
 
@@ -149,48 +153,139 @@ periodicity_non_periodic = np.arange(npoin_dg)  # Identity mapping (no periodici
 # When assembling matrices
 Mmatrix, Dmatrix = Matrix_DSS(Me, De, u, intma, periodicity_non_periodic, ngl, nelem, npoin)
 
-Fmatrix = Fmatrix_upwind_flux(intma, nelem, npoin, ngl, u)
+Fmatrix_up = Fmatrix_upwind_flux_bc(intma, nelem, npoin, ngl, u)
+Fmatrix_cent = Fmatrix_centered_flux(intma, nelem, npoin, ngl, u)
+
+print(f'Fmat shape: {np.shape(Fmatrix_up)}')
+# print(f'Fmatrix: {Fmatrix}')
+
+bvec = np.zeros([npoin])
+print(f'bvec shape: {np.shape(bvec)}')
+bvec[0]=inflow_value
+print(f'eff shape: {np.shape(f)}')
+
+# Form right-hand side
+rhs = Mmatrix @ f - Fmatrix_up @ bvec
+# rhs = Mmatrix @ f - Fmatrix_up @ bvec
+print(f'rhs shape: {np.shape(rhs)}')
+
+# Compute solution
+epsilon = 1e-12
+# A = Fmatrix_cent - Dmatrix + epsilon * np.eye(npoin_dg)
+# q_numeric = np.linalg.solve(A, rhs)
+q_numeric = np.linalg.solve(Fmatrix_up - Dmatrix, rhs)
+# q_numeric = np.linalg.solve(Fmatrix_cent - Dmatrix, rhs)
+print(f'q_numerical shape: {np.shape(q_numeric)}')
+print(f'q_numeric: {q_numeric}')
+print(f"F-D matrix condition number: {np.linalg.cond(Fmatrix_cent - Dmatrix)}")
+residual = np.linalg.norm((Fmatrix_cent - Dmatrix) @ q_numeric - (Mmatrix @ f - Fmatrix_up @ bvec))
+print(f"Solution residual: {residual}")
+
+
+
 # ^^THIS IS NOT WORKING TAKE A CLOSER LOOK AT!!!!!
 
 
-Rmatrix = Dmatrix - Fmatrix
+# Rmatrix = Dmatrix - Fmatrix
 
-print(f"Mass matrix condition number: {np.linalg.cond(Mmatrix)}")
-print(f"Sttiffness matrix condition number: {np.linalg.cond(Dmatrix)}")
-print(f"R matrix condition number: {np.linalg.cond(Rmatrix)}")
+# print(f"Mass matrix condition number: {np.linalg.cond(Mmatrix)}")
+# print(f"Sttiffness matrix condition number: {np.linalg.cond(Dmatrix)}")
+# print(f"R matrix condition number: {np.linalg.cond(Rmatrix)}")
+
 
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.set_xlim([-1,1])
-ax.set_ylim([-4.1,4.5])
+ymin = np.min(f)
+ymax = np.max(f)
+# ax.set_ylim([-0.2,1.6])
+ax.set_ylim([ymin,ymax])
 ax.set_xticks(xelem)
 ax.tick_params(axis='x', rotation=90, labelsize=8)
-ax.plot(coord, f, label = 'f')
-
-# q0 = qe
-# X = np.linalg.solve(Rmatrix, Mmatrix)
-# # Multiply X by fe
-# result = X @ f  # or np.dot(X, fe)
-
-# # Negate the result
-# qc = -result
-# qc = np.zeros(len(coord))
-
-# qc = -1*np.linalg.solve(Rmatrix, Mmatrix @ f)
-Dhat = np.linalg.solve(Mmatrix,Rmatrix)
-
-qc, time, plots, exact, grids, xelems = ti_LSRK_steady(qe, f, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, time_final, dt, 
-                icase, max_level, criterion)
-
-
-print(qc)
-
-ax.plot(coord,qe, linestyle=':',label = 'exact solution')
-ax.plot(coord, qc, label = 'computed solution')
+ax.plot(coord, q_numeric, color = 'darkmagenta', ls ='--',label = 'numerical')
+ax.plot(coord, qe, linewidth=10, alpha = 0.25, label = 'exact')
+ax.plot(coord, f, color = 'darkcyan', label = 'forcing')
+# ax.plot(coord, f, label = 'f')
 ax.legend(loc='upper right')
 
-# Adjust layout
-plt.tight_layout()
+print(f'stand alone coord shape: {(np.shape(coord))}')
+print(f'stand alone coords: {coord}')
+print(f'stand alone f: {f}')
+
+
+
+
+#Create Grid
+
+# # Adjust layout
+# plt.tight_layout()
 plt.show()
+
+# print(f'\n\nForcing Function Integration:')
+# for beta_val in [64, 128, 256]:
+#     # Calculate forcing on fine grid
+#     x_fine = np.linspace(-1, 1, 1000)
+#     f_test = -2*u*beta_val*x_fine*np.exp(-beta_val*x_fine**2)
+    
+#     # Check total integral (should be near zero)
+#     integral = np.trapz(f_test, x_fine)
+#     print(f"Beta={beta_val}, Integral of forcing: {integral}")
+    
+#     # Check maximum value
+#     print(f"Beta={beta_val}, Max forcing: {np.max(np.abs(f_test))}")
+
+
+# print(f'\n\nBoundary Value Influence:')
+# for beta_val in [64, 128, 256]:
+#     # Calculate boundary value at x=-1
+#     boundary_val = np.exp(-beta_val)
+#     print(f"Beta={beta_val}, Boundary value at x=-1: {boundary_val}")
+    
+#     # Check influence in right-hand side
+#     boundary_vec = np.zeros(npoin)
+#     boundary_vec[0] = boundary_val
+#     boundary_contrib = Fmatrix_up @ boundary_vec
+#     print(f"Beta={beta_val}, Max boundary contribution: {np.max(np.abs(boundary_contrib))}")
+
+# print(f'\n\nCondition Number Test:')
+# for beta_val in [64, 128, 256]:
+#     # Configure with this beta
+#     # [...]
+    
+#     # Check condition numbers
+#     cond_F = np.linalg.cond(Fmatrix_cent)
+#     cond_D = np.linalg.cond(Dmatrix)
+#     cond_system = np.linalg.cond(Fmatrix_cent - Dmatrix)
+#     print(f"Beta={beta_val}, Condition numbers: F={cond_F}, D={cond_D}, F-D={cond_system}")
+
+
+
+
+
+# # q0 = qe
+# # X = np.linalg.solve(Rmatrix, Mmatrix)
+# # # Multiply X by fe
+# # result = X @ f  # or np.dot(X, fe)
+
+# # # Negate the result
+# # qc = -result
+# # qc = np.zeros(len(coord))
+
+# # qc = -1*np.linalg.solve(Rmatrix, Mmatrix @ f)
+# Dhat = np.linalg.solve(Mmatrix,Rmatrix)
+
+# qc, time, plots, exact, grids, xelems = ti_LSRK_steady(qe, f, Dhat, periodicity, xgl, xelem, wnq, xnq, psi, dpsi,u, time, time_final, dt, 
+#                 icase, max_level, criterion)
+
+
+# print(qc)
+
+# ax.plot(coord,qe, linestyle=':',label = 'exact solution')
+# ax.plot(coord, qc, label = 'computed solution')
+# ax.legend(loc='upper right')
+
+# # # Adjust layout
+# plt.tight_layout()
+# plt.show()
 # ax.set_title(f'{nelem} initial elements, full AMR to level {max_level}, dt = {dt:.6f}')
 # frame_text = ax.text(0.05, 0.95,'',horizontalalignment='left',verticalalignment='top', transform=ax.transAxes)
 # time_text = ax.text(0.05, 0.90,'',horizontalalignment='left',verticalalignment='top', transform=ax.transAxes)

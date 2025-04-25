@@ -104,8 +104,8 @@ print(f'info_mat:\n {info_mat}')
 print(f'active: {active0}')
 
 
-marks0 = np.array([0,1,1,0])
-refs = [2,3]
+marks0 = np.array([0,1,0,0])
+refs = [2]
 defs =[]
 og_marks = marks0
 og_active = active0
@@ -225,7 +225,7 @@ for i in xelem2:
 
 # marks2 = np.array([0,-1,-1,-1,-1,0,0,0])
 # marks2 = np.array([0,-1,-1,1,1,0,0,0])
-marks2 = np.array([0,-1,-1,1,1,-1,-1,0])
+marks2 = np.array([0,1,1,1,1,0,0,0])
 
 og_marks = marks2
 og_active = active2
@@ -300,6 +300,7 @@ ax.legend(loc="upper right")
 # ax.plot(coord, wave_gathered, color = 'red', label = 'gathered')
 ax.plot(coord3, q_gath, color = 'magenta', ls = '--', label = 'refined 3')
 ax.legend(loc="upper right")
+plt.show()
 
 
 # marks = np.array([-1,-1])

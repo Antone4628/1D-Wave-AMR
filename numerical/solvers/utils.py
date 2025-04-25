@@ -27,7 +27,9 @@ def exact_solution(coord, npoin, time, icase):
     u = w*x1
     alph = 1.0
     # beta = 64.0
+    # beta = 128.0
     beta = 256.0
+    # beta = 512.0
     
     # initialize
     qe = np.zeros(npoin)
@@ -137,7 +139,9 @@ def eff(coord, npoin, fcase, u):
     u = w*x1
     alph = 1.0
     # beta = 64.0
+    # beta = 128.0
     beta = 256.0
+    # beta = 512.0
     
     # initialize
     f = np.zeros(npoin)
@@ -149,7 +153,10 @@ def eff(coord, npoin, fcase, u):
     for i in range(npoin):
         x = coord[i]
         
-        if(fcase == 7):
+
+        if(fcase == 1):
+            f[i] = -2*u*beta*x*np.exp(-beta*x**2)
+        elif(fcase == 7):
 
             def sech(x):
                 return 1 / np.cosh(x)

@@ -177,6 +177,7 @@ def adapt_mesh(nop, cur_grid, active, label_mat, info_mat, marks, max_level):
     # Process adaptations one at a time
     i = 0
     while i < len(marks):
+        # print(f'processing element {i+1} with mark value {marks[i]}')
         if marks[i] == 0:
             i += 1
             continue
