@@ -331,6 +331,73 @@ def Fmatrix_centered_flux(intma, nelem, npoin, ngl, u):
             
     return Fmat
 
+def Fmatrix_rusanov_flux(intma, nelem, npoin, ngl, wave_speed, periodic=False):
+    """
+    Creates Rusanov (Local Lax-Friedrichs) flux matrix for DG formulation.
+    
+    Args:
+        intma (array): Element-node connectivity matrix
+        nelem (int): Number of elements
+        npoin (int): Number of global points
+        ngl (int): Points per element
+        wave_speed (float): Wave speed
+        periodic (bool): Whether to use periodic boundary conditions
+        
+    Returns:
+        array: Rusanov flux matrix [npoin,npoin]
+    """
+    # Main flux matrix
+    Fmat = np.zeros([npoin, npoin], dtype=float)
+    
+    # Maximum eigenvalue (wave speed)
+    lambda_max = abs(wave_speed)
+    
+    # Boundary handling
+    if not periodic:
+        # Left boundary (inflow for positive wave speed)
+        left_idx = intma[0, 0]
+        Fmat[left_idx, left_idx] = 0.5 * wave_speed + 0.5 * lambda_max
+        
+        # Right boundary (outflow for positive wave speed)
+        right_idx = intma[ngl-1, nelem-1]
+        Fmat[right_idx, right_idx] = 0.5 * wave_speed + 0.5 * lambda_max
+    
+    # Internal interfaces
+    for e in range(nelem):
+        # Right interface of current element
+        if e < nelem - 1:
+            # Current element's right node
+            i_right = ngl - 1
+            I_right = intma[i_right, e]
+            
+            # Next element's left node
+            j_left = 0
+            J_left = intma[j_left, e+1]
+            
+            # Add flux contribution to right node of current element
+            Fmat[I_right, I_right] += 0.5 * wave_speed + 0.5 * lambda_max
+            Fmat[I_right, J_left] += 0.5 * wave_speed - 0.5 * lambda_max
+            
+            # Add flux contribution to left node of next element
+            Fmat[J_left, J_left] += -0.5 * wave_speed + 0.5 * lambda_max
+            Fmat[J_left, I_right] += -0.5 * wave_speed - 0.5 * lambda_max
+    
+    # Periodic boundary if needed
+    if periodic:
+        # Last element's right node connects to first element's left node
+        I_right = intma[ngl-1, nelem-1]
+        J_left = intma[0, 0]
+        
+        # Add flux contribution to right node of last element
+        Fmat[I_right, I_right] += 0.5 * wave_speed + 0.5 * lambda_max
+        Fmat[I_right, J_left] += 0.5 * wave_speed - 0.5 * lambda_max
+        
+        # Add flux contribution to left node of first element
+        Fmat[J_left, J_left] += -0.5 * wave_speed + 0.5 * lambda_max
+        Fmat[J_left, I_right] += -0.5 * wave_speed - 0.5 * lambda_max
+    
+    return Fmat
+
 def Matrix_DSS(Me, De, u, intma, periodicity, ngl, nelem, npoin):
     """
     Direct stiffness summation to form global matrices.

@@ -39,7 +39,8 @@ solver = DGWaveSolverMixed(nop=4, xelem=xelem, max_elements=40, max_level=6)
 print(f'solver coords shape pre-solve {np.shape(solver.coord)}')
 
 # Compute steady solution
-q_steady = solver.steady_solve()
+# q_steady = solver.steady_solve()
+q_steady = solver.steady_solve_improved()
 # solver._update_matrices()
 q_steady_pt = solver.pseudo_step(dt)
 
@@ -133,7 +134,8 @@ ax2.fill_betweenx([y_bottom, y_top], xelem[1], xelem[2], color='orange', alpha=0
 # ax3.grid(True, alpha=0.3)
 
 # Plot steady solution after first adaptation
-q_steady_refined_1 = solver.steady_solve()
+# q_steady_refined_1 = solver.steady_solve()
+q_steady_refined_1 = solver.steady_solve_improved()
 q_refined_projection_1 = solver.q.copy()
 q_steady_pt_1 = solver.pseudo_step(dt)
 

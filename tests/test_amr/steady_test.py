@@ -166,6 +166,7 @@ print(f'eff shape: {np.shape(f)}')
 
 # Form right-hand side
 rhs = Mmatrix @ f - Fmatrix_up @ bvec
+print(f'Fmatrix_up @ bvec: {Fmatrix_up @ bvec}')
 # rhs = Mmatrix @ f - Fmatrix_up @ bvec
 print(f'rhs shape: {np.shape(rhs)}')
 

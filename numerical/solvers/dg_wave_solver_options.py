@@ -79,6 +79,7 @@ class DGWaveSolver:
         self._compute_timestep(use_actual_max_level=True)
         # self._compute_timestep(courant_max)
         self._initialize_projections()
+        self._update_matrices()
         
     def _initialize_mesh(self):
         """Initialize the mesh and grid structures."""

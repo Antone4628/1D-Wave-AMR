@@ -115,20 +115,79 @@ def exact_solution(coord, npoin, time, icase):
     
     return qe, u
 
-def eff(coord, npoin, fcase, u):
+# def eff(coord, npoin, fcase, u):
+#     """
+#     Computes exact solution for test cases.
+    
+#     Args:
+#         coord (array): Grid coordinates
+#         npoin (int): Number of points
+#         time (float): Current time
+#         icase (int): Test case number (1-6)
+        
+#     Returns:
+#         tuple: (qe, u) Solution values and wave speed
+#     """
+#     # constants
+#     w = 1
+#     xc = 0
+#     xmin = -1
+#     xmax = 1
+#     x1 = xmax-xmin
+#     sigma0 = 0.125
+#     rc = 0.125
+#     u = w*x1
+#     alph = 1.0
+#     # beta = 64.0
+#     # beta = 128.0
+#     beta = 256.0
+#     # beta = 512.0
+    
+#     # initialize
+#     f = np.zeros(npoin)
+#     # print("Initial qe:", qe)  # Debug print
+    
+#     # timec = time - np.floor(time)
+
+    
+#     for i in range(npoin):
+#         x = coord[i]
+        
+
+#         if(fcase == 1):
+#             f[i] = -2*u*beta*x*np.exp(-beta*x**2)
+#         elif(fcase == 7):
+
+#             def sech(x):
+#                 return 1 / np.cosh(x)
+
+#             inner = alph * (1 - 4 * (x - 1/4))
+    
+#             # f[i] = (4*alph)/((np.cosh(alph*(1-4*(x-1/4))))**2)
+#             f[i] = 4 * alph * sech(inner)**2
+#         elif(fcase == 8 ):
+#             f[i] =  u*np.pi * np.cos(np.pi * x)
+#         elif(fcase == 9):
+#             # Force for Gaussian pulse (should be zero for pure advection)
+#             f[i] = 0
+
+#     return f
+
+def eff(coord, npoin, fcase, wave_speed, time=0.0):
     """
-    Computes exact solution for test cases.
+    Computes forcing function with proper time-dependency to match exact solution.
     
     Args:
         coord (array): Grid coordinates
         npoin (int): Number of points
-        time (float): Current time
-        icase (int): Test case number (1-6)
+        fcase (int): Test case number
+        wave_speed (float): Wave speed
+        time (float): Current simulation time
         
     Returns:
-        tuple: (qe, u) Solution values and wave speed
+        array: Forcing function values
     """
-    # constants
+    # Constants (matching those in exact_solution)
     w = 1
     xc = 0
     xmin = -1
@@ -136,41 +195,42 @@ def eff(coord, npoin, fcase, u):
     x1 = xmax-xmin
     sigma0 = 0.125
     rc = 0.125
-    u = w*x1
     alph = 1.0
-    # beta = 64.0
-    # beta = 128.0
     beta = 256.0
-    # beta = 512.0
     
-    # initialize
+    # Initialize forcing vector
     f = np.zeros(npoin)
-    # print("Initial qe:", qe)  # Debug print
     
-    # timec = time - np.floor(time)
-
+    # Time computation (same as in exact_solution)
+    timec = time - np.floor(time)
     
     for i in range(npoin):
         x = coord[i]
         
-
-        if(fcase == 1):
-            f[i] = -2*u*beta*x*np.exp(-beta*x**2)
-        elif(fcase == 7):
-
+        # Calculate the center position (moves with time)
+        xbar = xc + wave_speed*timec
+        if xbar > xmax:
+            xbar = xmin + (xbar-xmax)
+        
+        if fcase == 1:
+            # Correct forcing for moving Gaussian: u * d/dx[exp(-beta*(x-xbar)^2)]
+            f[i] = -2*wave_speed*beta*(x-xbar)*np.exp(-beta*(x-xbar)**2)
+        
+        elif fcase == 7:
+            # Forcing for tanh solution
             def sech(x):
                 return 1 / np.cosh(x)
-
             inner = alph * (1 - 4 * (x - 1/4))
-    
-            # f[i] = (4*alph)/((np.cosh(alph*(1-4*(x-1/4))))**2)
             f[i] = 4 * alph * sech(inner)**2
-        elif(fcase == 8 ):
-            f[i] =  u*np.pi * np.cos(np.pi * x)
-        elif(fcase == 9):
-            # Force for Gaussian pulse (should be zero for pure advection)
+        
+        elif fcase == 8:
+            # Forcing for sine solution
+            f[i] = wave_speed*np.pi * np.cos(np.pi * x)
+        
+        elif fcase == 9:
+            # Forcing for Gaussian pulse (should be zero for pure advection)
             f[i] = 0
-
+    
     return f
 
 def L2_err_norm(nop, nelem, q0, qe):

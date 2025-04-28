@@ -12,8 +12,9 @@ with h-adaptation capabilities using hierarchical mesh refinement. The solver us
 import numpy as np
 from scipy.sparse.linalg import gmres
 from ..dg.basis import lgl_gen, Lagrange_basis
-from ..dg.matrices import (create_mass_matrix, create_diff_matrix, 
-                      Fmatrix_upwind_flux, Matrix_DSS, create_RM_matrix, Fmatrix_centered_flux, Fmatrix_upwind_flux_bc)
+# from ..dg.matrices import (create_mass_matrix, create_diff_matrix, 
+#                       Fmatrix_upwind_flux, Matrix_DSS, create_RM_matrix, Fmatrix_centered_flux, Fmatrix_upwind_flux_bc)
+from ..dg.matrices import *
 from ..grid.mesh import create_grid_us
 from ..amr.forest import forest
 from ..amr.adapt import adapt_mesh, adapt_sol, mark, check_balance, enforce_balance
@@ -86,6 +87,7 @@ class DGWaveSolverMixed:
         # self._compute_timestep(courant_max)
         self._initialize_projections()
         self.f = self._initialize_forcing()
+        self._update_matrices()
         
     def _initialize_mesh(self):
         """Initialize the mesh and grid structures."""
@@ -941,6 +943,95 @@ class DGWaveSolverMixed:
             qe, _ = exact_solution(self.coord, self.npoin_dg, 0.0, 1)  # icase=1
             l2_error = np.sqrt(np.sum((q_steady - qe)**2) / np.sum(qe**2))
             print(f"Steady-state solution computed with L2 error: {l2_error:.2e}")
+        
+        return q_steady
+    
+    def steady_solve_improved(self):
+        """
+        Solve the steady-state advection equation with strong boundary conditions
+        """
+        # Create matrices as before
+        periodicity_non_periodic = np.arange(self.npoin_dg)
+        self.Me = create_mass_matrix(
+            self.intma, self.coord, self.nelem, self.ngl, 
+            self.nq, self.wnq, self.psi
+        )
+        self.De = create_diff_matrix(self.ngl, self.nq, self.wnq, self.psi, self.dpsi)
+        
+        # Create mass and differentiation matrices
+        M, D = Matrix_DSS(
+            self.Me, self.De, self.wave_speed, self.intma, 
+            periodicity_non_periodic, self.ngl, self.nelem, self.npoin_dg
+        )
+        
+        F_upwind = Fmatrix_upwind_flux_bc(
+            self.intma, self.nelem, self.npoin_dg, self.ngl, self.wave_speed, periodic=False
+        )
+
+            # Use Rusanov flux instead of upwind flux
+        F_rusanov = Fmatrix_rusanov_flux(
+            self.intma, self.nelem, self.npoin_dg, self.ngl, 
+            self.wave_speed, periodic=False
+        )
+
+        
+        # Identify boundary nodes
+        left_boundary_idx = self.intma[0, 0]
+        inflow_value = exact_solution(np.array([-1]), 1, self.time, self.icase)[0]
+        
+        # Create system
+        # A = F_upwind - D
+        A = F_rusanov - D
+        rhs = M @ self.f
+        
+        # Strongly enforce the inflow boundary condition
+        A[left_boundary_idx, :] = 0.0
+        A[left_boundary_idx, left_boundary_idx] = 1.0
+        rhs[left_boundary_idx] = inflow_value
+        
+        # Solve the system
+        q_steady = np.linalg.solve(A, rhs)
+         # Store solution
+        self.q_steady = q_steady
+        
+        return q_steady
+    
+
+    def steady_solve_direct(self):
+        """
+        Solve the steady-state advection equation u∂q/∂x = f using direct integration.
+        """
+        # Update forcing function
+        self._update_forcing()
+        f = self.f
+        
+        # Get coordinates and prepare solution array
+        x = self.coord
+        q_steady = np.zeros_like(x)
+        
+        # Set the inflow boundary condition
+        left_boundary_idx = self.intma[0, 0]
+        inflow_value = exact_solution(np.array([-1]), 1, self.time, self.icase)[0]
+        
+        # Sort points by x-coordinate for integration
+        sort_idx = np.argsort(x)
+        x_sorted = x[sort_idx]
+        f_sorted = f[sort_idx]
+        
+        # Start with inflow boundary condition
+        q_sorted = np.zeros_like(x_sorted)
+        q_sorted[0] = inflow_value
+        
+        # Integrate along characteristics
+        for i in range(1, len(x_sorted)):
+            # Integrate f from previous point to current point
+            dx = x_sorted[i] - x_sorted[i-1]
+            f_avg = 0.5 * (f_sorted[i] + f_sorted[i-1])
+            q_sorted[i] = q_sorted[i-1] + (dx/self.wave_speed) * f_avg
+        
+        # Map back to original ordering
+        for i, idx in enumerate(sort_idx):
+            q_steady[idx] = q_sorted[i]
         
         return q_steady
 
