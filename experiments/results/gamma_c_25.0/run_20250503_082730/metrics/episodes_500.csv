@@ -1,0 +1,3 @@
+episode,total_reward,length,termination_reason,final_element_count,final_resource_usage,refine_count,coarsen_count,no_change_count,refine_pct,coarsen_pct,no_change_pct,refinement_mode,refinement_level,refinement_probability,initial_elements,initial_resource_usage,element_growth_ratio
+1,1626.471664428711,200,Maximum episode steps reached,0,0,91,54,55,0.455,0.27,0.275,,,,,,
+2,3277.9001932144165,200,Maximum episode steps reached,0,0,119,44,37,0.595,0.22,0.185,,,,,,

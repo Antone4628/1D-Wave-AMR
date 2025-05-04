@@ -5,6 +5,7 @@
 │   │   ├── gamma_c_5.0.yaml
 │   │   ├── gamma_c_10.0.yaml
 │   │   ├── gamma_c_25.0.yaml
+│   │   ├── gamma_c_25.0_fixed.yaml
 │   │   ├── gamma_c_50.0.yaml
 │   │   ├── gamma_c_50.0_refine_fixed_level2.yaml
 │   │   ├── gamma_c_1000.0.yaml
@@ -17,9 +18,16 @@
 │   │           ├── models/
 │   │               └── final_model.zip
 │   ├── analyze_model.py
-│   ├── test_training_cycle.py
+│   ├── debug_refinement.py
+│   ├── generate_pdf_report.py
+│   ├── run_experiments_mixed.py
 │   ├── run_experiments_options.py
-│   └── run_experiments.py
+│   ├── run_experiments.py
+│   ├── test_mixed_approach.py
+│   ├── test_run_experiments.py
+│   ├── test_training_cycle_barrier_test.py
+│   ├── test_training_cycle.py
+│   └── test_variable_refinement.py
 ├── logs/
 │   ├── best_model/
 │   ├── checkpoints/
@@ -36,6 +44,8 @@
 │   │   └── projection.py
 │   ├── callbacks/
 │   │   ├── __init__.py
+│   │   ├── enhanced_callback_options.py
+│   │   ├── enhanced_callback_v2.py
 │   │   └── enhanced_callback.py
 │   ├── dg/
 │   │   ├── __init__.py
@@ -47,10 +57,16 @@
 │   ├── solvers/
 │   │   ├── __init__.py
 │   │   ├── dg_steady_solver.py
+│   │   ├── dg_wave_solver_backup.py
 │   │   ├── dg_wave_solver.py  
 │   │   ├── dg_wave_solver_clean.py 
+│   │   ├── dg_wave_solver_documented.py
+│   │   ├── dg_wave_solver_mixed.py
+│   │   ├── dg_wave_solver_mixed_clean.py
 │   │   ├── dg_wave_solver_free.py 
 │   │   ├── dg_wave_solver_options.py 
+│   │   ├── dg_wave_solver_model_free.py 
+│   │   ├── dg_wave_solver_model.py 
 │   │   ├── wave.py           
 │   │   └── utils.py
 │   └── environments/
@@ -63,6 +79,8 @@
 ├── tensorboard_logs/
 ├── tests/
 │   ├── __init__.py
+│   ├── test_class_test_loop.py
+│   ├── test_class_test.py
 │   ├── test_amr/
 │   │   ├── __init__.py
 │   │   ├── balance_test.py

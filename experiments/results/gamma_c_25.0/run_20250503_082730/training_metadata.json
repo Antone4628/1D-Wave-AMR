@@ -1,0 +1,20 @@
+{
+  "training_steps": 5000,
+  "episodes_completed": 25,
+  "element_budget": 25,
+  "gamma_c": 25.0,
+  "max_episode_steps": 200,
+  "termination_reasons": {
+    "Maximum episode steps reached": 25
+  },
+  "action_counts": {
+    "-1": 191,
+    "0": 192,
+    "1": 4617
+  },
+  "reward_stats": {
+    "mean": 7244.09427875042,
+    "min": 1626.471664428711,
+    "max": 9807.122299671173
+  }
+}

@@ -84,36 +84,6 @@ class RewardCalculator:
         
         return reward
 
-    # def calculate_reward(self, delta_u: float, action: int, old_resources: float, new_resources: float) -> float:
-    #     """
-    #     Compute reward following paper's formulation (equation 5).
-        
-    #     Args:
-    #         delta_u: Change in solution after adaptation
-    #         action: The action taken (-1: coarsen, 0: do nothing, 1: refine)
-    #         old_resources: Previous resource usage fraction
-    #         new_resources: New resource usage fraction
-            
-    #     Returns:
-    #         float: Computed reward value
-    #     """
-    #     # Base accuracy term (before applying sign)
-    #     accuracy_term = np.log(abs(delta_u) + self.machine_eps) - np.log(self.machine_eps)
-        
-    #     # Apply sign based on action (equation 5)
-    #     if action == 1:  # refine
-    #         accuracy = +accuracy_term
-    #     elif action == -1:  # coarsen
-    #         accuracy = -accuracy_term
-    #     else:  # do nothing
-    #         accuracy = 0.0
-        
-    #     # Resource penalty using barrier function difference (equation 4)
-    #     old_barrier = self.calculate_barrier(old_resources)
-    #     new_barrier = self.calculate_barrier(new_resources)
-    #     resource_penalty = new_barrier - old_barrier
-        
-    #     return float(accuracy - self.gamma_c * resource_penalty)
 
 
 def calculate_delta_u(old_solution, new_solution, old_grid, new_grid):
@@ -338,42 +308,7 @@ class DGAMREnv(gym.Env):
                 
         return local_jumps, neighbor_jumps
     
-    # def _get_observation(self) -> Dict[str, np.ndarray]:
-    #     """
-    #     Get observation following paper section 2.2.2, including:
-    #     - Local average jump
-    #     - Global average jump 
-    #     - Resource usage
-    #     - Local solution values
-    #     """
-    #     # Get local solution jumps
-    #     local_jumps, _ = self._get_element_jumps(self.current_element_index)
-        
-    #     # Calculate average of local jumps for this element
-    #     avg_local_jump = np.mean(local_jumps) if np.any(local_jumps) else 0.0
-        
-    #     # Compute average jump across all elements
-    #     all_jumps = []
-    #     for i in range(len(self.solver.active)):
-    #         jumps, _ = self._get_element_jumps(i)
-    #         if not np.any(np.isnan(jumps)):
-    #             all_jumps.append(np.mean(jumps))
-        
-    #     avg_jump = np.mean(all_jumps) if all_jumps else 0.0
-        
-    #     # Current resource usage
-    #     resource_usage = len(self.solver.active) / self.element_budget
-        
-    #     # Get local solution values
-    #     element_nodes = self.solver.intma[:, self.current_element_index]
-    #     solution_values = self.solver.q[element_nodes]
-        
-    #     return {
-    #         'avg_local_jump': np.array([avg_local_jump], dtype=np.float32),
-    #         'avg_jump': np.array([avg_jump], dtype=np.float32),
-    #         'resource_usage': np.array([resource_usage], dtype=np.float32),
-    #         'solution_values': solution_values.astype(np.float32)
-    #     }
+
     def _get_observation(self):
         """
         Get observation following paper section 2.2.2, including:

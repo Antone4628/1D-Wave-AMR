@@ -1,0 +1,11 @@
+episode,total_reward,length,termination_reason,final_element_count,final_resource_usage,refine_count,coarsen_count,no_change_count,refine_pct,coarsen_pct,no_change_pct,refinement_mode,refinement_level,refinement_probability,initial_elements,initial_resource_usage,element_growth_ratio
+1,1626.471664428711,200,Maximum episode steps reached,0,0,91,54,55,0.455,0.27,0.275,,,,,,
+2,3277.9001932144165,200,Maximum episode steps reached,0,0,119,44,37,0.595,0.22,0.185,,,,,,
+3,5419.474090576172,200,Maximum episode steps reached,0,0,145,32,23,0.725,0.16,0.115,,,,,,
+4,6757.881211638451,200,Maximum episode steps reached,0,0,168,16,16,0.84,0.08,0.08,,,,,,
+5,8506.275399446487,200,Maximum episode steps reached,0,0,179,7,14,0.895,0.035,0.07,,,,,,
+6,7133.804652810097,200,Maximum episode steps reached,0,0,188,7,5,0.94,0.035,0.025,,,,,,
+7,8235.338111162186,200,Maximum episode steps reached,0,0,185,3,12,0.925,0.015,0.06,,,,,,
+8,7937.844920873642,200,Maximum episode steps reached,0,0,191,4,5,0.955,0.02,0.025,,,,,,
+9,7940.651935815811,200,Maximum episode steps reached,0,0,190,5,5,0.95,0.025,0.025,,,,,,
+10,6973.661967515945,200,Maximum episode steps reached,0,0,189,3,8,0.945,0.015,0.04,,,,,,

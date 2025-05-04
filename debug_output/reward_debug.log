@@ -1,0 +1,1080 @@
+2025-05-03 08:51:59,026 - INFO - Starting controlled action sequence with gamma_c=25.0, budget=25
+2025-05-03 08:51:59,041 - INFO - 
+--- Step 1: Refine (action 2) ---
+2025-05-03 08:51:59,041 - INFO - Current state: 8/25 elements
+2025-05-03 08:51:59,047 - INFO - Elements: 8 -> 9 (Δ1)
+2025-05-03 08:51:59,047 - INFO - Resource: 0.3200 -> 0.3600
+2025-05-03 08:51:59,047 - INFO - Delta_u: 1.667357e-02
+2025-05-03 08:51:59,048 - INFO - Accuracy term: 32.7474
+2025-05-03 08:51:59,048 - INFO - Expected accuracy: 32.7474
+2025-05-03 08:51:59,048 - INFO - Resource penalty: 0.1056 (old_barrier=0.8319, new_barrier=0.9375)
+2025-05-03 08:51:59,048 - INFO - Expected reward: 30.1072
+2025-05-03 08:51:59,048 - INFO - Actual reward: 30.1072
+2025-05-03 08:51:59,048 - INFO - Action valid: True (original=1, actual=1)
+2025-05-03 08:51:59,048 - INFO - 
+--- Step 2: Refine (action 2) ---
+2025-05-03 08:51:59,048 - INFO - Current state: 9/25 elements
+2025-05-03 08:51:59,055 - INFO - Elements: 9 -> 10 (Δ1)
+2025-05-03 08:51:59,055 - INFO - Resource: 0.3600 -> 0.4000
+2025-05-03 08:51:59,055 - INFO - Delta_u: 1.667357e-02
+2025-05-03 08:51:59,055 - INFO - Accuracy term: 32.7474
+2025-05-03 08:51:59,055 - INFO - Expected accuracy: 32.7474
+2025-05-03 08:51:59,055 - INFO - Resource penalty: 0.1166 (old_barrier=0.9375, new_barrier=1.0541)
+2025-05-03 08:51:59,055 - INFO - Expected reward: 29.8326
+2025-05-03 08:51:59,055 - INFO - Actual reward: 29.8326
+2025-05-03 08:51:59,055 - INFO - Action valid: True (original=1, actual=1)
+2025-05-03 08:51:59,055 - INFO - 
+--- Step 3: Refine (action 2) ---
+2025-05-03 08:51:59,055 - INFO - Current state: 10/25 elements
+2025-05-03 08:51:59,063 - INFO - Elements: 10 -> 11 (Δ1)
+2025-05-03 08:51:59,063 - INFO - Resource: 0.4000 -> 0.4400
+2025-05-03 08:51:59,063 - INFO - Delta_u: 1.667357e-02
+2025-05-03 08:51:59,063 - INFO - Accuracy term: 32.7474
+2025-05-03 08:51:59,063 - INFO - Expected accuracy: 32.7474
+2025-05-03 08:51:59,063 - INFO - Resource penalty: 0.1304 (old_barrier=1.0541, new_barrier=1.1845)
+2025-05-03 08:51:59,063 - INFO - Expected reward: 29.4870
+2025-05-03 08:51:59,063 - INFO - Actual reward: 29.4870
+2025-05-03 08:51:59,063 - INFO - Action valid: True (original=1, actual=1)
+2025-05-03 08:51:59,063 - INFO - 
+--- Step 4: Refine (action 2) ---
+2025-05-03 08:51:59,063 - INFO - Current state: 11/25 elements
+2025-05-03 08:51:59,072 - INFO - Elements: 11 -> 12 (Δ1)
+2025-05-03 08:51:59,072 - INFO - Resource: 0.4400 -> 0.4800
+2025-05-03 08:51:59,072 - INFO - Delta_u: 1.667625e-02
+2025-05-03 08:51:59,072 - INFO - Accuracy term: 32.7476
+2025-05-03 08:51:59,072 - INFO - Expected accuracy: 32.7476
+2025-05-03 08:51:59,072 - INFO - Resource penalty: 0.1478 (old_barrier=1.1845, new_barrier=1.3323)
+2025-05-03 08:51:59,072 - INFO - Expected reward: 29.0516
+2025-05-03 08:51:59,072 - INFO - Actual reward: 29.0516
+2025-05-03 08:51:59,072 - INFO - Action valid: True (original=1, actual=1)
+2025-05-03 08:51:59,072 - INFO - 
+--- Step 5: Coarsen (action 0) ---
+2025-05-03 08:51:59,072 - INFO - Current state: 12/25 elements
+2025-05-03 08:51:59,080 - INFO - Elements: 12 -> 11 (Δ-1)
+2025-05-03 08:51:59,080 - INFO - Resource: 0.4800 -> 0.4400
+2025-05-03 08:51:59,080 - INFO - Delta_u: 1.667632e-02
+2025-05-03 08:51:59,080 - INFO - Accuracy term: 32.7476
+2025-05-03 08:51:59,080 - INFO - Expected accuracy: -32.7476
+2025-05-03 08:51:59,080 - INFO - Resource penalty: -0.1478 (old_barrier=1.3323, new_barrier=1.1845)
+2025-05-03 08:51:59,080 - INFO - Expected reward: -29.0516
+2025-05-03 08:51:59,080 - INFO - Actual reward: -29.0516
+2025-05-03 08:51:59,080 - INFO - Action valid: True (original=-1, actual=-1)
+2025-05-03 08:51:59,081 - INFO - 
+--- Step 6: Coarsen (action 0) ---
+2025-05-03 08:51:59,081 - INFO - Current state: 11/25 elements
+2025-05-03 08:51:59,088 - INFO - Elements: 11 -> 10 (Δ-1)
+2025-05-03 08:51:59,088 - INFO - Resource: 0.4400 -> 0.4000
+2025-05-03 08:51:59,088 - INFO - Delta_u: 1.667632e-02
+2025-05-03 08:51:59,088 - INFO - Accuracy term: 32.7476
+2025-05-03 08:51:59,088 - INFO - Expected accuracy: -32.7476
+2025-05-03 08:51:59,088 - INFO - Resource penalty: -0.1304 (old_barrier=1.1845, new_barrier=1.0541)
+2025-05-03 08:51:59,088 - INFO - Expected reward: -29.4872
+2025-05-03 08:51:59,088 - INFO - Actual reward: -29.4872
+2025-05-03 08:51:59,088 - INFO - Action valid: True (original=-1, actual=-1)
+2025-05-03 08:51:59,088 - INFO - 
+--- Step 7: No Change (action 1) ---
+2025-05-03 08:51:59,088 - INFO - Current state: 10/25 elements
+2025-05-03 08:51:59,095 - INFO - Elements: 10 -> 10 (Δ0)
+2025-05-03 08:51:59,095 - INFO - Resource: 0.4000 -> 0.4000
+2025-05-03 08:51:59,095 - INFO - Delta_u: 1.667646e-02
+2025-05-03 08:51:59,095 - INFO - Accuracy term: 32.7476
+2025-05-03 08:51:59,096 - INFO - Expected accuracy: 0.0000
+2025-05-03 08:51:59,096 - INFO - Resource penalty: 0.0000 (old_barrier=1.0541, new_barrier=1.0541)
+2025-05-03 08:51:59,096 - INFO - Expected reward: 0.0000
+2025-05-03 08:51:59,096 - INFO - Actual reward: 0.0000
+2025-05-03 08:51:59,096 - INFO - Action valid: True (original=0, actual=0)
+2025-05-03 08:51:59,096 - INFO - 
+--- Step 8: No Change (action 1) ---
+2025-05-03 08:51:59,096 - INFO - Current state: 10/25 elements
+2025-05-03 08:51:59,103 - INFO - Elements: 10 -> 10 (Δ0)
+2025-05-03 08:51:59,103 - INFO - Resource: 0.4000 -> 0.4000
+2025-05-03 08:51:59,103 - INFO - Delta_u: 1.667646e-02
+2025-05-03 08:51:59,103 - INFO - Accuracy term: 32.7476
+2025-05-03 08:51:59,104 - INFO - Expected accuracy: 0.0000
+2025-05-03 08:51:59,104 - INFO - Resource penalty: 0.0000 (old_barrier=1.0541, new_barrier=1.0541)
+2025-05-03 08:51:59,104 - INFO - Expected reward: 0.0000
+2025-05-03 08:51:59,104 - INFO - Actual reward: 0.0000
+2025-05-03 08:51:59,104 - INFO - Action valid: True (original=0, actual=0)
+2025-05-03 08:51:59,104 - INFO - 
+--- Step 9: Refine (action 2) ---
+2025-05-03 08:51:59,104 - INFO - Current state: 10/25 elements
+2025-05-03 08:51:59,111 - INFO - Elements: 10 -> 11 (Δ1)
+2025-05-03 08:51:59,112 - INFO - Resource: 0.4000 -> 0.4400
+2025-05-03 08:51:59,112 - INFO - Delta_u: 1.874265e-02
+2025-05-03 08:51:59,112 - INFO - Accuracy term: 32.8644
+2025-05-03 08:51:59,112 - INFO - Expected accuracy: 32.8644
+2025-05-03 08:51:59,112 - INFO - Resource penalty: 0.1304 (old_barrier=1.0541, new_barrier=1.1845)
+2025-05-03 08:51:59,112 - INFO - Expected reward: 29.6040
+2025-05-03 08:51:59,112 - INFO - Actual reward: 29.6040
+2025-05-03 08:51:59,112 - INFO - Action valid: True (original=1, actual=1)
+2025-05-03 08:51:59,112 - INFO - 
+--- Step 10: Refine (action 2) ---
+2025-05-03 08:51:59,112 - INFO - Current state: 11/25 elements
+2025-05-03 08:51:59,149 - INFO - Elements: 11 -> 12 (Δ1)
+2025-05-03 08:51:59,149 - INFO - Resource: 0.4400 -> 0.4800
+2025-05-03 08:51:59,149 - INFO - Delta_u: 1.703954e-02
+2025-05-03 08:51:59,149 - INFO - Accuracy term: 32.7691
+2025-05-03 08:51:59,149 - INFO - Expected accuracy: 32.7691
+2025-05-03 08:51:59,149 - INFO - Resource penalty: 0.1478 (old_barrier=1.1845, new_barrier=1.3323)
+2025-05-03 08:51:59,149 - INFO - Expected reward: 29.0732
+2025-05-03 08:51:59,149 - INFO - Actual reward: 29.0732
+2025-05-03 08:51:59,149 - INFO - Action valid: True (original=1, actual=1)
+2025-05-03 08:51:59,165 - INFO - Saved debug data to /Users/antonechacartegui/Desktop/1D_wave_AMR/debug_output/reward_debug_gamma_25.0.csv
+2025-05-03 08:52:00,328 - INFO - Saved visualizations to /Users/antonechacartegui/Desktop/1D_wave_AMR/debug_output/plots
+2025-05-03 09:04:00,004 - INFO - Starting controlled action sequence with gamma_c=25.0, budget=25
+2025-05-03 09:04:00,763 - INFO - 
+--- Step 1: Refine (action 2) ---
+2025-05-03 09:04:00,764 - INFO - Current state: 8/25 elements
+2025-05-03 09:04:00,770 - INFO - Elements: 8 -> 9 (Δ1)
+2025-05-03 09:04:00,770 - INFO - Resource: 0.3200 -> 0.3600
+2025-05-03 09:04:00,771 - INFO - Delta_u: 1.874883e-02
+2025-05-03 09:04:00,771 - INFO - Accuracy term: 32.8647
+2025-05-03 09:04:00,771 - INFO - Expected accuracy: 32.8647
+2025-05-03 09:04:00,771 - INFO - Resource penalty: 0.1056 (old_barrier=0.8319, new_barrier=0.9375)
+2025-05-03 09:04:00,771 - INFO - Expected reward: 30.2245
+2025-05-03 09:04:00,771 - INFO - Actual reward: 30.2245
+2025-05-03 09:04:00,771 - INFO - Action valid: True (original=1, actual=1)
+2025-05-03 09:04:00,771 - INFO - 
+--- Step 2: Refine (action 2) ---
+2025-05-03 09:04:00,771 - INFO - Current state: 9/25 elements
+2025-05-03 09:04:00,778 - INFO - Elements: 9 -> 10 (Δ1)
+2025-05-03 09:04:00,778 - INFO - Resource: 0.3600 -> 0.4000
+2025-05-03 09:04:00,778 - INFO - Delta_u: 1.704660e-02
+2025-05-03 09:04:00,778 - INFO - Accuracy term: 32.7696
+2025-05-03 09:04:00,778 - INFO - Expected accuracy: 32.7696
+2025-05-03 09:04:00,778 - INFO - Resource penalty: 0.1166 (old_barrier=0.9375, new_barrier=1.0541)
+2025-05-03 09:04:00,778 - INFO - Expected reward: 29.8547
+2025-05-03 09:04:00,778 - INFO - Actual reward: 29.8547
+2025-05-03 09:04:00,778 - INFO - Action valid: True (original=1, actual=1)
+2025-05-03 09:04:00,778 - INFO - 
+--- Step 3: Refine (action 2) ---
+2025-05-03 09:04:00,778 - INFO - Current state: 10/25 elements
+2025-05-03 09:04:00,800 - INFO - Elements: 10 -> 11 (Δ1)
+2025-05-03 09:04:00,800 - INFO - Resource: 0.4000 -> 0.4400
+2025-05-03 09:04:00,800 - INFO - Delta_u: 1.704660e-02
+2025-05-03 09:04:00,800 - INFO - Accuracy term: 32.7696
+2025-05-03 09:04:00,800 - INFO - Expected accuracy: 32.7696
+2025-05-03 09:04:00,800 - INFO - Resource penalty: 0.1304 (old_barrier=1.0541, new_barrier=1.1845)
+2025-05-03 09:04:00,800 - INFO - Expected reward: 29.5091
+2025-05-03 09:04:00,800 - INFO - Actual reward: 29.5091
+2025-05-03 09:04:00,801 - INFO - Action valid: True (original=1, actual=1)
+2025-05-03 09:04:00,801 - INFO - 
+--- Step 4: Refine (action 2) ---
+2025-05-03 09:04:00,801 - INFO - Current state: 11/25 elements
+2025-05-03 09:04:00,844 - INFO - Elements: 11 -> 12 (Δ1)
+2025-05-03 09:04:00,844 - INFO - Resource: 0.4400 -> 0.4800
+2025-05-03 09:04:00,844 - INFO - Delta_u: 1.954950e-02
+2025-05-03 09:04:00,844 - INFO - Accuracy term: 32.9066
+2025-05-03 09:04:00,844 - INFO - Expected accuracy: 32.9066
+2025-05-03 09:04:00,844 - INFO - Resource penalty: 0.1478 (old_barrier=1.1845, new_barrier=1.3323)
+2025-05-03 09:04:00,845 - INFO - Expected reward: 29.2106
+2025-05-03 09:04:00,845 - INFO - Actual reward: 29.2106
+2025-05-03 09:04:00,845 - INFO - Action valid: True (original=1, actual=1)
+2025-05-03 09:04:00,845 - INFO - 
+--- Step 5: Coarsen (action 0) ---
+2025-05-03 09:04:00,845 - INFO - Current state: 12/25 elements
+2025-05-03 09:04:00,852 - INFO - Elements: 12 -> 11 (Δ-1)
+2025-05-03 09:04:00,852 - INFO - Resource: 0.4800 -> 0.4400
+2025-05-03 09:04:00,852 - INFO - Delta_u: 1.366825e-01
+2025-05-03 09:04:00,852 - INFO - Accuracy term: 34.8513
+2025-05-03 09:04:00,852 - INFO - Expected accuracy: -34.8513
+2025-05-03 09:04:00,852 - INFO - Resource penalty: -0.1478 (old_barrier=1.3323, new_barrier=1.1845)
+2025-05-03 09:04:00,852 - INFO - Expected reward: -31.1553
+2025-05-03 09:04:00,852 - INFO - Actual reward: -31.1553
+2025-05-03 09:04:00,852 - INFO - Action valid: True (original=-1, actual=-1)
+2025-05-03 09:04:00,853 - INFO - 
+--- Step 6: Coarsen (action 0) ---
+2025-05-03 09:04:00,853 - INFO - Current state: 11/25 elements
+2025-05-03 09:04:00,859 - INFO - Elements: 11 -> 10 (Δ-1)
+2025-05-03 09:04:00,859 - INFO - Resource: 0.4400 -> 0.4000
+2025-05-03 09:04:00,859 - INFO - Delta_u: 1.585343e-01
+2025-05-03 09:04:00,859 - INFO - Accuracy term: 34.9996
+2025-05-03 09:04:00,859 - INFO - Expected accuracy: -34.9996
+2025-05-03 09:04:00,859 - INFO - Resource penalty: -0.1304 (old_barrier=1.1845, new_barrier=1.0541)
+2025-05-03 09:04:00,859 - INFO - Expected reward: -31.7392
+2025-05-03 09:04:00,859 - INFO - Actual reward: -31.7392
+2025-05-03 09:04:00,859 - INFO - Action valid: True (original=-1, actual=-1)
+2025-05-03 09:04:00,860 - INFO - 
+--- Step 7: No Change (action 1) ---
+2025-05-03 09:04:00,860 - INFO - Current state: 10/25 elements
+2025-05-03 09:04:00,866 - INFO - Elements: 10 -> 10 (Δ0)
+2025-05-03 09:04:00,866 - INFO - Resource: 0.4000 -> 0.4000
+2025-05-03 09:04:00,866 - INFO - Delta_u: 1.585343e-01
+2025-05-03 09:04:00,866 - INFO - Accuracy term: 34.9996
+2025-05-03 09:04:00,867 - INFO - Expected accuracy: 0.0000
+2025-05-03 09:04:00,867 - INFO - Resource penalty: 0.0000 (old_barrier=1.0541, new_barrier=1.0541)
+2025-05-03 09:04:00,867 - INFO - Expected reward: 0.0000
+2025-05-03 09:04:00,867 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:00,867 - INFO - Action valid: True (original=0, actual=0)
+2025-05-03 09:04:00,867 - INFO - 
+--- Step 8: No Change (action 1) ---
+2025-05-03 09:04:00,867 - INFO - Current state: 10/25 elements
+2025-05-03 09:04:00,873 - INFO - Elements: 10 -> 10 (Δ0)
+2025-05-03 09:04:00,873 - INFO - Resource: 0.4000 -> 0.4000
+2025-05-03 09:04:00,873 - INFO - Delta_u: 1.585343e-01
+2025-05-03 09:04:00,873 - INFO - Accuracy term: 34.9996
+2025-05-03 09:04:00,874 - INFO - Expected accuracy: 0.0000
+2025-05-03 09:04:00,874 - INFO - Resource penalty: 0.0000 (old_barrier=1.0541, new_barrier=1.0541)
+2025-05-03 09:04:00,874 - INFO - Expected reward: 0.0000
+2025-05-03 09:04:00,874 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:00,874 - INFO - Action valid: True (original=0, actual=0)
+2025-05-03 09:04:00,874 - INFO - 
+--- Step 9: Refine (action 2) ---
+2025-05-03 09:04:00,874 - INFO - Current state: 10/25 elements
+2025-05-03 09:04:00,881 - INFO - Elements: 10 -> 11 (Δ1)
+2025-05-03 09:04:00,881 - INFO - Resource: 0.4000 -> 0.4400
+2025-05-03 09:04:00,881 - INFO - Delta_u: 1.585342e-01
+2025-05-03 09:04:00,881 - INFO - Accuracy term: 34.9996
+2025-05-03 09:04:00,881 - INFO - Expected accuracy: 34.9996
+2025-05-03 09:04:00,881 - INFO - Resource penalty: 0.1304 (old_barrier=1.0541, new_barrier=1.1845)
+2025-05-03 09:04:00,881 - INFO - Expected reward: 31.7392
+2025-05-03 09:04:00,881 - INFO - Actual reward: 31.7392
+2025-05-03 09:04:00,881 - INFO - Action valid: True (original=1, actual=1)
+2025-05-03 09:04:00,881 - INFO - 
+--- Step 10: Refine (action 2) ---
+2025-05-03 09:04:00,882 - INFO - Current state: 11/25 elements
+2025-05-03 09:04:00,889 - INFO - Elements: 11 -> 12 (Δ1)
+2025-05-03 09:04:00,889 - INFO - Resource: 0.4400 -> 0.4800
+2025-05-03 09:04:00,889 - INFO - Delta_u: 1.585343e-01
+2025-05-03 09:04:00,889 - INFO - Accuracy term: 34.9996
+2025-05-03 09:04:00,890 - INFO - Expected accuracy: 34.9996
+2025-05-03 09:04:00,890 - INFO - Resource penalty: 0.1478 (old_barrier=1.1845, new_barrier=1.3323)
+2025-05-03 09:04:00,890 - INFO - Expected reward: 31.3036
+2025-05-03 09:04:00,890 - INFO - Actual reward: 31.3036
+2025-05-03 09:04:00,890 - INFO - Action valid: True (original=1, actual=1)
+2025-05-03 09:04:01,409 - INFO - Saved debug data to /Users/antonechacartegui/Desktop/1D_wave_AMR/debug_output/reward_debug_gamma_25.0.csv
+2025-05-03 09:04:05,284 - INFO - Saved visualizations to /Users/antonechacartegui/Desktop/1D_wave_AMR/debug_output/plots
+2025-05-03 09:04:05,284 - INFO - Starting budget boundary test with budget=12, gamma_c=25.0
+2025-05-03 09:04:05,291 - INFO - 
+--- Step 1: Budget Test ---
+2025-05-03 09:04:05,291 - INFO - Current state: 4/12 elements (0.33 of budget)
+2025-05-03 09:04:05,296 - INFO - Elements: 4 -> 5 (Δ1)
+2025-05-03 09:04:05,296 - INFO - Resource: 0.3333 -> 0.4167
+2025-05-03 09:04:05,296 - INFO - Budget status: Under by 7 elements
+2025-05-03 09:04:05,296 - INFO - Delta_u: 2.225882e-01
+2025-05-03 09:04:05,296 - INFO - Accuracy term: 35.3389
+2025-05-03 09:04:05,297 - INFO - Resource penalty: 0.2405 (old_barrier=0.8660, new_barrier=1.1066)
+2025-05-03 09:04:05,297 - INFO - Expected reward: 29.3254
+2025-05-03 09:04:05,297 - INFO - Actual reward: 29.3254
+2025-05-03 09:04:05,297 - INFO - 
+--- Step 2: Budget Test ---
+2025-05-03 09:04:05,298 - INFO - Current state: 5/12 elements (0.42 of budget)
+2025-05-03 09:04:05,304 - INFO - Elements: 5 -> 6 (Δ1)
+2025-05-03 09:04:05,304 - INFO - Resource: 0.4167 -> 0.5000
+2025-05-03 09:04:05,304 - INFO - Budget status: Under by 6 elements
+2025-05-03 09:04:05,304 - INFO - Delta_u: 2.334932e-01
+2025-05-03 09:04:05,304 - INFO - Accuracy term: 35.3868
+2025-05-03 09:04:05,304 - INFO - Resource penalty: 0.3076 (old_barrier=1.1066, new_barrier=1.4142)
+2025-05-03 09:04:05,305 - INFO - Expected reward: 27.6956
+2025-05-03 09:04:05,305 - INFO - Actual reward: 27.6956
+2025-05-03 09:04:05,305 - INFO - 
+--- Step 3: Budget Test ---
+2025-05-03 09:04:05,305 - INFO - Current state: 6/12 elements (0.50 of budget)
+2025-05-03 09:04:05,310 - INFO - Elements: 6 -> 7 (Δ1)
+2025-05-03 09:04:05,310 - INFO - Resource: 0.5000 -> 0.5833
+2025-05-03 09:04:05,310 - INFO - Budget status: Under by 5 elements
+2025-05-03 09:04:05,310 - INFO - Delta_u: 2.335450e-01
+2025-05-03 09:04:05,310 - INFO - Accuracy term: 35.3870
+2025-05-03 09:04:05,310 - INFO - Resource penalty: 0.4188 (old_barrier=1.4142, new_barrier=1.8330)
+2025-05-03 09:04:05,310 - INFO - Expected reward: 24.9166
+2025-05-03 09:04:05,310 - INFO - Actual reward: 24.9166
+2025-05-03 09:04:05,310 - INFO - 
+--- Step 4: Budget Test ---
+2025-05-03 09:04:05,310 - INFO - Current state: 7/12 elements (0.58 of budget)
+2025-05-03 09:04:05,316 - INFO - Elements: 7 -> 8 (Δ1)
+2025-05-03 09:04:05,316 - INFO - Resource: 0.5833 -> 0.6667
+2025-05-03 09:04:05,316 - INFO - Budget status: Under by 4 elements
+2025-05-03 09:04:05,316 - INFO - Delta_u: 2.336006e-01
+2025-05-03 09:04:05,316 - INFO - Accuracy term: 35.3872
+2025-05-03 09:04:05,316 - INFO - Resource penalty: 0.6165 (old_barrier=1.8330, new_barrier=2.4495)
+2025-05-03 09:04:05,316 - INFO - Expected reward: 19.9757
+2025-05-03 09:04:05,316 - INFO - Actual reward: 19.9757
+2025-05-03 09:04:05,316 - INFO - 
+--- Step 5: Budget Test ---
+2025-05-03 09:04:05,316 - INFO - Current state: 8/12 elements (0.67 of budget)
+2025-05-03 09:04:05,323 - INFO - Elements: 8 -> 9 (Δ1)
+2025-05-03 09:04:05,323 - INFO - Resource: 0.6667 -> 0.7500
+2025-05-03 09:04:05,323 - INFO - Budget status: Under by 3 elements
+2025-05-03 09:04:05,323 - INFO - Delta_u: 2.267579e-01
+2025-05-03 09:04:05,323 - INFO - Accuracy term: 35.3575
+2025-05-03 09:04:05,323 - INFO - Resource penalty: 1.0146 (old_barrier=2.4495, new_barrier=3.4641)
+2025-05-03 09:04:05,323 - INFO - Expected reward: 9.9922
+2025-05-03 09:04:05,323 - INFO - Actual reward: 9.9922
+2025-05-03 09:04:05,323 - INFO - 
+--- Step 6: Budget Test ---
+2025-05-03 09:04:05,323 - INFO - Current state: 9/12 elements (0.75 of budget)
+2025-05-03 09:04:05,379 - INFO - Elements: 9 -> 10 (Δ1)
+2025-05-03 09:04:05,379 - INFO - Resource: 0.7500 -> 0.8333
+2025-05-03 09:04:05,379 - INFO - Budget status: Under by 2 elements
+2025-05-03 09:04:05,379 - INFO - Delta_u: 2.267471e-01
+2025-05-03 09:04:05,379 - INFO - Accuracy term: 35.3574
+2025-05-03 09:04:05,379 - INFO - Resource penalty: 2.0131 (old_barrier=3.4641, new_barrier=5.4772)
+2025-05-03 09:04:05,379 - INFO - Expected reward: -14.9707
+2025-05-03 09:04:05,379 - INFO - Actual reward: -14.9707
+2025-05-03 09:04:05,379 - INFO - 
+--- Step 7: Budget Test ---
+2025-05-03 09:04:05,379 - INFO - Current state: 10/12 elements (0.83 of budget)
+2025-05-03 09:04:05,386 - INFO - Elements: 10 -> 11 (Δ1)
+2025-05-03 09:04:05,386 - INFO - Resource: 0.8333 -> 0.9167
+2025-05-03 09:04:05,387 - INFO - Budget status: Under by 1 elements
+2025-05-03 09:04:05,387 - INFO - Delta_u: 2.850810e-02
+2025-05-03 09:04:05,387 - INFO - Accuracy term: 33.2838
+2025-05-03 09:04:05,387 - INFO - Resource penalty: 6.0119 (old_barrier=5.4772, new_barrier=11.4891)
+2025-05-03 09:04:05,387 - INFO - Expected reward: -117.0137
+2025-05-03 09:04:05,387 - INFO - Actual reward: -117.0137
+2025-05-03 09:04:05,387 - INFO - 
+--- Step 8: Budget Test ---
+2025-05-03 09:04:05,387 - INFO - Current state: 11/12 elements (0.92 of budget)
+2025-05-03 09:04:05,394 - INFO - Elements: 11 -> 12 (Δ1)
+2025-05-03 09:04:05,394 - INFO - Resource: 0.9167 -> 1.0000
+2025-05-03 09:04:05,394 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,394 - INFO - Delta_u: 2.672658e-02
+2025-05-03 09:04:05,395 - INFO - Accuracy term: 33.2193
+2025-05-03 09:04:05,395 - INFO - Resource penalty: inf (old_barrier=11.4891, new_barrier=inf)
+2025-05-03 09:04:05,395 - INFO - Expected reward: -inf
+2025-05-03 09:04:05,395 - INFO - Actual reward: 33.2193
+2025-05-03 09:04:05,395 - INFO - 
+--- Step 9: Budget Test ---
+2025-05-03 09:04:05,395 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,403 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,403 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,403 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,403 - INFO - Delta_u: 2.627795e-02
+2025-05-03 09:04:05,403 - INFO - Accuracy term: 33.2023
+2025-05-03 09:04:05,403 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,403 - INFO - Expected reward: nan
+2025-05-03 09:04:05,403 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:05,403 - INFO - 
+--- Step 10: Budget Test ---
+2025-05-03 09:04:05,403 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,411 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,411 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,411 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,411 - INFO - Delta_u: 2.627795e-02
+2025-05-03 09:04:05,411 - INFO - Accuracy term: 33.2023
+2025-05-03 09:04:05,411 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,411 - INFO - Expected reward: nan
+2025-05-03 09:04:05,411 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:05,411 - INFO - 
+--- Step 11: Budget Test ---
+2025-05-03 09:04:05,412 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,478 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,479 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,479 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,479 - INFO - Delta_u: 2.627795e-02
+2025-05-03 09:04:05,479 - INFO - Accuracy term: 33.2023
+2025-05-03 09:04:05,479 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,479 - INFO - Expected reward: nan
+2025-05-03 09:04:05,479 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:05,479 - INFO - 
+--- Step 12: Budget Test ---
+2025-05-03 09:04:05,479 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,486 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,487 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,487 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,487 - INFO - Delta_u: 1.647267e-01
+2025-05-03 09:04:05,487 - INFO - Accuracy term: 35.0379
+2025-05-03 09:04:05,487 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,487 - INFO - Expected reward: nan
+2025-05-03 09:04:05,487 - INFO - Actual reward: 35.0379
+2025-05-03 09:04:05,487 - INFO - 
+--- Step 13: Budget Test ---
+2025-05-03 09:04:05,487 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,494 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,494 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,495 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,495 - INFO - Delta_u: 1.647267e-01
+2025-05-03 09:04:05,495 - INFO - Accuracy term: 35.0379
+2025-05-03 09:04:05,495 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,495 - INFO - Expected reward: nan
+2025-05-03 09:04:05,495 - INFO - Actual reward: 35.0379
+2025-05-03 09:04:05,495 - INFO - 
+--- Step 14: Budget Test ---
+2025-05-03 09:04:05,495 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,502 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,502 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,502 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,502 - INFO - Delta_u: 1.647267e-01
+2025-05-03 09:04:05,502 - INFO - Accuracy term: 35.0379
+2025-05-03 09:04:05,503 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,503 - INFO - Expected reward: nan
+2025-05-03 09:04:05,503 - INFO - Actual reward: 35.0379
+2025-05-03 09:04:05,503 - INFO - 
+--- Step 15: Budget Test ---
+2025-05-03 09:04:05,503 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,510 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,510 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,510 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,510 - INFO - Delta_u: 1.647267e-01
+2025-05-03 09:04:05,510 - INFO - Accuracy term: 35.0379
+2025-05-03 09:04:05,510 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,510 - INFO - Expected reward: nan
+2025-05-03 09:04:05,510 - INFO - Actual reward: 35.0379
+2025-05-03 09:04:05,510 - INFO - 
+--- Step 16: Budget Test ---
+2025-05-03 09:04:05,510 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,518 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,518 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,518 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,518 - INFO - Delta_u: 1.647267e-01
+2025-05-03 09:04:05,518 - INFO - Accuracy term: 35.0379
+2025-05-03 09:04:05,518 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,518 - INFO - Expected reward: nan
+2025-05-03 09:04:05,518 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:05,518 - INFO - 
+--- Step 17: Budget Test ---
+2025-05-03 09:04:05,518 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,525 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,525 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,526 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,526 - INFO - Delta_u: 1.647267e-01
+2025-05-03 09:04:05,526 - INFO - Accuracy term: 35.0379
+2025-05-03 09:04:05,526 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,526 - INFO - Expected reward: nan
+2025-05-03 09:04:05,526 - INFO - Actual reward: 35.0379
+2025-05-03 09:04:05,526 - INFO - 
+--- Step 18: Budget Test ---
+2025-05-03 09:04:05,526 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,533 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,533 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,534 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,534 - INFO - Delta_u: 1.647267e-01
+2025-05-03 09:04:05,534 - INFO - Accuracy term: 35.0379
+2025-05-03 09:04:05,534 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,534 - INFO - Expected reward: nan
+2025-05-03 09:04:05,534 - INFO - Actual reward: 35.0379
+2025-05-03 09:04:05,534 - INFO - 
+--- Step 19: Budget Test ---
+2025-05-03 09:04:05,534 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,542 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,542 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,542 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,542 - INFO - Delta_u: 1.647267e-01
+2025-05-03 09:04:05,542 - INFO - Accuracy term: 35.0379
+2025-05-03 09:04:05,542 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,542 - INFO - Expected reward: nan
+2025-05-03 09:04:05,542 - INFO - Actual reward: 35.0379
+2025-05-03 09:04:05,542 - INFO - 
+--- Step 20: Budget Test ---
+2025-05-03 09:04:05,542 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,550 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,550 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,550 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,550 - INFO - Delta_u: 1.647267e-01
+2025-05-03 09:04:05,550 - INFO - Accuracy term: 35.0379
+2025-05-03 09:04:05,550 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,550 - INFO - Expected reward: nan
+2025-05-03 09:04:05,550 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:05,550 - INFO - 
+--- Step 21: Budget Test ---
+2025-05-03 09:04:05,550 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,617 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,617 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,617 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,617 - INFO - Delta_u: 1.647267e-01
+2025-05-03 09:04:05,618 - INFO - Accuracy term: 35.0379
+2025-05-03 09:04:05,618 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,618 - INFO - Expected reward: nan
+2025-05-03 09:04:05,618 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:05,618 - INFO - 
+--- Step 22: Budget Test ---
+2025-05-03 09:04:05,618 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,625 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,625 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,625 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,625 - INFO - Delta_u: 8.599728e-02
+2025-05-03 09:04:05,626 - INFO - Accuracy term: 34.3879
+2025-05-03 09:04:05,626 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,626 - INFO - Expected reward: nan
+2025-05-03 09:04:05,626 - INFO - Actual reward: 34.3879
+2025-05-03 09:04:05,626 - INFO - 
+--- Step 23: Budget Test ---
+2025-05-03 09:04:05,626 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,635 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,635 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,635 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,635 - INFO - Delta_u: 8.599728e-02
+2025-05-03 09:04:05,635 - INFO - Accuracy term: 34.3879
+2025-05-03 09:04:05,635 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,635 - INFO - Expected reward: nan
+2025-05-03 09:04:05,636 - INFO - Actual reward: 34.3879
+2025-05-03 09:04:05,636 - INFO - 
+--- Step 24: Budget Test ---
+2025-05-03 09:04:05,636 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,645 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,646 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,646 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,646 - INFO - Delta_u: 8.599728e-02
+2025-05-03 09:04:05,646 - INFO - Accuracy term: 34.3879
+2025-05-03 09:04:05,646 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,646 - INFO - Expected reward: nan
+2025-05-03 09:04:05,646 - INFO - Actual reward: 34.3879
+2025-05-03 09:04:05,646 - INFO - 
+--- Step 25: Budget Test ---
+2025-05-03 09:04:05,646 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:05,656 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:05,656 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:05,656 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:05,656 - INFO - Delta_u: 8.599728e-02
+2025-05-03 09:04:05,656 - INFO - Accuracy term: 34.3879
+2025-05-03 09:04:05,656 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:05,656 - INFO - Expected reward: nan
+2025-05-03 09:04:05,656 - INFO - Actual reward: 34.3879
+2025-05-03 09:04:05,659 - INFO - Saved budget test data to /Users/antonechacartegui/Desktop/1D_wave_AMR/debug_output/budget_test_gamma_25.0.csv
+2025-05-03 09:04:06,271 - WARNING - No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+2025-05-03 09:04:06,456 - INFO - Starting budget boundary test with budget=12, gamma_c=50.0
+2025-05-03 09:04:06,462 - INFO - 
+--- Step 1: Budget Test ---
+2025-05-03 09:04:06,462 - INFO - Current state: 4/12 elements (0.33 of budget)
+2025-05-03 09:04:06,466 - INFO - Elements: 4 -> 5 (Δ1)
+2025-05-03 09:04:06,466 - INFO - Resource: 0.3333 -> 0.4167
+2025-05-03 09:04:06,466 - INFO - Budget status: Under by 7 elements
+2025-05-03 09:04:06,467 - INFO - Delta_u: 1.502059e-01
+2025-05-03 09:04:06,467 - INFO - Accuracy term: 34.9456
+2025-05-03 09:04:06,467 - INFO - Resource penalty: 0.2405 (old_barrier=0.8660, new_barrier=1.1066)
+2025-05-03 09:04:06,467 - INFO - Expected reward: 22.9186
+2025-05-03 09:04:06,467 - INFO - Actual reward: 22.9186
+2025-05-03 09:04:06,467 - INFO - 
+--- Step 2: Budget Test ---
+2025-05-03 09:04:06,467 - INFO - Current state: 5/12 elements (0.42 of budget)
+2025-05-03 09:04:06,473 - INFO - Elements: 5 -> 6 (Δ1)
+2025-05-03 09:04:06,473 - INFO - Resource: 0.4167 -> 0.5000
+2025-05-03 09:04:06,473 - INFO - Budget status: Under by 6 elements
+2025-05-03 09:04:06,473 - INFO - Delta_u: 2.258562e-01
+2025-05-03 09:04:06,473 - INFO - Accuracy term: 35.3535
+2025-05-03 09:04:06,473 - INFO - Resource penalty: 0.3076 (old_barrier=1.1066, new_barrier=1.4142)
+2025-05-03 09:04:06,473 - INFO - Expected reward: 19.9712
+2025-05-03 09:04:06,474 - INFO - Actual reward: 19.9712
+2025-05-03 09:04:06,474 - INFO - 
+--- Step 3: Budget Test ---
+2025-05-03 09:04:06,474 - INFO - Current state: 6/12 elements (0.50 of budget)
+2025-05-03 09:04:06,478 - INFO - Elements: 6 -> 7 (Δ1)
+2025-05-03 09:04:06,478 - INFO - Resource: 0.5000 -> 0.5833
+2025-05-03 09:04:06,478 - INFO - Budget status: Under by 5 elements
+2025-05-03 09:04:06,478 - INFO - Delta_u: 2.273123e-01
+2025-05-03 09:04:06,478 - INFO - Accuracy term: 35.3599
+2025-05-03 09:04:06,478 - INFO - Resource penalty: 0.4188 (old_barrier=1.4142, new_barrier=1.8330)
+2025-05-03 09:04:06,478 - INFO - Expected reward: 14.4191
+2025-05-03 09:04:06,479 - INFO - Actual reward: 14.4191
+2025-05-03 09:04:06,479 - INFO - 
+--- Step 4: Budget Test ---
+2025-05-03 09:04:06,479 - INFO - Current state: 7/12 elements (0.58 of budget)
+2025-05-03 09:04:06,484 - INFO - Elements: 7 -> 8 (Δ1)
+2025-05-03 09:04:06,484 - INFO - Resource: 0.5833 -> 0.6667
+2025-05-03 09:04:06,484 - INFO - Budget status: Under by 4 elements
+2025-05-03 09:04:06,484 - INFO - Delta_u: 2.293809e-01
+2025-05-03 09:04:06,484 - INFO - Accuracy term: 35.3690
+2025-05-03 09:04:06,484 - INFO - Resource penalty: 0.6165 (old_barrier=1.8330, new_barrier=2.4495)
+2025-05-03 09:04:06,484 - INFO - Expected reward: 4.5460
+2025-05-03 09:04:06,484 - INFO - Actual reward: 4.5460
+2025-05-03 09:04:06,484 - INFO - 
+--- Step 5: Budget Test ---
+2025-05-03 09:04:06,484 - INFO - Current state: 8/12 elements (0.67 of budget)
+2025-05-03 09:04:06,490 - INFO - Elements: 8 -> 9 (Δ1)
+2025-05-03 09:04:06,490 - INFO - Resource: 0.6667 -> 0.7500
+2025-05-03 09:04:06,490 - INFO - Budget status: Under by 3 elements
+2025-05-03 09:04:06,491 - INFO - Delta_u: 2.305200e-01
+2025-05-03 09:04:06,491 - INFO - Accuracy term: 35.3739
+2025-05-03 09:04:06,491 - INFO - Resource penalty: 1.0146 (old_barrier=2.4495, new_barrier=3.4641)
+2025-05-03 09:04:06,491 - INFO - Expected reward: -15.3566
+2025-05-03 09:04:06,491 - INFO - Actual reward: -15.3566
+2025-05-03 09:04:06,491 - INFO - 
+--- Step 6: Budget Test ---
+2025-05-03 09:04:06,491 - INFO - Current state: 9/12 elements (0.75 of budget)
+2025-05-03 09:04:06,497 - INFO - Elements: 9 -> 10 (Δ1)
+2025-05-03 09:04:06,497 - INFO - Resource: 0.7500 -> 0.8333
+2025-05-03 09:04:06,497 - INFO - Budget status: Under by 2 elements
+2025-05-03 09:04:06,497 - INFO - Delta_u: 2.299157e-01
+2025-05-03 09:04:06,497 - INFO - Accuracy term: 35.3713
+2025-05-03 09:04:06,497 - INFO - Resource penalty: 2.0131 (old_barrier=3.4641, new_barrier=5.4772)
+2025-05-03 09:04:06,498 - INFO - Expected reward: -65.2849
+2025-05-03 09:04:06,498 - INFO - Actual reward: -65.2849
+2025-05-03 09:04:06,498 - INFO - 
+--- Step 7: Budget Test ---
+2025-05-03 09:04:06,498 - INFO - Current state: 10/12 elements (0.83 of budget)
+2025-05-03 09:04:06,505 - INFO - Elements: 10 -> 11 (Δ1)
+2025-05-03 09:04:06,505 - INFO - Resource: 0.8333 -> 0.9167
+2025-05-03 09:04:06,505 - INFO - Budget status: Under by 1 elements
+2025-05-03 09:04:06,505 - INFO - Delta_u: 2.303221e-01
+2025-05-03 09:04:06,505 - INFO - Accuracy term: 35.3731
+2025-05-03 09:04:06,505 - INFO - Resource penalty: 6.0119 (old_barrier=5.4772, new_barrier=11.4891)
+2025-05-03 09:04:06,505 - INFO - Expected reward: -265.2219
+2025-05-03 09:04:06,505 - INFO - Actual reward: -265.2219
+2025-05-03 09:04:06,505 - INFO - 
+--- Step 8: Budget Test ---
+2025-05-03 09:04:06,505 - INFO - Current state: 11/12 elements (0.92 of budget)
+2025-05-03 09:04:06,513 - INFO - Elements: 11 -> 12 (Δ1)
+2025-05-03 09:04:06,513 - INFO - Resource: 0.9167 -> 1.0000
+2025-05-03 09:04:06,513 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,513 - INFO - Delta_u: 2.235201e-01
+2025-05-03 09:04:06,513 - INFO - Accuracy term: 35.3431
+2025-05-03 09:04:06,513 - INFO - Resource penalty: inf (old_barrier=11.4891, new_barrier=inf)
+2025-05-03 09:04:06,513 - INFO - Expected reward: -inf
+2025-05-03 09:04:06,513 - INFO - Actual reward: 35.3431
+2025-05-03 09:04:06,513 - INFO - 
+--- Step 9: Budget Test ---
+2025-05-03 09:04:06,513 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,521 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,521 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,521 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,521 - INFO - Delta_u: 2.235201e-01
+2025-05-03 09:04:06,521 - INFO - Accuracy term: 35.3431
+2025-05-03 09:04:06,522 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,522 - INFO - Expected reward: nan
+2025-05-03 09:04:06,522 - INFO - Actual reward: 35.3431
+2025-05-03 09:04:06,522 - INFO - 
+--- Step 10: Budget Test ---
+2025-05-03 09:04:06,522 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,589 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,589 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,589 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,589 - INFO - Delta_u: 2.235201e-01
+2025-05-03 09:04:06,589 - INFO - Accuracy term: 35.3431
+2025-05-03 09:04:06,589 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,589 - INFO - Expected reward: nan
+2025-05-03 09:04:06,589 - INFO - Actual reward: 35.3431
+2025-05-03 09:04:06,589 - INFO - 
+--- Step 11: Budget Test ---
+2025-05-03 09:04:06,589 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,597 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,597 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,597 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,597 - INFO - Delta_u: 3.744774e-02
+2025-05-03 09:04:06,597 - INFO - Accuracy term: 33.5566
+2025-05-03 09:04:06,597 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,597 - INFO - Expected reward: nan
+2025-05-03 09:04:06,597 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:06,597 - INFO - 
+--- Step 12: Budget Test ---
+2025-05-03 09:04:06,597 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,669 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,669 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,669 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,669 - INFO - Delta_u: 3.744774e-02
+2025-05-03 09:04:06,669 - INFO - Accuracy term: 33.5566
+2025-05-03 09:04:06,669 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,669 - INFO - Expected reward: nan
+2025-05-03 09:04:06,670 - INFO - Actual reward: 33.5566
+2025-05-03 09:04:06,670 - INFO - 
+--- Step 13: Budget Test ---
+2025-05-03 09:04:06,670 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,677 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,678 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,678 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,678 - INFO - Delta_u: 1.647105e-01
+2025-05-03 09:04:06,678 - INFO - Accuracy term: 35.0378
+2025-05-03 09:04:06,678 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,678 - INFO - Expected reward: nan
+2025-05-03 09:04:06,678 - INFO - Actual reward: 35.0378
+2025-05-03 09:04:06,678 - INFO - 
+--- Step 14: Budget Test ---
+2025-05-03 09:04:06,678 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,688 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,688 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,688 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,688 - INFO - Delta_u: 1.647105e-01
+2025-05-03 09:04:06,688 - INFO - Accuracy term: 35.0378
+2025-05-03 09:04:06,689 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,689 - INFO - Expected reward: nan
+2025-05-03 09:04:06,689 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:06,689 - INFO - 
+--- Step 15: Budget Test ---
+2025-05-03 09:04:06,689 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,697 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,697 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,697 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,697 - INFO - Delta_u: 1.647105e-01
+2025-05-03 09:04:06,697 - INFO - Accuracy term: 35.0378
+2025-05-03 09:04:06,697 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,697 - INFO - Expected reward: nan
+2025-05-03 09:04:06,697 - INFO - Actual reward: 35.0378
+2025-05-03 09:04:06,697 - INFO - 
+--- Step 16: Budget Test ---
+2025-05-03 09:04:06,697 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,705 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,705 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,706 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,706 - INFO - Delta_u: 1.647105e-01
+2025-05-03 09:04:06,706 - INFO - Accuracy term: 35.0378
+2025-05-03 09:04:06,706 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,706 - INFO - Expected reward: nan
+2025-05-03 09:04:06,706 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:06,706 - INFO - 
+--- Step 17: Budget Test ---
+2025-05-03 09:04:06,706 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,714 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,714 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,714 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,714 - INFO - Delta_u: 1.647105e-01
+2025-05-03 09:04:06,714 - INFO - Accuracy term: 35.0378
+2025-05-03 09:04:06,714 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,714 - INFO - Expected reward: nan
+2025-05-03 09:04:06,714 - INFO - Actual reward: 35.0378
+2025-05-03 09:04:06,714 - INFO - 
+--- Step 18: Budget Test ---
+2025-05-03 09:04:06,715 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,783 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,784 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,784 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,784 - INFO - Delta_u: 1.647105e-01
+2025-05-03 09:04:06,784 - INFO - Accuracy term: 35.0378
+2025-05-03 09:04:06,784 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,784 - INFO - Expected reward: nan
+2025-05-03 09:04:06,784 - INFO - Actual reward: 35.0378
+2025-05-03 09:04:06,784 - INFO - 
+--- Step 19: Budget Test ---
+2025-05-03 09:04:06,784 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,791 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,792 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,792 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,792 - INFO - Delta_u: 8.695989e-02
+2025-05-03 09:04:06,792 - INFO - Accuracy term: 34.3991
+2025-05-03 09:04:06,792 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,792 - INFO - Expected reward: nan
+2025-05-03 09:04:06,792 - INFO - Actual reward: 34.3991
+2025-05-03 09:04:06,792 - INFO - 
+--- Step 20: Budget Test ---
+2025-05-03 09:04:06,792 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,865 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,865 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,865 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,865 - INFO - Delta_u: 8.695989e-02
+2025-05-03 09:04:06,865 - INFO - Accuracy term: 34.3991
+2025-05-03 09:04:06,866 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,866 - INFO - Expected reward: nan
+2025-05-03 09:04:06,866 - INFO - Actual reward: 34.3991
+2025-05-03 09:04:06,866 - INFO - 
+--- Step 21: Budget Test ---
+2025-05-03 09:04:06,866 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,874 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,874 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,874 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,874 - INFO - Delta_u: 4.930714e+15
+2025-05-03 09:04:06,874 - INFO - Accuracy term: 72.9756
+2025-05-03 09:04:06,874 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,874 - INFO - Expected reward: nan
+2025-05-03 09:04:06,874 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:06,874 - INFO - 
+--- Step 22: Budget Test ---
+2025-05-03 09:04:06,874 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,945 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,945 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,945 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,945 - INFO - Delta_u: 4.930714e+15
+2025-05-03 09:04:06,945 - INFO - Accuracy term: 72.9756
+2025-05-03 09:04:06,945 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,945 - INFO - Expected reward: nan
+2025-05-03 09:04:06,945 - INFO - Actual reward: 72.9756
+2025-05-03 09:04:06,945 - INFO - 
+--- Step 23: Budget Test ---
+2025-05-03 09:04:06,945 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,954 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,955 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,955 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,955 - INFO - Delta_u: 4.084956e+14
+2025-05-03 09:04:06,955 - INFO - Accuracy term: 70.4849
+2025-05-03 09:04:06,955 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,955 - INFO - Expected reward: nan
+2025-05-03 09:04:06,955 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:06,955 - INFO - 
+--- Step 24: Budget Test ---
+2025-05-03 09:04:06,955 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,963 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,963 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,963 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,963 - INFO - Delta_u: 4.084956e+14
+2025-05-03 09:04:06,963 - INFO - Accuracy term: 70.4849
+2025-05-03 09:04:06,963 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,963 - INFO - Expected reward: nan
+2025-05-03 09:04:06,964 - INFO - Actual reward: 70.4849
+2025-05-03 09:04:06,964 - INFO - 
+--- Step 25: Budget Test ---
+2025-05-03 09:04:06,964 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:06,972 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:06,972 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:06,972 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:06,972 - INFO - Delta_u: 4.084956e+14
+2025-05-03 09:04:06,972 - INFO - Accuracy term: 70.4849
+2025-05-03 09:04:06,972 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:06,972 - INFO - Expected reward: nan
+2025-05-03 09:04:06,972 - INFO - Actual reward: 0.0000
+2025-05-03 09:04:06,974 - INFO - Saved budget test data to /Users/antonechacartegui/Desktop/1D_wave_AMR/debug_output/budget_test_gamma_50.0.csv
+2025-05-03 09:04:07,586 - WARNING - No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+2025-05-03 09:04:07,856 - INFO - Starting budget boundary test with budget=12, gamma_c=100.0
+2025-05-03 09:04:07,862 - INFO - 
+--- Step 1: Budget Test ---
+2025-05-03 09:04:07,862 - INFO - Current state: 4/12 elements (0.33 of budget)
+2025-05-03 09:04:07,866 - INFO - Elements: 4 -> 5 (Δ1)
+2025-05-03 09:04:07,866 - INFO - Resource: 0.3333 -> 0.4167
+2025-05-03 09:04:07,866 - INFO - Budget status: Under by 7 elements
+2025-05-03 09:04:07,866 - INFO - Delta_u: 1.502059e-01
+2025-05-03 09:04:07,866 - INFO - Accuracy term: 34.9456
+2025-05-03 09:04:07,866 - INFO - Resource penalty: 0.2405 (old_barrier=0.8660, new_barrier=1.1066)
+2025-05-03 09:04:07,866 - INFO - Expected reward: 10.8915
+2025-05-03 09:04:07,866 - INFO - Actual reward: 10.8915
+2025-05-03 09:04:07,866 - INFO - 
+--- Step 2: Budget Test ---
+2025-05-03 09:04:07,866 - INFO - Current state: 5/12 elements (0.42 of budget)
+2025-05-03 09:04:07,871 - INFO - Elements: 5 -> 6 (Δ1)
+2025-05-03 09:04:07,871 - INFO - Resource: 0.4167 -> 0.5000
+2025-05-03 09:04:07,871 - INFO - Budget status: Under by 6 elements
+2025-05-03 09:04:07,871 - INFO - Delta_u: 1.502059e-01
+2025-05-03 09:04:07,871 - INFO - Accuracy term: 34.9456
+2025-05-03 09:04:07,871 - INFO - Resource penalty: 0.3076 (old_barrier=1.1066, new_barrier=1.4142)
+2025-05-03 09:04:07,871 - INFO - Expected reward: 4.1809
+2025-05-03 09:04:07,871 - INFO - Actual reward: 4.1809
+2025-05-03 09:04:07,871 - INFO - 
+--- Step 3: Budget Test ---
+2025-05-03 09:04:07,871 - INFO - Current state: 6/12 elements (0.50 of budget)
+2025-05-03 09:04:07,876 - INFO - Elements: 6 -> 7 (Δ1)
+2025-05-03 09:04:07,876 - INFO - Resource: 0.5000 -> 0.5833
+2025-05-03 09:04:07,876 - INFO - Budget status: Under by 5 elements
+2025-05-03 09:04:07,876 - INFO - Delta_u: 1.502059e-01
+2025-05-03 09:04:07,876 - INFO - Accuracy term: 34.9456
+2025-05-03 09:04:07,876 - INFO - Resource penalty: 0.4188 (old_barrier=1.4142, new_barrier=1.8330)
+2025-05-03 09:04:07,876 - INFO - Expected reward: -6.9361
+2025-05-03 09:04:07,876 - INFO - Actual reward: -6.9361
+2025-05-03 09:04:07,876 - INFO - 
+--- Step 4: Budget Test ---
+2025-05-03 09:04:07,876 - INFO - Current state: 7/12 elements (0.58 of budget)
+2025-05-03 09:04:07,881 - INFO - Elements: 7 -> 8 (Δ1)
+2025-05-03 09:04:07,882 - INFO - Resource: 0.5833 -> 0.6667
+2025-05-03 09:04:07,882 - INFO - Budget status: Under by 4 elements
+2025-05-03 09:04:07,882 - INFO - Delta_u: 1.502059e-01
+2025-05-03 09:04:07,882 - INFO - Accuracy term: 34.9456
+2025-05-03 09:04:07,882 - INFO - Resource penalty: 0.6165 (old_barrier=1.8330, new_barrier=2.4495)
+2025-05-03 09:04:07,882 - INFO - Expected reward: -26.7003
+2025-05-03 09:04:07,882 - INFO - Actual reward: -26.7003
+2025-05-03 09:04:07,882 - INFO - 
+--- Step 5: Budget Test ---
+2025-05-03 09:04:07,882 - INFO - Current state: 8/12 elements (0.67 of budget)
+2025-05-03 09:04:07,888 - INFO - Elements: 8 -> 9 (Δ1)
+2025-05-03 09:04:07,888 - INFO - Resource: 0.6667 -> 0.7500
+2025-05-03 09:04:07,888 - INFO - Budget status: Under by 3 elements
+2025-05-03 09:04:07,888 - INFO - Delta_u: 2.185607e-01
+2025-05-03 09:04:07,888 - INFO - Accuracy term: 35.3207
+2025-05-03 09:04:07,889 - INFO - Resource penalty: 1.0146 (old_barrier=2.4495, new_barrier=3.4641)
+2025-05-03 09:04:07,889 - INFO - Expected reward: -66.1405
+2025-05-03 09:04:07,890 - INFO - Actual reward: -66.1405
+2025-05-03 09:04:07,890 - INFO - 
+--- Step 6: Budget Test ---
+2025-05-03 09:04:07,891 - INFO - Current state: 9/12 elements (0.75 of budget)
+2025-05-03 09:04:07,906 - INFO - Elements: 9 -> 10 (Δ1)
+2025-05-03 09:04:07,906 - INFO - Resource: 0.7500 -> 0.8333
+2025-05-03 09:04:07,906 - INFO - Budget status: Under by 2 elements
+2025-05-03 09:04:07,906 - INFO - Delta_u: 2.269156e-01
+2025-05-03 09:04:07,907 - INFO - Accuracy term: 35.3582
+2025-05-03 09:04:07,907 - INFO - Resource penalty: 2.0131 (old_barrier=3.4641, new_barrier=5.4772)
+2025-05-03 09:04:07,907 - INFO - Expected reward: -165.9542
+2025-05-03 09:04:07,907 - INFO - Actual reward: -165.9542
+2025-05-03 09:04:07,907 - INFO - 
+--- Step 7: Budget Test ---
+2025-05-03 09:04:07,907 - INFO - Current state: 10/12 elements (0.83 of budget)
+2025-05-03 09:04:07,914 - INFO - Elements: 10 -> 11 (Δ1)
+2025-05-03 09:04:07,914 - INFO - Resource: 0.8333 -> 0.9167
+2025-05-03 09:04:07,914 - INFO - Budget status: Under by 1 elements
+2025-05-03 09:04:07,914 - INFO - Delta_u: 4.250519e-02
+2025-05-03 09:04:07,914 - INFO - Accuracy term: 33.6832
+2025-05-03 09:04:07,914 - INFO - Resource penalty: 6.0119 (old_barrier=5.4772, new_barrier=11.4891)
+2025-05-03 09:04:07,915 - INFO - Expected reward: -567.5067
+2025-05-03 09:04:07,915 - INFO - Actual reward: -567.5067
+2025-05-03 09:04:07,915 - INFO - 
+--- Step 8: Budget Test ---
+2025-05-03 09:04:07,915 - INFO - Current state: 11/12 elements (0.92 of budget)
+2025-05-03 09:04:07,922 - INFO - Elements: 11 -> 12 (Δ1)
+2025-05-03 09:04:07,922 - INFO - Resource: 0.9167 -> 1.0000
+2025-05-03 09:04:07,922 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:07,922 - INFO - Delta_u: 4.125281e-02
+2025-05-03 09:04:07,922 - INFO - Accuracy term: 33.6533
+2025-05-03 09:04:07,922 - INFO - Resource penalty: inf (old_barrier=11.4891, new_barrier=inf)
+2025-05-03 09:04:07,922 - INFO - Expected reward: -inf
+2025-05-03 09:04:07,923 - INFO - Actual reward: 33.6533
+2025-05-03 09:04:07,923 - INFO - 
+--- Step 9: Budget Test ---
+2025-05-03 09:04:07,923 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:07,950 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:07,950 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:07,950 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:07,950 - INFO - Delta_u: 4.120570e-02
+2025-05-03 09:04:07,950 - INFO - Accuracy term: 33.6522
+2025-05-03 09:04:07,950 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:07,950 - INFO - Expected reward: nan
+2025-05-03 09:04:07,950 - INFO - Actual reward: 33.6522
+2025-05-03 09:04:07,950 - INFO - 
+--- Step 10: Budget Test ---
+2025-05-03 09:04:07,950 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:07,958 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:07,958 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:07,958 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:07,958 - INFO - Delta_u: 2.893052e-02
+2025-05-03 09:04:07,958 - INFO - Accuracy term: 33.2985
+2025-05-03 09:04:07,958 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:07,958 - INFO - Expected reward: nan
+2025-05-03 09:04:07,958 - INFO - Actual reward: 33.2985
+2025-05-03 09:04:07,958 - INFO - 
+--- Step 11: Budget Test ---
+2025-05-03 09:04:07,958 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:07,966 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:07,966 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:07,966 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:07,966 - INFO - Delta_u: 2.893052e-02
+2025-05-03 09:04:07,966 - INFO - Accuracy term: 33.2985
+2025-05-03 09:04:07,966 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:07,966 - INFO - Expected reward: nan
+2025-05-03 09:04:07,966 - INFO - Actual reward: 33.2985
+2025-05-03 09:04:07,966 - INFO - 
+--- Step 12: Budget Test ---
+2025-05-03 09:04:07,966 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:07,974 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:07,974 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:07,974 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:07,974 - INFO - Delta_u: 2.893052e-02
+2025-05-03 09:04:07,974 - INFO - Accuracy term: 33.2985
+2025-05-03 09:04:07,974 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:07,974 - INFO - Expected reward: nan
+2025-05-03 09:04:07,974 - INFO - Actual reward: 33.2985
+2025-05-03 09:04:07,974 - INFO - 
+--- Step 13: Budget Test ---
+2025-05-03 09:04:07,974 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:07,982 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:07,982 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:07,982 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:07,982 - INFO - Delta_u: 2.893052e-02
+2025-05-03 09:04:07,982 - INFO - Accuracy term: 33.2985
+2025-05-03 09:04:07,982 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:07,982 - INFO - Expected reward: nan
+2025-05-03 09:04:07,982 - INFO - Actual reward: 33.2985
+2025-05-03 09:04:07,983 - INFO - 
+--- Step 14: Budget Test ---
+2025-05-03 09:04:07,983 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:07,990 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:07,991 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:07,991 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:07,991 - INFO - Delta_u: 2.893052e-02
+2025-05-03 09:04:07,991 - INFO - Accuracy term: 33.2985
+2025-05-03 09:04:07,991 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:07,991 - INFO - Expected reward: nan
+2025-05-03 09:04:07,991 - INFO - Actual reward: 33.2985
+2025-05-03 09:04:07,991 - INFO - 
+--- Step 15: Budget Test ---
+2025-05-03 09:04:07,991 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:08,019 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:08,019 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:08,019 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:08,019 - INFO - Delta_u: 2.893052e-02
+2025-05-03 09:04:08,019 - INFO - Accuracy term: 33.2985
+2025-05-03 09:04:08,019 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:08,019 - INFO - Expected reward: nan
+2025-05-03 09:04:08,019 - INFO - Actual reward: 33.2985
+2025-05-03 09:04:08,020 - INFO - 
+--- Step 16: Budget Test ---
+2025-05-03 09:04:08,020 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:08,027 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:08,027 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:08,027 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:08,028 - INFO - Delta_u: 2.999672e-02
+2025-05-03 09:04:08,028 - INFO - Accuracy term: 33.3347
+2025-05-03 09:04:08,028 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:08,028 - INFO - Expected reward: nan
+2025-05-03 09:04:08,028 - INFO - Actual reward: 33.3347
+2025-05-03 09:04:08,028 - INFO - 
+--- Step 17: Budget Test ---
+2025-05-03 09:04:08,028 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:08,037 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:08,037 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:08,037 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:08,037 - INFO - Delta_u: 2.999672e-02
+2025-05-03 09:04:08,037 - INFO - Accuracy term: 33.3347
+2025-05-03 09:04:08,037 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:08,037 - INFO - Expected reward: nan
+2025-05-03 09:04:08,037 - INFO - Actual reward: 33.3347
+2025-05-03 09:04:08,037 - INFO - 
+--- Step 18: Budget Test ---
+2025-05-03 09:04:08,038 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:08,045 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:08,046 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:08,046 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:08,046 - INFO - Delta_u: 2.999672e-02
+2025-05-03 09:04:08,046 - INFO - Accuracy term: 33.3347
+2025-05-03 09:04:08,046 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:08,046 - INFO - Expected reward: nan
+2025-05-03 09:04:08,046 - INFO - Actual reward: 33.3347
+2025-05-03 09:04:08,046 - INFO - 
+--- Step 19: Budget Test ---
+2025-05-03 09:04:08,046 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:08,054 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:08,054 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:08,054 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:08,055 - INFO - Delta_u: 2.999672e-02
+2025-05-03 09:04:08,055 - INFO - Accuracy term: 33.3347
+2025-05-03 09:04:08,055 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:08,055 - INFO - Expected reward: nan
+2025-05-03 09:04:08,055 - INFO - Actual reward: 33.3347
+2025-05-03 09:04:08,055 - INFO - 
+--- Step 20: Budget Test ---
+2025-05-03 09:04:08,055 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:08,063 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:08,063 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:08,063 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:08,063 - INFO - Delta_u: 2.999672e-02
+2025-05-03 09:04:08,063 - INFO - Accuracy term: 33.3347
+2025-05-03 09:04:08,063 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:08,063 - INFO - Expected reward: nan
+2025-05-03 09:04:08,063 - INFO - Actual reward: 33.3347
+2025-05-03 09:04:08,064 - INFO - 
+--- Step 21: Budget Test ---
+2025-05-03 09:04:08,064 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:08,072 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:08,072 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:08,072 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:08,072 - INFO - Delta_u: 2.999672e-02
+2025-05-03 09:04:08,072 - INFO - Accuracy term: 33.3347
+2025-05-03 09:04:08,072 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:08,072 - INFO - Expected reward: nan
+2025-05-03 09:04:08,072 - INFO - Actual reward: 33.3347
+2025-05-03 09:04:08,072 - INFO - 
+--- Step 22: Budget Test ---
+2025-05-03 09:04:08,072 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:08,100 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:08,101 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:08,101 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:08,101 - INFO - Delta_u: 2.999672e-02
+2025-05-03 09:04:08,101 - INFO - Accuracy term: 33.3347
+2025-05-03 09:04:08,101 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:08,101 - INFO - Expected reward: nan
+2025-05-03 09:04:08,101 - INFO - Actual reward: 33.3347
+2025-05-03 09:04:08,101 - INFO - 
+--- Step 23: Budget Test ---
+2025-05-03 09:04:08,101 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:08,129 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:08,130 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:08,130 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:08,130 - INFO - Delta_u: 3.904295e+15
+2025-05-03 09:04:08,130 - INFO - Accuracy term: 72.7422
+2025-05-03 09:04:08,130 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:08,130 - INFO - Expected reward: nan
+2025-05-03 09:04:08,130 - INFO - Actual reward: 72.7422
+2025-05-03 09:04:08,130 - INFO - 
+--- Step 24: Budget Test ---
+2025-05-03 09:04:08,130 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:08,138 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:08,138 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:08,138 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:08,138 - INFO - Delta_u: 3.569892e+10
+2025-05-03 09:04:08,138 - INFO - Accuracy term: 61.1397
+2025-05-03 09:04:08,138 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:08,138 - INFO - Expected reward: nan
+2025-05-03 09:04:08,138 - INFO - Actual reward: 61.1397
+2025-05-03 09:04:08,138 - INFO - 
+--- Step 25: Budget Test ---
+2025-05-03 09:04:08,138 - INFO - Current state: 12/12 elements (1.00 of budget)
+2025-05-03 09:04:08,146 - INFO - Elements: 12 -> 12 (Δ0)
+2025-05-03 09:04:08,146 - INFO - Resource: 1.0000 -> 1.0000
+2025-05-03 09:04:08,146 - INFO - Budget status: Under by 0 elements
+2025-05-03 09:04:08,146 - INFO - Delta_u: 3.569892e+10
+2025-05-03 09:04:08,146 - INFO - Accuracy term: 61.1397
+2025-05-03 09:04:08,146 - INFO - Resource penalty: nan (old_barrier=inf, new_barrier=inf)
+2025-05-03 09:04:08,146 - INFO - Expected reward: nan
+2025-05-03 09:04:08,146 - INFO - Actual reward: 61.1397
+2025-05-03 09:04:08,149 - INFO - Saved budget test data to /Users/antonechacartegui/Desktop/1D_wave_AMR/debug_output/budget_test_gamma_100.0.csv
+2025-05-03 09:04:08,781 - WARNING - No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.

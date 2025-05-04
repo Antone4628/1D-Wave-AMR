@@ -17,13 +17,15 @@ PROJECT_ROOT = os.path.abspath(os.path.join(
 sys.path.append(PROJECT_ROOT)
 # from numerical.solvers.dg_wave_solver_clean import DGWaveSolver
 # from numerical.solvers.dg_wave_solver_free import DGWaveSolver
-from numerical.solvers.dg_wave_solver_options import DGWaveSolver
-from numerical.environments.dg_amr_env_clean import DGAMREnv
+# from numerical.solvers.dg_wave_solver_options import DGWaveSolver
+# from numerical.environments.dg_amr_env_clean import DGAMREnv
+from numerical.solvers.dg_wave_solver_mixed_clean import DGWaveSolverMixed
+from numerical.environments.dg_amr_env_mixed import DGAMREnv
 
 def run_standard_test():
     """Run the original standard test"""
     # Set up a simple test case
-    solver = DGWaveSolver(
+    solver = DGWaveSolverMixed(
         nop=3,
         xelem=np.array([-1, -0.4, 0, 0.4, 1]),
         max_elements=50,
@@ -170,7 +172,7 @@ def test_balance_enforcement():
     os.makedirs(vis_dir, exist_ok=True)
     
     # Create two solvers - one with balance=True (default) and one with balance=False
-    solver_with_balance = DGWaveSolver(
+    solver_with_balance = DGWaveSolverMixed(
         nop=3,
         xelem=np.array([-1, -0.4, 0, 0.4, 1]),
         max_elements=50,
@@ -181,7 +183,7 @@ def test_balance_enforcement():
         balance=True  # Explicitly set balance flag to True
     )
     
-    solver_without_balance = DGWaveSolver(
+    solver_without_balance = DGWaveSolverMixed(
         nop=3,
         xelem=np.array([-1, -0.4, 0, 0.4, 1]),
         max_elements=50,

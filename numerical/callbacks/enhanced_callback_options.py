@@ -279,6 +279,19 @@ class EnhancedMonitorCallback(BaseCallback):
         # Track physical time steps
         took_timestep = int(info.get('took_timestep', False))
         self.timestep_history.append(took_timestep)
+
+        # In EnhancedMonitorCallback._on_step
+        # Add tracking for invalid actions
+        original_action = info.get('original_action', None)
+        actual_action = info.get('actual_action', info.get('mapped_action', None))
+        is_valid_action = info.get('is_valid_action', original_action == actual_action)
+
+        if not is_valid_action and original_action is not None:
+            # Track invalid action occurrences
+            if not hasattr(self, 'invalid_action_counts'):
+                self.invalid_action_counts = {-1: 0, 0: 0, 1: 0}
+            
+            self.invalid_action_counts[original_action] = self.invalid_action_counts.get(original_action, 0) + 1
         
         # Update metrics dataframe
         new_row = {
