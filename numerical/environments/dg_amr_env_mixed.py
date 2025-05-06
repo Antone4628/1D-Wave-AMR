@@ -540,6 +540,8 @@ class DGAMREnv(gym.Env):
         
         # Calculate adaptation-specific delta_u with steady solution
         delta_u_adapt = calculate_delta_u(old_solution, post_adapt_solution, old_grid, post_adapt_grid)
+
+        self.solver.q = steady_solution
         
         # Calculate reward
         reward = self.reward_calculator.calculate_reward(
