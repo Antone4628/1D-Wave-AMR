@@ -495,29 +495,6 @@ class DGWaveSolverMixed:
             
             # Enforce 2:1 balance
             self.balance_mesh(self.balance)
-            # if not check_balance(self.active, self.label_mat):
-            #     bal_q, bal_active, bal_nelem, bal_intma, bal_coord, bal_grid, bal_npoin_dg, bal_periodicity = enforce_balance(
-            #         self.active, 
-            #         self.label_mat, 
-            #         self.xelem, 
-            #         self.info_mat, 
-            #         self.nop, 
-            #         self.coord, 
-            #         self.PS1, self.PS2, self.PG1, self.PG2, 
-            #         self.ngl, self.xgl, 
-            #         self.q, 
-            #         self.max_level
-            #     )
-                
-            #     # Update with balanced state
-            #     self.q = bal_q
-            #     self.active = bal_active
-            #     self.nelem = bal_nelem
-            #     self.intma = bal_intma
-            #     self.coord = bal_coord
-            #     self.xelem = bal_grid
-            #     self.npoin_dg = bal_npoin_dg
-            #     self.periodicity = bal_periodicity
 
 
     def check_mesh_quality(self, grid):
@@ -712,39 +689,6 @@ class DGWaveSolverMixed:
         # Apply mesh balancing if needed
         self.balance_mesh(balance)
 
-
-        # # Use the method parameter if provided, otherwise use the instance variable
-        # use_balance = self.balance if balance is None else balance
-        # if use_balance:
-        #     if not check_balance(self.active, self.label_mat):
-        #         # print("Enforcing mesh balance...")
-        #         # print(f'pre-balance active elements: {len(self.active)}')
-        #         if self.verbose:
-        #             print("Enforcing mesh balance...")
-                
-        #         bal_q, bal_active, bal_nelem, bal_intma, bal_coord, bal_grid, bal_npoin_dg, bal_periodicity = enforce_balance(
-        #             self.active, 
-        #             self.label_mat, 
-        #             self.xelem, 
-        #             self.info_mat, 
-        #             self.nop, 
-        #             self.coord, 
-        #             self.PS1, self.PS2, self.PG1, self.PG2, 
-        #             self.ngl, self.xgl, 
-        #             self.q, 
-        #             self.max_level
-        #         )
-                
-        #         # Update with balanced state
-        #         self.q = bal_q
-        #         self.active = bal_active
-        #         self.nelem = bal_nelem
-        #         self.intma = bal_intma
-        #         self.coord = bal_coord
-        #         self.xelem = bal_grid
-        #         self.npoin_dg = bal_npoin_dg
-        #         self.periodicity = bal_periodicity
-        #         # print(f'post-balance active elements: {len(self.active)}')
 
         # Update matrices
         self._update_matrices()
@@ -1002,8 +946,8 @@ class DGWaveSolverMixed:
         inflow_value = exact_solution(np.array([-1]), 1, self.time, self.icase)[0]
         
         # Create system
-        # A = F_upwind - D
-        A = F_rusanov - D
+        A = F_upwind - D
+        # A = F_rusanov - D
         rhs = M @ self.f
         
         # Strongly enforce the inflow boundary condition

@@ -234,6 +234,8 @@ class DGAMREnv(gym.Env):
         if self.verbose:
             print(f"Environment registered episode callback: {callback.__class__.__name__}")
 
+
+
     def _get_active_levels(self):
         """Get refinement levels for active elements."""
         active_levels = []
@@ -529,19 +531,35 @@ class DGAMREnv(gym.Env):
         
         marks_override = {self.current_element_index: mapped_action}
         self.solver.adapt_mesh(marks_override=marks_override, element_budget=self.element_budget)
+        # solution should be the projected solution now.
+
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # MODIFICATION: Save the projected solution after adaptation
+        projected_solution = self.solver.q.copy()  # This is the solution after projection but before steady solving
         
-        # CHANGE 1: Solve for steady-state solution after mesh adaptation
+        # Solve for steady-state solution using the standard method
         steady_solution = self.solver.steady_solve()
         
+        # MODIFICATION: Also solve using the improved method
+        self.solver.q = projected_solution.copy()  # Reset to projected solution
+        improved_steady_solution = self.solver.steady_solve_improved()
+
+        self.solver.q = improved_steady_solution
+        
+        # CHANGE 1: Solve for steady-state solution after mesh adaptation
+        # steady_solution = self.solver.steady_solve_improved()
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
         # Get post-adaptation state using steady solution
-        post_adapt_solution = steady_solution
+        # post_adapt_solution = improved_steady_solution
+        post_adapt_solution = projected_solution
         post_adapt_grid = self.solver.coord.copy()
         post_adapt_resources = len(self.solver.active) / self.element_budget
         
         # Calculate adaptation-specific delta_u with steady solution
         delta_u_adapt = calculate_delta_u(old_solution, post_adapt_solution, old_grid, post_adapt_grid)
 
-        self.solver.q = steady_solution
+        # self.solver.q = improved_steady_solution
         
         # Calculate reward
         reward = self.reward_calculator.calculate_reward(
@@ -580,7 +598,9 @@ class DGAMREnv(gym.Env):
             for _ in range(n_steps):
                 self.solver.step()
             
-            self.current_rl_iteration = 0
+            # self.current_rl_iteration = 0
+            # steady_solution = self.solver.steady_solve_improved()
+            # self.solver.q = steady_solution
         
         # Safely get the element level
         try:
