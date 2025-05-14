@@ -34,3 +34,31 @@ sdist/
 var/
 wheels/
 *.egg-info/
+
+# Experiment results
+experiments/results/
+experiments/*.py
+!experiments/run_experiments_mixed.py
+!experiments/configs/
+
+# Generated files
+*.png
+*.pdf
+*.xlsx
+*.json
+*.csv
+*.zip
+
+# Directories with generated content
+**/models/
+**/metrics/
+**/plots/
+**/tensorboard/
+**/refinement/
+results/
+plots/
+
+# Exceptions - files you want to keep despite matching patterns above
+!requirements.txt
+!setup.py
+!**/test_*.py
