@@ -1,0 +1,449 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from numpy.linalg import norm
+from matplotlib.animation import FuncAnimation
+import matplotlib.patches as mpatches
+
+import os
+import sys
+import traceback
+
+PROJECT_ROOT = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), 
+    '..',
+    '..'
+))
+sys.path.append(PROJECT_ROOT)
+
+from numerical.dg.basis import lgl_gen, Lagrange_basis
+from numerical.dg.matrices import *
+from numerical.grid.mesh import create_grid_us
+from numerical.amr.forest import forest
+from numerical.amr.adapt import adapt_mesh, adapt_sol
+from numerical.amr.projection import create_S_matrix, create_scatters, create_gathers, projections
+from numerical.solvers.utils import exact_solution
+
+
+def calculate_delta_u(old_solution, new_solution, old_grid, new_grid):
+        """
+        Calculate the L1 norm of the difference between solutions according to equation 3.
+        
+        Args:
+            old_solution: Solution before adaptation
+            new_solution: Solution after adaptation
+            old_grid: Grid coordinates before adaptation
+            new_grid: Grid coordinates after adaptation
+            
+        Returns:
+            float: The integral of absolute difference between solutions
+        """
+        # Interpolate the solution with fewer points onto the grid with more points
+        if len(new_solution) >= len(old_solution):
+            old_interpolated = np.interp(new_grid, old_grid, old_solution)
+            # Calculate element-wise differences
+            point_differences = np.abs(new_solution - old_interpolated)
+            # Calculate approximate element widths for integration
+            element_widths = np.diff(np.append(new_grid, new_grid[-1] + (new_grid[-1] - new_grid[-2])))
+            # Approximate the integral using element widths
+            delta_u = np.sum(point_differences * element_widths)
+        else:
+            new_interpolated = np.interp(old_grid, new_grid, new_solution)
+            point_differences = np.abs(new_interpolated - old_solution)
+            element_widths = np.diff(np.append(old_grid, old_grid[-1] + (old_grid[-1] - old_grid[-2])))
+            delta_u = np.sum(point_differences * element_widths)
+            
+        return delta_u
+
+def calculate_delta_u_lgl(old_solution, new_solution, old_grid, old_elem, new_grid, new_elem, xgl, wgl):
+    """
+    Calculate the L1 norm of the difference between solutions using LGL quadrature.
+    
+    Args:
+        old_solution: Solution before adaptation
+        new_solution: Solution after adaptation
+        old_grid: Grid coordinates before adaptation
+        old_elem: Element boundaries before adaptation
+        new_grid: Grid coordinates after adaptation
+        new_elem: Element boundaries after adaptation
+        xgl: LGL nodes on the reference element [-1,1]
+        wgl: LGL weights corresponding to the nodes
+        
+    Returns:
+        float: The integral of absolute difference between solutions
+    """
+    import numpy as np
+    
+    # Determine which solution has more points
+    if len(new_grid) >= len(old_grid):
+        # Map to higher resolution grid
+        target_grid = new_grid
+        target_elem = new_elem
+        target_solution = new_solution
+        other_solution = np.interp(new_grid, old_grid, old_solution)
+    else:
+        # Map to higher resolution grid
+        target_grid = old_grid
+        target_elem = old_elem
+        target_solution = old_solution
+        other_solution = np.interp(old_grid, new_grid, new_solution)
+    
+    # Calculate point-wise differences
+    point_differences = np.abs(target_solution - other_solution)
+    
+    # Initialize the integral result
+    delta_u = 0.0
+    
+    # Number of points per element
+    ngl = len(xgl)
+    
+    # Loop over elements to do the integration element by element
+    for i in range(len(target_elem) - 1):
+        # Get element boundaries
+        a = target_elem[i]
+        b = target_elem[i+1]
+        
+        # Calculate Jacobian for this element
+        jacobian = (b - a) / 2.0
+        
+        # Get solution differences in this element
+        elem_indices = slice(i * ngl, (i + 1) * ngl)
+        if i < len(target_elem) - 2:
+            # Don't double-count shared points
+            elem_indices = slice(i * ngl, (i + 1) * ngl - (ngl - 1))
+        
+        elem_diffs = point_differences[elem_indices]
+        
+        # Apply quadrature rule for this element
+        # Use weights that correspond to the element node indices
+        if i < len(target_elem) - 2:
+            # For interior elements, the last point is shared with next element
+            # so we exclude the last weight to avoid double counting
+            elem_weights = wgl[:-1]
+            elem_integral = np.sum(elem_diffs * elem_weights) * jacobian
+        else:
+            # For the last element, use all weights
+            elem_integral = np.sum(elem_diffs * wgl) * jacobian
+        
+        delta_u += elem_integral
+    
+    return delta_u
+
+# examine mass matrix
+print(f'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n New Test')
+xelem0=np.array([-1, -0.4 ,0 ,0.4 ,1])
+# xelem=np.array([-1.0 ,1.0])
+
+integration_points = 1      #=1 for LGL and =2 for LG
+integration_type = 2        #=1 is inexact and =2 is exact
+space_method_type = 'dg'    #CG or DG
+flux_type = 2
+max_level = 3
+
+# nelem = 4
+nelem0 = len(xelem0) - 1                 #Initial number of elements in level zero
+
+nop = 4
+ngl = nop + 1
+
+icase = 1
+max_level = 3
+
+npoin_cg = nop*nelem0 + 1
+npoin_dg0 = ngl*nelem0
+
+
+#Compute Interpolation and Integration Points
+xgl,wgl = lgl_gen(ngl)
+if (integration_points ==1):
+    integration_text = 'LGL'
+    if (integration_type ==1):
+        noq = nop
+    elif (integration_type ==2):
+        noq = nop + 1
+    nq = noq + 1
+    xnq,wnq = lgl_gen(nq)
+
+# elif (integration_points == 2):
+# print(f'\n ngl:{ngl}, nop: {nop}, nq: {nq}, len_xgl:{len(xgl)}')
+psi, dpsi = Lagrange_basis(ngl,nq, xgl, xnq)
+
+coord0,  intma0, periodicity0  = create_grid_us(ngl,nelem0,npoin_cg,npoin_dg0,xgl, xelem0)
+print(f'xgl: {xgl}')
+print(f'wgl: {wgl}')
+print(f'xnq: {xnq}')
+print(f'wnq: {wnq}')
+print(f'nelem0: {nelem0}')
+print(f'xelem0: {xelem0}')
+print(f'npoin0: {npoin_dg0}')
+print(f'coord0 length: {len(coord0)}')
+# print(f'intma0: {intma0}')
+
+
+# print(f'intma:')
+
+# print(f'coord: {coord}')
+# print(f'psi:')
+# display(psi)
+# print(f'nelem: {nelem}, \nngl: {ngl}, \nnq: {nq}, \nwnq: {wnq}')
+
+# emass0 = create_mass_matrix(intma0, coord0, nelem0, ngl, nq, wnq, psi)
+# print(f'e_mass: {emass}')
+
+ydots = np.zeros(len(coord0)) - 0.05
+
+#  plt.scatter(coord, ydots)
+q0, u = exact_solution(coord0, npoin_dg0, 0, icase)
+print(f'\n q0: {q0}\n')
+
+plt.ion()
+
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.set_xlim([-1.2,1.2])
+ax.set_ylim([-0.4,2.2])
+ax.set_xticks(xelem0)
+ax.scatter(coord0, ydots, color = 'darkcyan', label = 'unrefined nodes')
+# ax.plot(coord,wave1, linewidth=10, color = 'lightblue', label = 'parent solution')
+ax.axhline(y=0, color = 'darkgray')
+for i in xelem0:
+    ax.axvline(i, color = 'darkcyan')
+
+
+label_mat, info_mat, active0 = forest(xelem0, max_level)
+# print(f'info_mat:\n {info_mat}')
+print(f'active: {active0}')
+
+
+marks0 = np.array([0,1,1,0])
+refs = [2,3]
+defs =[]
+og_marks = marks0
+og_active = active0
+print(f'~~~~~~~~~~~~~~\n\n adapting mesh for first round')
+xelem1, active1, new_marks, nelem1, new_npoin_cg, npoin_dg1 = adapt_mesh(nop, xelem0, active0, label_mat, info_mat, marks0, max_level)
+coord1,  intma1, periodicity  = create_grid_us(ngl, nelem1, new_npoin_cg, npoin_dg1,xgl, xelem1)
+# emass = create_mass_matrix(new_intma, new_coord, new_nelem, ngl, nq, wnq, psi)
+
+
+y1 = np.zeros(len(coord1)) - 0.15
+ax.scatter(coord1,y1, color = 'turquoise', label = 'first refinement')
+for i in xelem1:
+    ax.axvline(i, ymin=-0.1, ymax=0.9,color = 'turquoise', ls ='--',)
+
+
+
+
+RM = create_RM_matrix(ngl, nq, wnq, psi)
+PS1, PS2, PG1, PG2 = projections(RM, ngl, nq, wnq, xgl, xnq)
+
+print(f'project data onto children:')
+
+print(f'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`\n\n')
+print(f'creating projections using emass0, inttma0, coord0, nelem0')
+# emass = create_mass_matrix(new_intma, new_coord, new_nelem, ngl, nq, wnq, psi)
+
+emass0 = create_mass_matrix(intma0, coord0, nelem0, ngl, nq, wnq, psi)
+# print(f'emass0 shape: {np.shape(emass0)}')
+# PS1_0, PS2_0, PG1_0, PG2_0 = projections(emass0, intma0, coord0, nelem0, ngl, nq, wnq, xgl, xnq)
+
+q1 = adapt_sol(q0, coord0, og_marks, og_active, label_mat, PS1, PS2, PG1, PG2, ngl)
+print(f'done with new solution!')
+print(f'new solution length: {len(q1)}')
+print(f'new coord length: {len(coord1)}')
+
+print(f'active1: {active1}')
+print(f'coord1: {coord1}')
+print(f'xelem1: {xelem1}')
+
+
+delta_u_1 = calculate_delta_u(q0,q1,coord0,coord1)
+print(f'\n\n delta_u: {delta_u_1}')
+delta_u_1_lgl = calculate_delta_u_lgl(q0,q1,coord0, xelem0, coord1,xelem1, xgl,wgl)
+print(f'delta_u_lgl: {delta_u_1_lgl}')
+
+
+# active = new_active
+# xelem1 = cur_grid
+print(f'nelem1: {nelem1}')
+print(f'xelem1: {xelem1}')
+print(f'npoin1: {npoin_dg1}')
+print(f'coord1 length: {len(coord1)}')
+print(f'intma1: {intma1}')
+
+# print(f'new active: {active}')
+# print(f'new marks: {new_marks}')
+
+marks1 = ([0,1,1,0,0,0])
+og_marks = marks1
+og_active = active1
+# emass = create_mass_matrix(new_intma, new_coord, new_nelem, ngl, nq, wnq, psi)
+
+print(f'~~~~~~~~~~~~~~\n\n adapting mesh for second round')
+xelem2, active2, new_marks, nelem2, new_npoin_cg, npoin_dg2 = adapt_mesh(nop, xelem1, active1, label_mat, info_mat, marks1, max_level)
+coord2,  intma2, periodicity  = create_grid_us(ngl, nelem2, new_npoin_cg, npoin_dg2,xgl, xelem2)
+
+# for i in xelem1:
+#     ax.axvline(i, color = 'lightgray', ls ='--',)
+
+# xelem2 = cur_grid
+print(f'nelem2: {nelem2}')
+print(f'xelem2: {xelem2}')
+print(f'npoin2: {npoin_dg2}')
+print(f'coord2 length: {len(coord2)}')
+print(f'intma2: {intma2}')
+
+print(f'active2: {active2}')
+# print(f'new marks: {new_marks}')
+
+
+print(f'creating emass for second time to use on second projection. using intma1: {intma1}, \ncoord1:{coord1}, \nnelem1: {nelem1}')
+
+# emass1 = create_mass_matrix(intma2, coord2, nelem2, ngl, nq, wnq, psi)
+emass1 = create_mass_matrix(intma1, coord1, nelem1, ngl, nq, wnq, psi)
+
+print(f'emass1 shape: {np.shape(emass1)}')
+
+print(f'project data onto children:')
+
+print(f'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`\n\n')
+print(f'creating projections using emass1, intma1, coord1, nelem1')
+# PS1_1, PS2_1, PG1_1, PG2_1 = projections(emass1, intma2, coord2, nelem2, ngl, nq, wnq, xgl, xnq)
+# PS1_1, PS2_1, PG1_1, PG2_1 = projections(emass1, intma1, coord1, nelem1, ngl, nq, wnq, xgl, xnq)
+
+
+q2 = adapt_sol(q1, coord1, og_marks, og_active, label_mat, PS1, PS2, PG1, PG2, ngl)
+
+print(f'q_ad: {np.shape(q2)}')
+print(f'new_cord: {np.shape(coord2)}')
+
+y2 = np.zeros(len(coord2))-0.25
+ax.scatter(coord2,y2, color = 'darkmagenta', label = 'second refinement')
+for i in xelem2:
+    ax.axvline(i, ymin=-0.2, ymax=0.8,color = 'darkmagenta', ls ='--',)
+
+
+# active = active2
+
+# ax.plot(coord0,q0, linewidth=10, color = 'lightblue', label = 'parent solution')
+
+# ax.plot(coord2, q2, color = 'blue',marker = 11,  ls = '--', label = 'scattered')
+# ax.legend(loc="upper right")
+
+# plt.show()
+
+
+#now gather q7 and q8 back to parent q2:
+
+#coarsent the current two-element mesh
+# PG1, PG2 = create_gathers(emass, S1, S2)
+# PG1 = np.reshape(PG1,(ngl,ngl))
+# PG2 = np.reshape(PG2,(ngl,ngl))
+
+# marks2 = np.array([0,-1,-1,-1,-1,0,0,0])
+# marks2 = np.array([0,-1,-1,1,1,0,0,0])
+marks2 = np.array([0,-1,-1,1,1,-1,-1,0])
+
+og_marks = marks2
+og_active = active2
+xelem3, active3, new_marks, nelem3, new_npoin_cg, npoin_dg3 = adapt_mesh(nop, xelem2, active2, label_mat, info_mat, marks2, max_level)
+coord3,  intma3, periodicity  = create_grid_us(ngl, nelem3, new_npoin_cg, npoin_dg3,xgl, xelem3)
+
+print(f'nelem3: {nelem3}')
+print(f'xelem3: {xelem3}')
+print(f'npoin3: {npoin_dg3}')
+print(f'coord3 length: {len(coord3)}')
+print(f'intma3: {intma3}')
+
+print(f'active3: {active3}')
+# print(f'new marks: {new_marks}')
+
+
+# print(f'creating emass2 for third time to use on third projection (gather). using intma3: {intma3}, \ncoord3:{coord3}, \nnelem3: {nelem3}')
+# emass2 = create_mass_matrix(intma3, coord3, nelem3, ngl, nq, wnq, psi)
+print(f'creating emass2 for third time to use on third projection (gather). using intma2: {intma2}, \ncoord2:{coord2}, \nnelem2: {nelem2}')
+emass2 = create_mass_matrix(intma2, coord2, nelem2, ngl, nq, wnq, psi)
+print(f'emass12shape: {np.shape(emass2)}')
+# PS1_2, PS2_2, PG1_2, PG2_2 = projections(emass2, intma3, coord3, nelem3, ngl, nq, wnq, xgl, xnq)
+# PS1_2, PS2_2, PG1_2, PG2_2 = projections(emass2, intma2, coord2, nelem2, ngl, nq, wnq, xgl, xnq)
+
+
+
+q_gath = adapt_sol(q2, coord2, og_marks, og_active, label_mat, PS1, PS2, PG1, PG2, ngl)
+
+y3 = np.zeros(len(coord3))-0.35
+ax.scatter(coord3,y3, color = 'magenta', label = 'third refinement')
+for i in xelem3:
+    ax.axvline(i, ymin=-0.3, ymax=0.7, color = 'magenta', ls ='--',)
+
+ax.plot(coord0,q0, linewidth=10, color = 'darkcyan', label = 'unrefined solution')
+ax.plot(coord1, q1,linewidth=8, color = 'turquoise', label = 'refined 1')
+
+# ax.plot(coord2, q2, color = 'darkmagenta',marker = 11,  ls = '--', label = 'refined 2')
+ax.plot(coord2, q2, linewidth=4, color = 'darkmagenta', label = 'refined 2')
+ax.legend(loc="upper right")
+
+# active = new_active
+
+# print(f'PG1: {np.shape(PG1)}')
+# print(f'PG2: {np.shape(PG2)}')
+# print(f'q1: {np.shape(q7)}')
+# print(f'q2: {np.shape(q8)}')
+
+# q2l = np.dot(PG1[2],q7) 
+# q2r = np.dot(PG2[2],q8)
+
+# print(f'ql: {np.shape(q2l)}')
+# print(f'qr: {np.shape(q2r)}')
+
+# q2g = q2l + q2r
+
+# print(f'gathered q: {q2g}')
+
+# q3l = np.dot(PG1[3],q9) 
+# q3r = np.dot(PG2[3],q10)
+
+# print(f'ql: {np.shape(q3l)}')
+# print(f'qr: {np.shape(q3r)}')
+
+# q3g = q3l + q3r
+
+# print(f'gathered q: {q3g}')
+
+# pars = np.concatenate((q2g,q3g))
+# wave_gathered = np.concatenate((wave1[:ngl], pars, wave1[3*ngl:]))
+# print(f'wave_gathered length: {len(wave_gathered)}')
+
+# ax.plot(coord, wave_gathered, color = 'red', label = 'gathered')
+ax.plot(coord3, q_gath, color = 'magenta', ls = '--', label = 'refined 3')
+ax.legend(loc="upper right")
+
+
+# marks = np.array([-1,-1])
+# refs = []
+# defs =[2,3]
+
+# cur_grid, active, marks, new_nelem, new_npoin_cg, new_npoin_dg = adapt_mesh(nop, xelem, active, label_mat, info_mat, marks)
+# new_coord,  new_intma, periodicity  = create_grid_us(ngl, new_nelem, new_npoin_cg, new_npoin_dg,xgl, cur_grid)
+
+# # active = [1,2,3,4]
+# refined, active, marks, new_nelem, new_npoin_cg, new_npoin_dg = refine(nop,xelem, active, label_mat, info_mat, refs, marks)
+# ref_coord,  new_intma, periodicity  = create_grid_us(ngl,new_nelem,new_npoin_cg,new_npoin_dg,xgl, refined)
+
+# newdots = np.zeros(len(ref_coord)) + 0.1
+# ax.scatter(ref_coord, newdots, color = 'red')
+# for i in refined:
+#     ax.axvline(i, color = 'lightgray')
+
+# print(f'new intma:')
+
+
+
+
+# wave2 = wave1
+# print(intma[:,refs[0]-1])
+# nodes0 = intma[:,refs[0]-1]
+
+# S1, S2 = create_S_matrix(intma, coord, nelem, ngl, nq, wnq)
+# PS1, PS2 = create_scatters(emass, S1, S2)
+# print(f'PS1:')
+
+# print(f'PS2:')
