@@ -1,3 +1,0 @@
-episode,total_reward,length,termination_reason,final_element_count,final_resource_usage,refine_count,coarsen_count,no_change_count,refine_pct,coarsen_pct,no_change_pct
-1,-330.984344,84,Error: name 'pre_action_elements' is not defined,0,0,32,20,32,0.38095238095238093,0.23809523809523808,0.38095238095238093
-2,-191.363584,95,Error: name 'pre_action_elements' is not defined,0,0,35,25,35,0.3684210526315789,0.2631578947368421,0.3684210526315789
