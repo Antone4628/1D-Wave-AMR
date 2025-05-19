@@ -139,7 +139,8 @@ class DGAMREnv(gym.Env):
         rl_iterations_per_timestep = "random",
         max_rl_iterations = 200,
         max_consecutive_no_action = 20,
-        debug_training_cycle=False
+        debug_training_cycle=False,
+        step_domain_fraction=1.0/8.0  
     ):
         """
         Initialize DG AMR environment with explicit element budget.
@@ -165,6 +166,7 @@ class DGAMREnv(gym.Env):
         self.max_episode_steps = max_episode_steps
         self.episode_callback = None
         self.verbose = verbose
+        self.step_domain_fraction = step_domain_fraction
 
         # Initialize step counters
         self.num_timesteps = 0
@@ -597,7 +599,7 @@ class DGAMREnv(gym.Env):
         if self.should_timestep:
             # Calculate number of steps needed to advance wave by 1/8 of domain
             # Domain length is 2.0 (from -1 to 1), wave speed is solver.wave_speed
-            domain_fraction = 1.0/8.0  # Advance by 1/8 of domain
+            domain_fraction = self.step_domain_fraction   # Advance by 1/8 of domain
             total_domain = 2.0  # Total domain size
             distance_to_travel = domain_fraction * total_domain
             

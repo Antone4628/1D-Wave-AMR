@@ -79,6 +79,7 @@ def run_experiment(config_path, results_dir=None):
     gamma_c = get_parameter(config, "environment.gamma_c", 25.0)
     element_budget = get_parameter(config, "environment.element_budget", 25)
     max_episode_steps = get_parameter(config, "environment.max_episode_steps", 200)
+    step_domain_fraction = get_parameter(config, "environment.step_domain_fraction", 1.0/8.0)
     
     total_timesteps = get_parameter(config, "training.total_timesteps", 100000)
     algorithm = get_parameter(config, "training.algorithm", "A2C")
@@ -165,7 +166,8 @@ def run_experiment(config_path, results_dir=None):
         rl_iterations_per_timestep = "random",  # Use random number of iterations before time-stepping
         max_rl_iterations = max_rl_iterations,  # Maximum number of RL iterations before time-stepping
         max_consecutive_no_action=max_consecutive_no_action,  # Add this parameter
-        debug_training_cycle = False
+        debug_training_cycle = False,
+        step_domain_fraction = step_domain_fraction 
     )
     
     # Add monitoring
@@ -251,6 +253,7 @@ def run_experiment(config_path, results_dir=None):
     print(f' -mode: {refinement_mode}')
     print(f' -initial refinement level: {refinement_level}')
     print(f' -refinement probability: {refinement_probability}')
+    print(f"Step domain fraction: {step_domain_fraction}")
     print(f'2:1 balance enforced: {balance}')
     print(f"Learning rate: {learning_rate}")
     print(f"N steps: {n_steps}")
