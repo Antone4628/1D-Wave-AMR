@@ -64,7 +64,7 @@ solver = DGWaveSolverMixed(
 
 # Path to the trained model
 # Use the model trained with the mixed approach
-model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_100.0', 'run_20250513_095256', 'models', 'final_model.zip')
+model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_50.0', 'run_20250514_090135', 'models', 'final_model.zip')
 
 # Initialize ModelMarker with trained model
 model_marker = ModelMarker(
