@@ -43,10 +43,10 @@ def main():
     max_level = 8       # Max level of refinement
     nop = 4             # Polynomial order
     courant_max = 0.1   # CFL number
-    time_final = 0.1    # Final time
+    time_final = 0.03    # Final time
     icase = 1           # Test case number (1: Gaussian)
     periodic = True
-    max_elements = 50   # Maximum number of elements
+    max_elements = 20   # Maximum number of elements
     verbose = True      # Print detailed logs
 
     # Calculate smallest possible element size after refinement

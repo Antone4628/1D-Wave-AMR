@@ -1,12 +1,11 @@
 """
 Sequential ModelMarker for Adaptive Mesh Refinement
 
-This implementation follows a sequential vs. batch approach by:
-1. Sorting elements by non-conformity (jump magnitude)
-2. Processing elements sequentially
-3. Updating the mesh after each element decision
-4. Recomputing the solution after each adaptation
-5. Tracking resource usage accurately
+This implementation follows a sequential sorted approach by:
+1. Computing non-conformity for all elements
+2. Processing the highest priority element
+3. Recomputing priorities after each adaptation
+4. Repeating until element budget is reached or no more adaptations needed
 """
 
 import numpy as np
@@ -17,8 +16,8 @@ class ModelMarkerSequential:
     Uses a trained RL model to mark elements for adaptive mesh refinement.
     
     This class implements the sequential marking functionality following Foucart's approach.
-    Elements are processed in order of their non-conformity, with the mesh and solution 
-    updated after each decision.
+    Elements are processed by priority, with the mesh and solution updated after each decision.
+    Priorities are recomputed after each adaptation to ensure correct element selection.
     """
     
     def __init__(self, model_path, solver, element_budget=None, verbose=False):
@@ -137,6 +136,24 @@ class ModelMarkerSequential:
         
         return non_conformity
     
+    def compute_all_non_conformities(self):
+        """
+        Compute non-conformity measures for all elements in the current mesh.
+        
+        Returns:
+            list: List of (element_idx, non_conformity) tuples sorted by non-conformity (highest first)
+        """
+        non_conformities = []
+        
+        for idx in range(len(self.solver.active)):
+            non_conformity = self.compute_element_non_conformity(idx)
+            non_conformities.append((idx, non_conformity))
+            
+        # Sort by non-conformity in descending order
+        sorted_elements = sorted(non_conformities, key=lambda x: x[1], reverse=True)
+        
+        return sorted_elements
+    
     def get_observation(self, element_idx):
         """
         Get observation for an element in the format expected by the model.
@@ -253,7 +270,7 @@ class ModelMarkerSequential:
             # Need sibling to coarsen
             if sibling is None:
                 if self.verbose:
-                    print(f"No sibling found for element {elem}, can't coarsen")
+                    print(f"No valid sibling found for element {elem}, can't coarsen")
                 return False
             
             return True
@@ -270,7 +287,7 @@ class ModelMarkerSequential:
             action_int: Action index from the model (0, 1, or 2)
             
         Returns:
-            bool: Whether the action was successfully applied
+            bool: Whether the action was successfully applied and changed the mesh
         """
         # Map the action to a mark
         mapped_action = self.action_mapping[action_int]
@@ -279,6 +296,12 @@ class ModelMarkerSequential:
         if not self.is_action_valid(element_idx, mapped_action):
             if self.verbose:
                 print(f"Invalid action {mapped_action} for element {element_idx}, defaulting to do nothing")
+            return False
+        
+        # No-op for do nothing
+        if mapped_action == 0:
+            if self.verbose:
+                print(f"No action taken for element {self.solver.active[element_idx]}")
             return False
         
         # Special handling for coarsening
@@ -318,7 +341,7 @@ class ModelMarkerSequential:
                     print(f"No sibling found for element {elem}, skipping coarsening")
                 return False
         else:
-            # For refinement or do-nothing, just mark the current element
+            # For refinement, just mark the current element
             marks = np.zeros(len(self.solver.active), dtype=int)
             marks[element_idx] = mapped_action
             
@@ -352,16 +375,25 @@ class ModelMarkerSequential:
             if self.verbose:
                 print(f"Error applying action: {e}")
             return False
-    
-    def mark_and_adapt_sequentially(self):
+        
+    def mark_and_adapt_single_round(self, max_adaptations=None):
         """
-        Mark and adapt elements sequentially following Foucart's approach.
+        Process a complete round of mesh adaptation with fixed element priorities.
         
-        This method:
-        1. Computes non-conformity for all elements
-        2. Sorts elements by non-conformity (largest first)
-        3. Processes elements sequentially, updating the mesh after each action
+        This method implements Foucart's approach with a crucial improvement to avoid
+        oscillations: priorities are computed ONCE at the beginning of the round,
+        and elements are processed in that fixed order, tracking elements by their
+        unique element numbers rather than by indices.
         
+        The method follows these steps:
+        1. Compute non-conformity for all initial elements
+        2. Sort elements by non-conformity (highest first)
+        3. Process each element in priority order, checking if it still exists
+        4. Complete when all initial elements have been processed
+        
+        Args:
+            max_adaptations: Maximum number of adaptations to perform (optional)
+            
         Returns:
             int: Number of elements successfully adapted
         """
@@ -370,75 +402,210 @@ class ModelMarkerSequential:
             print(f"Initial active elements: {len(self.solver.active)}/{self.element_budget}")
             print(f"Initial resource usage: {len(self.solver.active)/self.element_budget:.2f}")
         
-        # Calculate non-conformity for each element
-        n_active_initial = len(self.solver.active)
-        non_conformities = []
+        # Get initial active elements
+        initial_active_elements = list(self.solver.active)
         
-        for idx in range(n_active_initial):
+        # Compute non-conformity for all initial elements
+        element_priorities = []
+        for idx, elem_number in enumerate(initial_active_elements):
             non_conformity = self.compute_element_non_conformity(idx)
-            non_conformities.append((idx, non_conformity))
+            element_priorities.append((elem_number, idx, non_conformity))
         
-        # Sort by non-conformity in descending order
-        sorted_elements = sorted(non_conformities, key=lambda x: x[1], reverse=True)
+        # Sort by priority (highest non-conformity first)
+        sorted_elements = sorted(element_priorities, key=lambda x: x[2], reverse=True)
         
         if self.verbose:
-            print(f"Sorted {len(sorted_elements)} elements by non-conformity")
-            for i, (idx, non_conf) in enumerate(sorted_elements[:5]):
-                if i < 5:  # Just show top 5
-                    print(f"  Element {self.solver.active[idx]}: non-conformity = {non_conf:.6f}")
+            print(f"Processing {len(sorted_elements)} elements in priority order")
+            # Display top elements by priority
+            for i, (elem, idx, non_conf) in enumerate(sorted_elements[:5]):
+                if i < min(5, len(sorted_elements)):
+                    print(f"  Priority #{i+1}: Element {elem} (non-conformity: {non_conf:.6f})")
         
-        # Track how many elements are successfully adapted
+        # Initialize tracking variables
         successful_adaptations = 0
+        processed_elements = set()
         
-        # Process each element in sorted order
-        for original_idx, non_conformity in sorted_elements:
-            # After an adaptation, the element indices will change
-            # We need to recalculate which element is currently at the original position
-            
-            # Skip if we've reached the element budget
-            if len(self.solver.active) >= self.element_budget and successful_adaptations > 0:
+        # Process each element in priority order
+        for elem_number, original_idx, non_conformity in sorted_elements:
+            # Check if we've hit the element budget
+            if len(self.solver.active) >= self.element_budget:
                 if self.verbose:
                     print(f"Reached element budget ({self.element_budget}), stopping adaptation")
                 break
-            
-            # Find the current position of this element (which may have changed due to previous adaptations)
-            try:
-                # This is a simplified approach - in reality, you may need more sophisticated tracking
-                # of elements between adaptations
-                if original_idx >= len(self.solver.active):
-                    if self.verbose:
-                        print(f"Element index {original_idx} now out of bounds, skipping")
-                    continue
-                
-                # Get current observation
-                observation = self.get_observation(original_idx)
-                
-                # Query the model for an action
-                action, _ = self.model.predict(observation, deterministic=True)
-                
-                # Convert to int for mapping
-                action_int = int(action.item()) if hasattr(action, 'item') else int(action)
-                
-                # Apply the action
-                success = self.apply_action(original_idx, action_int)
-                
-                if success:
-                    successful_adaptations += 1
-                    if self.verbose:
-                        print(f"Successfully adapted element {original_idx}, action={self.action_mapping[action_int]}")
-                        print(f"Current resource usage: {len(self.solver.active)/self.element_budget:.2f}")
-                
-            except Exception as e:
+                    
+            # Check if we've hit the max adaptations limit
+            if max_adaptations is not None and successful_adaptations >= max_adaptations:
                 if self.verbose:
-                    print(f"Error processing element {original_idx}: {e}")
+                    print(f"Reached maximum adaptations limit ({max_adaptations})")
+                break
+                    
+            # Skip elements with very low non-conformity
+            if non_conformity < 1e-10:
+                if self.verbose:
+                    print(f"Element {elem_number} has non-conformity too low ({non_conformity:.6f}), skipping")
                 continue
+            
+            # Skip if element no longer active (was already refined or coarsened)
+            if elem_number not in self.solver.active:
+                if self.verbose:
+                    print(f"Element {elem_number} no longer active, skipping")
+                continue
+                
+            # Find the current index of this element in the active list
+            try:
+                current_idx = np.where(self.solver.active == elem_number)[0][0]
+            except IndexError:
+                # This shouldn't happen given the check above, but just in case
+                if self.verbose:
+                    print(f"Element {elem_number} not found in active list, skipping")
+                continue
+            
+            # Get observation for this element
+            observation = self.get_observation(current_idx)
+            
+            # Query the model for an action
+            action, _ = self.model.predict(observation, deterministic=True)
+            
+            # Convert to int for mapping
+            action_int = int(action.item()) if hasattr(action, 'item') else int(action)
+            mapped_action = self.action_mapping[action_int]
+            
+            # Skip do-nothing actions if we're just tracking them
+            if mapped_action == 0:
+                if self.verbose:
+                    print(f"Element {elem_number}: no action (do nothing)")
+                # Mark as processed even though no action taken
+                processed_elements.add(elem_number)
+                continue
+            
+            # Apply the action
+            if self.verbose:
+                print(f"Processing element {elem_number} (idx {current_idx}) with action {mapped_action}")
+                    
+            success = self.apply_action(current_idx, action_int)
+            
+            if success:
+                successful_adaptations += 1
+                if self.verbose:
+                    print(f"Successfully adapted element {elem_number}, action={mapped_action}")
+                    print(f"Current resource usage: {len(self.solver.active)/self.element_budget:.2f}")
+            
+            # Mark as processed (even if action failed)
+            processed_elements.add(elem_number)
         
         # Update time step after all adaptations
         self.solver._compute_timestep(use_actual_max_level=True)
         
         if self.verbose:
-            print(f"Sequential adaptation complete: {successful_adaptations} elements adapted")
-            print(f"Final active elements: {len(self.solver.active)}/{self.element_budget}")
-            print(f"Final resource usage: {len(self.solver.active)/self.element_budget:.2f}")
+            print(f"Adaptation round complete:")
+            print(f"  Processed {len(processed_elements)}/{len(initial_active_elements)} initial elements")
+            print(f"  Made {successful_adaptations} successful adaptations")
+            print(f"  Final active elements: {len(self.solver.active)}/{self.element_budget}")
+            print(f"  Final resource usage: {len(self.solver.active)/self.element_budget:.2f}")
         
         return successful_adaptations
+    
+    # def mark_and_adapt_sequentially(self, max_adaptations=None):
+    #     """
+    #     Mark and adapt elements following Foucart's sequential approach.
+        
+    #     This implementation properly handles mesh indexing changes by:
+    #     1. Finding the highest priority element
+    #     2. Processing just that element
+    #     3. Recomputing priorities on the updated mesh
+    #     4. Repeating until done
+        
+    #     Args:
+    #         max_adaptations: Maximum number of adaptations to perform (optional)
+            
+    #     Returns:
+    #         int: Number of elements successfully adapted
+    #     """
+    #     # Display initial state
+    #     if self.verbose:
+    #         print(f"Initial active elements: {len(self.solver.active)}/{self.element_budget}")
+    #         print(f"Initial resource usage: {len(self.solver.active)/self.element_budget:.2f}")
+        
+    #     # Initialize adaptation counter
+    #     successful_adaptations = 0
+        
+    #     # Track when to stop adapting
+    #     keep_adapting = True
+    #     consecutive_no_actions = 0
+    #     max_consecutive_no_actions = 5  # Stop if we can't find any elements to adapt after 5 tries
+        
+    #     # Main adaptation loop
+    #     while keep_adapting:
+    #         # Check if we've hit the element budget
+    #         if len(self.solver.active) >= self.element_budget:
+    #             if self.verbose:
+    #                 print(f"Reached element budget ({self.element_budget}), stopping adaptation")
+    #             break
+                
+    #         # Check if we've hit the max adaptations limit
+    #         if max_adaptations is not None and successful_adaptations >= max_adaptations:
+    #             if self.verbose:
+    #                 print(f"Reached maximum adaptations limit ({max_adaptations})")
+    #             break
+                
+    #         # Compute non-conformity for all elements in the current mesh
+    #         sorted_elements = self.compute_all_non_conformities()
+            
+    #         if self.verbose and sorted_elements:
+    #             print(f"\nHighest non-conformity element: {self.solver.active[sorted_elements[0][0]]}, "
+    #                   f"value: {sorted_elements[0][1]:.6f}")
+            
+    #         # Get the highest priority element
+    #         if not sorted_elements:
+    #             break
+                
+    #         best_idx, best_non_conformity = sorted_elements[0]
+            
+    #         # Skip elements with very low non-conformity
+    #         if best_non_conformity < 1e-10:
+    #             if self.verbose:
+    #                 print(f"Highest non-conformity too low ({best_non_conformity:.6f}), stopping adaptation")
+    #             break
+            
+    #         # Get observation for this element
+    #         observation = self.get_observation(best_idx)
+            
+    #         # Query the model for an action
+    #         action, _ = self.model.predict(observation, deterministic=True)
+            
+    #         # Convert to int for mapping
+    #         action_int = int(action.item()) if hasattr(action, 'item') else int(action)
+    #         mapped_action = self.action_mapping[action_int]
+            
+    #         # Apply the action
+    #         if self.verbose:
+    #             print(f"Processing element {self.solver.active[best_idx]} with action {mapped_action}")
+                
+    #         success = self.apply_action(best_idx, action_int)
+            
+    #         if success:
+    #             successful_adaptations += 1
+    #             consecutive_no_actions = 0
+    #             if self.verbose:
+    #                 print(f"Successfully adapted element, action={mapped_action}")
+    #                 print(f"Current resource usage: {len(self.solver.active)/self.element_budget:.2f}")
+    #         else:
+    #             consecutive_no_actions += 1
+    #             if self.verbose:
+    #                 print(f"No adaptation made, consecutive failures: {consecutive_no_actions}")
+                
+    #         # Stop if we've had too many consecutive failures
+    #         if consecutive_no_actions >= max_consecutive_no_actions:
+    #             if self.verbose:
+    #                 print(f"Too many consecutive failures ({consecutive_no_actions}), stopping adaptation")
+    #             break
+        
+    #     # Update time step after all adaptations
+    #     self.solver._compute_timestep(use_actual_max_level=True)
+        
+    #     if self.verbose:
+    #         print(f"Sequential adaptation complete: {successful_adaptations} elements adapted")
+    #         print(f"Final active elements: {len(self.solver.active)}/{self.element_budget}")
+    #         print(f"Final resource usage: {len(self.solver.active)/self.element_budget:.2f}")
+        
+    #     return successful_adaptations
