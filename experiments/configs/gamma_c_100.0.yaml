@@ -6,6 +6,7 @@ environment:
   rl_iterations_per_timestep: "random"  # or a fixed number like 3
   max_rl_iterations: 30
   max_consecutive_no_action: 10
+  step_domain_fraction: 0.125  # Add this line (equivalent to 1/8)
 
 training:
   total_timesteps: 50000

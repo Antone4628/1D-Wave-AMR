@@ -6,6 +6,7 @@ environment:
   rl_iterations_per_timestep: "random"
   max_rl_iterations: 10
   max_consecutive_no_action: 30
+  step_domain_fraction: 0.125  # Add this line (equivalent to 1/8)
   # Set initial refinement configuration. Options are none, fixed (provide level), random (provide probability)
   initial_refinement:
     mode: "random"
