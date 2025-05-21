@@ -29,7 +29,7 @@ from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
 import numpy as np
 import matplotlib.pyplot as plt
 
-# from numerical.callbacks.enhanced_callback_options import EnhancedMonitorCallback
+from numerical.callbacks.enhanced_callback_options import EnhancedMonitorCallback
 from numerical.callbacks.simple_monitor_callback import SimpleMonitorCallback
 
 
@@ -76,39 +76,32 @@ def run_experiment(config_path, results_dir=None):
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     
     # Extract key parameters with defaults
+    # Environment Parameters:
     gamma_c = get_parameter(config, "environment.gamma_c", 25.0)
     element_budget = get_parameter(config, "environment.element_budget", 25)
     max_episode_steps = get_parameter(config, "environment.max_episode_steps", 200)
+    rl_iterations_per_timestep = get_parameter(config, "environment.rl_iterations_per_timestep", "random")
+    max_rl_iterations = get_parameter(config, "environment.max_rl_iterations", 200)
+    max_consecutive_no_action = get_parameter(config, "environment.max_consecutive_no_action", 10)
     step_domain_fraction = get_parameter(config, "environment.step_domain_fraction", 1.0/8.0)
-    
+
+    # Training Parameters
     total_timesteps = get_parameter(config, "training.total_timesteps", 100000)
     algorithm = get_parameter(config, "training.algorithm", "A2C")
     learning_rate = get_parameter(config, "training.learning_rate", 0.0003)
     n_steps = get_parameter(config, "training.n_steps", 5)
     ent_coef = get_parameter(config, "training.ent_coef", 0.01)
-    
+    callback_type = get_parameter(config, "training.callback", "simple")
+
+    # Solver Parameters
     nop = get_parameter(config, "solver.nop", 4)
     max_level = get_parameter(config, "solver.max_level", 4)
     courant_max = get_parameter(config, "solver.courant_max", 0.1)
     icase = get_parameter(config, "solver.icase", 1)
     balance = get_parameter(config, "solver.balance", False)  
-
-
-
-
     initial_elements = get_parameter(config, "solver.initial_elements", np.array([-1, -0.4, 0, 0.4, 1]))
-
-
-
-    
     verbose = get_parameter(config, "solver.verbose", False)
     
-
-    # Add new parameters to config or provide defaults
-    rl_iterations_per_timestep = get_parameter(config, "environment.rl_iterations_per_timestep", "random")
-    max_rl_iterations = get_parameter(config, "environment.max_rl_iterations", 200)
-    max_consecutive_no_action = get_parameter(config, "environment.max_consecutive_no_action", 10)
-
 
     
     # Create experiment name
@@ -177,15 +170,16 @@ def run_experiment(config_path, results_dir=None):
     # Extract refinement options from config
     refinement_mode = get_parameter(config, "environment.initial_refinement.mode", "none")
     refinement_level = get_parameter(config, "environment.initial_refinement.fixed_level", 0)
-    refinement_max_level = get_parameter(config, "environment.initial_refinement.max_Initial_level", 3)
+    refinement_max_level = get_parameter(config, "environment.initial_refinement.max_initial_level", 3)
     refinement_probability = get_parameter(config, "environment.initial_refinement.probability", 0.5)
 
     # Add reset kwargs to env.reset call in the monitor wrapper
     env.reset_kwargs = {
-        'options': {
-            'refinement_mode': refinement_mode,
-            'refinement_level': refinement_level,
-            'refinement_probability': refinement_probability
+    'options': {
+        'refinement_mode': refinement_mode,
+        'refinement_level': refinement_level,
+        'refinement_max_level': refinement_max_level,
+        'refinement_probability': refinement_probability
         }
     }
     
@@ -221,28 +215,27 @@ def run_experiment(config_path, results_dir=None):
     else:
         raise ValueError(f"Unsupported algorithm: {algorithm}")
     
-    # Create callback
-    # callback = ExperimentCallback(
-    #     total_timesteps=total_timesteps,
-    #     log_dir=model_dir,
-    #     save_freq=total_timesteps // 10  # Save 10 times during training
-    # )
-    # Create callback
-    # callback = EnhancedMonitorCallback(
-    #     total_timesteps=total_timesteps,
-    #     log_dir=log_dir,
-    #     save_freq=total_timesteps // 10,  # Save 10 times during training
-    #     window_size=100,  # Size of sliding window for metrics
-    #     log_freq=1000     # Log statistics every 1000 steps
-    # )
 
-    callback = SimpleMonitorCallback(
-    total_timesteps=total_timesteps,
-    log_dir=log_dir,
-    save_freq=total_timesteps // 10,
-    window_size=100,
-    log_freq=1000
-)
+    # Create the appropriate callback based on the config
+    if callback_type.lower() == "enhanced":
+        callback = EnhancedMonitorCallback(
+            total_timesteps=total_timesteps,
+            log_dir=log_dir,
+            save_freq=total_timesteps // 10,
+            window_size=100,
+            log_freq=1000
+        )
+        print(f"Using Enhanced Monitor Callback")
+    else:  # Default to simple callback
+        callback = SimpleMonitorCallback(
+            total_timesteps=total_timesteps,
+            log_dir=log_dir,
+            save_freq=total_timesteps // 10,
+            window_size=100,
+            log_freq=1000
+        )
+        print(f"Using Simple Monitor Callback")
+
     
     # Print training configuration
     print(f"\nTraining configuration:")

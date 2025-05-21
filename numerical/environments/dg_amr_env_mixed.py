@@ -672,6 +672,9 @@ class DGAMREnv(gym.Env):
                 refinement_options['refinement_level'] = options['refinement_level']
             if 'refinement_probability' in options:
                 refinement_options['refinement_probability'] = options['refinement_probability']
+            # Add this line to pass refinement_max_level
+            if 'refinement_max_level' in options:
+                refinement_options['refinement_max_level'] = options['refinement_max_level']
         
         # Reset solver with refinement options
         self.solver.reset(**refinement_options)

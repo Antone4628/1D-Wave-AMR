@@ -388,6 +388,7 @@ class DGWaveSolverMixed:
             self._perform_fixed_refinement(refinement_level)
         elif refinement_mode == 'random':
             # Randomly refine elements
+            
             self._perform_random_refinement(refinement_level, refinement_probability)
         
         # After refinement, re-initialize the solution on the refined mesh
@@ -1006,15 +1007,16 @@ class DGWaveSolverMixed:
 
         
     
-    def reset(self, refinement_mode='none', refinement_level=0, refinement_probability=0.5):
+    def reset(self, refinement_mode='none', refinement_level=0, refinement_probability=0.5, refinement_max_level=3):
         """
         Reset solver to initial state with optional initial refinement.
         
         Args:
             refinement_mode (str): Mode for initial refinement
-            refinement_level (int): Maximum refinement level
+            refinement_level (int): Level for fixed refinement mode
+            refinement_max_level (int): Maximum refinement level for random mode
             refinement_probability (float): Probability for random refinement
-            
+                
         Returns:
             array: Initial solution
         """
@@ -1035,11 +1037,10 @@ class DGWaveSolverMixed:
         )
         
         # Apply initial refinement if requested
-        if refinement_mode != 'none' and refinement_level > 0:
-            if refinement_mode == 'fixed':
-                self._perform_fixed_refinement(refinement_level)
-            elif refinement_mode == 'random':
-                self._perform_random_refinement(refinement_level, refinement_probability)
+        if refinement_mode == 'fixed' and refinement_level > 0:
+            self._perform_fixed_refinement(refinement_level)
+        elif refinement_mode == 'random' and refinement_max_level > 0:
+            self._perform_random_refinement(refinement_max_level, refinement_probability)
 
         
         # Reset solution to initial condition
