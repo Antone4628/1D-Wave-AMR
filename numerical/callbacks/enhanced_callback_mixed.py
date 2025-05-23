@@ -1,0 +1,1270 @@
+import os
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import time
+import yaml
+from typing import Dict, List, Tuple, Any, Optional
+from collections import defaultdict
+from stable_baselines3.common.callbacks import BaseCallback
+from matplotlib.backends.backend_pdf import PdfPages
+
+
+class EnhancedMonitorCallback(BaseCallback):
+    """
+    Streamlined callback for monitoring RL training in adaptive mesh refinement.
+    
+    Focuses on essential metrics for final analysis:
+    - Action distribution over time
+    - Training convergence metrics (policy_loss, value_loss, ep_rew_mean, entropy)
+    - Resource usage patterns
+    - Episode rewards and termination reasons
+    - Comprehensive training parameters documentation
+    """
+    
+    def __init__(
+        self, 
+        total_timesteps: int,
+        log_dir: str,
+        save_freq: int = 10000,
+        verbose: int = 0,
+        window_size: int = 100,
+        action_mapping: Dict[int, int] = {0: -1, 1: 0, 2: 1},
+        log_freq: int = 2000  # Reduced frequency for TensorBoard
+    ):
+        """
+        Initialize the streamlined callback.
+        
+        Args:
+            total_timesteps: Total timesteps for the training run
+            log_dir: Directory to save logs and final report
+            save_freq: Frequency (in timesteps) to save the model
+            verbose: Verbosity level (0: no output, 1: info, 2: debug)
+            window_size: Window size for moving averages
+            action_mapping: Mapping from action space integers to semantic values
+            log_freq: Frequency (in timesteps) to log to TensorBoard
+        """
+        super().__init__(verbose)
+        self.total_timesteps = total_timesteps
+        self.log_dir = log_dir
+        self.save_freq = save_freq
+        self.window_size = window_size
+        self.log_freq = log_freq
+        self.action_mapping = action_mapping
+        self.action_names = {-1: "Coarsen", 0: "No Change", 1: "Refine"}
+        
+        # Track training time
+        self.training_start_time = None
+        self.training_end_time = None
+        
+        # Initialize essential tracking variables
+        self.reset_tracking()
+        
+    def reset_tracking(self):
+        """Reset all tracking metrics to minimal essential set."""
+        # Action tracking for final distribution plot
+        self.action_history = []  # Store (timestep, action) pairs for final plot
+        self.action_counts = {action: 0 for action in self.action_mapping.values()}
+        
+        # Episode tracking
+        self.episode_rewards = []
+        self.episode_lengths = []
+        self.episodes_completed = 0
+        self.termination_reasons = defaultdict(int)
+        
+        # Resource tracking for final plot
+        self.resource_history = []  # Store (timestep, resource_usage) pairs
+        
+        # Training metrics for convergence analysis
+        self.training_metrics = {
+            'policy_loss': [],
+            'value_loss': [],
+            'ep_rew_mean': [],
+            'entropy': [],
+            'timesteps': []
+        }
+        
+        # Current episode tracking
+        self.current_episode_start_step = 0
+        self.current_episode_reward = 0
+        self._episode_steps = 0
+        
+    def _on_training_start(self) -> None:
+        """Called when training starts."""
+        self.training_start_time = time.time()
+        
+        # Log basic environment configuration to TensorBoard
+        if self.logger is not None:
+            try:
+                # Get environment parameters
+                budget = self._get_env_param('element_budget')
+                gamma_c = self._get_env_param('gamma_c')
+                max_steps = self._get_env_param('max_episode_steps')
+                
+                if budget is not None:
+                    self.logger.record("environment/element_budget", budget)
+                if gamma_c is not None:
+                    self.logger.record("environment/gamma_c", gamma_c)
+                if max_steps is not None:
+                    self.logger.record("environment/max_episode_steps", max_steps)
+                    
+            except Exception as e:
+                if self.verbose > 0:
+                    print(f"Warning: Could not log environment parameters: {e}")
+    
+    def _get_env_param(self, param_name):
+        """Safely extract environment parameter."""
+        try:
+            return getattr(self.model.env.unwrapped, param_name)
+        except (AttributeError, KeyError):
+            try:
+                return self.model.env.get_wrapper_attr(param_name)
+            except (AttributeError, KeyError):
+                try:
+                    return getattr(self.model.env.envs[0].unwrapped, param_name)
+                except:
+                    return None
+    
+    def _on_step(self) -> bool:
+        """Called after each step of the environment."""
+        # Extract current step information
+        info = self.locals['infos'][0]
+        action = self.locals['actions'][0]
+        reward = self.locals['rewards'][0]
+        done = self.locals['dones'][0]
+
+        # Update episode steps counter
+        self._episode_steps += 1
+
+        # Map raw action to semantic action
+        mapped_action = self.action_mapping[action.item() if hasattr(action, 'item') else int(action)]
+        
+        # Store action with timestep for final plot
+        self.action_history.append((self.num_timesteps, mapped_action))
+        self.action_counts[mapped_action] += 1
+        
+        # Store resource usage with timestep for final plot
+        resource_usage = info.get('resource_usage', 0)
+        self.resource_history.append((self.num_timesteps, resource_usage))
+        
+        # Update current episode reward
+        self.current_episode_reward += reward
+        
+        # Check for episode completion
+        if done:
+            self._on_episode_end(info)
+            self._episode_steps = 0
+        
+        # Capture training metrics periodically for convergence analysis
+        if hasattr(self.model, 'logger') and self.model.logger is not None:
+            # Try to extract metrics from the model's logger
+            try:
+                if hasattr(self.model.logger, 'name_to_value'):
+                    metrics = self.model.logger.name_to_value
+                    
+                    # Debug: Print available metrics occasionally
+                    if self.verbose > 1 and self.num_timesteps % self.log_freq == 0:
+                        print(f"DEBUG - Available metrics: {list(metrics.keys())}")
+                    
+                    # Capture policy and value loss
+                    if 'train/policy_loss' in metrics:
+                        self.training_metrics['policy_loss'].append((self.num_timesteps, metrics['train/policy_loss']))
+                    if 'train/value_loss' in metrics:
+                        self.training_metrics['value_loss'].append((self.num_timesteps, metrics['train/value_loss']))
+                    
+                    # Try different entropy metric names (entropy_loss is the correct one)
+                    entropy_keys = ['train/entropy_loss', 'train/entropy', 'entropy_loss', 'entropy']
+                    for key in entropy_keys:
+                        if key in metrics:
+                            self.training_metrics['entropy'].append((self.num_timesteps, metrics[key]))
+                            if self.verbose > 1:
+                                print(f"DEBUG - Found entropy metric: {key} = {metrics[key]}")
+                            break
+                    
+                    # Try different episode reward mean names
+                    ep_rew_keys = ['rollout/ep_rew_mean', 'episode_reward_mean', 'ep_rew_mean']
+                    for key in ep_rew_keys:
+                        if key in metrics:
+                            self.training_metrics['ep_rew_mean'].append((self.num_timesteps, metrics[key]))
+                            break
+                            
+            except Exception as e:
+                if self.verbose > 1:
+                    print(f"Could not capture training metrics: {e}")
+        
+        # Alternative: Use our own episode rewards to calculate rolling mean
+        if len(self.episode_rewards) > 0 and done:  # Only when episode completes
+            # Calculate rolling episode reward mean
+            window = min(10, len(self.episode_rewards))
+            if window > 0:
+                recent_rewards = self.episode_rewards[-window:]
+                rolling_mean = np.mean(recent_rewards)
+                self.training_metrics['ep_rew_mean'].append((self.num_timesteps, rolling_mean))
+        
+        # Periodic logging to TensorBoard (reduced frequency)
+        if self.num_timesteps % self.log_freq == 0:
+            self._log_to_tensorboard()
+            
+        # Save model periodically
+        if self.num_timesteps % self.save_freq == 0:
+            model_path = os.path.join(self.log_dir, f"model_{self.num_timesteps}_steps")
+            self.model.save(model_path)
+            
+            if self.verbose > 0:
+                progress = self.num_timesteps / self.total_timesteps * 100
+                print(f"Progress: {self.num_timesteps}/{self.total_timesteps} steps ({progress:.1f}%)")
+        
+        return True
+    
+    def _on_episode_end(self, info: Dict[str, Any]) -> None:
+        """Called when an episode ends."""
+        # Calculate episode length
+        episode_length = self.num_timesteps - self.current_episode_start_step
+        
+        # Get termination reason
+        termination_reason = info.get('reason', 'unknown')
+        
+        # Update episode tracking
+        self.episodes_completed += 1
+        self.episode_rewards.append(self.current_episode_reward)
+        self.episode_lengths.append(episode_length)
+        self.termination_reasons[termination_reason] += 1
+        
+        # Log episode completion occasionally
+        if self.verbose > 0 and (self.episodes_completed % 50 == 0):
+            print(f"Episode {self.episodes_completed} completed. Reward: {self.current_episode_reward:.2f}, Length: {episode_length}")
+        
+        # Reset episode tracking
+        self.current_episode_start_step = self.num_timesteps
+        self.current_episode_reward = 0
+    
+    def _log_to_tensorboard(self) -> None:
+        """Log essential metrics to TensorBoard at reduced frequency."""
+        if self.logger is None:
+            return
+            
+        # Calculate recent action distribution
+        if len(self.action_history) > 0:
+            recent_window = min(self.log_freq, len(self.action_history))
+            recent_actions = [action for _, action in self.action_history[-recent_window:]]
+            
+            action_counts = {action: recent_actions.count(action) for action in self.action_mapping.values()}
+            total_actions = len(recent_actions)
+            
+            if total_actions > 0:
+                for action, count in action_counts.items():
+                    proportion = count / total_actions
+                    action_name = self.action_names[action].lower().replace(" ", "_")
+                    self.logger.record(f"actions/{action_name}_proportion", proportion)
+        
+        # Log recent resource usage
+        if len(self.resource_history) > 0:
+            recent_resources = [usage for _, usage in self.resource_history[-self.log_freq:]]
+            avg_resource_usage = np.mean(recent_resources)
+            self.logger.record("resources/usage", avg_resource_usage)
+        
+        # Log episode statistics
+        if self.episode_rewards:
+            recent_rewards = self.episode_rewards[-20:] if len(self.episode_rewards) > 20 else self.episode_rewards
+            self.logger.record("rollout/ep_rew_mean", np.mean(recent_rewards))
+        
+        if self.episode_lengths:
+            recent_lengths = self.episode_lengths[-20:] if len(self.episode_lengths) > 20 else self.episode_lengths
+            self.logger.record("rollout/ep_len_mean", np.mean(recent_lengths))
+        
+        # Log training progress
+        self.logger.record("train/episodes", self.episodes_completed)
+        
+        # Ensure we dump to disk
+        self.logger.dump(self.num_timesteps)
+    
+    def on_training_end(self) -> None:
+        """Called when training ends."""
+        self.training_end_time = time.time()
+        
+        # Generate final comprehensive report
+        self._create_final_report()
+        
+        if self.verbose > 0:
+            training_duration = self.training_end_time - self.training_start_time
+            print(f"\nTraining completed in {training_duration:.1f} seconds")
+            print(f"Final report saved to: {os.path.join(self.log_dir, 'training_report.pdf')}")
+    
+    def _get_training_parameters(self):
+        """Extract comprehensive training parameters from config and model."""
+        params = {}
+        
+        # Try to load config file from log directory
+        config_path = os.path.join(self.log_dir, "config.yaml")
+        if os.path.exists(config_path):
+            try:
+                with open(config_path, 'r') as f:
+                    config = yaml.safe_load(f)
+                params['config'] = config
+            except Exception as e:
+                if self.verbose > 0:
+                    print(f"Could not load config file: {e}")
+        
+        # Extract model parameters
+        try:
+            if hasattr(self.model, 'learning_rate'):
+                params['learning_rate'] = self.model.learning_rate
+            if hasattr(self.model, 'ent_coef'):
+                params['entropy_coefficient'] = self.model.ent_coef
+            if hasattr(self.model, 'n_steps'):
+                params['n_steps'] = self.model.n_steps
+        except Exception as e:
+            if self.verbose > 0:
+                print(f"Could not extract model parameters: {e}")
+        
+        # Environment parameters
+        env_params = {}
+        for param in ['element_budget', 'gamma_c', 'max_episode_steps']:
+            value = self._get_env_param(param)
+            if value is not None:
+                env_params[param] = value
+        params['environment'] = env_params
+        
+        # Training runtime info
+        training_duration = (self.training_end_time - self.training_start_time) if (self.training_end_time and self.training_start_time) else 0
+        params['runtime'] = {
+            'total_timesteps': self.total_timesteps,
+            'episodes_completed': self.episodes_completed,
+            'training_duration_seconds': training_duration,
+            'training_duration_minutes': training_duration / 60,
+            'training_duration_hours': training_duration / 3600
+        }
+        
+        return params
+    
+    def _create_final_report(self):
+        """Create comprehensive final report PDF."""
+        report_path = os.path.join(self.log_dir, "training_report.pdf")
+        
+        try:
+            with PdfPages(report_path) as pdf:
+                # 1. Training Parameters Page
+                self._create_parameters_page(pdf)
+                
+                # 2. Training Convergence Metrics
+                self._create_convergence_page(pdf)
+                
+                # 3. Action Distribution Over Time
+                self._create_action_distribution_page(pdf)
+                
+                # 4. Resource Usage Over Time
+                self._create_resource_usage_page(pdf)
+                
+                # 5. Episode Rewards Over Time
+                self._create_episode_rewards_page(pdf)
+                
+                # 6. Termination Reasons
+                self._create_termination_page(pdf)
+                
+        except Exception as e:
+            print(f"Error generating final report: {e}")
+            import traceback
+            traceback.print_exc()
+    
+    def _create_parameters_page(self, pdf):
+        """Create comprehensive training parameters page."""
+        plt.figure(figsize=(10, 12))
+        plt.axis('off')
+        
+        params = self._get_training_parameters()
+        
+        # Build parameter text
+        param_text = ["# Adaptive Mesh Refinement RL Training Parameters\n"]
+        
+        # Runtime information
+        if 'runtime' in params:
+            runtime = params['runtime']
+            param_text.extend([
+                "## Runtime Information",
+                f"Total Timesteps: {runtime.get('total_timesteps', 'N/A'):,}",
+                f"Episodes Completed: {runtime.get('episodes_completed', 'N/A'):,}",
+                f"Training Duration: {runtime.get('training_duration_hours', 0):.2f} hours ({runtime.get('training_duration_minutes', 0):.1f} minutes)",
+                ""
+            ])
+        
+        # Environment parameters
+        if 'environment' in params:
+            param_text.append("## Environment Parameters")
+            for key, value in params['environment'].items():
+                param_text.append(f"{key}: {value}")
+            param_text.append("")
+        
+        # Full config file contents
+        if 'config' in params:
+            config = params['config']
+            param_text.append("## Complete Configuration")
+            
+            # Environment section
+            if 'environment' in config:
+                param_text.append("### Environment:")
+                for key, value in config['environment'].items():
+                    param_text.append(f"  {key}: {value}")
+                param_text.append("")
+            
+            # Training section
+            if 'training' in config:
+                param_text.append("### Training:")
+                for key, value in config['training'].items():
+                    param_text.append(f"  {key}: {value}")
+                param_text.append("")
+            
+            # Solver section
+            if 'solver' in config:
+                param_text.append("### Solver:")
+                for key, value in config['solver'].items():
+                    if isinstance(value, list):
+                        param_text.append(f"  {key}: {value}")
+                    else:
+                        param_text.append(f"  {key}: {value}")
+                param_text.append("")
+        
+        # Model parameters
+        param_text.append("## Model Parameters")
+        for key, value in params.items():
+            if key not in ['config', 'environment', 'runtime']:
+                param_text.append(f"{key}: {value}")
+        
+        # Add timestamp
+        import datetime
+        param_text.extend([
+            "",
+            f"Report generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        ])
+        
+        # Create text display
+        plt.text(0.05, 0.95, '\n'.join(param_text), transform=plt.gca().transAxes, 
+                fontsize=10, verticalalignment='top', family='monospace',
+                bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.1))
+        
+        plt.title("Training Configuration and Parameters", fontsize=16, fontweight='bold', pad=20)
+        pdf.savefig(bbox_inches='tight')
+        plt.close()
+    
+    def _create_convergence_page(self, pdf):
+        """Create training convergence metrics page."""
+        plt.figure(figsize=(12, 10))
+        
+        # Check if we have training metrics
+        has_metrics = any(len(values) > 0 for values in self.training_metrics.values())
+        
+        if has_metrics:
+            # Create 2x2 subplot for the four key metrics
+            metrics_to_plot = ['policy_loss', 'value_loss', 'ep_rew_mean', 'entropy']
+            titles = ['Policy Loss', 'Value Loss', 'Episode Reward Mean', 'Entropy']
+            
+            for i, (metric, title) in enumerate(zip(metrics_to_plot, titles)):
+                plt.subplot(2, 2, i+1)
+                
+                if len(self.training_metrics[metric]) > 0:
+                    # Extract timesteps and values
+                    timesteps, values = zip(*self.training_metrics[metric])
+                    plt.plot(timesteps, values, label=title)
+                    plt.xlabel('Timesteps')
+                    plt.ylabel(title)
+                    plt.title(title)
+                    plt.grid(True, alpha=0.3)
+                else:
+                    plt.text(0.5, 0.5, f'No {title} data available', 
+                            horizontalalignment='center', verticalalignment='center',
+                            transform=plt.gca().transAxes)
+                    plt.title(title)
+        else:
+            # Fallback: show episode rewards if we have them
+            if self.episode_rewards:
+                plt.plot(range(1, len(self.episode_rewards) + 1), self.episode_rewards, 'b-', alpha=0.7)
+                
+                # Add smoothed line
+                window = min(25, len(self.episode_rewards) // 4)
+                if window > 1:
+                    smoothed = pd.Series(self.episode_rewards).rolling(window=window, min_periods=1).mean()
+                    plt.plot(range(1, len(self.episode_rewards) + 1), smoothed, 'r-', 
+                            linewidth=2, label=f'{window}-episode moving average')
+                
+                plt.xlabel('Episode')
+                plt.ylabel('Total Reward')
+                plt.title('Episode Rewards Over Time')
+                plt.legend()
+                plt.grid(True, alpha=0.3)
+            else:
+                plt.text(0.5, 0.5, 'No training convergence metrics available', 
+                        horizontalalignment='center', verticalalignment='center')
+        
+        plt.suptitle('Training Convergence Metrics', fontsize=16, fontweight='bold')
+        plt.tight_layout()
+        pdf.savefig(bbox_inches='tight')
+        plt.close()
+    
+    def _create_action_distribution_page(self, pdf):
+        """Create action distribution over time page."""
+        plt.figure(figsize=(12, 8))
+        
+        if len(self.action_history) > 0:
+            # Create time series of action proportions
+            window_size = max(100, len(self.action_history) // 100)  # Adaptive window size
+            
+            timesteps = []
+            action_proportions = {action: [] for action in self.action_mapping.values()}
+            
+            for i in range(window_size, len(self.action_history), window_size // 10):  # Overlapping windows
+                window_start = max(0, i - window_size)
+                window_actions = [action for _, action in self.action_history[window_start:i]]
+                
+                if window_actions:
+                    timestep = self.action_history[i-1][0]  # Use last timestep in window
+                    timesteps.append(timestep)
+                    
+                    total_actions = len(window_actions)
+                    for action in self.action_mapping.values():
+                        count = window_actions.count(action)
+                        action_proportions[action].append(count / total_actions * 100)
+            
+            # Plot the action distributions
+            for action, proportions in action_proportions.items():
+                if proportions:  # Only plot if we have data
+                    action_name = self.action_names[action]
+                    plt.plot(timesteps, proportions, label=action_name, linewidth=2)
+            
+            plt.xlabel('Training Timesteps')
+            plt.ylabel('Action Percentage (%)')
+            plt.title('Action Distribution Over Training')
+            plt.legend()
+            plt.grid(True, alpha=0.3)
+            plt.ylim(0, 100)
+            
+        else:
+            plt.text(0.5, 0.5, 'No action data available', 
+                    horizontalalignment='center', verticalalignment='center')
+            plt.title('Action Distribution Over Training')
+        
+        pdf.savefig(bbox_inches='tight')
+        plt.close()
+    
+    def _create_resource_usage_page(self, pdf):
+        """Create resource usage over time page."""
+        plt.figure(figsize=(12, 6))
+        
+        if len(self.resource_history) > 0:
+            # Downsample for plotting if too many points
+            max_points = 2000
+            if len(self.resource_history) > max_points:
+                step = len(self.resource_history) // max_points
+                timesteps = [ts for i, (ts, _) in enumerate(self.resource_history) if i % step == 0]
+                resources = [res for i, (_, res) in enumerate(self.resource_history) if i % step == 0]
+            else:
+                timesteps, resources = zip(*self.resource_history)
+            
+            plt.plot(timesteps, resources, 'b-', alpha=0.7, linewidth=1)
+            
+            # Add reference line at 100% (budget limit)
+            plt.axhline(y=1.0, color='r', linestyle='--', linewidth=2, label='Budget Limit')
+            
+            plt.xlabel('Training Timesteps')
+            plt.ylabel('Resource Usage (fraction of budget)')
+            plt.title('Resource Usage Over Training')
+            plt.legend()
+            plt.grid(True, alpha=0.3)
+            plt.ylim(0, max(1.1, max(resources) * 1.05))
+            
+        else:
+            plt.text(0.5, 0.5, 'No resource usage data available', 
+                    horizontalalignment='center', verticalalignment='center')
+            plt.title('Resource Usage Over Training')
+        
+        pdf.savefig(bbox_inches='tight')
+        plt.close()
+    
+    def _create_episode_rewards_page(self, pdf):
+        """Create episode rewards over time page."""
+        plt.figure(figsize=(12, 6))
+        
+        if self.episode_rewards:
+            plt.plot(range(1, len(self.episode_rewards) + 1), self.episode_rewards, 'b-', alpha=0.5, linewidth=1)
+            
+            # Add smoothed line
+            window = min(50, len(self.episode_rewards) // 10)
+            if window > 1:
+                smoothed = pd.Series(self.episode_rewards).rolling(window=window, min_periods=1).mean()
+                plt.plot(range(1, len(self.episode_rewards) + 1), smoothed, 'r-', 
+                        linewidth=2, label=f'{window}-episode moving average')
+            
+            plt.xlabel('Episode')
+            plt.ylabel('Total Reward')
+            plt.title('Episode Rewards Over Training')
+            if window > 1:
+                plt.legend()
+            plt.grid(True, alpha=0.3)
+            
+        else:
+            plt.text(0.5, 0.5, 'No episode reward data available', 
+                    horizontalalignment='center', verticalalignment='center')
+            plt.title('Episode Rewards Over Training')
+        
+        pdf.savefig(bbox_inches='tight')
+        plt.close()
+    
+    def _create_termination_page(self, pdf):
+        """Create termination reasons analysis page."""
+        plt.figure(figsize=(12, 8))
+        
+        if self.termination_reasons:
+            # Create subplot with bar chart and pie chart
+            plt.subplot(1, 2, 1)
+            
+            # Bar chart
+            reasons = list(self.termination_reasons.keys())
+            counts = list(self.termination_reasons.values())
+            
+            plt.bar(reasons, counts, color=['skyblue', 'lightcoral', 'lightgreen', 'gold'][:len(reasons)])
+            plt.xticks(rotation=45, ha='right')
+            plt.xlabel('Termination Reason')
+            plt.ylabel('Count')
+            plt.title('Termination Reasons (Count)')
+            plt.grid(True, axis='y', alpha=0.3)
+            
+            # Add count labels on bars
+            for i, count in enumerate(counts):
+                plt.text(i, count + max(counts) * 0.01, str(count), ha='center')
+            
+            # Pie chart
+            plt.subplot(1, 2, 2)
+            colors = ['skyblue', 'lightcoral', 'lightgreen', 'gold'][:len(reasons)]
+            plt.pie(counts, labels=reasons, autopct='%1.1f%%', colors=colors)
+            plt.title('Termination Reasons (Percentage)')
+            
+        else:
+            plt.text(0.5, 0.5, 'No termination reason data available', 
+                    horizontalalignment='center', verticalalignment='center')
+            plt.title('Episode Termination Reasons')
+        
+        plt.suptitle('Episode Termination Analysis', fontsize=16, fontweight='bold')
+        plt.tight_layout()
+        pdf.savefig(bbox_inches='tight')
+        plt.close()
+
+
+# import os
+# import numpy as np
+# import pandas as pd
+# import matplotlib.pyplot as plt
+# import seaborn as sns
+# import time
+# import yaml
+# from typing import Dict, List, Tuple, Any, Optional
+# from collections import defaultdict
+# from stable_baselines3.common.callbacks import BaseCallback
+# from matplotlib.backends.backend_pdf import PdfPages
+
+
+# class EnhancedMonitorCallback(BaseCallback):
+#     """
+#     Streamlined callback for monitoring RL training in adaptive mesh refinement.
+    
+#     Focuses on essential metrics for final analysis:
+#     - Action distribution over time
+#     - Training convergence metrics (policy_loss, value_loss, ep_rew_mean, entropy)
+#     - Resource usage patterns
+#     - Episode rewards and termination reasons
+#     - Comprehensive training parameters documentation
+#     """
+    
+#     def __init__(
+#         self, 
+#         total_timesteps: int,
+#         log_dir: str,
+#         save_freq: int = 10000,
+#         verbose: int = 0,
+#         window_size: int = 100,
+#         action_mapping: Dict[int, int] = {0: -1, 1: 0, 2: 1},
+#         log_freq: int = 2000  # Reduced frequency for TensorBoard
+#     ):
+#         """
+#         Initialize the streamlined callback.
+        
+#         Args:
+#             total_timesteps: Total timesteps for the training run
+#             log_dir: Directory to save logs and final report
+#             save_freq: Frequency (in timesteps) to save the model
+#             verbose: Verbosity level (0: no output, 1: info, 2: debug)
+#             window_size: Window size for moving averages
+#             action_mapping: Mapping from action space integers to semantic values
+#             log_freq: Frequency (in timesteps) to log to TensorBoard
+#         """
+#         super().__init__(verbose)
+#         self.total_timesteps = total_timesteps
+#         self.log_dir = log_dir
+#         self.save_freq = save_freq
+#         self.window_size = window_size
+#         self.log_freq = log_freq
+#         self.action_mapping = action_mapping
+#         self.action_names = {-1: "Coarsen", 0: "No Change", 1: "Refine"}
+        
+#         # Track training time
+#         self.training_start_time = None
+#         self.training_end_time = None
+        
+#         # Initialize essential tracking variables
+#         self.reset_tracking()
+        
+#     def reset_tracking(self):
+#         """Reset all tracking metrics to minimal essential set."""
+#         # Action tracking for final distribution plot
+#         self.action_history = []  # Store (timestep, action) pairs for final plot
+#         self.action_counts = {action: 0 for action in self.action_mapping.values()}
+        
+#         # Episode tracking
+#         self.episode_rewards = []
+#         self.episode_lengths = []
+#         self.episodes_completed = 0
+#         self.termination_reasons = defaultdict(int)
+        
+#         # Resource tracking for final plot
+#         self.resource_history = []  # Store (timestep, resource_usage) pairs
+        
+#         # Training metrics for convergence analysis
+#         self.training_metrics = {
+#             'policy_loss': [],
+#             'value_loss': [],
+#             'ep_rew_mean': [],
+#             'entropy': [],
+#             'timesteps': []
+#         }
+        
+#         # Current episode tracking
+#         self.current_episode_start_step = 0
+#         self.current_episode_reward = 0
+#         self._episode_steps = 0
+        
+#     def _on_training_start(self) -> None:
+#         """Called when training starts."""
+#         self.training_start_time = time.time()
+        
+#         # Log basic environment configuration to TensorBoard
+#         if self.logger is not None:
+#             try:
+#                 # Get environment parameters
+#                 budget = self._get_env_param('element_budget')
+#                 gamma_c = self._get_env_param('gamma_c')
+#                 max_steps = self._get_env_param('max_episode_steps')
+                
+#                 if budget is not None:
+#                     self.logger.record("environment/element_budget", budget)
+#                 if gamma_c is not None:
+#                     self.logger.record("environment/gamma_c", gamma_c)
+#                 if max_steps is not None:
+#                     self.logger.record("environment/max_episode_steps", max_steps)
+                    
+#             except Exception as e:
+#                 if self.verbose > 0:
+#                     print(f"Warning: Could not log environment parameters: {e}")
+    
+#     def _get_env_param(self, param_name):
+#         """Safely extract environment parameter."""
+#         try:
+#             return getattr(self.model.env.unwrapped, param_name)
+#         except (AttributeError, KeyError):
+#             try:
+#                 return self.model.env.get_wrapper_attr(param_name)
+#             except (AttributeError, KeyError):
+#                 try:
+#                     return getattr(self.model.env.envs[0].unwrapped, param_name)
+#                 except:
+#                     return None
+    
+#     def _on_step(self) -> bool:
+#         """Called after each step of the environment."""
+#         # Extract current step information
+#         info = self.locals['infos'][0]
+#         action = self.locals['actions'][0]
+#         reward = self.locals['rewards'][0]
+#         done = self.locals['dones'][0]
+
+#         # Update episode steps counter
+#         self._episode_steps += 1
+
+#         # Map raw action to semantic action
+#         mapped_action = self.action_mapping[action.item() if hasattr(action, 'item') else int(action)]
+        
+#         # Store action with timestep for final plot
+#         self.action_history.append((self.num_timesteps, mapped_action))
+#         self.action_counts[mapped_action] += 1
+        
+#         # Store resource usage with timestep for final plot
+#         resource_usage = info.get('resource_usage', 0)
+#         self.resource_history.append((self.num_timesteps, resource_usage))
+        
+#         # Update current episode reward
+#         self.current_episode_reward += reward
+        
+#         # Check for episode completion
+#         if done:
+#             self._on_episode_end(info)
+#             self._episode_steps = 0
+        
+#         # Capture training metrics periodically for convergence analysis
+#         if hasattr(self.model, 'logger') and self.model.logger is not None:
+#             # Try to extract metrics from the model's logger
+#             try:
+#                 if hasattr(self.model.logger, 'name_to_value'):
+#                     metrics = self.model.logger.name_to_value
+#                     if 'train/policy_loss' in metrics:
+#                         self.training_metrics['policy_loss'].append((self.num_timesteps, metrics['train/policy_loss']))
+#                     if 'train/value_loss' in metrics:
+#                         self.training_metrics['value_loss'].append((self.num_timesteps, metrics['train/value_loss']))
+#                     if 'train/entropy' in metrics:
+#                         self.training_metrics['entropy'].append((self.num_timesteps, metrics['train/entropy']))
+#                     if 'rollout/ep_rew_mean' in metrics:
+#                         self.training_metrics['ep_rew_mean'].append((self.num_timesteps, metrics['rollout/ep_rew_mean']))
+#             except Exception as e:
+#                 if self.verbose > 1:
+#                     print(f"Could not capture training metrics: {e}")
+        
+#         # Periodic logging to TensorBoard (reduced frequency)
+#         if self.num_timesteps % self.log_freq == 0:
+#             self._log_to_tensorboard()
+            
+#         # Save model periodically
+#         if self.num_timesteps % self.save_freq == 0:
+#             model_path = os.path.join(self.log_dir, f"model_{self.num_timesteps}_steps")
+#             self.model.save(model_path)
+            
+#             if self.verbose > 0:
+#                 progress = self.num_timesteps / self.total_timesteps * 100
+#                 print(f"Progress: {self.num_timesteps}/{self.total_timesteps} steps ({progress:.1f}%)")
+        
+#         return True
+    
+#     def _on_episode_end(self, info: Dict[str, Any]) -> None:
+#         """Called when an episode ends."""
+#         # Calculate episode length
+#         episode_length = self.num_timesteps - self.current_episode_start_step
+        
+#         # Get termination reason
+#         termination_reason = info.get('reason', 'unknown')
+        
+#         # Update episode tracking
+#         self.episodes_completed += 1
+#         self.episode_rewards.append(self.current_episode_reward)
+#         self.episode_lengths.append(episode_length)
+#         self.termination_reasons[termination_reason] += 1
+        
+#         # Log episode completion occasionally
+#         if self.verbose > 0 and (self.episodes_completed % 50 == 0):
+#             print(f"Episode {self.episodes_completed} completed. Reward: {self.current_episode_reward:.2f}, Length: {episode_length}")
+        
+#         # Reset episode tracking
+#         self.current_episode_start_step = self.num_timesteps
+#         self.current_episode_reward = 0
+    
+#     def _log_to_tensorboard(self) -> None:
+#         """Log essential metrics to TensorBoard at reduced frequency."""
+#         if self.logger is None:
+#             return
+            
+#         # Calculate recent action distribution
+#         if len(self.action_history) > 0:
+#             recent_window = min(self.log_freq, len(self.action_history))
+#             recent_actions = [action for _, action in self.action_history[-recent_window:]]
+            
+#             action_counts = {action: recent_actions.count(action) for action in self.action_mapping.values()}
+#             total_actions = len(recent_actions)
+            
+#             if total_actions > 0:
+#                 for action, count in action_counts.items():
+#                     proportion = count / total_actions
+#                     action_name = self.action_names[action].lower().replace(" ", "_")
+#                     self.logger.record(f"actions/{action_name}_proportion", proportion)
+        
+#         # Log recent resource usage
+#         if len(self.resource_history) > 0:
+#             recent_resources = [usage for _, usage in self.resource_history[-self.log_freq:]]
+#             avg_resource_usage = np.mean(recent_resources)
+#             self.logger.record("resources/usage", avg_resource_usage)
+        
+#         # Log episode statistics
+#         if self.episode_rewards:
+#             recent_rewards = self.episode_rewards[-20:] if len(self.episode_rewards) > 20 else self.episode_rewards
+#             self.logger.record("rollout/ep_rew_mean", np.mean(recent_rewards))
+        
+#         if self.episode_lengths:
+#             recent_lengths = self.episode_lengths[-20:] if len(self.episode_lengths) > 20 else self.episode_lengths
+#             self.logger.record("rollout/ep_len_mean", np.mean(recent_lengths))
+        
+#         # Log training progress
+#         self.logger.record("train/episodes", self.episodes_completed)
+        
+#         # Ensure we dump to disk
+#         self.logger.dump(self.num_timesteps)
+    
+#     def on_training_end(self) -> None:
+#         """Called when training ends."""
+#         self.training_end_time = time.time()
+        
+#         # Generate final comprehensive report
+#         self._create_final_report()
+        
+#         if self.verbose > 0:
+#             training_duration = self.training_end_time - self.training_start_time
+#             print(f"\nTraining completed in {training_duration:.1f} seconds")
+#             print(f"Final report saved to: {os.path.join(self.log_dir, 'training_report.pdf')}")
+    
+#     def _get_training_parameters(self):
+#         """Extract comprehensive training parameters from config and model."""
+#         params = {}
+        
+#         # Try to load config file from log directory
+#         config_path = os.path.join(self.log_dir, "config.yaml")
+#         if os.path.exists(config_path):
+#             try:
+#                 with open(config_path, 'r') as f:
+#                     config = yaml.safe_load(f)
+#                 params['config'] = config
+#             except Exception as e:
+#                 if self.verbose > 0:
+#                     print(f"Could not load config file: {e}")
+        
+#         # Extract model parameters
+#         try:
+#             if hasattr(self.model, 'learning_rate'):
+#                 params['learning_rate'] = self.model.learning_rate
+#             if hasattr(self.model, 'ent_coef'):
+#                 params['entropy_coefficient'] = self.model.ent_coef
+#             if hasattr(self.model, 'n_steps'):
+#                 params['n_steps'] = self.model.n_steps
+#         except Exception as e:
+#             if self.verbose > 0:
+#                 print(f"Could not extract model parameters: {e}")
+        
+#         # Environment parameters
+#         env_params = {}
+#         for param in ['element_budget', 'gamma_c', 'max_episode_steps']:
+#             value = self._get_env_param(param)
+#             if value is not None:
+#                 env_params[param] = value
+#         params['environment'] = env_params
+        
+#         # Training runtime info
+#         training_duration = (self.training_end_time - self.training_start_time) if (self.training_end_time and self.training_start_time) else 0
+#         params['runtime'] = {
+#             'total_timesteps': self.total_timesteps,
+#             'episodes_completed': self.episodes_completed,
+#             'training_duration_seconds': training_duration,
+#             'training_duration_minutes': training_duration / 60,
+#             'training_duration_hours': training_duration / 3600
+#         }
+        
+#         return params
+    
+#     def _create_final_report(self):
+#         """Create comprehensive final report PDF."""
+#         report_path = os.path.join(self.log_dir, "training_report.pdf")
+        
+#         try:
+#             with PdfPages(report_path) as pdf:
+#                 # 1. Training Parameters Page
+#                 self._create_parameters_page(pdf)
+                
+#                 # 2. Training Convergence Metrics
+#                 self._create_convergence_page(pdf)
+                
+#                 # 3. Action Distribution Over Time
+#                 self._create_action_distribution_page(pdf)
+                
+#                 # 4. Resource Usage Over Time
+#                 self._create_resource_usage_page(pdf)
+                
+#                 # 5. Episode Rewards Over Time
+#                 self._create_episode_rewards_page(pdf)
+                
+#                 # 6. Termination Reasons
+#                 self._create_termination_page(pdf)
+                
+#         except Exception as e:
+#             print(f"Error generating final report: {e}")
+#             import traceback
+#             traceback.print_exc()
+    
+#     def _create_parameters_page(self, pdf):
+#         """Create comprehensive training parameters page."""
+#         plt.figure(figsize=(10, 12))
+#         plt.axis('off')
+        
+#         params = self._get_training_parameters()
+        
+#         # Build parameter text
+#         param_text = ["# Adaptive Mesh Refinement RL Training Parameters\n"]
+        
+#         # Runtime information
+#         if 'runtime' in params:
+#             runtime = params['runtime']
+#             param_text.extend([
+#                 "## Runtime Information",
+#                 f"Total Timesteps: {runtime.get('total_timesteps', 'N/A'):,}",
+#                 f"Episodes Completed: {runtime.get('episodes_completed', 'N/A'):,}",
+#                 f"Training Duration: {runtime.get('training_duration_hours', 0):.2f} hours ({runtime.get('training_duration_minutes', 0):.1f} minutes)",
+#                 ""
+#             ])
+        
+#         # Environment parameters
+#         if 'environment' in params:
+#             param_text.append("## Environment Parameters")
+#             for key, value in params['environment'].items():
+#                 param_text.append(f"{key}: {value}")
+#             param_text.append("")
+        
+#         # Full config file contents
+#         if 'config' in params:
+#             config = params['config']
+#             param_text.append("## Complete Configuration")
+            
+#             # Environment section
+#             if 'environment' in config:
+#                 param_text.append("### Environment:")
+#                 for key, value in config['environment'].items():
+#                     param_text.append(f"  {key}: {value}")
+#                 param_text.append("")
+            
+#             # Training section
+#             if 'training' in config:
+#                 param_text.append("### Training:")
+#                 for key, value in config['training'].items():
+#                     param_text.append(f"  {key}: {value}")
+#                 param_text.append("")
+            
+#             # Solver section
+#             if 'solver' in config:
+#                 param_text.append("### Solver:")
+#                 for key, value in config['solver'].items():
+#                     if isinstance(value, list):
+#                         param_text.append(f"  {key}: {value}")
+#                     else:
+#                         param_text.append(f"  {key}: {value}")
+#                 param_text.append("")
+        
+#         # Model parameters
+#         param_text.append("## Model Parameters")
+#         for key, value in params.items():
+#             if key not in ['config', 'environment', 'runtime']:
+#                 param_text.append(f"{key}: {value}")
+        
+#         # Add timestamp
+#         import datetime
+#         param_text.extend([
+#             "",
+#             f"Report generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+#         ])
+        
+#         # Create text display
+#         plt.text(0.05, 0.95, '\n'.join(param_text), transform=plt.gca().transAxes, 
+#                 fontsize=10, verticalalignment='top', family='monospace',
+#                 bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.1))
+        
+#         plt.title("Training Configuration and Parameters", fontsize=16, fontweight='bold', pad=20)
+#         pdf.savefig(bbox_inches='tight')
+#         plt.close()
+    
+#     def _create_convergence_page(self, pdf):
+#         """Create training convergence metrics page."""
+#         plt.figure(figsize=(12, 10))
+        
+#         # Check if we have training metrics
+#         has_metrics = any(len(values) > 0 for values in self.training_metrics.values())
+        
+#         if has_metrics:
+#             # Create 2x2 subplot for the four key metrics
+#             metrics_to_plot = ['policy_loss', 'value_loss', 'ep_rew_mean', 'entropy']
+#             titles = ['Policy Loss', 'Value Loss', 'Episode Reward Mean', 'Entropy']
+            
+#             for i, (metric, title) in enumerate(zip(metrics_to_plot, titles)):
+#                 plt.subplot(2, 2, i+1)
+                
+#                 if len(self.training_metrics[metric]) > 0:
+#                     # Extract timesteps and values
+#                     timesteps, values = zip(*self.training_metrics[metric])
+#                     plt.plot(timesteps, values, label=title)
+#                     plt.xlabel('Timesteps')
+#                     plt.ylabel(title)
+#                     plt.title(title)
+#                     plt.grid(True, alpha=0.3)
+#                 else:
+#                     plt.text(0.5, 0.5, f'No {title} data available', 
+#                             horizontalalignment='center', verticalalignment='center',
+#                             transform=plt.gca().transAxes)
+#                     plt.title(title)
+#         else:
+#             # Fallback: show episode rewards if we have them
+#             if self.episode_rewards:
+#                 plt.plot(range(1, len(self.episode_rewards) + 1), self.episode_rewards, 'b-', alpha=0.7)
+                
+#                 # Add smoothed line
+#                 window = min(25, len(self.episode_rewards) // 4)
+#                 if window > 1:
+#                     smoothed = pd.Series(self.episode_rewards).rolling(window=window, min_periods=1).mean()
+#                     plt.plot(range(1, len(self.episode_rewards) + 1), smoothed, 'r-', 
+#                             linewidth=2, label=f'{window}-episode moving average')
+                
+#                 plt.xlabel('Episode')
+#                 plt.ylabel('Total Reward')
+#                 plt.title('Episode Rewards Over Time')
+#                 plt.legend()
+#                 plt.grid(True, alpha=0.3)
+#             else:
+#                 plt.text(0.5, 0.5, 'No training convergence metrics available', 
+#                         horizontalalignment='center', verticalalignment='center')
+        
+#         plt.suptitle('Training Convergence Metrics', fontsize=16, fontweight='bold')
+#         plt.tight_layout()
+#         pdf.savefig(bbox_inches='tight')
+#         plt.close()
+    
+#     def _create_action_distribution_page(self, pdf):
+#         """Create action distribution over time page."""
+#         plt.figure(figsize=(12, 8))
+        
+#         if len(self.action_history) > 0:
+#             # Create time series of action proportions
+#             window_size = max(100, len(self.action_history) // 100)  # Adaptive window size
+            
+#             timesteps = []
+#             action_proportions = {action: [] for action in self.action_mapping.values()}
+            
+#             for i in range(window_size, len(self.action_history), window_size // 10):  # Overlapping windows
+#                 window_start = max(0, i - window_size)
+#                 window_actions = [action for _, action in self.action_history[window_start:i]]
+                
+#                 if window_actions:
+#                     timestep = self.action_history[i-1][0]  # Use last timestep in window
+#                     timesteps.append(timestep)
+                    
+#                     total_actions = len(window_actions)
+#                     for action in self.action_mapping.values():
+#                         count = window_actions.count(action)
+#                         action_proportions[action].append(count / total_actions * 100)
+            
+#             # Plot the action distributions
+#             for action, proportions in action_proportions.items():
+#                 if proportions:  # Only plot if we have data
+#                     action_name = self.action_names[action]
+#                     plt.plot(timesteps, proportions, label=action_name, linewidth=2)
+            
+#             plt.xlabel('Training Timesteps')
+#             plt.ylabel('Action Percentage (%)')
+#             plt.title('Action Distribution Over Training')
+#             plt.legend()
+#             plt.grid(True, alpha=0.3)
+#             plt.ylim(0, 100)
+            
+#         else:
+#             plt.text(0.5, 0.5, 'No action data available', 
+#                     horizontalalignment='center', verticalalignment='center')
+#             plt.title('Action Distribution Over Training')
+        
+#         pdf.savefig(bbox_inches='tight')
+#         plt.close()
+    
+#     def _create_resource_usage_page(self, pdf):
+#         """Create resource usage over time page."""
+#         plt.figure(figsize=(12, 6))
+        
+#         if len(self.resource_history) > 0:
+#             # Downsample for plotting if too many points
+#             max_points = 2000
+#             if len(self.resource_history) > max_points:
+#                 step = len(self.resource_history) // max_points
+#                 timesteps = [ts for i, (ts, _) in enumerate(self.resource_history) if i % step == 0]
+#                 resources = [res for i, (_, res) in enumerate(self.resource_history) if i % step == 0]
+#             else:
+#                 timesteps, resources = zip(*self.resource_history)
+            
+#             plt.plot(timesteps, resources, 'b-', alpha=0.7, linewidth=1)
+            
+#             # Add reference line at 100% (budget limit)
+#             plt.axhline(y=1.0, color='r', linestyle='--', linewidth=2, label='Budget Limit')
+            
+#             plt.xlabel('Training Timesteps')
+#             plt.ylabel('Resource Usage (fraction of budget)')
+#             plt.title('Resource Usage Over Training')
+#             plt.legend()
+#             plt.grid(True, alpha=0.3)
+#             plt.ylim(0, max(1.1, max(resources) * 1.05))
+            
+#         else:
+#             plt.text(0.5, 0.5, 'No resource usage data available', 
+#                     horizontalalignment='center', verticalalignment='center')
+#             plt.title('Resource Usage Over Training')
+        
+#         pdf.savefig(bbox_inches='tight')
+#         plt.close()
+    
+#     def _create_episode_rewards_page(self, pdf):
+#         """Create episode rewards over time page."""
+#         plt.figure(figsize=(12, 6))
+        
+#         if self.episode_rewards:
+#             plt.plot(range(1, len(self.episode_rewards) + 1), self.episode_rewards, 'b-', alpha=0.5, linewidth=1)
+            
+#             # Add smoothed line
+#             window = min(50, len(self.episode_rewards) // 10)
+#             if window > 1:
+#                 smoothed = pd.Series(self.episode_rewards).rolling(window=window, min_periods=1).mean()
+#                 plt.plot(range(1, len(self.episode_rewards) + 1), smoothed, 'r-', 
+#                         linewidth=2, label=f'{window}-episode moving average')
+            
+#             plt.xlabel('Episode')
+#             plt.ylabel('Total Reward')
+#             plt.title('Episode Rewards Over Training')
+#             if window > 1:
+#                 plt.legend()
+#             plt.grid(True, alpha=0.3)
+            
+#         else:
+#             plt.text(0.5, 0.5, 'No episode reward data available', 
+#                     horizontalalignment='center', verticalalignment='center')
+#             plt.title('Episode Rewards Over Training')
+        
+#         pdf.savefig(bbox_inches='tight')
+#         plt.close()
+    
+#     def _create_termination_page(self, pdf):
+#         """Create termination reasons analysis page."""
+#         plt.figure(figsize=(12, 8))
+        
+#         if self.termination_reasons:
+#             # Create subplot with bar chart and pie chart
+#             plt.subplot(1, 2, 1)
+            
+#             # Bar chart
+#             reasons = list(self.termination_reasons.keys())
+#             counts = list(self.termination_reasons.values())
+            
+#             plt.bar(reasons, counts, color=['skyblue', 'lightcoral', 'lightgreen', 'gold'][:len(reasons)])
+#             plt.xticks(rotation=45, ha='right')
+#             plt.xlabel('Termination Reason')
+#             plt.ylabel('Count')
+#             plt.title('Termination Reasons (Count)')
+#             plt.grid(True, axis='y', alpha=0.3)
+            
+#             # Add count labels on bars
+#             for i, count in enumerate(counts):
+#                 plt.text(i, count + max(counts) * 0.01, str(count), ha='center')
+            
+#             # Pie chart
+#             plt.subplot(1, 2, 2)
+#             colors = ['skyblue', 'lightcoral', 'lightgreen', 'gold'][:len(reasons)]
+#             plt.pie(counts, labels=reasons, autopct='%1.1f%%', colors=colors)
+#             plt.title('Termination Reasons (Percentage)')
+            
+#         else:
+#             plt.text(0.5, 0.5, 'No termination reason data available', 
+#                     horizontalalignment='center', verticalalignment='center')
+#             plt.title('Episode Termination Reasons')
+        
+#         plt.suptitle('Episode Termination Analysis', fontsize=16, fontweight='bold')
+#         plt.tight_layout()
+#         pdf.savefig(bbox_inches='tight')
+#         plt.close()

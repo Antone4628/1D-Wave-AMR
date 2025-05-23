@@ -1,26 +1,26 @@
-# gamma_c_50.0_fixed_level2.yaml
 environment:
   max_episode_steps: 200
   element_budget: 25
-  gamma_c: 50.0
-  rl_iterations_per_timestep: "random"
-  max_rl_iterations: 10
+  gamma_c: 100.0
+  rl_iterations_per_timestep: "random"  # or a fixed number like 3
+  max_rl_iterations: 100
   max_consecutive_no_action: 30
-  step_domain_fraction: 0.125  # Add this line (equivalent to 1/8)
+  step_domain_fraction: 0.10  # Fraction of the domain to timestep.
+
   # Set initial refinement configuration. Options are none, fixed (provide level), random (provide probability)
   initial_refinement:
     mode: "random"
     fixed_level: 2
-    max_initial_level: 3
+    max_initial_level: 4
     probability: 0.7
 
 training:
-  total_timesteps: 100000  # Reduced for testing
+  total_timesteps: 3000
   algorithm: "A2C"
   learning_rate: 0.0003
   n_steps: 5
   ent_coef: 0.01
-  callback: "simple"  # Options: "simple" or "enhanced"
+  callback: "enhanced"  # Options: "simple" or "enhanced"
 
 solver:
   nop: 4
@@ -29,6 +29,3 @@ solver:
   icase: 1
   initial_elements: [-1, -0.4, 0, 0.4, 1]
   verbose: false
-  balance: False  # Add this line - set to false to disable balance enforcement
-
-

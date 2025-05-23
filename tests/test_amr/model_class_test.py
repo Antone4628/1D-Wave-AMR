@@ -41,7 +41,7 @@ print(f'Smallest initial element has dx: {np.min(differences)}')
 max_level = 5       # Max level of refinement
 nop = 4              # Polynomial order
 courant_max = 0.1    # CFL number
-time_final = .1       # Final time
+time_final = .04       # Final time
 icase = 1            # Test case number (1: Gaussian)
 periodic = True
 max_elements = 50    # Maximum number of elements
@@ -71,8 +71,8 @@ solver = DGWaveSolver(
 #this is the first model deployment.
 # model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_50.0', 'run_20250321_201810', 'models', 'final_model.zip')
 
-model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_25.0', 'run_20250512_093942', 'models', 'final_model.zip')
-# model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_100.0', 'run_20250327_130053', 'models', 'final_model.zip')
+# model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_25.0', 'run_20250512_093942', 'models', 'final_model.zip')
+model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_100.0', 'run_20250521_141716', 'models', 'final_model.zip')
 
 # Initialize ModelMarker with trained model
 model_marker = ModelMarker(

@@ -46,7 +46,7 @@ def main():
     time_final = 0.03    # Final time
     icase = 1           # Test case number (1: Gaussian)
     periodic = True
-    max_elements = 20   # Maximum number of elements
+    max_elements = 30   # Maximum number of elements
     verbose = True      # Print detailed logs
 
     # Calculate smallest possible element size after refinement
@@ -66,8 +66,8 @@ def main():
     )
 
     # Path to the trained model
-    model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_50.0', 
-                              'run_20250514_090135', 'models', 'final_model.zip')
+    model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_100.0', 
+                              'run_20250521_141716', 'models', 'final_model.zip')
 
     # Initialize ModelMarkerSequential with trained model
     model_adapter = ModelMarkerSequential(
@@ -95,8 +95,8 @@ def main():
         dt = min(solver.dt, time_final - solver.time)
         print(f"\nTimestep {step_count}, Time: {solver.time:.3f}")
         
-        # Process elements sequentially using the RL model
-        adaptations_made = model_adapter.mark_and_adapt_sequentially()
+        # Process elements using fixed-priority single round approach
+        adaptations_made = model_adapter.mark_and_adapt_single_round()
         print(f"Made {adaptations_made} adaptations in this timestep")
         
         # Take time step
@@ -123,7 +123,7 @@ def create_animation(times, solutions, grids, coords, solver, xelem, nelem, max_
     ax.set_ylim([-0.1, 1.2])
     ax.set_xticks(xelem)
     ax.tick_params(axis='x', rotation=90, labelsize=8)
-    ax.set_title(f'{nelem} initial elements, Sequential RL-AMR to level {max_level}, dt = {solver.dt:.6f}')
+    ax.set_title(f'{nelem} initial elements, Sequential RL-AMR (Single Round) to level {max_level}, dt = {solver.dt:.6f}')
 
     # Add text annotations
     frame_text = ax.text(0.05, 0.95, '',
@@ -162,7 +162,7 @@ def create_animation(times, solutions, grids, coords, solver, xelem, nelem, max_
     )
 
     # Save animation
-    gif_title = os.path.join(ANIMATIONS_DIR, 'Sequential_RL_AMR_1D_Wave_GIF.gif')
+    gif_title = os.path.join(ANIMATIONS_DIR, 'Sequential_RL_AMR_Single_Round_1D_Wave_GIF.gif')
     anim.save(gif_title, writer="pillow", fps=50)
     print(f"Animation saved to {gif_title}")
 

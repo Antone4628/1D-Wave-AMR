@@ -29,7 +29,8 @@ from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
 import numpy as np
 import matplotlib.pyplot as plt
 
-from numerical.callbacks.enhanced_callback_options import EnhancedMonitorCallback
+# from numerical.callbacks.enhanced_callback_options import EnhancedMonitorCallback
+from numerical.callbacks.enhanced_callback_mixed import EnhancedMonitorCallback
 from numerical.callbacks.simple_monitor_callback import SimpleMonitorCallback
 
 
@@ -223,7 +224,8 @@ def run_experiment(config_path, results_dir=None):
             log_dir=log_dir,
             save_freq=total_timesteps // 10,
             window_size=100,
-            log_freq=1000
+            log_freq=1000,
+            verbose=2
         )
         print(f"Using Enhanced Monitor Callback")
     else:  # Default to simple callback
