@@ -88,6 +88,7 @@ class DGWaveSolverMixed:
         self._initialize_projections()
         self.f = self._initialize_forcing()
         self._update_matrices()
+        self.q = self.steady_solve_improved()
         
     def _initialize_mesh(self):
         """Initialize the mesh and grid structures."""
@@ -105,6 +106,7 @@ class DGWaveSolverMixed:
             self.coord, self.npoin_dg, self.time, self.icase
         )
         return q
+        # return self.steady_solve_improved()
     
     # def _initialize_forcing(self):
     #     """Initialize the forcing function based on test case."""
@@ -240,62 +242,6 @@ class DGWaveSolverMixed:
 
         return active_levels
     
-    # def _is_action_valid(self, element_idx, action):
-    #     """
-    #     Check if the requested action is valid for the given element.
-        
-    #     Args:
-    #         element_idx: Index of element in active list
-    #         action: Action to check (-1: coarsen, 0: do nothing, 1: refine)
-            
-    #     Returns:
-    #         bool: True if action is valid, False otherwise
-    #     """
-    #     # Do-nothing action is always valid
-    #     if action == 0:
-    #         return True
-            
-    #     # Check if element index is valid
-    #     if element_idx >= len(self.solver.active):
-    #         return False
-            
-    #     # Get element and its current level
-    #     elem = self.solver.active[element_idx]
-    #     current_level = self.solver.label_mat[elem-1][4]
-        
-    #     if action == 1:  # Refine
-    #         # Check if already at max level
-    #         return current_level < self.solver.max_level
-            
-    #     elif action == -1:  # Coarsen
-    #         # Can't coarsen level 0 elements
-    #         if current_level == 0:
-    #             return False
-                
-    #         # Check for sibling - need to find parent's other child
-    #         parent = self.solver.label_mat[elem-1][1]
-    #         if parent == 0:
-    #             return False  # No parent, can't coarsen
-                
-    #         # Find potential siblings
-    #         sibling_found = False
-            
-    #         # Check if element before current one is a sibling
-    #         if elem > 1 and elem-1 in self.solver.active:
-    #             potential_sibling = elem-1
-    #             if self.solver.label_mat[potential_sibling-1][1] == parent:
-    #                 sibling_found = True
-                    
-    #         # Check if element after current one is a sibling
-    #         if not sibling_found and elem < len(self.solver.label_mat) and elem+1 in self.solver.active:
-    #             potential_sibling = elem+1
-    #             if self.solver.label_mat[potential_sibling-1][1] == parent:
-    #                 sibling_found = True
-                    
-    #         return sibling_found
-            
-    #     # Should never reach here with valid action values
-    #     return False
 
     
     def balance_mesh(self, balance=None):
@@ -1057,5 +1003,8 @@ class DGWaveSolverMixed:
         # Calculate time step based on actual refinement level
         self._compute_timestep(use_actual_max_level=True)
         self.verify_state()
+
+        self._update_forcing()         # Updates self.f for new grid
+        self.q = self.steady_solve_improved()  # Uses self.f
         return self.q
 
