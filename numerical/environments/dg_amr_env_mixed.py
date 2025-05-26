@@ -679,7 +679,7 @@ class DGAMREnv(gym.Env):
         # Reset solver with refinement options
         self.solver.reset(**refinement_options)
 
-        self.solver.q = self.solver.steady_solve_improved()
+        # self.solver.q = self.solver.steady_solve_improved()
         
         # Reset time-stepping variables
         self.current_rl_iteration = 0
