@@ -1,0 +1,31 @@
+environment:
+  max_episode_steps: 200
+  element_budget: 25
+  gamma_c: 25.0
+  rl_iterations_per_timestep: "random"  # or a fixed number like 3
+  max_rl_iterations: 100
+  max_consecutive_no_action: 30
+  step_domain_fraction: 0.125  # Add this line (equivalent to 1/8)
+
+  # Set initial refinement configuration. Options are none, fixed (provide level), random (provide probability)
+  initial_refinement:
+    mode: "fixed"
+    fixed_level: 2
+    max_initial_level: 3
+    probability: 0.7
+
+training:
+  total_timesteps: 50000
+  algorithm: "A2C"
+  learning_rate: 0.0003
+  n_steps: 5
+  ent_coef: 0.01
+  callback: "simple"  # Options: "simple" or "enhanced"
+
+solver:
+  nop: 4
+  max_level: 8
+  courant_max: 0.1
+  icase: 1
+  initial_elements: [-1, -0.4, 0, 0.4, 1]
+  verbose: false

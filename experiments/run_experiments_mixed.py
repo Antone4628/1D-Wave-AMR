@@ -225,7 +225,7 @@ def run_experiment(config_path, results_dir=None):
             save_freq=total_timesteps // 10,
             window_size=100,
             log_freq=1000,
-            verbose=2
+            verbose=0
         )
         print(f"Using Enhanced Monitor Callback")
     else:  # Default to simple callback

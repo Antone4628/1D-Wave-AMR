@@ -1,0 +1,19 @@
+environment:
+  max_episode_steps: 10
+  element_budget: 10
+  gamma_c: 25.0
+
+training:
+  total_timesteps: 100  # Very small number for quick testing
+  algorithm: "A2C"
+  learning_rate: 0.0003
+  n_steps: 5
+  ent_coef: 0.01
+
+solver:
+  nop: 4
+  max_level: 4
+  courant_max: 0.1
+  icase: 1
+  initial_elements: [-1, -0.4, 0, 0.4, 1]
+  verbose: false
