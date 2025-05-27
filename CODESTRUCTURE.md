@@ -1,6 +1,6 @@
 # Project Code Structure
 
-Auto-generated on: Fri May 23 10:03:29 MDT 2025
+Auto-generated on: Mon May 26 10:42:44 MDT 2025
 Project: 1D-Wave-AMR
 
 ```
@@ -28,18 +28,42 @@ Project: 1D-Wave-AMR
 │   │   │   ├── gamma_c_sweep
 │   │   │   ├── refinement_strategy_sweep
 │   │   │   └── gamma_c_100.0_full_run.yaml
-│   │   └── tests
-│   │       └── test_quick.yaml
+│   │   ├── tests
+│   │   │   ├── quick_gpu_test.yaml
+│   │   │   └── test_quick.yaml
+│   │   ├── gamma_c_10.0.yaml
+│   │   ├── gamma_c_100.0.yaml
+│   │   ├── gamma_c_100.0_fixed_level_2.yaml
+│   │   ├── gamma_c_100.0_random.yaml
+│   │   ├── gamma_c_2.5.yaml
+│   │   ├── gamma_c_25.0.yaml
+│   │   ├── gamma_c_25.0_fixed_level_1.yaml
+│   │   ├── gamma_c_25.0_fixed_level_2.yaml
+│   │   ├── gamma_c_25.0_fixed_level_3.yaml
+│   │   ├── gamma_c_25.0_random.yaml
+│   │   ├── gamma_c_5.0.yaml
+│   │   ├── gamma_c_50.0.yaml
+│   │   ├── gamma_c_50.0_fixed_level_2.yaml
+│   │   ├── gamma_c_50.0_random.yaml
+│   │   └── test_config.yaml
 │   ├── results
 │   │   ├── gamma_c_100.0
-│   │   │   └── run_20250523_094718
-│   │   └── gamma_c_25.0
-│   │       └── run_20250523_093432
+│   │   │   ├── run_20250523_094718
+│   │   │   └── run_20250523_201454
+│   │   ├── gamma_c_25.0
+│   │   │   ├── run_20250523_093432
+│   │   │   ├── run_20250524_085638
+│   │   │   └── run_20250526_095808
+│   │   └── gamma_c_25.0_gpu
+│   │       └── run_20250524_090233
 │   ├── run_experiments_mixed.py
+│   ├── run_experiments_mixed_gpu.py
 │   └── test_mixed_approach.py
 ├── logs
 │   ├── amr_100k_1879743.err
 │   ├── amr_100k_1879743.out
+│   ├── amr_restart_1880495.err
+│   ├── amr_restart_1880495.out
 │   ├── amr_test_1879739.err
 │   └── amr_test_1879739.out
 ├── notebooks
@@ -91,6 +115,7 @@ Project: 1D-Wave-AMR
 │   └── forest_example.py
 ├── slurm_scripts
 │   ├── full_training_job.slurm
+│   ├── restart_100k.slurm
 │   └── test_amr_job.slurm
 ├── src
 │   └── dg_package
@@ -138,8 +163,10 @@ Project: 1D-Wave-AMR
 │   ├── analyze_rl_performance.py
 │   ├── analyze_tensorboard.py
 │   ├── analyze_tensorboard_pdf.py
+│   ├── CODESTRUCTURE.md
 │   └── generate_codestructure.py
 ├── CODESTRUCTURE.md
+├── project_structure.md
 ├── README.md
 ├── requirements.txt
 └── setup.py
