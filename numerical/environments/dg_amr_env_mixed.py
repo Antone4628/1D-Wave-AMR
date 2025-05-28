@@ -137,7 +137,8 @@ class DGAMREnv(gym.Env):
         max_episode_steps: int = 200,
         verbose: bool = False,
         rl_iterations_per_timestep = "random",
-        max_rl_iterations = 200,
+        min_rl_iterations: int = 1, 
+        max_rl_iterations = 50,
         max_consecutive_no_action = 20,
         debug_training_cycle=False,
         step_domain_fraction=1.0/8.0  
@@ -194,6 +195,7 @@ class DGAMREnv(gym.Env):
 
         # Parameters for time-stepping during training
         self.rl_iterations_per_timestep = rl_iterations_per_timestep
+        self.min_rl_iterations = min_rl_iterations 
         self.max_rl_iterations = max_rl_iterations
         self.current_rl_iteration = 0
         self.should_timestep = False
@@ -571,7 +573,7 @@ class DGAMREnv(gym.Env):
                 'violation_action': mapped_action
             }
             
-            return self._end_episode(-1000.0, False, True, "Budget exceeded (pre-action)", info)
+            return self._end_episode(-1000.0, False, True, "Budget exceeded", info)
         
         # Calculate reward
         reward = self.reward_calculator.calculate_reward(
@@ -584,7 +586,7 @@ class DGAMREnv(gym.Env):
         # Determine if we should take a time step
         if self.rl_iterations_per_timestep == "random":
             if self.current_rl_iteration == 0:
-                self.iterations_before_timestep = np.random.randint(1, self.max_rl_iterations + 1)
+                self.iterations_before_timestep = np.random.randint(self.min_rl_iterations, self.max_rl_iterations + 1)
             
             self.current_rl_iteration += 1
             self.should_timestep = (self.current_rl_iteration >= self.iterations_before_timestep)
@@ -613,7 +615,7 @@ class DGAMREnv(gym.Env):
             for _ in range(n_steps):
                 self.solver.step()
             
-            # self.current_rl_iteration = 0
+            self.current_rl_iteration = 0
             # steady_solution = self.solver.steady_solve_improved()
             # self.solver.q = steady_solution
         

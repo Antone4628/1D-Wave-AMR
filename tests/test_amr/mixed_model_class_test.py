@@ -42,7 +42,7 @@ print(f'Smallest initial element has dx: {np.min(differences)}')
 max_level = 8       # Max level of refinement
 nop = 4             # Polynomial order
 courant_max = 0.1   # CFL number
-time_final = 0.1   # Final time
+time_final = 0.02   # Final time
 icase = 1           # Test case number (1: Gaussian)
 periodic = True
 max_elements = 50   # Maximum number of elements
@@ -64,7 +64,8 @@ solver = DGWaveSolverMixed(
 
 # Path to the trained model
 # Use the model trained with the mixed approach
-model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_50.0', 'run_20250514_090135', 'models', 'final_model.zip')
+# model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_50.0', 'run_20250514_090135', 'models', 'final_model.zip')
+model_path = os.path.join(PROJECT_ROOT, 'models', 'transferred', 'step_domain_0.05_final_model.zip')
 
 # Initialize ModelMarker with trained model
 model_marker = ModelMarker(

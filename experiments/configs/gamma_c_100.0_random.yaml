@@ -3,7 +3,8 @@ environment:
   element_budget: 25
   gamma_c: 100.0
   rl_iterations_per_timestep: "random"  # or a fixed number like 3
-  max_rl_iterations: 100
+  min_rl_iterations: 10 
+  max_rl_iterations: 25
   max_consecutive_no_action: 30
   step_domain_fraction: 0.10  # Fraction of the domain to timestep.
 

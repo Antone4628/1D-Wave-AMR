@@ -88,6 +88,7 @@ class DGWaveSolverMixed:
         self._initialize_projections()
         self.f = self._initialize_forcing()
         self._update_matrices()
+        self.q = self.steady_solve_improved()
         
     def _initialize_mesh(self):
         """Initialize the mesh and grid structures."""
@@ -1006,5 +1007,6 @@ class DGWaveSolverMixed:
         # Calculate time step based on actual refinement level
         self._compute_timestep(use_actual_max_level=True)
         self.verify_state()
+        self.q = self.steady_solve_improved()  # Uses self.f
         return self.q
 
