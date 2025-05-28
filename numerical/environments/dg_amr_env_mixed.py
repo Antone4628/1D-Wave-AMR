@@ -643,7 +643,9 @@ class DGAMREnv(gym.Env):
             'original_action': original_action,  # The action the agent attempted
             'actual_action': mapped_action,      # The action that was actually executed
             'is_valid_action': original_action == mapped_action,  # Whether original action was valid
-            'element_level': element_level  # Current element level (safely accessed)
+            'element_level': element_level,  # Current element level (safely accessed)
+            'do_nothing_counter': self.do_nothing_counter,  # NEW LINE
+            'max_consecutive_reached': self.do_nothing_counter >= self.max_consecutive_no_action
         }
         
         # Select next element randomly

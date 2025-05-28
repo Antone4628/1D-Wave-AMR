@@ -75,6 +75,11 @@ class EnhancedMonitorCallback(BaseCallback):
         
         # Resource tracking for final plot
         self.resource_history = []  # Store (timestep, resource_usage) pairs
+
+        # Do-nothing counter tracking
+        self.do_nothing_history = []  # Store (timestep, counter_value) pairs
+        self.max_do_nothing_per_episode = []  # Peak counter value each episode
+        self.current_episode_max_do_nothing = 0  # Track max for current episode
         
         # Training metrics for convergence analysis
         self.training_metrics = {
@@ -150,6 +155,14 @@ class EnhancedMonitorCallback(BaseCallback):
         
         # Update current episode reward
         self.current_episode_reward += reward
+
+        # Track do-nothing counter
+        do_nothing_count = info.get('do_nothing_counter', 0)
+        self.do_nothing_history.append((self.num_timesteps, do_nothing_count))
+        
+        # Track episode maximum
+        self.current_episode_max_do_nothing = max(self.current_episode_max_do_nothing, do_nothing_count)
+        
         
         # Check for episode completion
         if done:
@@ -230,6 +243,8 @@ class EnhancedMonitorCallback(BaseCallback):
         self.episode_rewards.append(self.current_episode_reward)
         self.episode_lengths.append(episode_length)
         self.termination_reasons[termination_reason] += 1
+        self.max_do_nothing_per_episode.append(self.current_episode_max_do_nothing)
+        self.current_episode_max_do_nothing = 0  # Reset for next episode
         
         # Log episode completion occasionally
         if self.verbose > 0 and (self.episodes_completed % 50 == 0):
@@ -361,6 +376,9 @@ class EnhancedMonitorCallback(BaseCallback):
                 
                 # 6. Termination Reasons
                 self._create_termination_page(pdf)
+
+                # 7. Do-Nothing Counter Analysis (NEW PAGE)
+                self._create_do_nothing_analysis_page(pdf)
                 
         except Exception as e:
             print(f"Error generating final report: {e}")
@@ -643,6 +661,72 @@ class EnhancedMonitorCallback(BaseCallback):
             plt.title('Episode Termination Reasons')
         
         plt.suptitle('Episode Termination Analysis', fontsize=16, fontweight='bold')
+        plt.tight_layout()
+        pdf.savefig(bbox_inches='tight')
+        plt.close()
+        
+    def _create_do_nothing_analysis_page(self, pdf):
+        """Create do-nothing counter analysis page."""
+        plt.figure(figsize=(12, 10))
+        
+        # Plot 1: Do-nothing counter over time
+        plt.subplot(2, 2, 1)
+        if len(self.do_nothing_history) > 0:
+            # Downsample if too many points
+            max_points = 2000
+            if len(self.do_nothing_history) > max_points:
+                step = len(self.do_nothing_history) // max_points
+                timesteps = [ts for i, (ts, _) in enumerate(self.do_nothing_history) if i % step == 0]
+                counters = [cnt for i, (_, cnt) in enumerate(self.do_nothing_history) if i % step == 0]
+            else:
+                timesteps, counters = zip(*self.do_nothing_history)
+            
+            plt.plot(timesteps, counters, 'b-', alpha=0.7, linewidth=1)
+            plt.axhline(y=30, color='r', linestyle='--', linewidth=2, label='Limit (30)')
+            plt.xlabel('Training Timesteps')
+            plt.ylabel('Do-Nothing Counter')
+            plt.title('Do-Nothing Counter Over Training')
+            plt.legend()
+            plt.grid(True, alpha=0.3)
+        
+        # Plot 2: Episode maximum do-nothing counters
+        plt.subplot(2, 2, 2)
+        if self.max_do_nothing_per_episode:
+            plt.plot(range(1, len(self.max_do_nothing_per_episode) + 1), 
+                    self.max_do_nothing_per_episode, 'g-', alpha=0.7)
+            plt.axhline(y=30, color='r', linestyle='--', linewidth=2, label='Limit (30)')
+            plt.xlabel('Episode')
+            plt.ylabel('Max Do-Nothing Counter')
+            plt.title('Peak Do-Nothing Counter per Episode')
+            plt.legend()
+            plt.grid(True, alpha=0.3)
+        
+        # Plot 3: Distribution of peak values
+        plt.subplot(2, 2, 3)
+        if self.max_do_nothing_per_episode:
+            plt.hist(self.max_do_nothing_per_episode, bins=20, alpha=0.7, color='skyblue')
+            plt.axvline(x=30, color='r', linestyle='--', linewidth=2, label='Limit (30)')
+            plt.xlabel('Peak Do-Nothing Counter')
+            plt.ylabel('Number of Episodes')
+            plt.title('Distribution of Episode Peak Counters')
+            plt.legend()
+            plt.grid(True, alpha=0.3)
+        
+        # Plot 4: Summary statistics
+        plt.subplot(2, 2, 4)
+        plt.axis('off')
+        if self.max_do_nothing_per_episode:
+            stats_text = [
+                f"Episodes analyzed: {len(self.max_do_nothing_per_episode)}",
+                f"Mean peak counter: {np.mean(self.max_do_nothing_per_episode):.1f}",
+                f"Max peak counter: {np.max(self.max_do_nothing_per_episode)}",
+                f"Episodes reaching limit: {sum(1 for x in self.max_do_nothing_per_episode if x >= 30)}",
+                f"Percentage at limit: {sum(1 for x in self.max_do_nothing_per_episode if x >= 30) / len(self.max_do_nothing_per_episode) * 100:.1f}%"
+            ]
+            plt.text(0.1, 0.7, '\n'.join(stats_text), fontsize=12, 
+                    verticalalignment='top', family='monospace')
+        
+        plt.suptitle('Do-Nothing Counter Analysis', fontsize=16, fontweight='bold')
         plt.tight_layout()
         pdf.savefig(bbox_inches='tight')
         plt.close()
