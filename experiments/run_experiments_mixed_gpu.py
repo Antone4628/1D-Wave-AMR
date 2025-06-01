@@ -31,7 +31,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # from numerical.callbacks.enhanced_callback_options import EnhancedMonitorCallback
-from numerical.callbacks.enhanced_callback_mixed import EnhancedMonitorCallback
+# from numerical.callbacks.enhanced_callback_mixed import EnhancedMonitorCallback
+from numerical.callbacks.enhanced_callback_data import EnhancedMonitorCallback
 from numerical.callbacks.simple_monitor_callback import SimpleMonitorCallback
 
 

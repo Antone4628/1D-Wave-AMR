@@ -40,13 +40,13 @@ def main():
     print(f'Smallest initial element has dx: {np.min(differences)}')
 
     # Solver parameters
-    max_level = 4       # Max level of refinement
+    max_level = 5       # Max level of refinement
     nop = 4             # Polynomial order
     courant_max = 0.1   # CFL number
     time_final = 0.2    # Final time
     icase = 1           # Test case number (1: Gaussian)
     periodic = True
-    max_elements = 30   # Maximum number of elements
+    max_elements = 50   # Maximum number of elements
     verbose = True      # Print detailed logs
 
     # Calculate smallest possible element size after refinement
@@ -68,7 +68,7 @@ def main():
     # Path to the trained model
     # model_path = os.path.join(PROJECT_ROOT, 'experiments', 'results', 'gamma_c_100.0', 
     #                           'run_20250521_141716', 'models', 'final_model.zip')
-    model_path = os.path.join(PROJECT_ROOT, 'models', 'transferred', 'step_domain_0.15_20ksteps_final_model.zip')
+    model_path = os.path.join(PROJECT_ROOT, 'models', 'transferred', 'step_domain_0.15_50k_final_model.zip')
 
     # Initialize ModelMarkerSequential with trained model
     model_adapter = ModelMarkerSequential(
@@ -167,7 +167,7 @@ def create_animation(times, solutions, grids, coords, solver, xelem, nelem, max_
     # anim.save(gif_title, writer="pillow", fps=50)
     # print(f"Animation saved to {gif_title}")
 
-    video_title = os.path.join(ANIMATIONS_DIR, 'step_domain_0.15_20k_Video.mp4')
+    video_title = os.path.join(ANIMATIONS_DIR, 'step_domain_0.15_50k_Video.mp4')
     anim.save(video_title, writer="ffmpeg", fps=50)
     print(f"Animation saved to {video_title}")
     
