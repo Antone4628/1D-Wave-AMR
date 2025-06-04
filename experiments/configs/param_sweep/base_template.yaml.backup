@@ -1,0 +1,34 @@
+environment:
+  element_budget: {{ELEMENT_BUDGET}}
+  gamma_c: {{GAMMA_C}}
+  initial_refinement:
+    fixed_level: 2
+    max_initial_level: 4
+    mode: random
+    probability: 0.7
+  max_consecutive_no_action: 30
+  max_episode_steps: 200
+  max_rl_iterations: {{MAX_RL_ITERATIONS}}
+  min_rl_iterations: {{MIN_RL_ITERATIONS}}
+  rl_iterations_per_timestep: {{RL_ITERATIONS}}
+  step_domain_fraction: {{STEP_DOMAIN_FRACTION}}
+solver:
+  balance: false
+  courant_max: 0.1
+  icase: 1
+  initial_elements:
+  - -1
+  - -0.4
+  - 0
+  - 0.4
+  - 1
+  max_level: 8
+  nop: 4
+  verbose: false
+training:
+  algorithm: A2C
+  callback: enhanced
+  ent_coef: 0.01
+  learning_rate: 0.0003
+  n_steps: 5
+  total_timesteps: 50000

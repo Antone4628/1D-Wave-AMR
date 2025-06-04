@@ -1,0 +1,81 @@
+combinations:
+- array_index: 0
+  collection:
+    final_model_name: gamma_25.0_step_0.05_rl_10_budget_25_2k_final_model.zip
+    report_name: gamma_25.0_step_0.05_rl_10_budget_25_2k_training_report.pdf
+  combo_id: 1
+  group_id: 1
+  parameters:
+    element_budget: 25
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_25.0_step_0.05_rl_10_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 1
+  collection:
+    final_model_name: gamma_50.0_step_0.1_rl_25_budget_30_2k_final_model.zip
+    report_name: gamma_50.0_step_0.1_rl_25_budget_30_2k_training_report.pdf
+  combo_id: 2
+  group_id: 1
+  parameters:
+    element_budget: 30
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_50.0_step_0.1_rl_25_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+directory_structure:
+  base_path: results/test_param_sweep_2025-05-29_094907
+  collection_naming: gamma_{gamma_c}_step_{step_domain}_rl_{rl_iterations}_budget_{budget}_2k
+  naming_convention: gamma_{gamma_c}_step_{step_domain}_rl_{rl_iterations}_budget_{budget}
+groups:
+- combinations_count: 2
+  group_id: 1
+  group_name: test_group
+  job_id: null
+  slurm_script: test_group.slurm
+  status: not_submitted
+sweep_info:
+  parameters:
+    element_budget:
+    - 25
+    - 30
+    gamma_c:
+    - 25.0
+    - 50.0
+    rl_iterations_per_timestep:
+    - 10
+    - 25
+    step_domain_fraction:
+    - 0.05
+    - 0.1
+  test_mode: true
+  timestamp: 2025-05-29_094907
+  total_combinations: 2
+  total_groups: 1
+  total_timesteps: 2000

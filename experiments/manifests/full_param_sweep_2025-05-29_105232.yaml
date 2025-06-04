@@ -1,0 +1,2107 @@
+combinations:
+- array_index: 0
+  collection:
+    final_model_name: gamma_25.0_step_0.025_rl_10_budget_25_20k_final_model.zip
+    report_name: gamma_25.0_step_0.025_rl_10_budget_25_20k_training_report.pdf
+  combo_id: 1
+  group_id: 1
+  parameters:
+    element_budget: 25
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_25.0_step_0.025_rl_10_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 1
+  collection:
+    final_model_name: gamma_25.0_step_0.025_rl_10_budget_30_20k_final_model.zip
+    report_name: gamma_25.0_step_0.025_rl_10_budget_30_20k_training_report.pdf
+  combo_id: 2
+  group_id: 1
+  parameters:
+    element_budget: 30
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_25.0_step_0.025_rl_10_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 2
+  collection:
+    final_model_name: gamma_25.0_step_0.025_rl_10_budget_40_20k_final_model.zip
+    report_name: gamma_25.0_step_0.025_rl_10_budget_40_20k_training_report.pdf
+  combo_id: 3
+  group_id: 1
+  parameters:
+    element_budget: 40
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_25.0_step_0.025_rl_10_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 3
+  collection:
+    final_model_name: gamma_25.0_step_0.025_rl_25_budget_25_20k_final_model.zip
+    report_name: gamma_25.0_step_0.025_rl_25_budget_25_20k_training_report.pdf
+  combo_id: 4
+  group_id: 1
+  parameters:
+    element_budget: 25
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_25.0_step_0.025_rl_25_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 4
+  collection:
+    final_model_name: gamma_25.0_step_0.025_rl_25_budget_30_20k_final_model.zip
+    report_name: gamma_25.0_step_0.025_rl_25_budget_30_20k_training_report.pdf
+  combo_id: 5
+  group_id: 1
+  parameters:
+    element_budget: 30
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_25.0_step_0.025_rl_25_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 5
+  collection:
+    final_model_name: gamma_25.0_step_0.025_rl_25_budget_40_20k_final_model.zip
+    report_name: gamma_25.0_step_0.025_rl_25_budget_40_20k_training_report.pdf
+  combo_id: 6
+  group_id: 1
+  parameters:
+    element_budget: 40
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_25.0_step_0.025_rl_25_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 6
+  collection:
+    final_model_name: gamma_25.0_step_0.025_rl_40_budget_25_20k_final_model.zip
+    report_name: gamma_25.0_step_0.025_rl_40_budget_25_20k_training_report.pdf
+  combo_id: 7
+  group_id: 1
+  parameters:
+    element_budget: 25
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_25.0_step_0.025_rl_40_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 7
+  collection:
+    final_model_name: gamma_25.0_step_0.025_rl_40_budget_30_20k_final_model.zip
+    report_name: gamma_25.0_step_0.025_rl_40_budget_30_20k_training_report.pdf
+  combo_id: 8
+  group_id: 1
+  parameters:
+    element_budget: 30
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_25.0_step_0.025_rl_40_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 8
+  collection:
+    final_model_name: gamma_25.0_step_0.025_rl_40_budget_40_20k_final_model.zip
+    report_name: gamma_25.0_step_0.025_rl_40_budget_40_20k_training_report.pdf
+  combo_id: 9
+  group_id: 1
+  parameters:
+    element_budget: 40
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_25.0_step_0.025_rl_40_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 0
+  collection:
+    final_model_name: gamma_25.0_step_0.05_rl_10_budget_25_20k_final_model.zip
+    report_name: gamma_25.0_step_0.05_rl_10_budget_25_20k_training_report.pdf
+  combo_id: 10
+  group_id: 2
+  parameters:
+    element_budget: 25
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_25.0_step_0.05_rl_10_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 1
+  collection:
+    final_model_name: gamma_25.0_step_0.05_rl_10_budget_30_20k_final_model.zip
+    report_name: gamma_25.0_step_0.05_rl_10_budget_30_20k_training_report.pdf
+  combo_id: 11
+  group_id: 2
+  parameters:
+    element_budget: 30
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_25.0_step_0.05_rl_10_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 2
+  collection:
+    final_model_name: gamma_25.0_step_0.05_rl_10_budget_40_20k_final_model.zip
+    report_name: gamma_25.0_step_0.05_rl_10_budget_40_20k_training_report.pdf
+  combo_id: 12
+  group_id: 2
+  parameters:
+    element_budget: 40
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_25.0_step_0.05_rl_10_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 3
+  collection:
+    final_model_name: gamma_25.0_step_0.05_rl_25_budget_25_20k_final_model.zip
+    report_name: gamma_25.0_step_0.05_rl_25_budget_25_20k_training_report.pdf
+  combo_id: 13
+  group_id: 2
+  parameters:
+    element_budget: 25
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_25.0_step_0.05_rl_25_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 4
+  collection:
+    final_model_name: gamma_25.0_step_0.05_rl_25_budget_30_20k_final_model.zip
+    report_name: gamma_25.0_step_0.05_rl_25_budget_30_20k_training_report.pdf
+  combo_id: 14
+  group_id: 2
+  parameters:
+    element_budget: 30
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_25.0_step_0.05_rl_25_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 5
+  collection:
+    final_model_name: gamma_25.0_step_0.05_rl_25_budget_40_20k_final_model.zip
+    report_name: gamma_25.0_step_0.05_rl_25_budget_40_20k_training_report.pdf
+  combo_id: 15
+  group_id: 2
+  parameters:
+    element_budget: 40
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_25.0_step_0.05_rl_25_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 6
+  collection:
+    final_model_name: gamma_25.0_step_0.05_rl_40_budget_25_20k_final_model.zip
+    report_name: gamma_25.0_step_0.05_rl_40_budget_25_20k_training_report.pdf
+  combo_id: 16
+  group_id: 2
+  parameters:
+    element_budget: 25
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_25.0_step_0.05_rl_40_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 7
+  collection:
+    final_model_name: gamma_25.0_step_0.05_rl_40_budget_30_20k_final_model.zip
+    report_name: gamma_25.0_step_0.05_rl_40_budget_30_20k_training_report.pdf
+  combo_id: 17
+  group_id: 2
+  parameters:
+    element_budget: 30
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_25.0_step_0.05_rl_40_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 8
+  collection:
+    final_model_name: gamma_25.0_step_0.05_rl_40_budget_40_20k_final_model.zip
+    report_name: gamma_25.0_step_0.05_rl_40_budget_40_20k_training_report.pdf
+  combo_id: 18
+  group_id: 2
+  parameters:
+    element_budget: 40
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_25.0_step_0.05_rl_40_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 0
+  collection:
+    final_model_name: gamma_25.0_step_0.1_rl_10_budget_25_20k_final_model.zip
+    report_name: gamma_25.0_step_0.1_rl_10_budget_25_20k_training_report.pdf
+  combo_id: 19
+  group_id: 3
+  parameters:
+    element_budget: 25
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_25.0_step_0.1_rl_10_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 1
+  collection:
+    final_model_name: gamma_25.0_step_0.1_rl_10_budget_30_20k_final_model.zip
+    report_name: gamma_25.0_step_0.1_rl_10_budget_30_20k_training_report.pdf
+  combo_id: 20
+  group_id: 3
+  parameters:
+    element_budget: 30
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_25.0_step_0.1_rl_10_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 2
+  collection:
+    final_model_name: gamma_25.0_step_0.1_rl_10_budget_40_20k_final_model.zip
+    report_name: gamma_25.0_step_0.1_rl_10_budget_40_20k_training_report.pdf
+  combo_id: 21
+  group_id: 3
+  parameters:
+    element_budget: 40
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_25.0_step_0.1_rl_10_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 3
+  collection:
+    final_model_name: gamma_25.0_step_0.1_rl_25_budget_25_20k_final_model.zip
+    report_name: gamma_25.0_step_0.1_rl_25_budget_25_20k_training_report.pdf
+  combo_id: 22
+  group_id: 3
+  parameters:
+    element_budget: 25
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_25.0_step_0.1_rl_25_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 4
+  collection:
+    final_model_name: gamma_25.0_step_0.1_rl_25_budget_30_20k_final_model.zip
+    report_name: gamma_25.0_step_0.1_rl_25_budget_30_20k_training_report.pdf
+  combo_id: 23
+  group_id: 3
+  parameters:
+    element_budget: 30
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_25.0_step_0.1_rl_25_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 5
+  collection:
+    final_model_name: gamma_25.0_step_0.1_rl_25_budget_40_20k_final_model.zip
+    report_name: gamma_25.0_step_0.1_rl_25_budget_40_20k_training_report.pdf
+  combo_id: 24
+  group_id: 3
+  parameters:
+    element_budget: 40
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_25.0_step_0.1_rl_25_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 6
+  collection:
+    final_model_name: gamma_25.0_step_0.1_rl_40_budget_25_20k_final_model.zip
+    report_name: gamma_25.0_step_0.1_rl_40_budget_25_20k_training_report.pdf
+  combo_id: 25
+  group_id: 3
+  parameters:
+    element_budget: 25
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_25.0_step_0.1_rl_40_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 7
+  collection:
+    final_model_name: gamma_25.0_step_0.1_rl_40_budget_30_20k_final_model.zip
+    report_name: gamma_25.0_step_0.1_rl_40_budget_30_20k_training_report.pdf
+  combo_id: 26
+  group_id: 3
+  parameters:
+    element_budget: 30
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_25.0_step_0.1_rl_40_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 8
+  collection:
+    final_model_name: gamma_25.0_step_0.1_rl_40_budget_40_20k_final_model.zip
+    report_name: gamma_25.0_step_0.1_rl_40_budget_40_20k_training_report.pdf
+  combo_id: 27
+  group_id: 3
+  parameters:
+    element_budget: 40
+    gamma_c: 25.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_25.0_step_0.1_rl_40_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 0
+  collection:
+    final_model_name: gamma_50.0_step_0.025_rl_10_budget_25_20k_final_model.zip
+    report_name: gamma_50.0_step_0.025_rl_10_budget_25_20k_training_report.pdf
+  combo_id: 28
+  group_id: 4
+  parameters:
+    element_budget: 25
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_50.0_step_0.025_rl_10_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 1
+  collection:
+    final_model_name: gamma_50.0_step_0.025_rl_10_budget_30_20k_final_model.zip
+    report_name: gamma_50.0_step_0.025_rl_10_budget_30_20k_training_report.pdf
+  combo_id: 29
+  group_id: 4
+  parameters:
+    element_budget: 30
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_50.0_step_0.025_rl_10_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 2
+  collection:
+    final_model_name: gamma_50.0_step_0.025_rl_10_budget_40_20k_final_model.zip
+    report_name: gamma_50.0_step_0.025_rl_10_budget_40_20k_training_report.pdf
+  combo_id: 30
+  group_id: 4
+  parameters:
+    element_budget: 40
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_50.0_step_0.025_rl_10_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 3
+  collection:
+    final_model_name: gamma_50.0_step_0.025_rl_25_budget_25_20k_final_model.zip
+    report_name: gamma_50.0_step_0.025_rl_25_budget_25_20k_training_report.pdf
+  combo_id: 31
+  group_id: 4
+  parameters:
+    element_budget: 25
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_50.0_step_0.025_rl_25_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 4
+  collection:
+    final_model_name: gamma_50.0_step_0.025_rl_25_budget_30_20k_final_model.zip
+    report_name: gamma_50.0_step_0.025_rl_25_budget_30_20k_training_report.pdf
+  combo_id: 32
+  group_id: 4
+  parameters:
+    element_budget: 30
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_50.0_step_0.025_rl_25_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 5
+  collection:
+    final_model_name: gamma_50.0_step_0.025_rl_25_budget_40_20k_final_model.zip
+    report_name: gamma_50.0_step_0.025_rl_25_budget_40_20k_training_report.pdf
+  combo_id: 33
+  group_id: 4
+  parameters:
+    element_budget: 40
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_50.0_step_0.025_rl_25_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 6
+  collection:
+    final_model_name: gamma_50.0_step_0.025_rl_40_budget_25_20k_final_model.zip
+    report_name: gamma_50.0_step_0.025_rl_40_budget_25_20k_training_report.pdf
+  combo_id: 34
+  group_id: 4
+  parameters:
+    element_budget: 25
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_50.0_step_0.025_rl_40_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 7
+  collection:
+    final_model_name: gamma_50.0_step_0.025_rl_40_budget_30_20k_final_model.zip
+    report_name: gamma_50.0_step_0.025_rl_40_budget_30_20k_training_report.pdf
+  combo_id: 35
+  group_id: 4
+  parameters:
+    element_budget: 30
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_50.0_step_0.025_rl_40_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 8
+  collection:
+    final_model_name: gamma_50.0_step_0.025_rl_40_budget_40_20k_final_model.zip
+    report_name: gamma_50.0_step_0.025_rl_40_budget_40_20k_training_report.pdf
+  combo_id: 36
+  group_id: 4
+  parameters:
+    element_budget: 40
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_50.0_step_0.025_rl_40_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 0
+  collection:
+    final_model_name: gamma_50.0_step_0.05_rl_10_budget_25_20k_final_model.zip
+    report_name: gamma_50.0_step_0.05_rl_10_budget_25_20k_training_report.pdf
+  combo_id: 37
+  group_id: 5
+  parameters:
+    element_budget: 25
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_50.0_step_0.05_rl_10_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 1
+  collection:
+    final_model_name: gamma_50.0_step_0.05_rl_10_budget_30_20k_final_model.zip
+    report_name: gamma_50.0_step_0.05_rl_10_budget_30_20k_training_report.pdf
+  combo_id: 38
+  group_id: 5
+  parameters:
+    element_budget: 30
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_50.0_step_0.05_rl_10_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 2
+  collection:
+    final_model_name: gamma_50.0_step_0.05_rl_10_budget_40_20k_final_model.zip
+    report_name: gamma_50.0_step_0.05_rl_10_budget_40_20k_training_report.pdf
+  combo_id: 39
+  group_id: 5
+  parameters:
+    element_budget: 40
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_50.0_step_0.05_rl_10_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 3
+  collection:
+    final_model_name: gamma_50.0_step_0.05_rl_25_budget_25_20k_final_model.zip
+    report_name: gamma_50.0_step_0.05_rl_25_budget_25_20k_training_report.pdf
+  combo_id: 40
+  group_id: 5
+  parameters:
+    element_budget: 25
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_50.0_step_0.05_rl_25_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 4
+  collection:
+    final_model_name: gamma_50.0_step_0.05_rl_25_budget_30_20k_final_model.zip
+    report_name: gamma_50.0_step_0.05_rl_25_budget_30_20k_training_report.pdf
+  combo_id: 41
+  group_id: 5
+  parameters:
+    element_budget: 30
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_50.0_step_0.05_rl_25_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 5
+  collection:
+    final_model_name: gamma_50.0_step_0.05_rl_25_budget_40_20k_final_model.zip
+    report_name: gamma_50.0_step_0.05_rl_25_budget_40_20k_training_report.pdf
+  combo_id: 42
+  group_id: 5
+  parameters:
+    element_budget: 40
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_50.0_step_0.05_rl_25_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 6
+  collection:
+    final_model_name: gamma_50.0_step_0.05_rl_40_budget_25_20k_final_model.zip
+    report_name: gamma_50.0_step_0.05_rl_40_budget_25_20k_training_report.pdf
+  combo_id: 43
+  group_id: 5
+  parameters:
+    element_budget: 25
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_50.0_step_0.05_rl_40_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 7
+  collection:
+    final_model_name: gamma_50.0_step_0.05_rl_40_budget_30_20k_final_model.zip
+    report_name: gamma_50.0_step_0.05_rl_40_budget_30_20k_training_report.pdf
+  combo_id: 44
+  group_id: 5
+  parameters:
+    element_budget: 30
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_50.0_step_0.05_rl_40_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 8
+  collection:
+    final_model_name: gamma_50.0_step_0.05_rl_40_budget_40_20k_final_model.zip
+    report_name: gamma_50.0_step_0.05_rl_40_budget_40_20k_training_report.pdf
+  combo_id: 45
+  group_id: 5
+  parameters:
+    element_budget: 40
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_50.0_step_0.05_rl_40_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 0
+  collection:
+    final_model_name: gamma_50.0_step_0.1_rl_10_budget_25_20k_final_model.zip
+    report_name: gamma_50.0_step_0.1_rl_10_budget_25_20k_training_report.pdf
+  combo_id: 46
+  group_id: 6
+  parameters:
+    element_budget: 25
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_50.0_step_0.1_rl_10_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 1
+  collection:
+    final_model_name: gamma_50.0_step_0.1_rl_10_budget_30_20k_final_model.zip
+    report_name: gamma_50.0_step_0.1_rl_10_budget_30_20k_training_report.pdf
+  combo_id: 47
+  group_id: 6
+  parameters:
+    element_budget: 30
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_50.0_step_0.1_rl_10_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 2
+  collection:
+    final_model_name: gamma_50.0_step_0.1_rl_10_budget_40_20k_final_model.zip
+    report_name: gamma_50.0_step_0.1_rl_10_budget_40_20k_training_report.pdf
+  combo_id: 48
+  group_id: 6
+  parameters:
+    element_budget: 40
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_50.0_step_0.1_rl_10_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 3
+  collection:
+    final_model_name: gamma_50.0_step_0.1_rl_25_budget_25_20k_final_model.zip
+    report_name: gamma_50.0_step_0.1_rl_25_budget_25_20k_training_report.pdf
+  combo_id: 49
+  group_id: 6
+  parameters:
+    element_budget: 25
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_50.0_step_0.1_rl_25_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 4
+  collection:
+    final_model_name: gamma_50.0_step_0.1_rl_25_budget_30_20k_final_model.zip
+    report_name: gamma_50.0_step_0.1_rl_25_budget_30_20k_training_report.pdf
+  combo_id: 50
+  group_id: 6
+  parameters:
+    element_budget: 30
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_50.0_step_0.1_rl_25_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 5
+  collection:
+    final_model_name: gamma_50.0_step_0.1_rl_25_budget_40_20k_final_model.zip
+    report_name: gamma_50.0_step_0.1_rl_25_budget_40_20k_training_report.pdf
+  combo_id: 51
+  group_id: 6
+  parameters:
+    element_budget: 40
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_50.0_step_0.1_rl_25_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 6
+  collection:
+    final_model_name: gamma_50.0_step_0.1_rl_40_budget_25_20k_final_model.zip
+    report_name: gamma_50.0_step_0.1_rl_40_budget_25_20k_training_report.pdf
+  combo_id: 52
+  group_id: 6
+  parameters:
+    element_budget: 25
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_50.0_step_0.1_rl_40_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 7
+  collection:
+    final_model_name: gamma_50.0_step_0.1_rl_40_budget_30_20k_final_model.zip
+    report_name: gamma_50.0_step_0.1_rl_40_budget_30_20k_training_report.pdf
+  combo_id: 53
+  group_id: 6
+  parameters:
+    element_budget: 30
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_50.0_step_0.1_rl_40_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 8
+  collection:
+    final_model_name: gamma_50.0_step_0.1_rl_40_budget_40_20k_final_model.zip
+    report_name: gamma_50.0_step_0.1_rl_40_budget_40_20k_training_report.pdf
+  combo_id: 54
+  group_id: 6
+  parameters:
+    element_budget: 40
+    gamma_c: 50.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_50.0_step_0.1_rl_40_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 0
+  collection:
+    final_model_name: gamma_100.0_step_0.025_rl_10_budget_25_20k_final_model.zip
+    report_name: gamma_100.0_step_0.025_rl_10_budget_25_20k_training_report.pdf
+  combo_id: 55
+  group_id: 7
+  parameters:
+    element_budget: 25
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_100.0_step_0.025_rl_10_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 1
+  collection:
+    final_model_name: gamma_100.0_step_0.025_rl_10_budget_30_20k_final_model.zip
+    report_name: gamma_100.0_step_0.025_rl_10_budget_30_20k_training_report.pdf
+  combo_id: 56
+  group_id: 7
+  parameters:
+    element_budget: 30
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_100.0_step_0.025_rl_10_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 2
+  collection:
+    final_model_name: gamma_100.0_step_0.025_rl_10_budget_40_20k_final_model.zip
+    report_name: gamma_100.0_step_0.025_rl_10_budget_40_20k_training_report.pdf
+  combo_id: 57
+  group_id: 7
+  parameters:
+    element_budget: 40
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_100.0_step_0.025_rl_10_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 3
+  collection:
+    final_model_name: gamma_100.0_step_0.025_rl_25_budget_25_20k_final_model.zip
+    report_name: gamma_100.0_step_0.025_rl_25_budget_25_20k_training_report.pdf
+  combo_id: 58
+  group_id: 7
+  parameters:
+    element_budget: 25
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_100.0_step_0.025_rl_25_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 4
+  collection:
+    final_model_name: gamma_100.0_step_0.025_rl_25_budget_30_20k_final_model.zip
+    report_name: gamma_100.0_step_0.025_rl_25_budget_30_20k_training_report.pdf
+  combo_id: 59
+  group_id: 7
+  parameters:
+    element_budget: 30
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_100.0_step_0.025_rl_25_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 5
+  collection:
+    final_model_name: gamma_100.0_step_0.025_rl_25_budget_40_20k_final_model.zip
+    report_name: gamma_100.0_step_0.025_rl_25_budget_40_20k_training_report.pdf
+  combo_id: 60
+  group_id: 7
+  parameters:
+    element_budget: 40
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_100.0_step_0.025_rl_25_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 6
+  collection:
+    final_model_name: gamma_100.0_step_0.025_rl_40_budget_25_20k_final_model.zip
+    report_name: gamma_100.0_step_0.025_rl_40_budget_25_20k_training_report.pdf
+  combo_id: 61
+  group_id: 7
+  parameters:
+    element_budget: 25
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_100.0_step_0.025_rl_40_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 7
+  collection:
+    final_model_name: gamma_100.0_step_0.025_rl_40_budget_30_20k_final_model.zip
+    report_name: gamma_100.0_step_0.025_rl_40_budget_30_20k_training_report.pdf
+  combo_id: 62
+  group_id: 7
+  parameters:
+    element_budget: 30
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_100.0_step_0.025_rl_40_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 8
+  collection:
+    final_model_name: gamma_100.0_step_0.025_rl_40_budget_40_20k_final_model.zip
+    report_name: gamma_100.0_step_0.025_rl_40_budget_40_20k_training_report.pdf
+  combo_id: 63
+  group_id: 7
+  parameters:
+    element_budget: 40
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.025
+  paths:
+    directory: gamma_100.0_step_0.025_rl_40_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 0
+  collection:
+    final_model_name: gamma_100.0_step_0.05_rl_10_budget_25_20k_final_model.zip
+    report_name: gamma_100.0_step_0.05_rl_10_budget_25_20k_training_report.pdf
+  combo_id: 64
+  group_id: 8
+  parameters:
+    element_budget: 25
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_100.0_step_0.05_rl_10_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 1
+  collection:
+    final_model_name: gamma_100.0_step_0.05_rl_10_budget_30_20k_final_model.zip
+    report_name: gamma_100.0_step_0.05_rl_10_budget_30_20k_training_report.pdf
+  combo_id: 65
+  group_id: 8
+  parameters:
+    element_budget: 30
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_100.0_step_0.05_rl_10_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 2
+  collection:
+    final_model_name: gamma_100.0_step_0.05_rl_10_budget_40_20k_final_model.zip
+    report_name: gamma_100.0_step_0.05_rl_10_budget_40_20k_training_report.pdf
+  combo_id: 66
+  group_id: 8
+  parameters:
+    element_budget: 40
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_100.0_step_0.05_rl_10_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 3
+  collection:
+    final_model_name: gamma_100.0_step_0.05_rl_25_budget_25_20k_final_model.zip
+    report_name: gamma_100.0_step_0.05_rl_25_budget_25_20k_training_report.pdf
+  combo_id: 67
+  group_id: 8
+  parameters:
+    element_budget: 25
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_100.0_step_0.05_rl_25_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 4
+  collection:
+    final_model_name: gamma_100.0_step_0.05_rl_25_budget_30_20k_final_model.zip
+    report_name: gamma_100.0_step_0.05_rl_25_budget_30_20k_training_report.pdf
+  combo_id: 68
+  group_id: 8
+  parameters:
+    element_budget: 30
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_100.0_step_0.05_rl_25_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 5
+  collection:
+    final_model_name: gamma_100.0_step_0.05_rl_25_budget_40_20k_final_model.zip
+    report_name: gamma_100.0_step_0.05_rl_25_budget_40_20k_training_report.pdf
+  combo_id: 69
+  group_id: 8
+  parameters:
+    element_budget: 40
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_100.0_step_0.05_rl_25_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 6
+  collection:
+    final_model_name: gamma_100.0_step_0.05_rl_40_budget_25_20k_final_model.zip
+    report_name: gamma_100.0_step_0.05_rl_40_budget_25_20k_training_report.pdf
+  combo_id: 70
+  group_id: 8
+  parameters:
+    element_budget: 25
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_100.0_step_0.05_rl_40_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 7
+  collection:
+    final_model_name: gamma_100.0_step_0.05_rl_40_budget_30_20k_final_model.zip
+    report_name: gamma_100.0_step_0.05_rl_40_budget_30_20k_training_report.pdf
+  combo_id: 71
+  group_id: 8
+  parameters:
+    element_budget: 30
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_100.0_step_0.05_rl_40_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 8
+  collection:
+    final_model_name: gamma_100.0_step_0.05_rl_40_budget_40_20k_final_model.zip
+    report_name: gamma_100.0_step_0.05_rl_40_budget_40_20k_training_report.pdf
+  combo_id: 72
+  group_id: 8
+  parameters:
+    element_budget: 40
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.05
+  paths:
+    directory: gamma_100.0_step_0.05_rl_40_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 0
+  collection:
+    final_model_name: gamma_100.0_step_0.1_rl_10_budget_25_20k_final_model.zip
+    report_name: gamma_100.0_step_0.1_rl_10_budget_25_20k_training_report.pdf
+  combo_id: 73
+  group_id: 9
+  parameters:
+    element_budget: 25
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_100.0_step_0.1_rl_10_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 1
+  collection:
+    final_model_name: gamma_100.0_step_0.1_rl_10_budget_30_20k_final_model.zip
+    report_name: gamma_100.0_step_0.1_rl_10_budget_30_20k_training_report.pdf
+  combo_id: 74
+  group_id: 9
+  parameters:
+    element_budget: 30
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_100.0_step_0.1_rl_10_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 2
+  collection:
+    final_model_name: gamma_100.0_step_0.1_rl_10_budget_40_20k_final_model.zip
+    report_name: gamma_100.0_step_0.1_rl_10_budget_40_20k_training_report.pdf
+  combo_id: 75
+  group_id: 9
+  parameters:
+    element_budget: 40
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 10
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_100.0_step_0.1_rl_10_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 3
+  collection:
+    final_model_name: gamma_100.0_step_0.1_rl_25_budget_25_20k_final_model.zip
+    report_name: gamma_100.0_step_0.1_rl_25_budget_25_20k_training_report.pdf
+  combo_id: 76
+  group_id: 9
+  parameters:
+    element_budget: 25
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_100.0_step_0.1_rl_25_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 4
+  collection:
+    final_model_name: gamma_100.0_step_0.1_rl_25_budget_30_20k_final_model.zip
+    report_name: gamma_100.0_step_0.1_rl_25_budget_30_20k_training_report.pdf
+  combo_id: 77
+  group_id: 9
+  parameters:
+    element_budget: 30
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_100.0_step_0.1_rl_25_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 5
+  collection:
+    final_model_name: gamma_100.0_step_0.1_rl_25_budget_40_20k_final_model.zip
+    report_name: gamma_100.0_step_0.1_rl_25_budget_40_20k_training_report.pdf
+  combo_id: 78
+  group_id: 9
+  parameters:
+    element_budget: 40
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 25
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_100.0_step_0.1_rl_25_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 6
+  collection:
+    final_model_name: gamma_100.0_step_0.1_rl_40_budget_25_20k_final_model.zip
+    report_name: gamma_100.0_step_0.1_rl_40_budget_25_20k_training_report.pdf
+  combo_id: 79
+  group_id: 9
+  parameters:
+    element_budget: 25
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_100.0_step_0.1_rl_40_budget_25
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 7
+  collection:
+    final_model_name: gamma_100.0_step_0.1_rl_40_budget_30_20k_final_model.zip
+    report_name: gamma_100.0_step_0.1_rl_40_budget_30_20k_training_report.pdf
+  combo_id: 80
+  group_id: 9
+  parameters:
+    element_budget: 30
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_100.0_step_0.1_rl_40_budget_30
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+- array_index: 8
+  collection:
+    final_model_name: gamma_100.0_step_0.1_rl_40_budget_40_20k_final_model.zip
+    report_name: gamma_100.0_step_0.1_rl_40_budget_40_20k_training_report.pdf
+  combo_id: 81
+  group_id: 9
+  parameters:
+    element_budget: 40
+    gamma_c: 100.0
+    rl_iterations_per_timestep: 40
+    step_domain_fraction: 0.1
+  paths:
+    directory: gamma_100.0_step_0.1_rl_40_budget_40
+    expected_files:
+    - final_model.zip
+    - training_report.pdf
+    - monitor.csv
+    - config.yaml
+  status:
+    collected: false
+    completed: false
+    completion_time: null
+    job_id: null
+    running: false
+    submitted: false
+directory_structure:
+  base_path: results/full_param_sweep_2025-05-29_105232
+  collection_naming: gamma_{gamma_c}_step_{step_domain}_rl_{rl_iterations}_budget_{budget}_20k
+  naming_convention: gamma_{gamma_c}_step_{step_domain}_rl_{rl_iterations}_budget_{budget}
+groups:
+- combinations_count: 9
+  group_id: 1
+  group_name: gamma_25.0_step_0.025
+  job_id: null
+  slurm_script: group_01.slurm
+  status: not_submitted
+- combinations_count: 9
+  group_id: 2
+  group_name: gamma_25.0_step_0.05
+  job_id: null
+  slurm_script: group_02.slurm
+  status: not_submitted
+- combinations_count: 9
+  group_id: 3
+  group_name: gamma_25.0_step_0.1
+  job_id: null
+  slurm_script: group_03.slurm
+  status: not_submitted
+- combinations_count: 9
+  group_id: 4
+  group_name: gamma_50.0_step_0.025
+  job_id: null
+  slurm_script: group_04.slurm
+  status: not_submitted
+- combinations_count: 9
+  group_id: 5
+  group_name: gamma_50.0_step_0.05
+  job_id: null
+  slurm_script: group_05.slurm
+  status: not_submitted
+- combinations_count: 9
+  group_id: 6
+  group_name: gamma_50.0_step_0.1
+  job_id: null
+  slurm_script: group_06.slurm
+  status: not_submitted
+- combinations_count: 9
+  group_id: 7
+  group_name: gamma_100.0_step_0.025
+  job_id: null
+  slurm_script: group_07.slurm
+  status: not_submitted
+- combinations_count: 9
+  group_id: 8
+  group_name: gamma_100.0_step_0.05
+  job_id: null
+  slurm_script: group_08.slurm
+  status: not_submitted
+- combinations_count: 9
+  group_id: 9
+  group_name: gamma_100.0_step_0.1
+  job_id: null
+  slurm_script: group_09.slurm
+  status: not_submitted
+sweep_info:
+  parameters:
+    element_budget:
+    - 25
+    - 30
+    - 40
+    gamma_c:
+    - 25.0
+    - 50.0
+    - 100.0
+    rl_iterations_per_timestep:
+    - 10
+    - 25
+    - 40
+    step_domain_fraction:
+    - 0.025
+    - 0.05
+    - 0.1
+  timestamp: 2025-05-29_105232
+  total_combinations: 81
+  total_groups: 9
+  total_timesteps: 50000

@@ -31,7 +31,7 @@ def create_base_config_template():
             }
         },
         'training': {
-            'total_timesteps': 20000,
+            'total_timesteps': 50000,
             'algorithm': 'A2C',
             'learning_rate': 0.0003,
             'n_steps': 5,
