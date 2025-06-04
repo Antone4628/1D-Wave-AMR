@@ -1,10 +1,33 @@
 # Project Code Structure
 
-Auto-generated on: Tue May 27 06:20:46 MDT 2025
+Auto-generated on: Mon Jun  2 16:43:07 MDT 2025
 Project: 1D_wave_AMR
 
 ```
 1D_wave_AMR/
+├── analysis
+│   ├── automated_reports
+│   │   └── quick_overview.py
+│   ├── data
+│   │   ├── exports
+│   │   ├── processed
+│   │   │   └── full_param_sweep_data_20250601_105453
+│   │   └── raw
+│   │       └── full_param_sweep_data_20250601_105453
+│   ├── data_management
+│   │   ├── __init__.py
+│   │   ├── data_loader.py
+│   │   └── transfer_json_data.py
+│   ├── interactive_analysis
+│   ├── outputs
+│   │   ├── figures
+│   │   ├── reports
+│   │   └── thesis_assets
+│   ├── statistical_analysis
+│   │   └── __init__.py
+│   └── utilities
+│       ├── __init__.py
+│       └── config.py
 ├── animations
 │   ├── 1D_Wave_AMR_refdef_GIF.gif
 │   ├── Gaussian_Pulse_Advection_AMR.gif
@@ -16,7 +39,16 @@ Project: 1D_wave_AMR
 │   ├── RL_MODEL_AMR_1D_Wave_GIF.gif
 │   ├── Sequential_RL_AMR_1D_Wave_GIF.gif
 │   ├── Sequential_RL_AMR_Single_Round_1D_Wave_GIF.gif
-│   └── Solver_Class_1D_Wave_AMR_refdef_GIF.gif
+│   ├── Sequential_RL_AMR_Single_Round_1D_Wave_step_domain_0.05_20k_GIF.gif
+│   ├── Sequential_RL_AMR_Single_Round_1D_Wave_step_domain_0.15_GIF.gif
+│   ├── Solver_Class_1D_Wave_AMR_refdef_GIF.gif
+│   ├── step_domain_0.05_50k_Video.mp4
+│   ├── step_domain_0.15_20k_GIF.gif
+│   ├── step_domain_0.15_20k_Video.mp4
+│   └── step_domain_0.15_50k_Video.mp4
+├── data
+│   └── raw
+│       └── full_param_sweep_data_20250601_105453
 ├── debug_output
 │   ├── plots
 │   │   ├── accuracy_penalty_ratio_gamma_100.0.png
@@ -98,6 +130,8 @@ Project: 1D_wave_AMR
 │   ├── generate_pdf_report.py
 │   ├── run_experiments.py
 │   ├── run_experiments_mixed.py
+│   ├── run_experiments_mixed_gpu.py
+│   ├── run_experiments_mixed_no_timestamp.py
 │   ├── run_experiments_options.py
 │   └── test_mixed_approach.py
 ├── logs
@@ -360,6 +394,87 @@ Project: 1D_wave_AMR
 │   ├── 5_without_balance.png
 │   ├── evolution_with_balance.png
 │   └── evolution_without_balance.png
+├── models
+│   └── transferred
+│       ├── full_sweep_data_20250601
+│       │   ├── gamma_100.0_step_0.025_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_10_budget_40_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_25_budget_25_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_25_budget_30_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_25_budget_40_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_40_budget_25_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_40_budget_30_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_40_budget_40_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_10_budget_25_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_10_budget_40_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_25_budget_25_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_25_budget_30_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_25_budget_40_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_40_budget_25_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_40_budget_30_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_40_budget_40_final_model.zip
+│       │   ├── gamma_100.0_step_0.1_rl_10_budget_25_final_model.zip
+│       │   ├── gamma_100.0_step_0.1_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_10_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_10_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_25_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_25_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_25_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_40_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_40_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_40_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_10_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_10_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_25_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_25_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_25_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_40_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_40_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_40_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_10_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_10_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_25_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_25_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_25_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_40_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_40_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_40_budget_40_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_10_budget_25_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_10_budget_40_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_25_budget_25_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_25_budget_30_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_25_budget_40_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_40_budget_25_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_40_budget_30_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_40_budget_40_final_model.zip
+│       │   ├── gamma_50.0_step_0.05_rl_10_budget_25_final_model.zip
+│       │   └── gamma_50.0_step_0.05_rl_10_budget_30_final_model.zip
+│       ├── step_domain_0
+│       │   ├── _stable_baselines3_version
+│       │   ├── data
+│       │   ├── policy.optimizer.pth
+│       │   ├── policy.pth
+│       │   ├── pytorch_variables.pth
+│       │   └── system_info.txt
+│       ├── step_domain_0-2
+│       │   ├── _stable_baselines3_version
+│       │   ├── data
+│       │   ├── policy.optimizer.pth
+│       │   ├── policy.pth
+│       │   ├── pytorch_variables.pth
+│       │   └── system_info.txt
+│       ├── step_domain_0.05_20ksteps_final_model.zip
+│       ├── step_domain_0.05_50k_final_model.zip
+│       ├── step_domain_0.05_final_model.zip
+│       ├── step_domain_0.10_final_model.zip
+│       ├── step_domain_0.15_20ksteps_final_model.zip
+│       ├── step_domain_0.15_50k_final_model.zip
+│       └── step_domain_0.15_final_model.zip
 ├── notebooks
 │   └── interactive_amr_testing.ipynb
 ├── numerical
@@ -375,7 +490,9 @@ Project: 1D_wave_AMR
 │   ├── callbacks
 │   │   ├── __init__.py
 │   │   ├── enhanced_callback.py
+│   │   ├── enhanced_callback_data.py
 │   │   ├── enhanced_callback_mixed.py
+│   │   ├── enhanced_callback_mixed_backup.py
 │   │   ├── enhanced_callback_options.py
 │   │   ├── enhanced_callback_v2.py
 │   │   └── simple_monitor_callback.py
@@ -532,24 +649,37 @@ Project: 1D_wave_AMR
 │   │   └── train_test.py
 │   ├── __init__.py
 │   ├── mixed_class_test.py
-│   └── mixed_class_test_loop.py
+│   ├── mixed_class_test_loop.py
+│   └── test_enhanced_callback.py
 ├── tools
 │   ├── __init__.py
 │   ├── analyze_rl_performance.py
 │   ├── analyze_tensorboard.py
 │   ├── analyze_tensorboard_pdf.py
 │   ├── CODESTRUCTURE.md
-│   └── generate_codestructure.py
+│   ├── failed_transfers.txt
+│   ├── generate_codestructure.py
+│   ├── generate_model_transfer_commands.py
+│   ├── generate_robust_model_transfer.py
+│   ├── robust_transfer_commands.sh
+│   └── transfer_commands.sh
 ├── training
 │   └── utils
 ├── CODESTRUCTURE.md
+├── create_base_config.py
+├── create_manifest_system.py
+├── create_slurm_scripts.py
+├── create_test_sweep.py
+├── monitor_param_sweep.py
 ├── project_structure.md
 ├── README.md
 ├── requirements.txt
 ├── setup.py
+├── setup_local_analysis.py
 ├── temp_config_1.yaml
 ├── temp_config_2.yaml
-└── temp_config_3.yaml
+├── temp_config_3.yaml
+└── test_minimal_training.py
 ```
 
 ## Key Directories
