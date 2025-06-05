@@ -9,12 +9,22 @@ import pandas as pd
 from pathlib import Path
 import numpy as np
 import re
+import os
 from typing import Dict, List, Tuple, Optional
 import sys
 
 # Add utilities to path
-sys.path.append(str(Path(__file__).parent.parent / "utilities"))
-from config import RAW_DATA_DIR, PROCESSED_DATA_DIR, PARAMETER_SPACE
+# sys.path.append(str(Path(__file__).parent.parent / "utilities"))
+# from utilities.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, PARAMETER_SPACE
+
+# Get absolute path to project root using established pattern
+PROJECT_ROOT = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), 
+    '..',  # Go up to analysis/
+    '..'   # Go up to main project root (1D_wave_AMR/)
+))
+sys.path.append(PROJECT_ROOT)
+from analysis.utilities.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, PARAMETER_SPACE
 
 class ParameterSweepLoader:
     """Load and process parameter sweep data"""

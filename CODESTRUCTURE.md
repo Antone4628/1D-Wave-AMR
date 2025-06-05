@@ -1,6 +1,6 @@
 # Project Code Structure
 
-Auto-generated on: Mon Jun  2 16:43:07 MDT 2025
+Auto-generated on: Wed Jun  4 07:36:32 MDT 2025
 Project: 1D_wave_AMR
 
 ```
@@ -21,6 +21,9 @@ Project: 1D_wave_AMR
 │   ├── interactive_analysis
 │   ├── outputs
 │   │   ├── figures
+│   │   │   ├── convergence_by_gamma.png
+│   │   │   ├── correlation_heatmap.png
+│   │   │   └── training_duration.png
 │   │   ├── reports
 │   │   └── thesis_assets
 │   ├── statistical_analysis
