@@ -777,8 +777,15 @@ class ANOVAAnalyzer:
 
 def main():
     """Run complete ANOVA analysis."""
+    import sys
     
-    analyzer = ANOVAAnalyzer()
+    # Use command line argument or default
+    if len(sys.argv) > 1:
+        sweep_name = sys.argv[1]
+    else:
+        sweep_name = CURRENT_SWEEP
+    
+    analyzer = ANOVAAnalyzer(sweep_name)
     results = analyzer.run_complete_analysis()
     
     return results

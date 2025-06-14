@@ -246,8 +246,13 @@ def quick_load_sweep(sweep_name: str) -> pd.DataFrame:
         return df
 
 if __name__ == "__main__":
-    # Example usage
-    sweep_name = "full_param_sweep_data_20250601_105453"
+    import sys
+    
+    # Use command line argument or default
+    if len(sys.argv) > 1:
+        sweep_name = sys.argv[1]
+    else:
+        sweep_name = "full_param_sweep_data_20250601_105453"
     
     print(f"Loading parameter sweep: {sweep_name}")
     
@@ -260,6 +265,6 @@ if __name__ == "__main__":
     # Save processed data
     loader.save_processed_data(df)
     
-    print(f"\\n📋 Data summary:")
+    print(f"\n📋 Data summary:")
     print(f"Shape: {df.shape}")
     print(f"Parameters: {df[['gamma_c', 'step_domain_fraction', 'rl_iterations_per_timestep', 'element_budget']].nunique()}")

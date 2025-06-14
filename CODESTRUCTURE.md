@@ -1,6 +1,6 @@
 # Project Code Structure
 
-Auto-generated on: Wed Jun  4 07:36:32 MDT 2025
+Auto-generated on: Thu Jun 12 20:21:22 MDT 2025
 Project: 1D_wave_AMR
 
 ```
@@ -10,27 +10,50 @@ Project: 1D_wave_AMR
 │   │   └── quick_overview.py
 │   ├── data
 │   │   ├── exports
+│   │   │   ├── anova_results_20250605_074900.json
+│   │   │   ├── anova_results_20250611_155811.json
+│   │   │   └── anova_results_20250612_072903.json
+│   │   ├── models
+│   │   │   └── session3_100k_uniform
 │   │   ├── processed
-│   │   │   └── full_param_sweep_data_20250601_105453
+│   │   │   ├── full_param_sweep_data_20250601_105453
+│   │   │   └── session3_100k_uniform
 │   │   └── raw
-│   │       └── full_param_sweep_data_20250601_105453
+│   │       ├── full_param_sweep_data_20250601_105453
+│   │       └── session3_100k_uniform
 │   ├── data_management
 │   │   ├── __init__.py
 │   │   ├── data_loader.py
-│   │   └── transfer_json_data.py
+│   │   ├── debug_script_commands.py
+│   │   ├── simple_transfer_for_anova.py
+│   │   ├── transfer_analysis_files.py
+│   │   ├── transfer_json_data.py
+│   │   └── transfer_model_files.py
 │   ├── interactive_analysis
+│   ├── model_performance
+│   │   ├── dg_wave_solver_evaluation.py
+│   │   ├── model_marker_evaluation.py
+│   │   └── single_model_runner.py
 │   ├── outputs
 │   │   ├── figures
+│   │   │   ├── anova_analysis_20250605_074855.pdf
+│   │   │   ├── anova_analysis_20250611_155806.pdf
+│   │   │   ├── anova_analysis_20250612_072858.pdf
 │   │   │   ├── convergence_by_gamma.png
 │   │   │   ├── correlation_heatmap.png
 │   │   │   └── training_duration.png
 │   │   ├── reports
 │   │   └── thesis_assets
 │   ├── statistical_analysis
-│   │   └── __init__.py
-│   └── utilities
-│       ├── __init__.py
-│       └── config.py
+│   │   ├── data
+│   │   │   └── processed
+│   │   ├── __init__.py
+│   │   ├── anova_analysis.py
+│   │   └── test_imports.py
+│   ├── utilities
+│   │   ├── __init__.py
+│   │   └── config.py
+│   └── data_sample.py
 ├── animations
 │   ├── 1D_Wave_AMR_refdef_GIF.gif
 │   ├── Gaussian_Pulse_Advection_AMR.gif
@@ -682,6 +705,8 @@ Project: 1D_wave_AMR
 ├── temp_config_1.yaml
 ├── temp_config_2.yaml
 ├── temp_config_3.yaml
+├── test_csv_transfer.csv
+├── test_manual_transfer.json
 └── test_minimal_training.py
 ```
 
