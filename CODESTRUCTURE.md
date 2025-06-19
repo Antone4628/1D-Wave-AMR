@@ -1,5 +1,6 @@
 # Project Code Structure
 
+<<<<<<< HEAD
 Auto-generated on: Sun Jun 15 08:12:22 MDT 2025
 Project: 1D-Wave-AMR
 
@@ -87,6 +88,80 @@ Project: 1D-Wave-AMR
 │   ├── gamma_50.0_step_0.1_rl_40_budget_25_50k_training_report.pdf
 │   ├── gamma_50.0_step_0.1_rl_40_budget_30_50k_training_report.pdf
 │   └── gamma_50.0_step_0.1_rl_40_budget_40_50k_training_report.pdf
+=======
+Auto-generated on: Mon Jun  2 16:43:07 MDT 2025
+Project: 1D_wave_AMR
+
+```
+1D_wave_AMR/
+├── analysis
+│   ├── automated_reports
+│   │   └── quick_overview.py
+│   ├── data
+│   │   ├── exports
+│   │   ├── processed
+│   │   │   └── full_param_sweep_data_20250601_105453
+│   │   └── raw
+│   │       └── full_param_sweep_data_20250601_105453
+│   ├── data_management
+│   │   ├── __init__.py
+│   │   ├── data_loader.py
+│   │   └── transfer_json_data.py
+│   ├── interactive_analysis
+│   ├── outputs
+│   │   ├── figures
+│   │   ├── reports
+│   │   └── thesis_assets
+│   ├── statistical_analysis
+│   │   └── __init__.py
+│   └── utilities
+│       ├── __init__.py
+│       └── config.py
+├── animations
+│   ├── 1D_Wave_AMR_refdef_GIF.gif
+│   ├── Gaussian_Pulse_Advection_AMR.gif
+│   ├── Gaussian_Pulse_Advection_Snapshots.png
+│   ├── Mixed_model_RL_AMR_1D_Wave_GIF.gif
+│   ├── RL_AMR_1D_Wave_GIF 2.gif
+│   ├── RL_AMR_1D_Wave_GIF.gif
+│   ├── RL_Driven_AMR_Wave_Solver.gif
+│   ├── RL_MODEL_AMR_1D_Wave_GIF.gif
+│   ├── Sequential_RL_AMR_1D_Wave_GIF.gif
+│   ├── Sequential_RL_AMR_Single_Round_1D_Wave_GIF.gif
+│   ├── Sequential_RL_AMR_Single_Round_1D_Wave_step_domain_0.05_20k_GIF.gif
+│   ├── Sequential_RL_AMR_Single_Round_1D_Wave_step_domain_0.15_GIF.gif
+│   ├── Solver_Class_1D_Wave_AMR_refdef_GIF.gif
+│   ├── step_domain_0.05_50k_Video.mp4
+│   ├── step_domain_0.15_20k_GIF.gif
+│   ├── step_domain_0.15_20k_Video.mp4
+│   └── step_domain_0.15_50k_Video.mp4
+├── data
+│   └── raw
+│       └── full_param_sweep_data_20250601_105453
+├── debug_output
+│   ├── plots
+│   │   ├── accuracy_penalty_ratio_gamma_100.0.png
+│   │   ├── accuracy_penalty_ratio_gamma_25.0.png
+│   │   ├── accuracy_penalty_ratio_gamma_50.0.png
+│   │   ├── barrier_function_gamma_100.0.png
+│   │   ├── barrier_function_gamma_25.0.png
+│   │   ├── barrier_function_gamma_50.0.png
+│   │   ├── budget_threshold_elements_gamma_100.0.png
+│   │   ├── budget_threshold_elements_gamma_25.0.png
+│   │   ├── budget_threshold_elements_gamma_50.0.png
+│   │   ├── elements_resources_gamma_25.0.png
+│   │   ├── log_delta_u_gamma_25.0.png
+│   │   ├── reward_at_budget_gamma_100.0.png
+│   │   ├── reward_at_budget_gamma_25.0.png
+│   │   ├── reward_at_budget_gamma_50.0.png
+│   │   ├── reward_components_gamma_25.0.png
+│   │   └── reward_vs_delta_u_gamma_25.0.png
+│   ├── budget_test_gamma_100.0.csv
+│   ├── budget_test_gamma_25.0.csv
+│   ├── budget_test_gamma_50.0.csv
+│   ├── reward_debug.log
+│   └── reward_debug_gamma_25.0.csv
+>>>>>>> f074118a9b4f03455a34c7eb2e782030736266b6
 ├── experiments
 │   ├── configs
 │   │   ├── archive
@@ -151,6 +226,7 @@ Project: 1D-Wave-AMR
 │   │       └── run_20250524_090233
 │   ├── run_experiments_mixed.py
 │   ├── run_experiments_mixed_gpu.py
+<<<<<<< HEAD
 │   └── test_mixed_approach.py
 ├── logs
 │   ├── param_sweep
@@ -1046,6 +1122,352 @@ Project: 1D-Wave-AMR
 │   ├── test_param_sweep_1888920_0.out
 │   ├── test_param_sweep_1888920_1.err
 │   └── test_param_sweep_1888920_1.out
+=======
+│   ├── run_experiments_mixed_no_timestamp.py
+│   ├── run_experiments_options.py
+│   └── test_mixed_approach.py
+├── logs
+│   ├── best_model
+│   ├── checkpoints
+│   ├── eval_results
+│   ├── tensorboard
+│   │   └── A2C_1
+│   │       └── events.out.tfevents.1737814772.MacBookPro.60897.0
+│   ├── test_tensorboard
+│   │   ├── A2C_1
+│   │   │   └── events.out.tfevents.1739824577.MacBookPro.392.0
+│   │   └── A2C_2
+│   │       └── events.out.tfevents.1739825229.MacBookPro.1043.0
+│   ├── training_20250220_072106
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250220_072705
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250220_073159
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250220_075239
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250220_075430
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250220_194115
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250220_194414
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250220_195108
+│   │   └── monitor.csv
+│   ├── training_20250220_195326
+│   │   └── monitor.csv
+│   ├── training_20250220_200552
+│   │   └── monitor.csv
+│   ├── training_20250220_201951
+│   │   └── monitor.csv
+│   ├── training_20250220_202212
+│   │   └── monitor.csv
+│   ├── training_20250220_202600
+│   │   └── monitor.csv
+│   ├── training_20250220_202721
+│   │   └── monitor.csv
+│   ├── training_20250220_203029
+│   │   └── monitor.csv
+│   ├── training_20250220_203535
+│   │   └── monitor.csv
+│   ├── training_20250221_063400
+│   │   └── monitor.csv
+│   ├── training_20250221_071239
+│   │   └── monitor.csv
+│   ├── training_20250221_071819
+│   │   └── monitor.csv
+│   ├── training_20250221_071947
+│   │   └── monitor.csv
+│   ├── training_20250221_074953
+│   │   └── monitor.csv
+│   ├── training_20250221_080301
+│   │   └── monitor.csv
+│   ├── training_20250221_081933
+│   │   └── monitor.csv
+│   ├── training_20250221_082420
+│   │   └── monitor.csv
+│   ├── training_20250223_090607
+│   │   └── monitor.csv
+│   ├── training_20250223_090919
+│   │   └── monitor.csv
+│   ├── training_20250223_101631
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250223_102536
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250223_102956
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250223_111408
+│   │   └── monitor.csv
+│   ├── training_20250223_111445
+│   │   └── monitor.csv
+│   ├── training_20250223_111849
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250223_112003
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_053313
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_055154
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_055651
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_055754
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_061134
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_061653
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_061958
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_062340
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_062745
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_080931
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_082307
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_082407
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_082807
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_083247
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_083351
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_083724
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_083841
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_083911
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_084213
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_155056
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_155658
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_200830
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_202113
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_202834
+│   │   ├── plots
+│   │   │   └── test_plot.png
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_203925
+│   │   ├── plots
+│   │   │   └── test_plot.png
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_204546
+│   │   ├── plots
+│   │   │   ├── final_rewards_plot.png
+│   │   │   └── test_plot.png
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_205833
+│   │   ├── plots
+│   │   │   └── test_plot.png
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250224_210926
+│   │   ├── plots
+│   │   │   ├── final_rewards_plot.png
+│   │   │   └── test_plot.png
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_032722
+│   │   └── plots
+│   │       └── test_plot.png
+│   ├── training_20250225_032858
+│   │   ├── plots
+│   │   │   ├── final_rewards_plot.png
+│   │   │   └── test_plot.png
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_033013
+│   │   ├── plots
+│   │   │   ├── final_rewards_plot.png
+│   │   │   └── test_plot.png
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_035156
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_035430
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_035705
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_040737
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_040834
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_041238
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_041701
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_092317
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_094114
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_143231
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_143926
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_144029
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_144354
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── training_20250225_165946
+│   │   ├── final_model.zip
+│   │   └── monitor.csv
+│   ├── final_model.zip
+│   └── monitor.csv
+├── mesh_evolution
+│   ├── 0_initial_with_balance.png
+│   ├── 0_initial_without_balance.png
+│   ├── 1_with_balance.png
+│   ├── 1_without_balance.png
+│   ├── 2_with_balance.png
+│   ├── 2_without_balance.png
+│   ├── 3_with_balance.png
+│   ├── 3_without_balance.png
+│   ├── 4_with_balance.png
+│   ├── 4_without_balance.png
+│   ├── 5_with_balance.png
+│   ├── 5_without_balance.png
+│   ├── evolution_with_balance.png
+│   └── evolution_without_balance.png
+├── models
+│   └── transferred
+│       ├── full_sweep_data_20250601
+│       │   ├── gamma_100.0_step_0.025_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_10_budget_40_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_25_budget_25_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_25_budget_30_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_25_budget_40_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_40_budget_25_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_40_budget_30_final_model.zip
+│       │   ├── gamma_100.0_step_0.025_rl_40_budget_40_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_10_budget_25_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_10_budget_40_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_25_budget_25_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_25_budget_30_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_25_budget_40_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_40_budget_25_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_40_budget_30_final_model.zip
+│       │   ├── gamma_100.0_step_0.05_rl_40_budget_40_final_model.zip
+│       │   ├── gamma_100.0_step_0.1_rl_10_budget_25_final_model.zip
+│       │   ├── gamma_100.0_step_0.1_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_10_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_10_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_25_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_25_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_25_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_40_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_40_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.025_rl_40_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_10_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_10_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_25_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_25_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_25_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_40_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_40_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.05_rl_40_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_10_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_10_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_25_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_25_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_25_budget_40_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_40_budget_25_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_40_budget_30_final_model.zip
+│       │   ├── gamma_25.0_step_0.1_rl_40_budget_40_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_10_budget_25_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_10_budget_30_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_10_budget_40_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_25_budget_25_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_25_budget_30_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_25_budget_40_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_40_budget_25_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_40_budget_30_final_model.zip
+│       │   ├── gamma_50.0_step_0.025_rl_40_budget_40_final_model.zip
+│       │   ├── gamma_50.0_step_0.05_rl_10_budget_25_final_model.zip
+│       │   └── gamma_50.0_step_0.05_rl_10_budget_30_final_model.zip
+│       ├── step_domain_0
+│       │   ├── _stable_baselines3_version
+│       │   ├── data
+│       │   ├── policy.optimizer.pth
+│       │   ├── policy.pth
+│       │   ├── pytorch_variables.pth
+│       │   └── system_info.txt
+│       ├── step_domain_0-2
+│       │   ├── _stable_baselines3_version
+│       │   ├── data
+│       │   ├── policy.optimizer.pth
+│       │   ├── policy.pth
+│       │   ├── pytorch_variables.pth
+│       │   └── system_info.txt
+│       ├── step_domain_0.05_20ksteps_final_model.zip
+│       ├── step_domain_0.05_50k_final_model.zip
+│       ├── step_domain_0.05_final_model.zip
+│       ├── step_domain_0.10_final_model.zip
+│       ├── step_domain_0.15_20ksteps_final_model.zip
+│       ├── step_domain_0.15_50k_final_model.zip
+│       └── step_domain_0.15_final_model.zip
+>>>>>>> f074118a9b4f03455a34c7eb2e782030736266b6
 ├── notebooks
 │   └── interactive_amr_testing.ipynb
 ├── numerical
@@ -6753,6 +7175,7 @@ Project: 1D-Wave-AMR
 │   ├── analyze_tensorboard.py
 │   ├── analyze_tensorboard_pdf.py
 │   ├── CODESTRUCTURE.md
+<<<<<<< HEAD
 │   ├── generate_codestructure.py
 │   └── hpc_data_survey.py
 ├── CODESTRUCTURE.md
@@ -6760,6 +7183,18 @@ Project: 1D-Wave-AMR
 ├── create_base_config.py
 ├── create_data_export_scripts.py
 ├── create_data_export_scripts_original.py
+=======
+│   ├── failed_transfers.txt
+│   ├── generate_codestructure.py
+│   ├── generate_model_transfer_commands.py
+│   ├── generate_robust_model_transfer.py
+│   ├── robust_transfer_commands.sh
+│   └── transfer_commands.sh
+├── training
+│   └── utils
+├── CODESTRUCTURE.md
+├── create_base_config.py
+>>>>>>> f074118a9b4f03455a34c7eb2e782030736266b6
 ├── create_manifest_system.py
 ├── create_slurm_scripts.py
 ├── create_test_sweep.py
@@ -6768,9 +7203,15 @@ Project: 1D-Wave-AMR
 ├── README.md
 ├── requirements.txt
 ├── setup.py
+<<<<<<< HEAD
 ├── submit_param_sweep.sh
 ├── submit_param_sweep_data.sh
 ├── submit_test_sweep.sh
+=======
+├── setup_local_analysis.py
+├── temp_config_1.yaml
+├── temp_config_2.yaml
+>>>>>>> f074118a9b4f03455a34c7eb2e782030736266b6
 ├── temp_config_3.yaml
 └── test_minimal_training.py
 ```

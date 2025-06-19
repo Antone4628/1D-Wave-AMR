@@ -103,7 +103,7 @@ def main():
     ]
     
     # Write to file
-    output_file = "CODESTRUCTURE.md"
+    output_file = "BORAH_CODESTRUCTURE.md"
     with open(output_file, 'w') as f:
         f.write('\n'.join(header + tree_lines + footer))
     
