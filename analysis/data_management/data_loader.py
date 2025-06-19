@@ -9,12 +9,22 @@ import pandas as pd
 from pathlib import Path
 import numpy as np
 import re
+import os
 from typing import Dict, List, Tuple, Optional
 import sys
 
 # Add utilities to path
-sys.path.append(str(Path(__file__).parent.parent / "utilities"))
-from config import RAW_DATA_DIR, PROCESSED_DATA_DIR, PARAMETER_SPACE
+# sys.path.append(str(Path(__file__).parent.parent / "utilities"))
+# from utilities.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, PARAMETER_SPACE
+
+# Get absolute path to project root using established pattern
+PROJECT_ROOT = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), 
+    '..',  # Go up to analysis/
+    '..'   # Go up to main project root (1D_wave_AMR/)
+))
+sys.path.append(PROJECT_ROOT)
+from analysis.utilities.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, PARAMETER_SPACE
 
 class ParameterSweepLoader:
     """Load and process parameter sweep data"""
@@ -236,8 +246,13 @@ def quick_load_sweep(sweep_name: str) -> pd.DataFrame:
         return df
 
 if __name__ == "__main__":
-    # Example usage
-    sweep_name = "full_param_sweep_data_20250601_105453"
+    import sys
+    
+    # Use command line argument or default
+    if len(sys.argv) > 1:
+        sweep_name = sys.argv[1]
+    else:
+        sweep_name = "full_param_sweep_data_20250601_105453"
     
     print(f"Loading parameter sweep: {sweep_name}")
     
@@ -250,6 +265,6 @@ if __name__ == "__main__":
     # Save processed data
     loader.save_processed_data(df)
     
-    print(f"\\n📋 Data summary:")
+    print(f"\n📋 Data summary:")
     print(f"Shape: {df.shape}")
     print(f"Parameters: {df[['gamma_c', 'step_domain_fraction', 'rl_iterations_per_timestep', 'element_budget']].nunique()}")

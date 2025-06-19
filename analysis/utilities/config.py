@@ -1,6 +1,18 @@
 """
 Configuration for AMR Parameter Analysis
 """
+import os
+
+import os
+
+# Get absolute path to project root
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+ANALYSIS_ROOT = os.path.join(PROJECT_ROOT, 'analysis')
+
+# Use absolute paths
+RAW_DATA_DIR = os.path.join(ANALYSIS_ROOT, "data", "raw")
+PROCESSED_DATA_DIR = os.path.join(ANALYSIS_ROOT, "data", "processed")
+OUTPUTS_DIR = os.path.join(ANALYSIS_ROOT, "outputs")
 
 # HPC Connection Settings
 HPC_HOST = "antonechacartegu@borah-login.boisestate.edu"
@@ -16,10 +28,10 @@ PARAMETER_SPACE = {
 }
 
 # Paths
-DATA_DIR = "data"
-RAW_DATA_DIR = "data/raw"
-PROCESSED_DATA_DIR = "data/processed"
-OUTPUTS_DIR = "outputs"
+# DATA_DIR = "data"
+# RAW_DATA_DIR = "data/raw"
+# PROCESSED_DATA_DIR = "data/processed"
+# OUTPUTS_DIR = "outputs"
 
 # Analysis Parameters
 CONVERGENCE_THRESHOLDS = {

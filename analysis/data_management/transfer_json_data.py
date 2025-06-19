@@ -11,8 +11,17 @@ import json
 import sys
 
 # Add utilities to path
-sys.path.append(str(Path(__file__).parent.parent / "utilities"))
-from config import HPC_HOST, HPC_BASE_PATH, CURRENT_SWEEP, RAW_DATA_DIR
+# sys.path.append(str(Path(__file__).parent.parent / "utilities"))
+# from config import HPC_HOST, HPC_BASE_PATH, CURRENT_SWEEP, RAW_DATA_DIR
+
+PROJECT_ROOT = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), 
+    '..',  # Go up to analysis/
+    '..'   # Go up to main project root (1D_wave_AMR/)
+))
+sys.path.append(PROJECT_ROOT)
+from analysis.utilities.config import HPC_HOST, HPC_BASE_PATH, CURRENT_SWEEP, RAW_DATA_DIR
+
 
 def transfer_json_data(sweep_name=CURRENT_SWEEP, dry_run=False):
     """Transfer JSON training metrics from HPC"""

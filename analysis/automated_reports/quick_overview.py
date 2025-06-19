@@ -10,13 +10,22 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns
 import sys
+import os
 
 # Add modules to path
-sys.path.append(str(Path(__file__).parent.parent / "data_management"))
-sys.path.append(str(Path(__file__).parent.parent / "utilities"))
+# sys.path.append(str(Path(__file__).parent.parent / "data_management"))
+# sys.path.append(str(Path(__file__).parent.parent / "utilities"))
 
-from data_loader import ParameterSweepLoader, quick_load_sweep
-from config import CURRENT_SWEEP, PARAMETER_SPACE
+PROJECT_ROOT = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), 
+    '..',  # Go up to analysis/
+    '..'   # Go up to main project root (1D_wave_AMR/)
+))
+sys.path.append(PROJECT_ROOT)
+
+
+from analysis.data_management.data_loader import ParameterSweepLoader, quick_load_sweep
+from analysis.utilities.config import CURRENT_SWEEP, PARAMETER_SPACE
 
 def quick_overview(sweep_name=CURRENT_SWEEP):
     """Generate quick overview of parameter sweep data"""
