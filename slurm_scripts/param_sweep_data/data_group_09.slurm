@@ -4,14 +4,14 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=16G
-#SBATCH --time=5:00:00
+#SBATCH --time=6:00:00
 #SBATCH --array=0-8
 #SBATCH --output=logs/param_sweep_data/group_09_%A_%a.out
 #SBATCH --error=logs/param_sweep_data/group_09_%A_%a.err
 
 # Parameter Sweep Group 9: gamma_100.0_step_0.1 (WITH STRUCTURED DATA EXPORT)
 # This script handles 9 parameter combinations using array indices 0-8
-# Uses conditional timesteps: 100k for gamma_c=25.0, 50k for others
+# Enhanced with CLI parameterization for flexible timesteps
 
 echo "=================================================="
 echo "Parameter Sweep Group 9 (Data Export) - Job $SLURM_ARRAY_JOB_ID Task $SLURM_ARRAY_TASK_ID"
@@ -85,14 +85,9 @@ case $SLURM_ARRAY_TASK_ID in
         ;;
 esac
 
-# Set timesteps based on gamma_c value (CONDITIONAL LOGIC)
-if [ "$GAMMA_C" == "25.0" ]; then
-    TOTAL_TIMESTEPS=100000
-    echo "🎯 Using extended training: 100k timesteps for gamma_c=25.0"
-else
-    TOTAL_TIMESTEPS=50000
-    echo "📊 Using standard training: 50k timesteps for gamma_c=$GAMMA_C"
-fi
+# Set uniform timesteps for all combinations
+TOTAL_TIMESTEPS=100000
+echo "🎯 Using uniform training: 100k timesteps for all combinations"
 
 # Print current parameter configuration
 echo "Current parameters:"
@@ -103,11 +98,12 @@ echo "  ELEMENT_BUDGET: $ELEMENT_BUDGET"
 echo "  TOTAL_TIMESTEPS: $TOTAL_TIMESTEPS"
 echo ""
 
-# Create unique timestamp for this sweep (NEW SWEEP WITH DATA EXPORT)
-SWEEP_TIMESTAMP="20250601_105453"
+# Create unique timestamp for this sweep (CONFIGURABLE SWEEP NAME)
+SWEEP_TIMESTAMP="20250605_093908"
+SWEEP_NAME="session3_100k_uniform"
 
 # Create results directory structure
-BASE_RESULTS_DIR="results/full_param_sweep_data_$SWEEP_TIMESTAMP"
+BASE_RESULTS_DIR="results/$SWEEP_NAME"
 CURRENT_RESULTS_DIR="$BASE_RESULTS_DIR/gamma_${GAMMA_C}_step_${STEP_DOMAIN_FRACTION}_rl_${RL_ITERATIONS}_budget_${ELEMENT_BUDGET}"
 
 echo "Creating results directory: $CURRENT_RESULTS_DIR"
@@ -155,6 +151,7 @@ if [ $? -eq 0 ]; then
     echo "  rl_iterations: $RL_ITERATIONS" >> "$CURRENT_RESULTS_DIR/job_completed.yaml"
     echo "  element_budget: $ELEMENT_BUDGET" >> "$CURRENT_RESULTS_DIR/job_completed.yaml"
     echo "  total_timesteps: $TOTAL_TIMESTEPS" >> "$CURRENT_RESULTS_DIR/job_completed.yaml"
+    echo "  sweep_name: $SWEEP_NAME" >> "$CURRENT_RESULTS_DIR/job_completed.yaml"
     
     # Verify expected files exist (INCLUDING NEW DATA FILES)
     expected_files=("final_model.zip" "training_report.pdf")
@@ -209,4 +206,5 @@ echo "=================================================="
 echo "Job completed at: $(date)"
 echo "Results directory: $CURRENT_RESULTS_DIR"
 echo "Total timesteps used: $TOTAL_TIMESTEPS"
+echo "Sweep name: $SWEEP_NAME"
 echo "=================================================="
