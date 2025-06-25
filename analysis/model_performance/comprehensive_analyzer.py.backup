@@ -38,14 +38,12 @@ class ComprehensiveAnalyzer:
     Comprehensive analyzer for AMR parameter sweep results with distance-to-ideal zones.
     """
     
-    def __init__(self, sweep_name, input_file=None, verbose=False, 
-             include_baselines=False, baseline_methods=None, baseline_config=None):
+    def __init__(self, sweep_name, verbose=False):
         """
         Initialize the comprehensive analyzer.
         
         Args:
             sweep_name (str): Name of the sweep (e.g., 'session3_100k_uniform')
-            input_file (str): Optional CSV filename. If None, auto-detects.
             verbose (bool): Whether to print detailed logs
         """
         self.sweep_name = sweep_name
@@ -53,18 +51,7 @@ class ComprehensiveAnalyzer:
         
         # Set up paths
         self.results_dir = os.path.join(PROJECT_ROOT, 'analysis', 'data', 'model_performance', sweep_name)
-        # Determine CSV file path with auto-detection
-        if input_file:
-            self.csv_path = os.path.join(self.results_dir, input_file)
-        else:
-            # Auto-detect: look for model_results_*.csv first
-            import glob
-            model_results_files = glob.glob(os.path.join(self.results_dir, "model_results_*.csv"))
-            if model_results_files:
-                self.csv_path = model_results_files[0]  # Use first match
-            else:
-                # Fallback to old naming convention
-                self.csv_path = os.path.join(self.results_dir, "batch_results_all_models.csv")
+        self.csv_path = os.path.join(self.results_dir, 'batch_results_all_models.csv')
         self.output_dir = os.path.join(self.results_dir, 'comprehensive_analysis')
         
         # Create output directory
@@ -80,20 +67,6 @@ class ComprehensiveAnalyzer:
         # Calculate zone boundaries
         self.zone_boundaries = self._calculate_zone_boundaries()
         self.df['performance_zone'] = self._assign_performance_zones()
-
-        # Baseline data handling
-        self.include_baselines = include_baselines
-        self.baseline_methods = baseline_methods
-        self.baseline_config = baseline_config
-        self.baseline_data = {}
-        
-        # Load baseline data if requested
-        if self.include_baselines:
-            self.baseline_data = self._load_baseline_data()
-            if self.verbose and self.baseline_data:
-                print(f"Loaded baseline data for {len(self.baseline_data)} methods")
-            elif self.verbose:
-                print("No baseline data found for auto-detection")
         
         # Define parameter families (current 4-parameter setup)
         self.parameter_families = {
@@ -211,60 +184,6 @@ class ComprehensiveAnalyzer:
                 zones.append('Poor')
         
         return zones
-
-    def _load_baseline_data(self):
-        """Load baseline data files matching the model configuration."""
-        baseline_data = {}
-        
-        # Extract configuration from model file or use override
-        if self.baseline_config:
-            config = self.baseline_config
-        else:
-            # Auto-detect config from model file name
-            # e.g., model_results_ref0_budget50.csv -> ref0_budget50
-            model_filename = os.path.basename(self.csv_path)
-            if 'model_results_' in model_filename:
-                config = model_filename.replace('model_results_', '').replace('.csv', '')
-            else:
-                config = 'ref0_budget50'  # Default fallback
-        
-        if self.verbose:
-            print(f"Looking for baseline data with config: {config}")
-        
-        # Determine which methods to look for
-        if self.baseline_methods:
-            methods = [m.strip() for m in self.baseline_methods.split(',')]
-        else:
-            # Auto-detect available baseline methods
-            methods = ['no-amr', 'conventional-amr']
-        
-        # Try to load each baseline method
-        for method in methods:
-            baseline_file = f"baseline_results_{method}_{config}.csv"
-            baseline_path = os.path.join(self.results_dir, baseline_file)
-            
-            if os.path.exists(baseline_path):
-                try:
-                    df = pd.read_csv(baseline_path)
-                    if len(df) > 0:
-                        # Convert to dict for easier handling
-                        baseline_data[method] = {
-                            'final_l2_error': df['final_l2_error'].iloc[0],
-                            'total_cost': df['total_cost'].iloc[0],
-                            'method': method,
-                            'file': baseline_file
-                        }
-                        if self.verbose:
-                            error = df['final_l2_error'].iloc[0]
-                            cost = df['total_cost'].iloc[0]
-                            print(f"  Loaded {method}: L2={error:.3e}, Cost={cost:,}")
-                except Exception as e:
-                    if self.verbose:
-                        print(f"  Failed to load {baseline_file}: {e}")
-            elif self.verbose:
-                print(f"  Baseline file not found: {baseline_file}")
-        
-        return baseline_data
     
     def identify_pareto_optimal_models(self):
         """Identify Pareto-optimal models (non-dominated solutions)."""
@@ -324,19 +243,6 @@ class ComprehensiveAnalyzer:
         # Get the data ranges to set appropriate plot limits
         cost_min, cost_max = self.df['total_cost'].min(), self.df['total_cost'].max()
         error_min, error_max = self.df['final_l2_error'].min(), self.df['final_l2_error'].max()
-
-        # Include baseline data in axis range calculations if available
-        if self.baseline_data:
-            baseline_costs = [data['total_cost'] for data in self.baseline_data.values()]
-            baseline_errors = [data['final_l2_error'] for data in self.baseline_data.values()]
-            
-            if baseline_costs:
-                cost_min = min(cost_min, min(baseline_costs))
-                cost_max = max(cost_max, max(baseline_costs))
-            
-            if baseline_errors:
-                error_min = min(error_min, min(baseline_errors))
-                error_max = max(error_max, max(baseline_errors))
         
         # Add some padding to the limits
         cost_padding = (cost_max - cost_min) * 0.05
@@ -384,27 +290,27 @@ class ComprehensiveAnalyzer:
                                    colors=zone_colors, alpha=0.35, zorder=0)
         
         # Add zone labels INSIDE each zone area (better positioning)
-        # ideal_cost = self.ideal_point['cost']
-        # ideal_error = self.ideal_point['error']
+        ideal_cost = self.ideal_point['cost']
+        ideal_error = self.ideal_point['error']
         
-        # # Calculate label positions within each zone's distance range
-        # cost_range_for_labels = (cost_max - ideal_cost) * 0.3  # Stay closer to ideal
+        # Calculate label positions within each zone's distance range
+        cost_range_for_labels = (cost_max - ideal_cost) * 0.3  # Stay closer to ideal
         
-        # zone_positions = [
-        #     (ideal_cost + cost_range_for_labels * 0.3, ideal_error * 2.5),    # Elite
-        #     (ideal_cost + cost_range_for_labels * 0.25, ideal_error * 4.35),    # Good  
-        #     (ideal_cost + cost_range_for_labels * 0.3, ideal_error * 5.5),   # Fair
-        #     (ideal_cost + cost_range_for_labels * 0.7, ideal_error * 10.0)    # Poor
-        # ]
+        zone_positions = [
+            (ideal_cost + cost_range_for_labels * 0.3, ideal_error * 2.5),    # Elite
+            (ideal_cost + cost_range_for_labels * 0.25, ideal_error * 4.35),    # Good  
+            (ideal_cost + cost_range_for_labels * 0.3, ideal_error * 5.5),   # Fair
+            (ideal_cost + cost_range_for_labels * 0.7, ideal_error * 10.0)    # Poor
+        ]
         
-        # for i, (pos_x, pos_y, label) in enumerate(zip([p[0] for p in zone_positions], 
-        #                                              [p[1] for p in zone_positions], 
-        #                                              zone_labels)):
-        #     # Only add label if position is within plot bounds
-        #     if pos_x < cost_max and pos_y < error_max:
-        #         ax.text(pos_x, pos_y, label, fontsize=9, alpha=0.7, fontweight='bold',
-        #                bbox=dict(boxstyle="round,pad=0.2", facecolor="white", alpha=0.8),
-        #                ha='center', va='center')
+        for i, (pos_x, pos_y, label) in enumerate(zip([p[0] for p in zone_positions], 
+                                                     [p[1] for p in zone_positions], 
+                                                     zone_labels)):
+            # Only add label if position is within plot bounds
+            if pos_x < cost_max and pos_y < error_max:
+                ax.text(pos_x, pos_y, label, fontsize=9, alpha=0.7, fontweight='bold',
+                       bbox=dict(boxstyle="round,pad=0.2", facecolor="white", alpha=0.8),
+                       ha='center', va='center')
         
         # Add zone legend in upper right corner of plot area
         from matplotlib.patches import Rectangle
@@ -416,33 +322,9 @@ class ComprehensiveAnalyzer:
         zone_legend = ax.legend(handles=legend_elements, loc='center right', 
                               framealpha=0.9, fontsize=8, title='Performance Zones')
         ax.add_artist(zone_legend)  # Keep this legend separate from main legend
-
-
-    def _add_baseline_overlay(self, ax):
-        """Add baseline reference points to the plot."""
-        if not self.baseline_data:
-            return
-        
-        # Baseline styling configuration
-        baseline_styles = {
-            'no-amr': {'marker': 's', 'color': 'purple', 'size': 150, 'label': 'No-AMR Baseline'},
-            'conventional-amr': {'marker': 'D', 'color': 'orange', 'size': 150, 'label': 'Conventional-AMR Baseline'}
-        }
-        
-        # Plot each baseline method
-        for method, data in self.baseline_data.items():
-            style = baseline_styles.get(method, {'marker': 'o', 'color': 'gray', 'size': 100, 'label': f'{method} Baseline'})
-            
-            ax.scatter(data['total_cost'], data['final_l2_error'],
-                    marker=style['marker'], c=style['color'], s=style['size'],
-                    alpha=0.9, label=style['label'], 
-                    edgecolors='black', linewidths=2, zorder=15)
-            
-            if self.verbose:
-                print(f"Added baseline reference: {method} at Cost={data['total_cost']}, Error={data['final_l2_error']:.3e}")
     
     def create_comprehensive_plots(self, include_pareto=True, include_ideal=True, 
-                             include_zones=True, include_baselines=None, output_format='pdf'):
+                                 include_zones=True, output_format='pdf'):
         """
         Create comprehensive parameter family plots with all options.
         
@@ -452,10 +334,6 @@ class ComprehensiveAnalyzer:
             include_zones (bool): Include performance zones
             output_format (str): 'pdf', 'png', or 'both'
         """
-
-        if include_baselines is None:
-            include_baselines = self.include_baselines
-
         # Get Pareto data if needed
         pareto_models = None
         if include_pareto:
@@ -463,20 +341,16 @@ class ComprehensiveAnalyzer:
             pareto_df = pd.DataFrame(pareto_models)
         
         # Create combined family plot
-        # self._create_combined_family_plot(pareto_models, include_ideal, include_zones, output_format)
-        # Create combined family plot
-        self._create_combined_family_plot(pareto_models, include_ideal, include_zones, 
-                                 include_baselines, output_format)
+        self._create_combined_family_plot(pareto_models, include_ideal, include_zones, output_format)
         
         # Create individual family plots
         for family_name in self.parameter_families.keys():
             self._create_single_family_plot(family_name, pareto_models, include_ideal, 
-                                        include_zones, include_baselines, output_format)
+                                          include_zones, output_format)
         
         # Create Pareto-only plots if Pareto analysis is enabled
         if include_pareto:
-            self._create_pareto_only_plots(pareto_df, include_ideal, include_zones, 
-                                        include_baselines, output_format)
+            self._create_pareto_only_plots(pareto_df, include_ideal, include_zones, output_format)
         
         if self.verbose:
             plot_count = len(self.parameter_families) + 1  # Individual + combined
@@ -484,7 +358,7 @@ class ComprehensiveAnalyzer:
                 plot_count += len(self.parameter_families) + 1  # Pareto-only plots
             print(f"Created {plot_count} comprehensive plots")
     
-    def _create_combined_family_plot(self, pareto_models, include_ideal, include_zones, include_baselines, output_format):
+    def _create_combined_family_plot(self, pareto_models, include_ideal, include_zones, output_format):
         """Create combined plot showing all parameter families."""
         fig, axes = plt.subplots(2, 2, figsize=(16, 12))
         axes = axes.flatten()
@@ -500,10 +374,6 @@ class ComprehensiveAnalyzer:
             # Add ideal point overlay (if enabled)
             if include_ideal:
                 self._add_ideal_point_overlay(ax)
-
-            # Add baseline reference points if enabled and available
-            if self.include_baselines and self.baseline_data:
-                self._add_baseline_overlay(ax)
             
             # Plot parameter family data
             for i, param_value in enumerate(family['values']):
@@ -553,7 +423,7 @@ class ComprehensiveAnalyzer:
         plt.close()
     
     def _create_single_family_plot(self, family_name, pareto_models, include_ideal, 
-                             include_zones, include_baselines, output_format):
+                                 include_zones, output_format):
         """Create individual family plot with comprehensive features."""
         family = self.parameter_families[family_name]
         
@@ -566,10 +436,6 @@ class ComprehensiveAnalyzer:
         # Add ideal point overlay (if enabled)
         if include_ideal:
             self._add_ideal_point_overlay(ax)
-
-        # Add baseline reference points if enabled and available
-        if self.include_baselines and self.baseline_data:
-            self._add_baseline_overlay(ax)
         
         # Plot parameter family data
         for i, param_value in enumerate(family['values']):
@@ -615,7 +481,7 @@ class ComprehensiveAnalyzer:
         self._save_plot(fig, filename_base, output_format)
         plt.close()
     
-    def _create_pareto_only_plots(self, pareto_df, include_ideal, include_zones, include_baselines, output_format):
+    def _create_pareto_only_plots(self, pareto_df, include_ideal, include_zones, output_format):
         """Create plots showing only Pareto-optimal models."""
         # Combined Pareto plot
         fig, axes = plt.subplots(2, 2, figsize=(14, 10))
@@ -631,10 +497,6 @@ class ComprehensiveAnalyzer:
             # Add ideal point overlay (if enabled)  
             if include_ideal:
                 self._add_ideal_point_overlay(ax)
-
-            # Add baseline reference points if enabled and available
-            if self.include_baselines and self.baseline_data:
-                self._add_baseline_overlay(ax)
             
             # Group Pareto models by parameter value
             for j, value in enumerate(sorted(pareto_df[param].unique())):
@@ -755,29 +617,11 @@ def main():
     parser.add_argument('--verbose', action='store_true', help='Print detailed logs')
     parser.add_argument('--export-results', action='store_true', default=True,
                        help='Export analysis results to JSON (default: True)')
-
-    # Baseline integration options  
-    parser.add_argument('--include-baselines', action='store_true', 
-                    help='Auto-detect and include available baseline data')
-    parser.add_argument('--baseline-methods', type=str,
-                    help='Comma-separated baseline methods to include (e.g., no-amr,conventional-amr)')
-    parser.add_argument('--baseline-config', type=str,
-                    help='Override baseline file configuration (e.g., ref0_budget50)')
-
-    # File options
-    parser.add_argument('--input-file', help='Specify input CSV file (e.g., model_results_ref0_budget50.csv). If not provided, auto-detects model_results_*.csv or falls back to batch_results_all_models.csv')
     
     args = parser.parse_args()
     
     # Create analyzer
-    analyzer = ComprehensiveAnalyzer(
-        args.sweep_name, 
-        input_file=args.input_file, 
-        verbose=args.verbose,
-        include_baselines=args.include_baselines,
-        baseline_methods=args.baseline_methods,
-        baseline_config=args.baseline_config
-    )
+    analyzer = ComprehensiveAnalyzer(args.sweep_name, verbose=args.verbose)
     
     # Generate comprehensive plots
     analyzer.create_comprehensive_plots(

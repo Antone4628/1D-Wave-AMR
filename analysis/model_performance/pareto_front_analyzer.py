@@ -15,17 +15,31 @@ import json
 import os
 import sys
 from collections import Counter
+import argparse
 
 # Add project root to path
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(PROJECT_ROOT)
 
-def analyze_pareto_front(sweep_name):
+def analyze_pareto_front(sweep_name, input_file=None):
     """Detailed analysis of Pareto front parameter distributions."""
     
+
     # Load data
     results_dir = os.path.join(PROJECT_ROOT, 'analysis', 'data', 'model_performance', sweep_name)
-    csv_path = os.path.join(results_dir, 'batch_results_all_models.csv')
+
+    # Determine CSV file path with auto-detection
+    if input_file:
+        csv_path = os.path.join(results_dir, input_file)
+    else:
+        # Auto-detect: look for model_results_*.csv first
+        import glob
+        model_results_files = glob.glob(os.path.join(results_dir, "model_results_*.csv"))
+        if model_results_files:
+            csv_path = model_results_files[0]  # Use first match
+        else:
+            # Fallback to old naming convention
+            csv_path = os.path.join(results_dir, "batch_results_all_models.csv")
     pareto_path = os.path.join(results_dir, 'parameter_family_analysis', 'pareto_optimal_models.json')
     
     df_all = pd.read_csv(csv_path)
@@ -58,7 +72,7 @@ def analyze_pareto_front(sweep_name):
         for value in sorted(df_all[param].unique()):
             overall_count = overall_dist.get(value, 0)
             pareto_count = pareto_dist.get(value, 0)
-            pareto_pct = (pareto_count / pareto_count.sum() * 100) if pareto_count.sum() > 0 else 0
+            pareto_pct = (pareto_count / pareto_dist.sum() * 100) if pareto_dist.sum() > 0 else 0
             overall_pct = (overall_count / overall_dist.sum() * 100)
             
             print(f"  {value:5} | {overall_count:7} | {pareto_count:6} | {pareto_pct:6.1f}%")
@@ -190,11 +204,11 @@ def create_focused_plots(sweep_name, df_all, df_pareto):
     print(f"  {hist_plot_path}")
 
 if __name__ == "__main__":
-    import sys
-    if len(sys.argv) != 2:
-        print("Usage: python pareto_front_analyzer.py <sweep_name>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description='Analyze Pareto front parameter distributions')
+    parser.add_argument('sweep_name', help='Name of the parameter sweep to analyze')
+    parser.add_argument('--input-file', help='Specify input CSV file (e.g., model_results_ref0_budget50.csv). If not provided, auto-detects model_results_*.csv or falls back to batch_results_all_models.csv')
     
-    sweep_name = sys.argv[1]
-    df_all, df_pareto = analyze_pareto_front(sweep_name)
-    create_focused_plots(sweep_name, df_all, df_pareto)
+    args = parser.parse_args()
+    
+    df_all, df_pareto = analyze_pareto_front(args.sweep_name, input_file=args.input_file)
+    create_focused_plots(args.sweep_name, df_all, df_pareto)

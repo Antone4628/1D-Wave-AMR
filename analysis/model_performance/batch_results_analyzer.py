@@ -32,7 +32,7 @@ class BatchResultsAnalyzer:
     Analyzer for creating parameter family visualizations from batch model evaluation results.
     """
     
-    def __init__(self, sweep_name, verbose=False):
+    def __init__(self, sweep_name, input_file=None, verbose=False):
         """
         Initialize the analyzer with batch results data.
         
@@ -45,7 +45,20 @@ class BatchResultsAnalyzer:
         
         # Set up paths
         self.results_dir = os.path.join(PROJECT_ROOT, 'analysis', 'data', 'model_performance', sweep_name)
-        self.csv_path = os.path.join(self.results_dir, 'batch_results_all_models.csv')
+
+        # Determine CSV file path with auto-detection
+        if input_file:
+            self.csv_path = os.path.join(self.results_dir, input_file)
+        else:
+            # Auto-detect: look for model_results_*.csv first
+            import glob
+            model_results_files = glob.glob(os.path.join(self.results_dir, "model_results_*.csv"))
+            if model_results_files:
+                self.csv_path = model_results_files[0]  # Use first match
+            else:
+                # Fallback to old naming convention
+                self.csv_path = os.path.join(self.results_dir, "batch_results_all_models.csv")
+        
         self.json_dir = os.path.join(self.results_dir, 'individual_results')
         self.output_dir = os.path.join(self.results_dir, 'parameter_family_analysis')
         
@@ -450,6 +463,7 @@ def main():
     
     # Required arguments
     parser.add_argument('sweep_name', help='Name of the sweep (e.g., session3_100k_uniform)')
+    parser.add_argument('--input-file', help='Specify input CSV file (e.g., model_results_ref0_budget50.csv). If not provided, auto-detects model_results_*.csv or falls back to batch_results_all_models.csv')
     
     # Plot options
     parser.add_argument('--plot-families', default='all', 
@@ -484,7 +498,8 @@ def main():
     include_pareto = args.include_pareto and not args.no_pareto
     
     # Create analyzer
-    analyzer = BatchResultsAnalyzer(args.sweep_name, verbose=args.verbose)
+    analyzer = BatchResultsAnalyzer(args.sweep_name, input_file=args.input_file, verbose=args.verbose)
+    
     
     # Generate plots (with or without Pareto)
     analyzer.create_parameter_family_plots(families=families, 
