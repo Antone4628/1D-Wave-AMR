@@ -57,7 +57,7 @@ def main():
         model_path=model_path,
         time_final=1.0,
         element_budget=element_budget,  # Use configurable budget
-        max_level=5,
+        max_level=initial_refinement,
         nop=4,
         courant_max=0.1,
         icase=1,
@@ -90,6 +90,7 @@ def main():
         initial_refinement,
         element_budget,  # Evaluation budget
         results['final_l2_error'],
+        results['grid_normalized_l2_error'],
         results['total_cost'],
         results['final_elements'],
         results['total_adaptations'],
@@ -101,9 +102,9 @@ def main():
     # Thread-safe CSV writing
     import fcntl
     csv_headers = [
-        'gamma_c', 'step_domain_fraction', 'rl_iterations_per_timestep', 'element_budget',
-        'initial_refinement', 'evaluation_element_budget', 'final_l2_error', 'total_cost', 
-        'final_elements', 'total_adaptations', 'final_time', 'initial_elements', 'model_path'
+    'gamma_c', 'step_domain_fraction', 'rl_iterations_per_timestep', 'element_budget',
+    'initial_refinement', 'evaluation_element_budget', 'final_l2_error', 'grid_normalized_l2_error', 
+    'total_cost', 'final_elements', 'total_adaptations', 'final_time', 'initial_elements', 'model_path'
     ]
     
     with open(csv_file, 'a') as f:
@@ -114,7 +115,7 @@ def main():
             writer.writerow(csv_headers)
         writer.writerow(csv_row)
     
-    print(f"Completed model {index+1}: L2 error = {results['final_l2_error']:.2e}")
+    print(f"Completed model {index+1}: L2 error = {results['final_l2_error']:.2e}, Grid-normalized = {results['grid_normalized_l2_error']:.2e}")
     print(f"Actual initial elements = {results['simulation_metrics']['initial_elements']}")
 
 if __name__ == "__main__":

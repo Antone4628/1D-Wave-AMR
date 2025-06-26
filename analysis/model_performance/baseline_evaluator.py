@@ -18,6 +18,7 @@ project_root = Path(__file__).parents[2]
 sys.path.append(str(project_root))
 
 from numerical.solvers.dg_wave_solver_baseline import DGWaveSolverBaseline
+from numerical.solvers.utils import calculate_grid_normalized_l2_error
 
 def extract_configuration_from_sweep(sweep_name):
     """
@@ -83,6 +84,9 @@ def run_baseline_evaluation(args):
         solver.initial_refinement = args.initial_refinement
     else:
         solver.initial_refinement = 0
+
+    # SAVE INITIAL COORDINATE STATE FOR GRID-NORMALIZED L2
+    initial_coord = solver.coord.copy()
     
     if args.verbose:
         print(f"Running {args.mode} evaluation:")
@@ -98,6 +102,17 @@ def run_baseline_evaluation(args):
         time_final=args.time_final,
         element_budget=args.element_budget
     )
+    # ADD GRID-NORMALIZED L2 ERROR FOR CONVENTIONAL-AMR CASES
+    if args.mode == 'conventional-amr':
+        # Need to access final solution from solver
+        grid_normalized_l2_error = calculate_grid_normalized_l2_error(
+            solver.q, solver.coord, initial_coord, solver.time, solver.icase
+        )
+        metrics['grid_normalized_l2_error'] = grid_normalized_l2_error
+    else:
+        # For no-amr, the error is already on the reference grid
+        metrics['grid_normalized_l2_error'] = metrics.get('final_l2_error', 0.0)
+
     
     return metrics
 
@@ -117,7 +132,16 @@ def generate_baseline_data(args):
         
     elif args.mode == 'conventional-amr':
         # Run with specified threshold(s)
-        thresholds = [args.threshold] if not args.multiple_thresholds else [0.3, 0.5, 0.7]
+        if args.threshold_list:
+            # Parse comma-separated threshold values
+            thresholds = [float(t.strip()) for t in args.threshold_list.split(',')]
+            if args.verbose:
+                print(f"Using multiple thresholds: {thresholds}")
+        else:
+            # Single threshold
+            thresholds = [args.threshold]
+            if args.verbose:
+                print(f"Using single threshold: {args.threshold}")
         
         for threshold in thresholds:
             if args.verbose:
@@ -163,19 +187,20 @@ def main():
         description="Generate baseline AMR performance data",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-Examples:
-  # No-AMR baseline
-  python baseline_evaluator.py session3_100k_uniform --mode no-amr \\
-      --initial-refinement 3 --element-budget 50
+        Examples:
+        # No-AMR baseline
+        python baseline_evaluator.py session3_100k_uniform --mode no-amr \\
+            --initial-refinement 3 --element-budget 50
 
-  # Conventional AMR baseline
-  python baseline_evaluator.py session3_100k_uniform --mode conventional-amr \\
-      --initial-refinement 3 --element-budget 50 --threshold 0.5
+        # Single threshold conventional AMR
+        python baseline_evaluator.py session3_100k_uniform --mode conventional-amr \\
+            --initial-refinement 3 --element-budget 50 --threshold 0.5
 
-  # Multiple thresholds
-  python baseline_evaluator.py session3_100k_uniform --mode conventional-amr \\
-      --initial-refinement 3 --element-budget 50 --multiple-thresholds
-        """
+        # Multiple thresholds conventional AMR
+        python baseline_evaluator.py session3_100k_uniform --mode conventional-amr \\
+            --initial-refinement 3 --element-budget 50 \\
+            --threshold-list "0.5,0.4,0.3,0.2,0.1,0.05,0.01"
+                """
     )
     
     # Required arguments
@@ -198,8 +223,13 @@ Examples:
     # Conventional AMR parameters
     parser.add_argument('--threshold', type=float, default=0.5,
                        help='Adaptation threshold for conventional AMR (default: 0.5)')
-    parser.add_argument('--multiple-thresholds', action='store_true',
-                       help='Run multiple thresholds [0.3, 0.5, 0.7] for conventional AMR')
+    # parser.add_argument('--multiple-thresholds', action='store_true',
+    #                    help='Run multiple thresholds [0.3, 0.5, 0.7] for conventional AMR')
+
+    parser.add_argument('--threshold-list', type=str,
+                   help='Comma-separated threshold values for conventional AMR (e.g., "0.5,0.4,0.3,0.2,0.1,0.05,0.01")')
+
+
     
     # Output parameters
     parser.add_argument('--output-file', type=str,
@@ -210,8 +240,8 @@ Examples:
     args = parser.parse_args()
     
     # Validate arguments
-    if args.mode == 'conventional-amr' and args.multiple_thresholds and args.threshold != 0.5:
-        print("Warning: --threshold ignored when using --multiple-thresholds")
+    if args.mode == 'conventional-amr' and args.threshold_list and args.threshold != 0.5:
+        print("Warning: --threshold ignored when using --threshold-list")
     
     try:
         # Generate baseline data

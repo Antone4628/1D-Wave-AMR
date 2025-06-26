@@ -38,6 +38,7 @@ sys.path.append(PROJECT_ROOT)
 # Import the baseline solver
 from numerical.solvers.dg_wave_solver_baseline import DGWaveSolverBaseline
 from numerical.solvers.utils import exact_solution
+from numerical.solvers.utils import calculate_grid_normalized_l2_error
 
 def extract_baseline_configuration(args):
     """
@@ -496,6 +497,10 @@ def run_baseline_evaluation(baseline_config, verbose=False):
         solver.initial_refinement = baseline_config['initial_refinement']
     else:
         solver.initial_refinement = 0
+
+
+    # SAVE INITIAL COORDINATE STATE FOR GRID-NORMALIZED L2
+    initial_coord = solver.coord.copy() 
     
     if verbose:
         print(f"Running {baseline_config['mode']} evaluation:")
@@ -548,6 +553,14 @@ def run_baseline_evaluation(baseline_config, verbose=False):
     final_exact = exact_solution(coords[-1], len(coords[-1]), times[-1], solver.icase)[0]
     # l2_error = np.sqrt(np.sum((solutions[-1] - final_exact)**2) * solver.dx_min)
     l2_error = np.sqrt(np.sum((solutions[-1] - final_exact)**2) / np.sum(final_exact**2))
+
+    # Add grid-normalized L2 for conventional-amr cases only
+    if baseline_config['mode'] == 'conventional-amr':
+        grid_normalized_l2_error = calculate_grid_normalized_l2_error(
+            solutions[-1], coords[-1], initial_coord, times[-1], solver.icase
+        )
+    else:
+        grid_normalized_l2_error = l2_error  # no-amr is already on reference grid
     
     # Create metrics dictionary (matching baseline_evaluator.py format)
     metrics = {
@@ -555,6 +568,7 @@ def run_baseline_evaluation(baseline_config, verbose=False):
         'initial_refinement': baseline_config['initial_refinement'],
         'evaluation_element_budget': baseline_config['element_budget'],
         'final_l2_error': l2_error,
+        'grid_normalized_l2_error': grid_normalized_l2_error,
         'total_cost': (len(times) - 1) * (len(grids[-1]) - 1),
         'final_elements': len(grids[-1]) - 1,  # Final number of elements
         'simulation_time': simulation_time,

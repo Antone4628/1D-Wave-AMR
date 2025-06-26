@@ -37,7 +37,7 @@ sys.path.append(PROJECT_ROOT)
 # Import the evaluation solver and adapter
 from dg_wave_solver_evaluation import DGWaveSolverEvaluation
 from model_marker_evaluation import ModelMarkerEvaluation
-from numerical.solvers.utils import exact_solution
+from numerical.solvers.utils import exact_solution, calculate_grid_normalized_l2_error
 
 def extract_training_parameters(model_path):
     """
@@ -381,7 +381,8 @@ def create_final_plot(solver, results, training_params, include_exact=True,
     initial_elements = results['simulation_metrics']['initial_elements']  # Now correct!
     
     metrics_text = f"""Evaluation Metrics:
-L2 Error: {results['final_l2_error']:.6e}
+L2 Error (mesh-dependent): {results['final_l2_error']:.6e}
+L2 Error (grid-normalized): {results['grid_normalized_l2_error']:.6e}
 Total Cost: {results['total_cost']}
 Initial Elements: {initial_elements}
 Final Elements: {results['final_elements']}
@@ -506,6 +507,9 @@ def run_single_model(model_path, time_final=1.0, element_budget=50, max_level=5,
         if verbose:
             print(f"Actual elements after refinement: {len(solver.active)}")
 
+    # SAVE INITIAL COORDINATE STATE FOR GRID-NORMALIZED L2
+    initial_coord = solver.coord.copy()
+
     actual_initial_elements = len(solver.active)
     # Initialize metrics tracking
     element_counts = []
@@ -564,6 +568,11 @@ def run_single_model(model_path, time_final=1.0, element_budget=50, max_level=5,
     # Calculate final metrics
     final_exact_solution = exact_solution(solver.coord, solver.npoin_dg, solver.time, solver.icase)[0]
     final_l2_error = np.sqrt(np.sum((solver.q - final_exact_solution)**2) / np.sum(final_exact_solution**2))
+
+    # Calculate grid-normalized L2 error for fair comparison
+    grid_normalized_l2_error = calculate_grid_normalized_l2_error(
+        solver.q, solver.coord, initial_coord, solver.time, solver.icase
+    )
     
     # Calculate total computational cost (sum of element counts across all timesteps)
     total_cost = sum(element_counts)
@@ -571,6 +580,7 @@ def run_single_model(model_path, time_final=1.0, element_budget=50, max_level=5,
     # Prepare results dictionary
     results = {
         'final_l2_error': final_l2_error,
+        'grid_normalized_l2_error': grid_normalized_l2_error, 
         'total_cost': total_cost,
         'final_elements': len(solver.active),
         'total_adaptations': total_adaptations,
@@ -611,6 +621,7 @@ def run_single_model(model_path, time_final=1.0, element_budget=50, max_level=5,
             param_str = create_parameter_title(training_params)
             print(f"Training Parameters: {param_str}")
         print(f"Final L2 Error: {final_l2_error:.6e}")
+        print(f"Final Grid-Normalized L2 Error: {grid_normalized_l2_error:.6e}")
         print(f"Total Cost: {total_cost}")
         print(f"Final Elements: {len(solver.active)}")
         print(f"Total Adaptations: {total_adaptations}")

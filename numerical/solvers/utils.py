@@ -262,6 +262,38 @@ def L2normerr(q0, qe):
     err = num/den
     return err
 
+def calculate_grid_normalized_l2_error(final_solution, final_coord, initial_coord, time_final, icase):
+    """
+    Calculate L2 error by projecting final solution back to initial grid for fair comparison.
+    
+    This function interpolates the final numerical solution (computed on an adapted mesh)
+    back onto the initial uniform grid, then computes the L2 error relative to the exact
+    solution on that same initial grid. This provides mesh-independent error comparison.
+    
+    Args:
+        final_solution (array): Numerical solution on final adapted mesh
+        final_coord (array): Coordinate points of final adapted mesh  
+        initial_coord (array): Coordinate points of initial uniform mesh
+        time_final (float): Final simulation time
+        icase (int): Test case identifier
+    
+    Returns:
+        float: Grid-normalized L2 error (mesh-independent)
+    """
+    # Interpolate final solution onto initial grid coordinates
+    solution_on_initial_grid = np.interp(initial_coord, final_coord, final_solution)
+    
+    # Calculate exact solution on initial grid
+    exact_on_initial_grid, _ = exact_solution(initial_coord, len(initial_coord), time_final, icase)
+    
+    # Calculate L2 norm on consistent grid
+    grid_normalized_l2_error = np.sqrt(
+        np.sum((solution_on_initial_grid - exact_on_initial_grid)**2) / 
+        np.sum(exact_on_initial_grid**2)
+    )
+    
+    return grid_normalized_l2_error
+
 
 def compute_total_mass(q, Me, intma):
     """

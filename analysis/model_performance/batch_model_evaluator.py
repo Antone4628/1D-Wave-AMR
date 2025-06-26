@@ -29,7 +29,7 @@ sys.path.append(PROJECT_ROOT)
 # Import the evaluation components (from single_model_runner.py)
 from dg_wave_solver_evaluation import DGWaveSolverEvaluation
 from model_marker_evaluation import ModelMarkerEvaluation
-from numerical.solvers.utils import exact_solution
+from numerical.solvers.utils import exact_solution, calculate_grid_normalized_l2_error
 
 def extract_training_parameters(model_path):
     """
@@ -158,6 +158,8 @@ def evaluate_single_model_batch(model_path, time_final=1.0, element_budget=50, m
             print(f"Applying initial refinement level {initial_refinement}")
         solver._perform_fixed_refinement(initial_refinement)
 
+    # SAVE INITIAL COORDINATE STATE FOR GRID-NORMALIZED L2
+    initial_coord = solver.coord.copy()  # Save initial coordinates after refinement
     actual_initial_elements = len(solver.active)
     
     # Initialize metrics tracking
@@ -189,6 +191,11 @@ def evaluate_single_model_batch(model_path, time_final=1.0, element_budget=50, m
     # Calculate final metrics
     final_exact_solution = exact_solution(solver.coord, solver.npoin_dg, solver.time, solver.icase)[0]
     final_l2_error = np.sqrt(np.sum((solver.q - final_exact_solution)**2) / np.sum(final_exact_solution**2))
+
+    # Calculate grid-normalized L2 error for fair comparison
+    grid_normalized_l2_error = calculate_grid_normalized_l2_error(
+        solver.q, solver.coord, initial_coord, solver.time, solver.icase
+    )
     
     # Calculate total computational cost
     total_cost = sum(element_counts)
@@ -200,6 +207,7 @@ def evaluate_single_model_batch(model_path, time_final=1.0, element_budget=50, m
     # Prepare results dictionary
     results = {
         'final_l2_error': final_l2_error,
+        'grid_normalized_l2_error': grid_normalized_l2_error,
         'total_cost': total_cost,
         'final_elements': len(solver.active),
         'total_adaptations': total_adaptations,
@@ -269,7 +277,7 @@ def run_batch_evaluation(sweep_name, time_final=1.0, element_budget=50, max_leve
     # CSV headers matching the specification
     csv_headers = [
         'gamma_c', 'step_domain_fraction', 'rl_iterations_per_timestep', 'element_budget',
-        'final_l2_error', 'total_cost', 'final_elements', 'total_adaptations', 
+        'final_l2_error', 'grid_normalized_l2_error', 'total_cost', 'final_elements', 'total_adaptations', 
         'final_time', 'initial_elements', 'simulation_config_hash', 'model_path'
     ]
     
@@ -309,8 +317,9 @@ def run_batch_evaluation(sweep_name, time_final=1.0, element_budget=50, max_leve
                         training_params['gamma_c'],
                         training_params['step_domain_fraction'],
                         training_params['rl_iterations_per_timestep'],
-                        training_params['element_budget'],  # This is the TRAINING budget
+                        training_params['element_budget'],
                         results['final_l2_error'],
+                        results['grid_normalized_l2_error'],  # Add this line
                         results['total_cost'],
                         results['final_elements'],
                         results['total_adaptations'],
