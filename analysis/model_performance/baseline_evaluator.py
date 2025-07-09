@@ -100,7 +100,8 @@ def run_baseline_evaluation(args):
     # Run simulation
     metrics = solver.run_simulation(
         time_final=args.time_final,
-        element_budget=args.element_budget
+        # element_budget=args.element_budget
+        element_budget = None
     )
     # ADD GRID-NORMALIZED L2 ERROR FOR CONVENTIONAL-AMR CASES
     if args.mode == 'conventional-amr':
@@ -215,7 +216,7 @@ def main():
     # Configuration parameters
     parser.add_argument('--initial-refinement', type=int, default=0,
                        help='Initial mesh refinement level (default: 0)')
-    parser.add_argument('--element-budget', type=int, default=50,
+    parser.add_argument('--element-budget', type=int, default=None,
                        help='Maximum number of elements (default: 50)')
     parser.add_argument('--time-final', type=float, default=1.0,
                        help='Final simulation time (default: 1.0)')

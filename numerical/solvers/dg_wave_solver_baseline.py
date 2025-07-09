@@ -196,8 +196,8 @@ class DGWaveSolverBaseline:
         
         # Check condition number before proceeding
         cond_num = np.linalg.cond(self.M)
-        if self.verbose:
-            print(f"Mass matrix condition number: {cond_num}")
+        # if self.verbose:
+        #     print(f"Mass matrix condition number: {cond_num}")
         
         if cond_num > 1e10:  # Choose appropriate threshold
             raise ValueError(f"Mass matrix condition number too high: {cond_num}")
@@ -619,7 +619,7 @@ class DGWaveSolverBaseline:
         self.time += dt
         return qp
 
-    def run_simulation(self, time_final=1.0, element_budget=50):
+    def run_simulation(self, time_final=1.0, element_budget=None):
         """
         Run complete baseline simulation and return performance metrics.
         
@@ -635,31 +635,41 @@ class DGWaveSolverBaseline:
 
         # print(f"DEBUG: self.amr_mode = {self.amr_mode}")
         # print(f"DEBUG: self.threshold = {self.threshold}")
+
+        # if self.verbose:
+        #     print(f"Starting {self.amr_mode} simulation to time {time_final}")
+        #     print(f"Initial elements: {len(self.active)}")
+        #     print(f"Initial time: {self.time}")           # ADD THIS
+        #     print(f"Initial dt: {self.dt}")               # ADD THIS
+        #     print(f"Initial solution norm: {np.linalg.norm(self.q)}")  # ADD THIS
+     
         
         # Initialize tracking
         total_cost = 0
         adaptation_count = 0
         
+        # step_counter = 0 
         if self.verbose:
             print(f"Starting {self.amr_mode} simulation to time {time_final}")
             print(f"Initial elements: {len(self.active)}")
             
         # Main simulation loop
         while self.time < time_final:
+            # print(f"Loop iteration {step_counter}, time={self.time}, dt={self.dt}")
             # Conventional AMR adaptation (every timestep to match model evaluation)
             if self.amr_mode == 'conventional-amr':
                 # print(f"DEBUG: About to call conventional_amr_step at time {self.time}")  # ADD THIS
                 pre_elements = len(self.active)
-                self.conventional_amr_step(element_budget)
+                self.conventional_amr_step()
                 if len(self.active) != pre_elements:
                     adaptation_count += 1
                     # print(f"DEBUG: Adaptation occurred! {pre_elements} -> {len(self.active)}")  # ADD THIS
                     
             # Check budget constraint
-            if len(self.active) > element_budget:
-                if self.verbose:
-                    print(f"Budget exceeded: {len(self.active)} > {element_budget}")
-                break
+            # if len(self.active) > element_budget:
+            #     if self.verbose:
+            #         print(f"Budget exceeded: {len(self.active)} > {element_budget}")
+            #     break
                 
             # Take physics time step
             dt = min(self.dt, time_final - self.time)
@@ -667,6 +677,10 @@ class DGWaveSolverBaseline:
             
             # Update cost tracking
             total_cost += len(self.active)
+            # step_counter += 1  # ADD THIS
+            # if step_counter > 10:  # Safety break
+            #     print("Breaking after 10 steps for debugging")
+            #     break
             
         # Calculate final metrics
         simulation_time = time.time() - start_time

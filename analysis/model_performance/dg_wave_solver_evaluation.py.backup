@@ -534,7 +534,7 @@ class DGWaveSolverEvaluation:
                 print(f"Error in adapt_single_element: {e}")
             return False
 
-    def adapt_mesh(self, marks, element_budget=None, balance=None, update_dt=True, ignore_budget=True):
+    def adapt_mesh(self, marks, element_budget=None, balance=None, update_dt=True, ignore_budget=False):
         """
         Perform mesh adaptation based on marks array.
         

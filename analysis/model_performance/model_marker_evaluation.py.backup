@@ -438,10 +438,10 @@ class ModelMarkerEvaluation:
         processed_elements = set()
 
 
-        # over_budget = len(self.solver.active) >= self.element_budget
+        over_budget = len(self.solver.active) >= self.element_budget
     
-        # if over_budget and self.verbose:
-        #     print(f"Over budget ({len(self.solver.active)}/{self.element_budget}) - allowing coarsening only")
+        if over_budget and self.verbose:
+            print(f"Over budget ({len(self.solver.active)}/{self.element_budget}) - allowing coarsening only")
         
         
         # Process each element in priority order
@@ -451,22 +451,22 @@ class ModelMarkerEvaluation:
             #     if self.verbose:
             #         print(f"Reached element budget ({self.element_budget}), stopping adaptation")
             #     break
-            # if over_budget:
-            # # When over budget, only proceed if we can potentially coarsen
-            # # Let the model decide, but filter actions later
-            #     pass
-            # else:
-            #     # Normal budget check for under-budget scenarios
-            #     if len(self.solver.active) >= self.element_budget:
-            #         if self.verbose:
-            #             print(f"Reached element budget ({self.element_budget}), stopping adaptation")
-            #         break
+            if over_budget:
+            # When over budget, only proceed if we can potentially coarsen
+            # Let the model decide, but filter actions later
+                pass
+            else:
+                # Normal budget check for under-budget scenarios
+                if len(self.solver.active) >= self.element_budget:
+                    if self.verbose:
+                        print(f"Reached element budget ({self.element_budget}), stopping adaptation")
+                    break
                     
-            # # Check if we've hit the max adaptations limit
-            # if max_adaptations is not None and successful_adaptations >= max_adaptations:
-            #     if self.verbose:
-            #         print(f"Reached maximum adaptations limit ({max_adaptations})")
-            #     break
+            # Check if we've hit the max adaptations limit
+            if max_adaptations is not None and successful_adaptations >= max_adaptations:
+                if self.verbose:
+                    print(f"Reached maximum adaptations limit ({max_adaptations})")
+                break
                     
             # Skip elements with very low non-conformity
             if non_conformity < 1e-10:
@@ -499,16 +499,16 @@ class ModelMarkerEvaluation:
             action_int = int(action.item()) if hasattr(action, 'item') else int(action)
             mapped_action = self.action_mapping[action_int]
 
-            # if over_budget:
-            # # When over budget, only allow coarsening actions
-            #     if mapped_action == 1:  # refine
-            #         if self.verbose:
-            #             print(f"Element {elem_number}: blocking refinement (over budget)")
-            #         mapped_action = 0  # Convert to do nothing
-            #     elif mapped_action == -1:  # coarsen
-            #         if self.verbose:
-            #             print(f"Element {elem_number}: allowing coarsening (over budget)")
-            #     # Do nothing actions (0) are always allowed
+            if over_budget:
+            # When over budget, only allow coarsening actions
+                if mapped_action == 1:  # refine
+                    if self.verbose:
+                        print(f"Element {elem_number}: blocking refinement (over budget)")
+                    mapped_action = 0  # Convert to do nothing
+                elif mapped_action == -1:  # coarsen
+                    if self.verbose:
+                        print(f"Element {elem_number}: allowing coarsening (over budget)")
+                # Do nothing actions (0) are always allowed
             
             # Skip do-nothing actions if we're just tracking them
             if mapped_action == 0:

@@ -337,10 +337,10 @@ class ComprehensiveAnalyzer:
         ideal_error = self.ideal_point['error']
         
         # Add intersection lines
-        ax.axhline(y=ideal_error, color='blue', linestyle='--', alpha=0.7, 
-                  label='Ideal Error', linewidth=2)
-        ax.axvline(x=ideal_cost, color='blue', linestyle='--', alpha=0.7, 
-                  label='Ideal Cost', linewidth=2)
+        ax.axhline(y=ideal_error, color='darkblue', linestyle='--', alpha=0.7, 
+          label='Ideal Error', linewidth=2)
+        ax.axvline(x=ideal_cost, color='darkorange', linestyle='--', alpha=0.7, 
+                label='Ideal Cost', linewidth=2) 
         
         # Add ideal point
         ax.scatter(ideal_cost, ideal_error, c='blue', s=200, marker='*', 
@@ -444,9 +444,27 @@ class ComprehensiveAnalyzer:
                           for color, label in zip(zone_colors, zone_labels)]
             
             # Get current legend handles and add zone patches
-            handles, labels = ax.get_legend_handles_labels()
-            handles.extend(zone_patches)
+            # handles, labels = ax.get_legend_handles_labels()
+            # handles.extend(zone_patches)
+
+            # ax.legend(handles=handles, loc='center right', bbox_to_anchor=(1.02, 1), framealpha=0.9, fontsize=9)
+            # zone_labels = ['Elite (0-25%)', 'Good (25-50%)', 'Fair (50-75%)', 'Poor (75-100%)']
+    
+            from matplotlib.patches import Patch
+            zone_patches = [Patch(color=color, alpha=0.4, label=label) 
+                        for color, label in zip(zone_colors, zone_labels)]  # Use the SAME zone_colors
             
+            # Create zones legend positioned separately
+            zones_legend = ax.legend(handles=zone_patches, 
+                                loc='center right', 
+                                bbox_to_anchor=(1.02, 0.3),  # Lower on right side
+                                framealpha=0.9, 
+                                fontsize=9,
+                                title='Performance Zones')
+            
+            # Add as artist so it doesn't override the main legend
+            ax.add_artist(zones_legend)
+                    
         except ValueError as e:
             if self.verbose:
                 print(f"Warning: Could not create performance zones: {e}")
@@ -459,27 +477,56 @@ class ComprehensiveAnalyzer:
         
         # Baseline styling configuration
         baseline_styles = {
-            'no-amr': {'marker': 's', 'color': 'purple', 'size': 150, 'label': 'No-AMR Baseline'},
+            'no-amr': {'marker': 's', 'color': 'firebrick', 'size': 150, 'label': 'No-AMR Baseline'},
             'conventional-amr': {'marker': 'o', 'color': 'gray', 'size': 100}  # Will be customized per threshold
         }
         
         # Plot each baseline method
         for method, data in self.baseline_data.items():
             style = baseline_styles.get(method, {'marker': 'o', 'color': 'gray', 'size': 100})
-            
+
             if method == 'conventional-amr' and isinstance(data, list):
-                # Plot multiple threshold points with different labels
-                threshold_labels = ['conventional-amr-t01', 'conventional-amr-t02', 'conventional-amr-t03', 'conventional-amr-t04', 
-                                  'conventional-amr-t05', 'conventional-amr-t06', 'conventional-amr-t07']
+                # Create dynamic labels based on actual threshold values
+                threshold_labels = []
+                for point in data:
+                    threshold_val = point.get('threshold', 'N/A')
+                    if threshold_val != 'N/A':
+                        threshold_labels.append(f'conventional-amr-t{threshold_val}')
+                    else:
+                        threshold_labels.append('conventional-amr-tNA')
+                
+                # Create darkmagenta gradient: light magenta (high threshold) to dark magenta (low threshold)  
+                threshold_colors = ['#DDA0DD', '#CC85CC', '#BB6ABB', '#AA4FAA', '#993499', '#881988', '#660066']
+                
+                # Collect points for line connection
+                threshold_costs = []
+                threshold_errors = []
                 
                 for i, point in enumerate(data):
                     label = threshold_labels[i] if i < len(threshold_labels) else f'conventional-amr-t{i+1:02d}'
                     
-                    # FIXED: Use grid_normalized_l2_error
+                    # Use magenta gradient instead of gray
+                    color = threshold_colors[i] if i < len(threshold_colors) else 'darkmagenta'
+                    
                     ax.scatter(point['total_cost'], point['grid_normalized_l2_error'],
-                            marker=style['marker'], c=style['color'], s=style['size'],
+                            marker='o', c=color, s=100,
                             alpha=0.9, label=f'{label} Baseline', 
                             edgecolors='black', linewidths=2, zorder=15)
+                    
+                    # Collect points for line
+                    threshold_costs.append(point['total_cost'])
+                    threshold_errors.append(point['grid_normalized_l2_error'])
+
+                # Connect threshold points with dotted line
+                if len(threshold_costs) > 1:
+                    # Sort by cost for logical connection order
+                    sorted_indices = sorted(range(len(threshold_costs)), key=lambda i: threshold_costs[i])
+                    sorted_costs = [threshold_costs[i] for i in sorted_indices]
+                    sorted_errors = [threshold_errors[i] for i in sorted_indices]
+                    
+                    ax.plot(sorted_costs, sorted_errors, 
+                        color='darkmagenta', linestyle=':', linewidth=2, alpha=0.8, zorder=14)
+            
                     
                     if self.verbose:
                         print(f"Added baseline reference: {label} at Cost={point['total_cost']}, Error={point['grid_normalized_l2_error']:.3e}")
@@ -565,14 +612,28 @@ class ComprehensiveAnalyzer:
                       c=family['colors'][color_idx], s=60, alpha=0.7,
                       label=f"{family['vary_param']}={param_value}",
                       edgecolors='black', linewidths=0.5)
+
+
+        # Highlight optimal point (closest to ideal)
+        optimal_idx = self.df['distance_to_ideal'].idxmin()
+        optimal_point = self.df.loc[optimal_idx]
+
+        ax.scatter(optimal_point['total_cost'], optimal_point['grid_normalized_l2_error'],
+                facecolors='none', s=300, marker='o', 
+                edgecolors='black', linewidths=2, alpha=0.9,
+                label='Optimal "Neutral" Model', zorder=10)
+
+        if self.verbose:
+            print(f"Optimal point: Cost={optimal_point['total_cost']:,}, "
+                f"Error={optimal_point['grid_normalized_l2_error']:.3e}, "
+                f"Distance={optimal_point['distance_to_ideal']:.3f}")
         
         # Add Pareto front if enabled - FIXED: Use grid_normalized_l2_error
         if pareto_models is not None:
             pareto_df = pd.DataFrame(pareto_models)
             ax.scatter(pareto_df['total_cost'], pareto_df['grid_normalized_l2_error'],
-                      c='red', s=100, alpha=0.9, marker='*',
-                      label=f"Pareto Optimal (N={len(pareto_df)})",
-                      edgecolors='darkred', linewidths=1.5, zorder=5)
+                    facecolors='none', s=200, alpha=1.0, marker='*',
+                    label=f'Pareto Optimal (N={len(pareto_df)})', edgecolors='darkred', linewidths=0.5, zorder=5)
             
             # Connect Pareto points
             pareto_sorted = pareto_df.sort_values('total_cost')
@@ -585,6 +646,7 @@ class ComprehensiveAnalyzer:
         ax.set_yscale('log')
         ax.grid(True, alpha=0.3)
         ax.legend(fontsize=10, framealpha=0.9)
+        
         
         # Create title
         title_parts = [family['title']]
@@ -640,12 +702,28 @@ class ComprehensiveAnalyzer:
                           label=f"{param_value}",
                           edgecolors='black', linewidths=0.3)
             
+
+            # Highlight optimal point (closest to ideal)
+            optimal_idx = self.df['distance_to_ideal'].idxmin()
+            optimal_point = self.df.loc[optimal_idx]
+
+            ax.scatter(optimal_point['total_cost'], optimal_point['grid_normalized_l2_error'],
+                    facecolors='none', s=300, marker='o', 
+                    edgecolors='black', linewidths=2, alpha=0.9,
+                    label='Optimal "Neutral" Model', zorder=10)
+
+            if self.verbose:
+                print(f"Optimal point: Cost={optimal_point['total_cost']:,}, "
+                    f"Error={optimal_point['grid_normalized_l2_error']:.3e}, "
+                    f"Distance={optimal_point['distance_to_ideal']:.3f}")
+
+
             # Add Pareto front if enabled - FIXED: Use grid_normalized_l2_error
             if pareto_models is not None:
                 pareto_df = pd.DataFrame(pareto_models)
                 ax.scatter(pareto_df['total_cost'], pareto_df['grid_normalized_l2_error'],
-                          c='red', s=60, alpha=0.9, marker='*',
-                          label='Pareto', edgecolors='darkred', linewidths=1, zorder=5)
+                    facecolors='none', s=200, alpha=1.0, marker='*',
+                    label=f'Pareto Optimal (N={len(pareto_df)})', edgecolors='darkred', linewidths=0.5, zorder=5)
                 
                 # Connect Pareto points
                 pareto_sorted = pareto_df.sort_values('total_cost')
@@ -658,7 +736,7 @@ class ComprehensiveAnalyzer:
             ax.set_yscale('log')
             ax.grid(True, alpha=0.3)
             ax.legend(fontsize=8, framealpha=0.9)
-            ax.set_title(family['title'], fontsize=12, fontweight='bold')
+            
         
         plt.tight_layout()
         
