@@ -18,14 +18,15 @@ sys.path.append(PROJECT_ROOT)
 from single_model_runner import run_single_model, extract_training_parameters
 
 def main():
-    if len(sys.argv) != 5:
-        print("Usage: python evaluate_single_model_by_index.py <index> <sweep_name> <initial_refinement> <element_budget>")
+    if len(sys.argv) != 6:  # Changed from 5 to 6
+        print("Usage: python evaluate_single_model_by_index.py <index> <sweep_name> <initial_refinement> <element_budget> <max_level>")
         sys.exit(1)
     
-    index = int(sys.argv[1]) - 1  # Convert to 0-based indexing
+    index = int(sys.argv[1]) - 1
     sweep_name = sys.argv[2]
     initial_refinement = int(sys.argv[3])
     element_budget = int(sys.argv[4])
+    max_level = int(sys.argv[5])
     
     # Calculate expected initial elements
     base_elements = 4  # From xelem = [-1, -0.4, 0, 0.4, 1]
@@ -57,7 +58,8 @@ def main():
         model_path=model_path,
         time_final=1.0,
         element_budget=element_budget,  # Use configurable budget
-        max_level=initial_refinement,
+        # max_level=initial_refinement,
+        max_level=max_level,
         nop=4,
         courant_max=0.1,
         icase=1,

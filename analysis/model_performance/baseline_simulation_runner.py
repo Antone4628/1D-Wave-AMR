@@ -261,64 +261,54 @@ def create_snapshot(times, solutions, grids, coords, solver, baseline_config,
                    include_exact=True, output_dir=None, n_snapshots=5):
     """
     Create snapshot plot with multiple timesteps.
-    
-    Args:
-        times (list): Time history
-        solutions (list): Solution history
-        grids (list): Grid boundary history
-        coords (list): Coordinate history
-        solver: Solver instance
-        baseline_config (dict): Baseline configuration information
-        include_exact (bool): Whether to include exact solution
-        output_dir (str): Directory to save plot
-        n_snapshots (int): Number of snapshots to show
-        
-    Returns:
-        str: Path to saved plot file
     """
-    # Select snapshot indices
+    # Select evenly spaced timestep indices
     total_frames = len(times)
-    snapshot_indices = np.linspace(0, total_frames-1, n_snapshots, dtype=int)
+    if total_frames < n_snapshots:
+        snapshot_indices = list(range(total_frames))
+    else:
+        snapshot_indices = [int(i * (total_frames - 1) / (n_snapshots - 1)) for i in range(n_snapshots)]
     
-    # Set up plot
-    plt.style.use('ggplot')
-    fig, ax = plt.subplots(figsize=(12, 8))
+    # Create figure with subplots (FIXED: Multiple subplots instead of single)
+    fig, axes = plt.subplots(n_snapshots, 1, figsize=(12, 3*n_snapshots))
+    if n_snapshots == 1:
+        axes = [axes]  # Ensure axes is always a list
     
     # Create title
     param_str = create_parameter_title(baseline_config)
     title = f'Baseline Simulation Snapshots\n{param_str}'
     fig.suptitle(title, fontsize=14, fontweight='bold')
     
-    ax.set_xlim([-1, 1])
-    ax.set_ylim([-0.1, 1.2])
-    ax.set_xlabel('Domain Position')
-    ax.set_ylabel('Solution Value')
-    
-    # Color scheme for different times
-    colors = plt.cm.viridis(np.linspace(0, 1, n_snapshots))
-    
-    # Plot solutions at different times
-    mode = baseline_config['mode']
-    for i, idx in enumerate(snapshot_indices):
-        alpha = 0.8 if i == len(snapshot_indices) - 1 else 0.6  # Highlight final
-        linewidth = 2.5 if i == len(snapshot_indices) - 1 else 1.5
+    for i, frame_idx in enumerate(snapshot_indices):
+        ax = axes[i]  # FIXED: Use different subplot for each time
         
-        label = f'{mode} t={times[idx]:.3f}'
-        ax.plot(coords[idx], solutions[idx], color=colors[i], linewidth=linewidth,
-                alpha=alpha, label=label)
+        # Plot baseline solution (FIXED: Proper label)
+        mode = baseline_config['mode'].upper()
+        ax.plot(coords[frame_idx], solutions[frame_idx], 'b-', linewidth=2, 
+                label=f'{mode} Solution', marker='o', markersize=3)
         
-        # Add element boundaries for final timestep
-        if i == len(snapshot_indices) - 1:
-            for x in grids[idx]:
-                ax.axvline(x, color='darkmagenta', linestyle=':', alpha=0.7, linewidth=1)
+        # Plot exact solution if requested
+        if include_exact:
+            exact_sol = exact_solution(coords[frame_idx], len(coords[frame_idx]), 
+                                     times[frame_idx], solver.icase)[0]
+            ax.plot(coords[frame_idx], exact_sol, 'r--', linewidth=2, label='Exact Solution')
+        
+        # Add element boundaries
+        for x in grids[frame_idx]:
+            ax.axvline(x, color='gray', linestyle=':', alpha=0.7, linewidth=1)
+        
+        # Set up subplot (FIXED: Individual subplot setup)
+        ax.set_xlim([-1, 1])
+        ax.set_ylim([-0.1, 1.2])
+        ax.set_xlabel('Domain Position')
+        ax.set_ylabel('Solution Value')
+        ax.set_title(f'Time = {times[frame_idx]:.3f}, Elements = {len(grids[frame_idx])-1}')
+        ax.grid(True, alpha=0.3)
+        
+        # Add legend to first subplot only
+        if i == 0:
+            ax.legend()
     
-    # Add exact solution at final time if requested
-    if include_exact:
-        final_idx = snapshot_indices[-1]
-        exact_sol = exact_solution(coords[final_idx], len(coords[final_idx]), times[final_idx], solver.icase)[0]
-        ax.plot(coords[final_idx], exact_sol, 'r--', linewidth=2, alpha=0.9, label='Exact (final)')
-    
-    ax.legend(fontsize=10)
     plt.tight_layout()
     
     # Save plot
@@ -390,28 +380,28 @@ def create_final_plot(solver, results, baseline_config, include_exact=True, outp
     
     # Create metrics text
     metrics_text = f"""
-BASELINE SIMULATION METRICS
-{'='*50}
-Configuration:
-  • Mode: {mode.upper()}
-  • Initial Refinement: {baseline_config['initial_refinement']}
-  • Element Budget: {baseline_config['element_budget']}
-  • Time Final: {baseline_config['time_final']:.3f}"""
+        BASELINE SIMULATION METRICS
+        {'='*50}
+        Configuration:
+        • Mode: {mode.upper()}
+        • Initial Refinement: {baseline_config['initial_refinement']}
+        • Element Budget: {baseline_config['element_budget']}
+        • Time Final: {baseline_config['time_final']:.3f}"""
     
     if mode == 'conventional-amr':
         metrics_text += f"\n  • Threshold: {baseline_config['threshold']}"
     
     metrics_text += f"""
 
-Performance Metrics:
-  • Final L2 Error: {results['final_l2_error']:.6e}
-  • Total Cost: {results['total_cost']}
-  • Final Elements: {results['final_elements']}
-  • Total Adaptations: {results['total_adaptations']}
-  • Simulation Time: {results['simulation_time']:.6f} s
-  • Final Time: {results['final_time']:.3f}
-  • Method: {results['method']}
-"""
+        Performance Metrics:
+        • Final L2 Error: {results['final_l2_error']:.6e}
+        • Total Cost: {results['total_cost']}
+        • Final Elements: {results['final_elements']}
+        • Total Adaptations: {results['total_adaptations']}
+        • Simulation Time: {results['simulation_time']:.6f} s
+        • Final Time: {results['final_time']:.3f}
+        • Method: {results['method']}
+        """
     
     ax2.text(0.02, 0.98, metrics_text, transform=ax2.transAxes, fontsize=11,
             verticalalignment='top', fontfamily='monospace',
@@ -466,7 +456,7 @@ def run_baseline_evaluation(baseline_config, verbose=False):
     default_config['verbose'] = verbose
     
     # Calculate max_elements from element_budget (generous upper bound)
-    max_elements = baseline_config['element_budget'] * 3
+    max_elements = baseline_config['element_budget'] * 20
     
     # Set max_level to prevent refinement beyond initial level for baseline consistency
     max_level_for_baseline = max(baseline_config['initial_refinement'], 1)

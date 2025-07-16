@@ -47,7 +47,7 @@ def run_baseline_evaluation(args):
     config = extract_configuration_from_sweep(args.sweep_name)
     
     # Calculate max_elements from element_budget (generous upper bound)
-    max_elements = args.element_budget * 3
+    max_elements = args.element_budget * 20
     
     # Set max_level to prevent refinement beyond initial level
     max_level_for_baseline = max(args.initial_refinement, 1)  # Minimum level 1 for safety

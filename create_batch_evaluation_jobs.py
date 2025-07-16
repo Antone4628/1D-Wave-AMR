@@ -38,22 +38,23 @@ def main():
     for arg in sys.argv[1:]:
         try:
             refinement_level, element_budget, max_level = map(int, arg.split(','))
-            configs.append((refinement_level, element_budget))
+            # configs.append((refinement_level, element_budget))
+            configs.append((refinement_level, element_budget, max_level)) 
         except ValueError:
             print(f"Error: Invalid config '{arg}'. Use format: refinement_level,element_budget")
             sys.exit(1)
     
     # Calculate expected initial elements for each config
     print("Configuration analysis:")
-    for refinement_level, element_budget in configs:
+    for refinement_level, element_budget, max_level in configs:
         base_elements = 4
         expected_initial = base_elements * (2 ** refinement_level)
         status = "✓ OK" if expected_initial < element_budget else "⚠ OVER BUDGET"
-        print(f"  ref_{refinement_level}, budget_{element_budget}: {expected_initial} initial elements {status}")
+        print(f"  ref_{refinement_level}, budget_{element_budget}, maxlvl_{max_level}: {expected_initial} initial elements {status}")
     print()
     
     job_files = []
-    for refinement_level, element_budget in configs:
+    for refinement_level, element_budget, max_level in configs: 
         job_file = create_slurm_job(refinement_level, element_budget, max_level)
         job_files.append((job_file, refinement_level, element_budget))
     

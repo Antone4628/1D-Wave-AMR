@@ -457,7 +457,7 @@ class ComprehensiveAnalyzer:
             # Create zones legend positioned separately
             zones_legend = ax.legend(handles=zone_patches, 
                                 loc='center right', 
-                                bbox_to_anchor=(1.02, 0.3),  # Lower on right side
+                                bbox_to_anchor=(0.98, 0.3),  # Lower on right side
                                 framealpha=0.9, 
                                 fontsize=9,
                                 title='Performance Zones')

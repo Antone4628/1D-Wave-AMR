@@ -296,13 +296,23 @@ def create_snapshot(times, solutions, grids, coords, solver, training_params,
         # Add element boundaries
         for x in grids[frame_idx]:
             ax.axvline(x, color='gray', linestyle=':', alpha=0.7, linewidth=1)
+
+        current_max_level = solver.get_current_max_refinement_level()
+        active_levels = solver.get_active_levels()
+        level_counts = dict(zip(*np.unique(active_levels, return_counts=True)))
+        level_str = ', '.join([f"L{lvl}:{cnt}" for lvl, cnt in sorted(level_counts.items())])
+    
         
         # Set up subplot
         ax.set_xlim([-1, 1])
         ax.set_ylim([-0.1, 1.2])
         ax.set_xlabel('Domain Position')
         ax.set_ylabel('Solution Value')
-        ax.set_title(f'Time = {times[frame_idx]:.3f}, Elements = {len(grids[frame_idx])-1}')
+        # ax.set_title(f'Time = {times[frame_idx]:.3f}, Elements = {len(grids[frame_idx])-1}')
+        # ENHANCED TITLE WITH LEVEL INFO 
+        title = f'Time = {times[frame_idx]:.3f}, Elements = {len(grids[frame_idx])-1}\n'
+        title += f'Max Level = {current_max_level} (set: {solver.max_level}), Levels: {level_str}'
+        ax.set_title(title, fontsize=10)
         ax.grid(True, alpha=0.3)
         
         # Add legend to first subplot only
@@ -466,7 +476,7 @@ def run_single_model(model_path, time_final=1.0, element_budget=50, max_level=5,
     solver = DGWaveSolverEvaluation(
         nop=nop,
         xelem=xelem,
-        max_elements=element_budget,
+        max_elements=element_budget*10,
         max_level=max_level,
         courant_max=courant_max,
         icase=icase,

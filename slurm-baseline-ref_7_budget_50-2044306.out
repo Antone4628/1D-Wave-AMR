@@ -1,0 +1,21 @@
+==================================================
+SLURM Job ID: 2044306
+Job Name: baseline_ref_7_budget_50
+Node: cpu125
+Start Time: Wed Jul 16 14:52:13 MDT 2025
+==================================================
+Configuration:
+  Initial Refinement: 
+  Element Budget: 0
+  Thresholds: 0.3,0.2,0.1,0.01,0.001,0.0001
+
+Starting baseline evaluation...
+Time: Wed Jul 16 14:52:13 MDT 2025
+
+Baseline evaluation completed with exit code: 2
+End Time: Wed Jul 16 14:52:13 MDT 2025
+✗ Expected output file not found: analysis/data/model_performance/session3_100k_uniform/baseline_results_conventional-amr_ref_budget.csv
+==================================================
+Job completed at Wed Jul 16 14:52:13 MDT 2025
+Total job time: 0 seconds
+==================================================

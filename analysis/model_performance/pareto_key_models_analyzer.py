@@ -441,10 +441,10 @@ class ParetoKeyModelsAnalyzer:
             
             # Position label above and to the right of point
             x_offset = (xlim[1] - xlim[0]) * 0.1  # 10% of x-range to the right
-            y_offset = model_data['grid_normalized_l2_error'] * 2  # 2x higher on log scale
+            y_offset = model_data['grid_normalized_l2_error'] * 4  # 2x higher on log scale
             
             label_x = model_data['total_cost'] + x_offset
-            label_y = model_data['grid_normalized_l2_error'] * 2
+            label_y = model_data['grid_normalized_l2_error'] * 3
             
             # Add annotation with arrow
             ax.annotate(full_label, 

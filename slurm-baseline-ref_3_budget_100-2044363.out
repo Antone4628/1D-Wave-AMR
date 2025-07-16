@@ -1,0 +1,497 @@
+==================================================
+SLURM Job ID: 2044363
+Job Name: baseline_ref_3_budget_100
+Node: cpu125
+Start Time: Wed Jul 16 15:11:45 MDT 2025
+==================================================
+Working directory: /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR
+Configuration: ref_3_budget_100
+Thresholds: 0.3,0.2,0.1,0.01,0.001,0.0001
+
+Starting baseline evaluation...
+Time: Wed Jul 16 15:11:45 MDT 2025
+Using multiple thresholds: [0.3, 0.2, 0.1, 0.01, 0.001, 0.0001]
+Generating conventional-AMR baseline with threshold 0.3...
+Using max refinement level: 0/3
+Using max refinement level: 3/3
+Time step updated: 1.000000e-02 -> 1.250000e-03
+Running conventional-amr evaluation:
+  Initial refinement: 3
+  Max refinement level: 3
+  Element budget: 100
+  Time final: 1.0
+  Threshold: 0.3
+Starting conventional-amr simulation to time 1.0
+Initial elements: 32
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Time step updated: 1.250000e-03 -> 1.875000e-03
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Time step updated: 1.875000e-03 -> 1.250000e-03
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Simulation complete:
+  Final L2 error: 0.116677
+  Total cost: 5808
+  Final elements: 10
+  Adaptations: 59
+Generating conventional-AMR baseline with threshold 0.2...
+Using max refinement level: 0/3
+Using max refinement level: 3/3
+Time step updated: 1.000000e-02 -> 1.250000e-03
+Running conventional-amr evaluation:
+  Initial refinement: 3
+  Max refinement level: 3
+  Element budget: 100
+  Time final: 1.0
+  Threshold: 0.2
+Starting conventional-amr simulation to time 1.0
+Initial elements: 32
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Time step updated: 1.250000e-03 -> 1.875000e-03
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Time step updated: 1.875000e-03 -> 1.250000e-03
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Simulation complete:
+  Final L2 error: 0.073838
+  Total cost: 6038
+  Final elements: 10
+  Adaptations: 51
+Generating conventional-AMR baseline with threshold 0.1...
+Using max refinement level: 0/3
+Using max refinement level: 3/3
+Time step updated: 1.000000e-02 -> 1.250000e-03
+Running conventional-amr evaluation:
+  Initial refinement: 3
+  Max refinement level: 3
+  Element budget: 100
+  Time final: 1.0
+  Threshold: 0.1
+Starting conventional-amr simulation to time 1.0
+Initial elements: 32
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Time step updated: 1.250000e-03 -> 1.875000e-03
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Time step updated: 1.875000e-03 -> 1.250000e-03
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Simulation complete:
+  Final L2 error: 0.033380
+  Total cost: 6380
+  Final elements: 10
+  Adaptations: 59
+Generating conventional-AMR baseline with threshold 0.01...
+Using max refinement level: 0/3
+Using max refinement level: 3/3
+Time step updated: 1.000000e-02 -> 1.250000e-03
+Running conventional-amr evaluation:
+  Initial refinement: 3
+  Max refinement level: 3
+  Element budget: 100
+  Time final: 1.0
+  Threshold: 0.01
+Starting conventional-amr simulation to time 1.0
+Initial elements: 32
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Time step updated: 1.250000e-03 -> 1.875000e-03
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Time step updated: 1.875000e-03 -> 1.250000e-03
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Simulation complete:
+  Final L2 error: 0.027383
+  Total cost: 7234
+  Final elements: 12
+  Adaptations: 57
+Generating conventional-AMR baseline with threshold 0.001...
+Using max refinement level: 0/3
+Using max refinement level: 3/3
+Time step updated: 1.000000e-02 -> 1.250000e-03
+Running conventional-amr evaluation:
+  Initial refinement: 3
+  Max refinement level: 3
+  Element budget: 100
+  Time final: 1.0
+  Threshold: 0.001
+Starting conventional-amr simulation to time 1.0
+Initial elements: 32
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Time step updated: 1.250000e-03 -> 1.875000e-03
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Time step updated: 1.875000e-03 -> 1.250000e-03
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Simulation complete:
+  Final L2 error: 0.026018
+  Total cost: 8317
+  Final elements: 14
+  Adaptations: 57
+Generating conventional-AMR baseline with threshold 0.0001...
+Using max refinement level: 0/3
+Using max refinement level: 3/3
+Time step updated: 1.000000e-02 -> 1.250000e-03
+Running conventional-amr evaluation:
+  Initial refinement: 3
+  Max refinement level: 3
+  Element budget: 100
+  Time final: 1.0
+  Threshold: 0.0001
+Starting conventional-amr simulation to time 1.0
+Initial elements: 32
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Time step updated: 1.250000e-03 -> 1.875000e-03
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Time step updated: 1.875000e-03 -> 1.250000e-03
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Using max refinement level: 3/3
+Simulation complete:
+  Final L2 error: 0.025982
+  Total cost: 8707
+  Final elements: 14
+  Adaptations: 70
+Results saved to: analysis/data/model_performance/session3_100k_uniform/baseline_results_conventional-amr_ref3_budget100.csv
+Generated 6 baseline data points
+Baseline evaluation complete: analysis/data/model_performance/session3_100k_uniform/baseline_results_conventional-amr_ref3_budget100.csv
+
+Baseline evaluation completed with exit code: 0
+End Time: Wed Jul 16 15:11:48 MDT 2025
+✓ Baseline file created: /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/model_performance/session3_100k_uniform/baseline_results_conventional-amr_ref3_budget100.csv
+  File contains 7 lines (expected: 7 = header + 6 thresholds)
+==================================================
+Job completed at Wed Jul 16 15:11:48 MDT 2025
+==================================================

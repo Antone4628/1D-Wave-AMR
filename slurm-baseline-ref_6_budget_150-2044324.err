@@ -1,0 +1,12 @@
+/cm/local/apps/slurm/var/spool/job2044324/slurm_script: line 23: 6=6: command not found
+/cm/local/apps/slurm/var/spool/job2044324/slurm_script: line 24: 150=150: command not found
+ERROR: Unable to locate a modulefile for 'python/3.9'
+/cm/local/apps/slurm/var/spool/job2044324/slurm_script: line 39: venv/bin/activate: No such file or directory
+usage: baseline_evaluator.py [-h] --mode {no-amr,conventional-amr}
+                             [--initial-refinement INITIAL_REFINEMENT]
+                             [--element-budget ELEMENT_BUDGET]
+                             [--time-final TIME_FINAL] [--threshold THRESHOLD]
+                             [--threshold-list THRESHOLD_LIST]
+                             [--output-file OUTPUT_FILE] [--verbose]
+                             sweep_name
+baseline_evaluator.py: error: argument --initial-refinement: expected one argument

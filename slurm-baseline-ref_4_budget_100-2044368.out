@@ -1,0 +1,886 @@
+==================================================
+SLURM Job ID: 2044368
+Job Name: baseline_ref_4_budget_100
+Node: cpu125
+Start Time: Wed Jul 16 15:11:48 MDT 2025
+==================================================
+Working directory: /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR
+Configuration: ref_4_budget_100
+Thresholds: 0.3,0.2,0.1,0.01,0.001,0.0001
+
+Starting baseline evaluation...
+Time: Wed Jul 16 15:11:48 MDT 2025
+Using multiple thresholds: [0.3, 0.2, 0.1, 0.01, 0.001, 0.0001]
+Generating conventional-AMR baseline with threshold 0.3...
+Using max refinement level: 0/4
+Using max refinement level: 4/4
+Time step updated: 1.000000e-02 -> 6.250000e-04
+Running conventional-amr evaluation:
+  Initial refinement: 4
+  Max refinement level: 4
+  Element budget: 100
+  Time final: 1.0
+  Threshold: 0.3
+Starting conventional-amr simulation to time 1.0
+Initial elements: 64
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Time step updated: 6.250000e-04 -> 9.375000e-04
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Time step updated: 9.375000e-04 -> 6.250000e-04
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Simulation complete:
+  Final L2 error: 0.118416
+  Total cost: 15443
+  Final elements: 14
+  Adaptations: 124
+Generating conventional-AMR baseline with threshold 0.2...
+Using max refinement level: 0/4
+Using max refinement level: 4/4
+Time step updated: 1.000000e-02 -> 6.250000e-04
+Running conventional-amr evaluation:
+  Initial refinement: 4
+  Max refinement level: 4
+  Element budget: 100
+  Time final: 1.0
+  Threshold: 0.2
+Starting conventional-amr simulation to time 1.0
+Initial elements: 64
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Time step updated: 6.250000e-04 -> 9.375000e-04
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Time step updated: 9.375000e-04 -> 6.250000e-04
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Simulation complete:
+  Final L2 error: 0.083310
+  Total cost: 16452
+  Final elements: 14
+  Adaptations: 122
+Generating conventional-AMR baseline with threshold 0.1...
+Using max refinement level: 0/4
+Using max refinement level: 4/4
+Time step updated: 1.000000e-02 -> 6.250000e-04
+Running conventional-amr evaluation:
+  Initial refinement: 4
+  Max refinement level: 4
+  Element budget: 100
+  Time final: 1.0
+  Threshold: 0.1
+Starting conventional-amr simulation to time 1.0
+Initial elements: 64
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Time step updated: 6.250000e-04 -> 9.375000e-04
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Time step updated: 9.375000e-04 -> 6.250000e-04
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Simulation complete:
+  Final L2 error: 0.043785
+  Total cost: 17895
+  Final elements: 14
+  Adaptations: 122
+Generating conventional-AMR baseline with threshold 0.01...
+Using max refinement level: 0/4
+Using max refinement level: 4/4
+Time step updated: 1.000000e-02 -> 6.250000e-04
+Running conventional-amr evaluation:
+  Initial refinement: 4
+  Max refinement level: 4
+  Element budget: 100
+  Time final: 1.0
+  Threshold: 0.01
+Starting conventional-amr simulation to time 1.0
+Initial elements: 64
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Time step updated: 6.250000e-04 -> 9.375000e-04
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Time step updated: 9.375000e-04 -> 6.250000e-04
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Simulation complete:
+  Final L2 error: 0.005842
+  Total cost: 21587
+  Final elements: 18
+  Adaptations: 122
+Generating conventional-AMR baseline with threshold 0.001...
+Using max refinement level: 0/4
+Using max refinement level: 4/4
+Time step updated: 1.000000e-02 -> 6.250000e-04
+Running conventional-amr evaluation:
+  Initial refinement: 4
+  Max refinement level: 4
+  Element budget: 100
+  Time final: 1.0
+  Threshold: 0.001
+Starting conventional-amr simulation to time 1.0
+Initial elements: 64
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Time step updated: 6.250000e-04 -> 9.375000e-04
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Time step updated: 9.375000e-04 -> 6.250000e-04
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Simulation complete:
+  Final L2 error: 0.000815
+  Total cost: 24417
+  Final elements: 20
+  Adaptations: 126
+Generating conventional-AMR baseline with threshold 0.0001...
+Using max refinement level: 0/4
+Using max refinement level: 4/4
+Time step updated: 1.000000e-02 -> 6.250000e-04
+Running conventional-amr evaluation:
+  Initial refinement: 4
+  Max refinement level: 4
+  Element budget: 100
+  Time final: 1.0
+  Threshold: 0.0001
+Starting conventional-amr simulation to time 1.0
+Initial elements: 64
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Time step updated: 6.250000e-04 -> 9.375000e-04
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Time step updated: 9.375000e-04 -> 6.250000e-04
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Using max refinement level: 4/4
+Simulation complete:
+  Final L2 error: 0.000521
+  Total cost: 26867
+  Final elements: 20
+  Adaptations: 126
+Results saved to: analysis/data/model_performance/session3_100k_uniform/baseline_results_conventional-amr_ref4_budget100.csv
+Generated 6 baseline data points
+Baseline evaluation complete: analysis/data/model_performance/session3_100k_uniform/baseline_results_conventional-amr_ref4_budget100.csv
+
+Baseline evaluation completed with exit code: 0
+End Time: Wed Jul 16 15:11:56 MDT 2025
+✓ Baseline file created: /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/model_performance/session3_100k_uniform/baseline_results_conventional-amr_ref4_budget100.csv
+  File contains 7 lines (expected: 7 = header + 6 thresholds)
+==================================================
+Job completed at Wed Jul 16 15:11:56 MDT 2025
+==================================================

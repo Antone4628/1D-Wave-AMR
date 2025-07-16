@@ -42,6 +42,8 @@ def exact_solution(coord, npoin, time, icase):
         if(xbar > xmax):
             xbar = xmin + (xbar-xmax)
         r = x-xbar
+        domain_length = xmax - xmin
+        r = r - domain_length * np.round(r / domain_length)
         
         if(icase == 1):
             qe[i] = np.exp(-beta*(x-xbar)**2)
