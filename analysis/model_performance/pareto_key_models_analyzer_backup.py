@@ -140,143 +140,6 @@ class ParetoKeyModelsAnalyzer:
                 for value in family['values']:
                     count = len(self.df[self.df[family['vary_param']] == value])
                     print(f"    {value}: {count} models")
-
-
-    def extract_configuration_info(self):
-        """
-        Extract configuration information from the input file name.
-        
-        Returns:
-            dict: Configuration info with keys: initial_refinement, element_budget, max_level, config_id
-        """
-        # Get the base filename
-        filename = os.path.basename(self.csv_path)
-        
-        # Default values
-        config_info = {
-            'initial_refinement': None,
-            'element_budget': None,
-            'max_level': None,
-            'config_id': 'unknown'
-        }
-        
-        # Extract from filename pattern: model_results_ref{refinement}_budget{budget}.csv
-        if 'model_results_ref' in filename:
-            try:
-                # Remove prefix and suffix
-                config_part = filename.replace('model_results_ref', '').replace('.csv', '')
-                # Split on '_budget'
-                parts = config_part.split('_budget')
-                if len(parts) == 2:
-                    initial_refinement = int(parts[0])
-                    element_budget = int(parts[1])
-                    
-                    # Try to extract max_level from filename, fallback to initial_refinement
-                    max_level = initial_refinement  # Default assumption for current Set A files
-                    # Future: could parse _max{level} pattern here when file naming convention changes
-                    
-                    config_info.update({
-                        'initial_refinement': initial_refinement,
-                        'element_budget': element_budget,
-                        'max_level': max_level,
-                        'config_id': f"ref{initial_refinement}_budget{element_budget}"
-                    })
-                    
-                    if self.verbose:
-                        print(f"Extracted configuration: ref{initial_refinement}_budget{element_budget}_max{max_level}")
-                        
-            except (ValueError, IndexError) as e:
-                if self.verbose:
-                    print(f"Warning: Could not parse configuration from filename {filename}: {e}")
-        
-        return config_info
-    
-    def get_aggregate_directory(self):
-        """
-        Get the aggregate results directory path, creating it if necessary.
-        
-        Returns:
-            str: Path to aggregate results directory
-        """
-        aggregate_dir = os.path.join(self.results_dir, 'aggregate_results')
-        os.makedirs(aggregate_dir, exist_ok=True)
-        return aggregate_dir
-
-    def get_aggregate_csv_paths(self):
-        """
-        Get paths for the three aggregate CSV files.
-        
-        Returns:
-            dict: Paths for each key model type
-        """
-        aggregate_dir = self.get_aggregate_directory()
-        return {
-            'lowest_cost': os.path.join(aggregate_dir, 'lowest_cost_models.csv'),
-            'lowest_l2': os.path.join(aggregate_dir, 'lowest_l2_models.csv'),
-            'optimal_neutral': os.path.join(aggregate_dir, 'optimal_neutral_models.csv')
-        }
-
-    def get_export_csv_headers(self):
-        """
-        Define the headers for the aggregate CSV files.
-        
-        Returns:
-            list: Column headers including config info and all model data
-        """
-        # Configuration columns first
-        config_headers = ['config_id', 'initial_refinement', 'element_budget', 'max_level']
-        
-        # Original model data columns (from self.data)
-        model_headers = list(self.df.columns)
-        
-        return config_headers + model_headers
-
-    def export_key_model_to_csv(self, model_data, config_info, csv_path):
-        """
-        Export a single key model to its aggregate CSV file with duplicate handling.
-        
-        Args:
-            model_data (pandas.Series): The model data row
-            config_info (dict): Configuration information
-            csv_path (str): Path to the CSV file
-        """
-        headers = self.get_export_csv_headers()
-        
-        # Create the row to export
-        export_row = {}
-        
-        # Add configuration data
-        for key in ['config_id', 'initial_refinement', 'element_budget', 'max_level']:
-            export_row[key] = config_info[key]
-        
-        # Add all model data
-        for col in self.df.columns:
-            export_row[col] = model_data[col]
-        
-        # Handle existing file and duplicates
-        if os.path.exists(csv_path):
-            # Read existing data
-            existing_df = pd.read_csv(csv_path)
-            
-            # Remove existing entry for this config_id if it exists (overwrite duplicates)
-            existing_df = existing_df[existing_df['config_id'] != config_info['config_id']]
-            
-            # Add new row
-            new_row_df = pd.DataFrame([export_row])
-            updated_df = pd.concat([existing_df, new_row_df], ignore_index=True)
-            
-            # Sort by config_id for consistent ordering
-            updated_df = updated_df.sort_values('config_id')
-            
-        else:
-            # Create new file
-            updated_df = pd.DataFrame([export_row])
-        
-        # Write to CSV
-        updated_df.to_csv(csv_path, index=False)
-        
-        if self.verbose:
-            print(f"  Exported {config_info['config_id']} to {os.path.basename(csv_path)}")
     
     def _load_and_validate_data(self):
         """Load and validate the CSV data."""
@@ -1254,8 +1117,6 @@ def main():
                        help='Identify and highlight best accuracy, best cost, and optimal neutral models')
     parser.add_argument('--annotate-models', action='store_true', 
                        help='Add parameter configuration labels with arrows to key models')
-    parser.add_argument('--export-key-models', action='store_true',
-                       help='Export key model data to aggregate CSV files for cross-configuration analysis')
     parser.add_argument('--baseline-mode', type=str, choices=['none', 'minimal', 'full'], default='full',
                        help='Baseline inclusion: none=no baselines, minimal=no-amr+one threshold, full=all baselines')
     
@@ -1301,44 +1162,8 @@ def main():
             )
             
             # Add key model identification if requested
-            # if args.identify_key_models:
-            #     key_models = analyzer.identify_key_models()
-                
-            #     # Create annotated version if requested
-            #     if args.annotate_models:
-            #         analyzer.create_annotated_pareto_plot(
-            #             family_name=args.pareto_family,
-            #             key_models=key_models,
-            #             baseline_mode=args.baseline_mode,
-            #             include_zones=args.include_zones,
-            #             output_format=args.output_format
-            #         )
-
-            # Add key model identification if requested
             if args.identify_key_models:
                 key_models = analyzer.identify_key_models()
-                
-                # Export key models to aggregate CSV files if requested
-                if args.export_key_models:
-                    config_info = analyzer.extract_configuration_info()
-                    csv_paths = analyzer.get_aggregate_csv_paths()
-                    
-                    if args.verbose:
-                        print(f"\nExporting key models for configuration: {config_info['config_id']}")
-                    
-                    # Export each key model type
-                    analyzer.export_key_model_to_csv(
-                        key_models['best_cost'], config_info, csv_paths['lowest_cost']
-                    )
-                    analyzer.export_key_model_to_csv(
-                        key_models['best_accuracy'], config_info, csv_paths['lowest_l2']
-                    )
-                    analyzer.export_key_model_to_csv(
-                        key_models['optimal_neutral'], config_info, csv_paths['optimal_neutral']
-                    )
-                    
-                    if args.verbose:
-                        print(f"Key models exported to: {analyzer.get_aggregate_directory()}")
                 
                 # Create annotated version if requested
                 if args.annotate_models:
