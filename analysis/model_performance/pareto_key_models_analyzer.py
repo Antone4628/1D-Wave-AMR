@@ -41,7 +41,7 @@ class ParetoKeyModelsAnalyzer:
     """
     
     def __init__(self, sweep_name, input_file=None, verbose=False, 
-             include_baselines=False, baseline_methods=None, baseline_config=None):
+             include_baselines=False, baseline_methods=None, baseline_config=None, custom_output_dir=None):
         """
         Initialize the comprehensive analyzer.
         
@@ -67,7 +67,12 @@ class ParetoKeyModelsAnalyzer:
             else:
                 # Fallback to old naming convention
                 self.csv_path = os.path.join(self.results_dir, "batch_results_all_models.csv")
-        self.output_dir = os.path.join(self.results_dir, 'comprehensive_analysis')
+
+        if custom_output_dir:
+            self.output_dir = custom_output_dir
+        else:
+            self.output_dir = os.path.join(self.results_dir, 'comprehensive_analysis')        
+        # self.output_dir = os.path.join(self.results_dir, 'comprehensive_analysis')
         
         # Create output directory
         os.makedirs(self.output_dir, exist_ok=True)
@@ -141,10 +146,76 @@ class ParetoKeyModelsAnalyzer:
                     count = len(self.df[self.df[family['vary_param']] == value])
                     print(f"    {value}: {count} models")
 
+    def _generate_config_filename(self, base_name, output_format):
+        """
+        Generate filename with configuration information included.
+        
+        Args:
+            base_name (str): Base filename (e.g., 'pareto_only_gamma_c_family')
+            output_format (str): Output format ('png', 'pdf', 'svg')
+            
+        Returns:
+            str: Config-specific filename
+        """
+        config_info = self.extract_configuration_info()
+        config_suffix = config_info['config_id']
+        
+        # Create config-specific filename
+        filename = f"{base_name}_{config_suffix}.{output_format}"
+        return filename 
+
+    # def extract_configuration_info(self):
+    #     """
+    #     Extract configuration information from the input file name.
+        
+    #     Returns:
+    #         dict: Configuration info with keys: initial_refinement, element_budget, max_level, config_id
+    #     """
+    #     # Get the base filename
+    #     filename = os.path.basename(self.csv_path)
+        
+    #     # Default values
+    #     config_info = {
+    #         'initial_refinement': None,
+    #         'element_budget': None,
+    #         'max_level': None,
+    #         'config_id': 'unknown'
+    #     }
+        
+    #     # Extract from filename pattern: model_results_ref{refinement}_budget{budget}.csv
+    #     if 'model_results_ref' in filename:
+    #         try:
+    #             # Remove prefix and suffix
+    #             config_part = filename.replace('model_results_ref', '').replace('.csv', '')
+    #             # Split on '_budget'
+    #             parts = config_part.split('_budget')
+    #             if len(parts) == 2:
+    #                 initial_refinement = int(parts[0])
+    #                 element_budget = int(parts[1])
+                    
+    #                 # Try to extract max_level from filename, fallback to initial_refinement
+    #                 max_level = initial_refinement  # Default assumption for current Set A files
+    #                 # Future: could parse _max{level} pattern here when file naming convention changes
+                    
+    #                 config_info.update({
+    #                     'initial_refinement': initial_refinement,
+    #                     'element_budget': element_budget,
+    #                     'max_level': max_level,
+    #                     'config_id': f"ref{initial_refinement}_budget{element_budget}"
+    #                 })
+                    
+    #                 if self.verbose:
+    #                     print(f"Extracted configuration: ref{initial_refinement}_budget{element_budget}_max{max_level}")
+                        
+    #         except (ValueError, IndexError) as e:
+    #             if self.verbose:
+    #                 print(f"Warning: Could not parse configuration from filename {filename}: {e}")
+        
+    #     return config_info
 
     def extract_configuration_info(self):
         """
-        Extract configuration information from the input file name.
+        Extract configuration information from the input CSV filename.
         
         Returns:
             dict: Configuration info with keys: initial_refinement, element_budget, max_level, config_id
@@ -160,31 +231,46 @@ class ParetoKeyModelsAnalyzer:
             'config_id': 'unknown'
         }
         
-        # Extract from filename pattern: model_results_ref{refinement}_budget{budget}.csv
+        # Extract from filename pattern: model_results_ref{refinement}_budget{budget}[_max{level}].csv
         if 'model_results_ref' in filename:
             try:
                 # Remove prefix and suffix
                 config_part = filename.replace('model_results_ref', '').replace('.csv', '')
-                # Split on '_budget'
-                parts = config_part.split('_budget')
-                if len(parts) == 2:
-                    initial_refinement = int(parts[0])
-                    element_budget = int(parts[1])
-                    
-                    # Try to extract max_level from filename, fallback to initial_refinement
-                    max_level = initial_refinement  # Default assumption for current Set A files
-                    # Future: could parse _max{level} pattern here when file naming convention changes
+                
+                # Handle both old and new naming conventions
+                if '_max' in config_part:
+                    # New format: ref5_budget150_max5
+                    parts = config_part.split('_')
+                    initial_refinement = int(parts[0])  # 5
+                    budget_part = parts[1].replace('budget', '')  # budget150 -> 150
+                    element_budget = int(budget_part)
+                    max_part = parts[2].replace('max', '')  # max5 -> 5
+                    max_level = int(max_part)
                     
                     config_info.update({
                         'initial_refinement': initial_refinement,
                         'element_budget': element_budget,
                         'max_level': max_level,
-                        'config_id': f"ref{initial_refinement}_budget{element_budget}"
+                        'config_id': f"ref{initial_refinement}_budget{element_budget}_max{max_level}"
                     })
-                    
-                    if self.verbose:
-                        print(f"Extracted configuration: ref{initial_refinement}_budget{element_budget}_max{max_level}")
+                else:
+                    # Old format: ref5_budget150 (assume max_level = initial_refinement)
+                    parts = config_part.split('_budget')
+                    if len(parts) == 2:
+                        initial_refinement = int(parts[0])
+                        element_budget = int(parts[1])
+                        max_level = initial_refinement  # Default assumption for Set A files
                         
+                        config_info.update({
+                            'initial_refinement': initial_refinement,
+                            'element_budget': element_budget,
+                            'max_level': max_level,
+                            'config_id': f"ref{initial_refinement}_budget{element_budget}_max{max_level}"
+                        })
+                        
+                if self.verbose:
+                    print(f"Extracted configuration: {config_info['config_id']}")
+                            
             except (ValueError, IndexError) as e:
                 if self.verbose:
                     print(f"Warning: Could not parse configuration from filename {filename}: {e}")
@@ -691,13 +777,9 @@ class ParetoKeyModelsAnalyzer:
         if self.baseline_config:
             config = self.baseline_config
         else:
-            # Auto-detect config from model file name
-            # e.g., model_results_ref0_budget50.csv -> ref0_budget50
-            model_filename = os.path.basename(self.csv_path)
-            if 'model_results_' in model_filename:
-                config = model_filename.replace('model_results_', '').replace('.csv', '')
-            else:
-                config = 'ref0_budget50'  # Default fallback
+            # Auto-detect config from model file name using updated method
+            config_info = self.extract_configuration_info()
+            config = config_info['config_id']
         
         if self.verbose:
             print(f"Looking for baseline data with config: {config}")
@@ -706,8 +788,8 @@ class ParetoKeyModelsAnalyzer:
         if self.baseline_methods:
             methods = [m.strip() for m in self.baseline_methods.split(',')]
         else:
-            # Auto-detect available baseline methods
-            methods = ['no-amr', 'conventional-amr']
+            # Auto-detect available baseline methods (removed no-amr)
+            methods = ['conventional-amr']
         
         # Try to load each baseline method
         for method in methods:
@@ -720,7 +802,7 @@ class ParetoKeyModelsAnalyzer:
                     if len(df) > 0:
                         # FIXED: Handle multi-threshold files properly
                         if len(df) > 1:
-                            # Multi-threshold file (e.g., conventional-amr with 7 thresholds)
+                            # Multi-threshold file (e.g., conventional-amr with 6 thresholds)
                             baseline_points = []
                             for _, row in df.iterrows():
                                 baseline_points.append({
@@ -734,29 +816,103 @@ class ParetoKeyModelsAnalyzer:
                             
                             if self.verbose:
                                 print(f"  Loaded {method}: {len(baseline_points)} threshold points")
-                                for point in baseline_points:
-                                    print(f"    Threshold {point['threshold']}: L2={point['grid_normalized_l2_error']:.3e}, Cost={point['total_cost']:,}")
                         else:
-                            # Single threshold file (e.g., no-amr)
+                            # Single-threshold file
+                            row = df.iloc[0]
                             baseline_data[method] = [{
-                                'grid_normalized_l2_error': df['grid_normalized_l2_error'].iloc[0],
-                                'total_cost': df['total_cost'].iloc[0],
+                                'grid_normalized_l2_error': row['grid_normalized_l2_error'],
+                                'total_cost': row['total_cost'],
                                 'method': method,
-                                'threshold': df.get('threshold_value', [None]).iloc[0],
+                                'threshold': row.get('threshold_value', 'single'),
                                 'file': baseline_file
                             }]
                             
                             if self.verbose:
-                                error = df['grid_normalized_l2_error'].iloc[0]
-                                cost = df['total_cost'].iloc[0]
-                                print(f"  Loaded {method}: L2={error:.3e}, Cost={cost:,}")
+                                print(f"  Loaded {method}: 1 baseline point")
+                                
                 except Exception as e:
                     if self.verbose:
-                        print(f"  Failed to load {baseline_file}: {e}")
-            elif self.verbose:
-                print(f"  Baseline file not found: {baseline_file}")
+                        print(f"  Warning: Could not load {baseline_file}: {e}")
+            else:
+                if self.verbose:
+                    print(f"  Baseline file not found: {baseline_file}")
         
         return baseline_data
+
+    # def _load_baseline_data(self):
+    #     """Load baseline data files matching the model configuration."""
+    #     baseline_data = {}
+        
+    #     # Extract configuration from model file or use override
+    #     if self.baseline_config:
+    #         config = self.baseline_config
+    #     else:
+    #         # Auto-detect config from model file name
+    #         # e.g., model_results_ref0_budget50.csv -> ref0_budget50
+    #         model_filename = os.path.basename(self.csv_path)
+    #         if 'model_results_' in model_filename:
+    #             config = model_filename.replace('model_results_', '').replace('.csv', '')
+    #         else:
+    #             config = 'ref0_budget50'  # Default fallback
+        
+    #     if self.verbose:
+    #         print(f"Looking for baseline data with config: {config}")
+        
+    #     # Determine which methods to look for
+    #     if self.baseline_methods:
+    #         methods = [m.strip() for m in self.baseline_methods.split(',')]
+    #     else:
+    #         # Auto-detect available baseline methods
+    #         methods = ['no-amr', 'conventional-amr']
+        
+    #     # Try to load each baseline method
+    #     for method in methods:
+    #         baseline_file = f"baseline_results_{method}_{config}.csv"
+    #         baseline_path = os.path.join(self.results_dir, baseline_file)
+            
+    #         if os.path.exists(baseline_path):
+    #             try:
+    #                 df = pd.read_csv(baseline_path)
+    #                 if len(df) > 0:
+    #                     # FIXED: Handle multi-threshold files properly
+    #                     if len(df) > 1:
+    #                         # Multi-threshold file (e.g., conventional-amr with 7 thresholds)
+    #                         baseline_points = []
+    #                         for _, row in df.iterrows():
+    #                             baseline_points.append({
+    #                                 'grid_normalized_l2_error': row['grid_normalized_l2_error'],
+    #                                 'total_cost': row['total_cost'],
+    #                                 'method': method,
+    #                                 'threshold': row.get('threshold_value', 'N/A'),
+    #                                 'file': baseline_file
+    #                             })
+    #                         baseline_data[method] = baseline_points
+                            
+    #                         if self.verbose:
+    #                             print(f"  Loaded {method}: {len(baseline_points)} threshold points")
+    #                             for point in baseline_points:
+    #                                 print(f"    Threshold {point['threshold']}: L2={point['grid_normalized_l2_error']:.3e}, Cost={point['total_cost']:,}")
+    #                     else:
+    #                         # Single threshold file (e.g., no-amr)
+    #                         baseline_data[method] = [{
+    #                             'grid_normalized_l2_error': df['grid_normalized_l2_error'].iloc[0],
+    #                             'total_cost': df['total_cost'].iloc[0],
+    #                             'method': method,
+    #                             'threshold': df.get('threshold_value', [None]).iloc[0],
+    #                             'file': baseline_file
+    #                         }]
+                            
+    #                         if self.verbose:
+    #                             error = df['grid_normalized_l2_error'].iloc[0]
+    #                             cost = df['total_cost'].iloc[0]
+    #                             print(f"  Loaded {method}: L2={error:.3e}, Cost={cost:,}")
+    #             except Exception as e:
+    #                 if self.verbose:
+    #                     print(f"  Failed to load {baseline_file}: {e}")
+    #         elif self.verbose:
+    #             print(f"  Baseline file not found: {baseline_file}")
+        
+    #     return baseline_data
     
     def identify_pareto_optimal_models(self):
         """Identify Pareto-optimal models (non-dominated solutions)."""
@@ -1204,10 +1360,11 @@ class ParetoKeyModelsAnalyzer:
             filename_base += "_with_zones"
         self._save_plot(fig, filename_base, output_format)
         plt.close()
-    
+
     def _save_plot(self, fig, filename_base, output_format):
-        """Save plot in specified format."""
-        filename = f"{filename_base}.{output_format}"
+        """Save plot in specified format with config-specific naming."""
+        # Generate config-specific filename
+        filename = self._generate_config_filename(filename_base, output_format)
         output_path = os.path.join(self.output_dir, filename)
         
         try:
@@ -1221,6 +1378,23 @@ class ParetoKeyModelsAnalyzer:
                 
         except Exception as e:
             print(f"Warning: Could not save plot {output_path}: {e}")
+    
+    # def _save_plot(self, fig, filename_base, output_format):
+    #     """Save plot in specified format."""
+    #     filename = f"{filename_base}.{output_format}"
+    #     output_path = os.path.join(self.output_dir, filename)
+        
+    #     try:
+    #         if output_format.lower() == 'pdf':
+    #             fig.savefig(output_path, bbox_inches='tight', dpi=300)
+    #         else:
+    #             fig.savefig(output_path, bbox_inches='tight', dpi=300)
+            
+    #         if self.verbose:
+    #             print(f"Saved plot: {output_path}")
+                
+    #     except Exception as e:
+    #         print(f"Warning: Could not save plot {output_path}: {e}")
 
 def main():
     """Main function with argument parsing for command line usage"""
@@ -1261,6 +1435,7 @@ def main():
     
     # Output options
     parser.add_argument('--output-format', choices=['pdf', 'png', 'svg'], default='pdf', help='Output format for plots')
+    parser.add_argument('--output-dir', type=str, help='Custom output directory (overrides default)')
     parser.add_argument('--verbose', action='store_true', help='Enable verbose output')
     
     args = parser.parse_args()
@@ -1277,7 +1452,8 @@ def main():
             verbose=args.verbose,
             include_baselines=args.include_baselines,
             baseline_methods=args.baseline_methods,
-            baseline_config=args.baseline_config
+            baseline_config=args.baseline_config,
+            custom_output_dir=args.output_dir 
         )
 
         # Debug baseline loading

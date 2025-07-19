@@ -1,0 +1,40 @@
+Data validation successful
+Grid-normalized L2 error range: 6.34e-06 to 9.83e-03
+Total cost range: 129,844 to 336,214
+Extracted configuration: ref5_budget150_max5
+Looking for baseline data with config: ref5_budget150_max5
+  Loaded conventional-amr: 6 threshold points
+Loaded baseline data for 1 methods (6 total points)
+Loaded 81 model results
+Ideal point: Cost=129844, Error=6.34e-06
+Distance range: 0.300 to 1.197
+Parameter family values:
+  gamma_c: [25.0, 50.0, 100.0] (3 values)
+    25.0: 27 models
+    50.0: 27 models
+    100.0: 27 models
+  step_domain_fraction: [0.025, 0.05, 0.1] (3 values)
+    0.025: 27 models
+    0.05: 27 models
+    0.1: 27 models
+  rl_iterations_per_timestep: [10, 25, 40] (3 values)
+    10: 27 models
+    25: 27 models
+    40: 27 models
+  element_budget: [25, 30, 40] (3 values)
+    25: 27 models
+    30: 27 models
+    40: 27 models
+Creating pareto-only plot for gamma_c family...
+Identifying Pareto-optimal models...
+Set axis limits: Cost [14251, 365483], Error [2.301e-06, 4.410e-01]
+Baseline data available methods: ['conventional-amr']
+Added most accurate threshold baseline: t=0.0001
+Extracted configuration: ref5_budget150_max5
+Saved plot: /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/model_performance/session3_100k_uniform/comprehensive_analysis/pareto_only_gamma_c_family_minimal_baselines_ref5_budget150_max5.png
+Pareto-only gamma_c plot saved
+Identifying key models...
+Best Accuracy Model: Index 42, Error: 0.000006
+Best Cost Model: Index 5, Cost: 129,844
+Optimal Neutral Model: Index 23, Distance: 0.299776
+Pareto family analysis for gamma_c complete!
