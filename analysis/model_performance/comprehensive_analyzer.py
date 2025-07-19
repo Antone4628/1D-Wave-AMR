@@ -616,7 +616,7 @@ class ComprehensiveAnalyzer:
             # Create zones legend positioned separately
             zones_legend = ax.legend(handles=zone_patches, 
                                 loc='center right', 
-                                bbox_to_anchor=(0.98, 0.3),  # Lower on right side
+                                bbox_to_anchor=(1.02, 0.3),  # Lower on right side
                                 framealpha=0.9, 
                                 fontsize=9,
                                 title='Performance Zones')
@@ -736,7 +736,8 @@ class ComprehensiveAnalyzer:
         """Create a single parameter family plot."""
         family = self.parameter_families[family_name]
         
-        fig, ax = plt.subplots(figsize=(10, 8))
+        fig, ax = plt.subplots(figsize=(16, 12))
+        
         
         # ALWAYS set proper axis limits first
         self._set_axis_limits(ax)
@@ -823,7 +824,8 @@ class ComprehensiveAnalyzer:
     
     def _create_combined_family_plots(self, pareto_models, include_ideal, include_zones, include_baselines, output_format):
         """Create combined 2x2 parameter family plots."""
-        fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+        # fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+        fig, axes = plt.subplots(2, 2, figsize=(20, 12))
         axes = axes.flatten()
         
         for idx, family_name in enumerate(self.parameter_families.keys()):
@@ -894,7 +896,8 @@ class ComprehensiveAnalyzer:
             ax.set_ylabel('L2 Error', fontsize=10)
             ax.set_yscale('log')
             ax.grid(True, alpha=0.3)
-            ax.legend(fontsize=8, framealpha=0.9)
+            # ax.legend(fontsize=8, framealpha=0.9)
+            ax.legend(loc='center left', bbox_to_anchor=(1.02, 0.8), framealpha=0.9, fontsize=8)
             
         
         plt.tight_layout()
@@ -903,6 +906,7 @@ class ComprehensiveAnalyzer:
         filename_base = "comprehensive_all_families_combined"
         if include_zones:
             filename_base += "_with_zones"
+        
         self._save_plot(fig, filename_base, output_format)
         plt.close()
     
@@ -930,8 +934,10 @@ class ComprehensiveAnalyzer:
         
         try:
             if output_format.lower() == 'pdf':
+                plt.tight_layout()
                 fig.savefig(output_path, bbox_inches='tight', dpi=300)
             else:
+                plt.tight_layout()
                 fig.savefig(output_path, bbox_inches='tight', dpi=300)
             
             if self.verbose:

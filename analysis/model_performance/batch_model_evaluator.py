@@ -270,7 +270,7 @@ def run_batch_evaluation(sweep_name, time_final=1.0, element_budget=50, max_leve
     print(f"Found {len(model_paths)} models to evaluate")
     
     # Set up CSV output
-    csv_path = os.path.join(output_directory, f'model_results_ref{initial_refinement}_budget{element_budget}.csv')
+    csv_path = os.path.join(output_directory, f'model_results_ref{initial_refinement}_budget{element_budget}_max{max_level}.csv')
     json_dir = os.path.join(output_directory, 'individual_results')
     os.makedirs(json_dir, exist_ok=True)
     

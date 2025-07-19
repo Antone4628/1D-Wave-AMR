@@ -171,7 +171,7 @@ def save_results(results, args):
         output_path = output_dir / args.output_file
     else:
         # Auto-generate filename with mode
-        filename = f"baseline_results_{args.mode}_ref{args.initial_refinement}_budget{args.element_budget}.csv"
+        filename = f"baseline_results_{args.mode}_ref{args.initial_refinement}_budget{args.element_budget}_max{args.max_level}.csv"
         output_path = output_dir / filename
     
     # Save CSV
@@ -218,6 +218,10 @@ def main():
                        help='Initial mesh refinement level (default: 0)')
     parser.add_argument('--element-budget', type=int, default=None,
                        help='Maximum number of elements (default: 50)')
+
+    parser.add_argument('--max-level', type=int, required=True,
+                   help='Maximum refinement level for evaluation')
+
     parser.add_argument('--time-final', type=float, default=1.0,
                        help='Final simulation time (default: 1.0)')
     

@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=baseline_ref_REFINEMENT_LEVEL_budget_ELEMENT_BUDGET_max_MAX_LEVEL
-#SBATCH --output=slurm-baseline-ref_REFINEMENT_LEVEL_budget_ELEMENT_BUDGET_max_MAX_LEVEL-%j.out
-#SBATCH --error=slurm-baseline-ref_REFINEMENT_LEVEL_budget_ELEMENT_BUDGET_max_MAX_LEVEL-%j.err
+#SBATCH --job-name=baseline_ref_5_budget_60_max_5
+#SBATCH --output=slurm-baseline-ref_5_budget_60_max_5-%j.out
+#SBATCH --error=slurm-baseline-ref_5_budget_60_max_5-%j.err
 #SBATCH --time=01:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
@@ -19,7 +19,7 @@ echo "=================================================="
 cd /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR
 
 echo "Working directory: $(pwd)"
-echo "Configuration: ref_REFINEMENT_LEVEL_budget_ELEMENT_BUDGET_max_MAX_LEVEL"
+echo "Configuration: ref_5_budget_60_max_5"
 echo "Thresholds: 0.3,0.2,0.1,0.01,0.001,0.0001"
 echo
 
@@ -29,9 +29,9 @@ echo "Time: $(date)"
 # Run baseline evaluation (you're already in rl-amr environment)
 python analysis/model_performance/baseline_evaluator.py session3_100k_uniform \
     --mode conventional-amr \
-    --initial-refinement REFINEMENT_LEVEL \
-    --element-budget ELEMENT_BUDGET \
-    --max-level MAX_LEVEL \
+    --initial-refinement 5 \
+    --element-budget 60 \
+    --max-level 5 \
     --threshold-list "0.3,0.2,0.1,0.01,0.001,0.0001" \
     --verbose
 
@@ -42,7 +42,7 @@ echo "Baseline evaluation completed with exit code: $BASELINE_EXIT_CODE"
 echo "End Time: $(date)"
 
 # Check if output file was created
-EXPECTED_OUTPUT="/bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/model_performance/session3_100k_uniform/baseline_results_conventional-amr_refREFINEMENT_LEVEL_budgetELEMENT_BUDGET_maxMAX_LEVEL.csv"
+EXPECTED_OUTPUT="/bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/model_performance/session3_100k_uniform/baseline_results_conventional-amr_ref5_budget60_max5.csv"
 
 if [ -f "$EXPECTED_OUTPUT" ]; then
     echo "✓ Baseline file created: $EXPECTED_OUTPUT"

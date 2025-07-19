@@ -56,16 +56,16 @@ def main():
     job_files = []
     for refinement_level, element_budget, max_level in configs: 
         job_file = create_slurm_job(refinement_level, element_budget, max_level)
-        job_files.append((job_file, refinement_level, element_budget))
+        job_files.append((job_file, refinement_level, element_budget, max_level))
     
     print(f"\nCreated {len(job_files)} job files.")
     print("\nTo submit jobs:")
-    for job_file, ref, budget in job_files:
+    for job_file, ref, budget, max_lvl in job_files:
         print(f"sbatch {job_file}")
     
     print(f"\nResults will be saved as:")
-    for _, ref, budget in job_files:
-        print(f"  model_results_ref{ref}_budget{budget}.csv")
+    for _, ref, budget, max_lvl in job_files:
+        print(f"  model_results_ref{ref}_budget{budget}_max{max_lvl}.csv")
 
 if __name__ == "__main__":
     main()

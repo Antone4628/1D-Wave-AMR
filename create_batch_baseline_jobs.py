@@ -7,7 +7,7 @@ Each job runs conventional-amr with multiple thresholds: 0.3, 0.2, 0.1, 0.01, 0.
 import os
 import sys
 
-def create_slurm_baseline_job(refinement_level, element_budget):
+def create_slurm_baseline_job(refinement_level, element_budget, max_level):
     """Create a SLURM job file for baseline evaluation with specific refinement level and element budget."""
     
     # Read template
@@ -23,6 +23,7 @@ def create_slurm_baseline_job(refinement_level, element_budget):
     # Replace placeholders
     job_content = template.replace('REFINEMENT_LEVEL', str(refinement_level))
     job_content = job_content.replace('ELEMENT_BUDGET', str(element_budget))
+    job_content = job_content.replace('MAX_LEVEL', str(max_level))
     
     # Write job file
     job_file = f'slurm_scripts/batch_baseline_evaluation_ref_{refinement_level}_budget_{element_budget}.slurm'
@@ -141,15 +142,15 @@ def main():
     configs = []
     for arg in sys.argv[1:]:
         try:
-            refinement_level, element_budget = map(int, arg.split(','))
-            configs.append((refinement_level, element_budget))
+            refinement_level, element_budget, max_level = map(int, arg.split(','))
+            configs.append((refinement_level, element_budget, max_level))
         except ValueError:
             print(f"Error: Invalid config '{arg}'. Use format: refinement_level,element_budget")
             sys.exit(1)
     
     # Calculate expected initial elements for each config
     print("Baseline Configuration Analysis:")
-    for refinement_level, element_budget in configs:
+    for refinement_level, element_budget, max_level in configs:
         base_elements = 4
         expected_initial = base_elements * (2 ** refinement_level)
         
@@ -160,18 +161,18 @@ def main():
     print()
     
     job_files = []
-    for refinement_level, element_budget in configs:
-        job_file = create_slurm_baseline_job(refinement_level, element_budget)
-        job_files.append((job_file, refinement_level, element_budget))
+    for refinement_level, element_budget, max_level in configs:
+        job_file = create_slurm_baseline_job(refinement_level, element_budget, max_level)
+        job_files.append((job_file, refinement_level, element_budget, max_level))
     
     print(f"\\nCreated {len(job_files)} baseline job files.")
     print("\\nTo submit all jobs:")
-    for job_file, ref, budget in job_files:
+    for job_file, ref, budget, max_lvl in job_files:
         print(f"sbatch {job_file}")
     
     print(f"\\nExpected output files (each with 6 threshold results):")
-    for _, ref, budget in job_files:
-        print(f"  baseline_results_conventional-amr_ref{ref}_budget{budget}.csv")
+    for _, ref, budget, max_lvl in job_files:
+        print(f"  baseline_results_conventional-amr_ref{ref}_budget{budget}_max{max_lvl}.csv")
     
     print(f"\\nEach job will run conventional-AMR with thresholds: 0.3, 0.2, 0.1, 0.01, 0.001, 0.0001")
     print(f"Total expected runtime: {len(job_files)} jobs × 5-15 minutes = ~2-6 hours")
