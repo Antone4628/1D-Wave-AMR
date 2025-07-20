@@ -39,14 +39,35 @@ def exact_solution(coord, npoin, time, icase):
     for i in range(npoin):
         x = coord[i]
         xbar = xc + u*timec
-        if(xbar > xmax):
+        if(xbar >= xmax):
             xbar = xmin + (xbar-xmax)
         r = x-xbar
         domain_length = xmax - xmin
         r = r - domain_length * np.round(r / domain_length)
         
+        # if(icase == 1):
+        #     qe[i] = np.exp(-beta*(x-xbar)**2)
         if(icase == 1):
+            # CRITICAL: For periodic boundaries with sharp Gaussians,
+            # we MUST include periodic images to ensure continuity
+            
+            # Main Gaussian pulse
             qe[i] = np.exp(-beta*(x-xbar)**2)
+            
+            # Add periodic images to ensure qe(-1) ≈ qe(1)
+            # For beta=256, we need images when the main pulse is near boundaries
+            domain_length = x1  # 2.0
+            
+            # Left periodic image (wraps from left to appear on right)
+            xbar_left = xbar - domain_length
+            qe[i] += np.exp(-beta*(x-xbar_left)**2)
+            
+            # Right periodic image (wraps from right to appear on left)
+            xbar_right = xbar + domain_length
+            qe[i] += np.exp(-beta*(x-xbar_right)**2)
+            
+            # Note: For beta=256, contributions from images beyond ±1 period
+            # are negligible (< 1e-15) and can be ignored
         elif(icase == 2):
             if(abs(r) <= rc):
                 qe[i] = 1
