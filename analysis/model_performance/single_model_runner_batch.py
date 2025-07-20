@@ -148,9 +148,20 @@ def generate_filename(model_path, training_params, plot_mode, extension='png'):
 def create_parameter_title(training_params):
     """Create formatted parameter string for titles."""
     if training_params:
-        return f"γc={training_params['gamma_c']}, step={training_params['step_domain_fraction']}, rl_iter={training_params['rl_iterations_per_timestep']}, budget={training_params['element_budget']}"
+        return f"Training Parameters: $\\gamma_c$={training_params['gamma_c']}, step={training_params['step_domain_fraction']}, rl_iter={training_params['rl_iterations_per_timestep']}, budget={training_params['element_budget']}"
     else:
-        return "Parameters: Unknown"
+        return "Training Parameters: Unknown"
+
+def create_simulation_config_title(solver):
+    """Create formatted simulation configuration string for titles."""
+    try:
+        initial_ref = solver.initial_refinement if hasattr(solver, 'initial_refinement') else "Unknown"
+        element_budget = solver.element_budget if hasattr(solver, 'element_budget') else "Unknown" 
+        max_level = solver.max_level if hasattr(solver, 'max_level') else "Unknown"
+        
+        return f"Simulation Configuration: initial refinement level: {initial_ref}, element budget: {element_budget}, max refinement level: {max_level}"
+    except:
+        return "Simulation Configuration: Unknown"
 
 def create_animation(times, solutions, grids, coords, solver, training_params, 
                     include_exact=True, output_dir=None, model_path=None):
@@ -179,7 +190,8 @@ def create_animation(times, solutions, grids, coords, solver, training_params,
     
     # Create title
     param_str = create_parameter_title(training_params)
-    title = f'Model Evaluation Animation\n{param_str}'
+    sim_config_str = create_simulation_config_title(solver)
+    title = f'Model Evaluation Animation\n{param_str}\n{sim_config_str}'
     fig.suptitle(title, fontsize=14, fontweight='bold')
     
     ax.set_xlim([-1, 1])
@@ -302,7 +314,8 @@ def create_snapshot(times, solutions, grids, coords, solver, training_params,
     
     # Create title
     param_str = create_parameter_title(training_params)
-    title = f'Model Evaluation Snapshots\n{param_str}'
+    sim_config_str = create_simulation_config_title(solver)
+    title = f'Model Evaluation Animation\n{param_str}\n{sim_config_str}'
     fig.suptitle(title, fontsize=14, fontweight='bold')
     
     for i, frame_idx in enumerate(snapshot_indices):
@@ -322,10 +335,10 @@ def create_snapshot(times, solutions, grids, coords, solver, training_params,
         for x in grids[frame_idx]:
             ax.axvline(x, color='gray', linestyle=':', alpha=0.7, linewidth=1)
 
-        current_max_level = solver.get_current_max_refinement_level()
-        active_levels = solver.get_active_levels()
-        level_counts = dict(zip(*np.unique(active_levels, return_counts=True)))
-        level_str = ', '.join([f"L{lvl}:{cnt}" for lvl, cnt in sorted(level_counts.items())])
+        # current_max_level = solver.get_current_max_refinement_level()
+        # active_levels = solver.get_active_levels()
+        # level_counts = dict(zip(*np.unique(active_levels, return_counts=True)))
+        # level_str = ', '.join([f"L{lvl}:{cnt}" for lvl, cnt in sorted(level_counts.items())])
     
         
         # Set up subplot
@@ -336,7 +349,7 @@ def create_snapshot(times, solutions, grids, coords, solver, training_params,
         # ax.set_title(f'Time = {times[frame_idx]:.3f}, Elements = {len(grids[frame_idx])-1}')
         # ENHANCED TITLE WITH LEVEL INFO 
         title = f'Time = {times[frame_idx]:.3f}, Elements = {len(grids[frame_idx])-1}\n'
-        title += f'Max Level = {current_max_level} (set: {solver.max_level}), Levels: {level_str}'
+        # title += f'Max Level = {current_max_level} (set: {solver.max_level}), Levels: {level_str}'
         ax.set_title(title, fontsize=10)
         ax.grid(True, alpha=0.3)
         
@@ -390,7 +403,8 @@ def create_final_plot(solver, results, training_params, include_exact=True,
     
     # Create title
     param_str = create_parameter_title(training_params)
-    title = f'Final Solution Comparison\n{param_str}'
+    sim_config_str = create_simulation_config_title(solver)
+    title = f'Model Evaluation Animation\n{param_str}\n{sim_config_str}'
     fig.suptitle(title, fontsize=14, fontweight='bold')
     
     # Plot solutions
