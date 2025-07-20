@@ -139,7 +139,8 @@ def create_simulation_config_title(solver):
         return "Simulation Configuration: Unknown"
 
 def create_animation(times, solutions, grids, coords, solver, training_params, 
-                    include_exact=True, output_dir=None, model_path=None):
+                    include_exact=True, output_dir=None, model_path=None, 
+                    initial_refinement=None, element_budget=None):
     """
     Create and save animation of the simulation results.
     
@@ -165,7 +166,7 @@ def create_animation(times, solutions, grids, coords, solver, training_params,
     
     # Create title
     param_str = create_parameter_title(training_params)
-    sim_config_str = create_simulation_config_title(solver)
+    sim_config_str = create_simulation_config_title(solver, initial_refinement, element_budget)
     title = f'Model Evaluation Animation\n{param_str}\n{sim_config_str}'
     fig.suptitle(title, fontsize=14, fontweight='bold')
     
@@ -256,7 +257,8 @@ def create_animation(times, solutions, grids, coords, solver, training_params,
     return animation_path
 
 def create_snapshot(times, solutions, grids, coords, solver, training_params,
-                   include_exact=True, output_dir=None, model_path=None, n_snapshots=5):
+                   include_exact=True, output_dir=None, model_path=None, n_snapshots=5,
+                   initial_refinement=None, element_budget=None):
     """
     Create snapshot plot with multiple timesteps.
     
@@ -289,7 +291,7 @@ def create_snapshot(times, solutions, grids, coords, solver, training_params,
     
     # Create title
     param_str = create_parameter_title(training_params)
-    sim_config_str = create_simulation_config_title(solver)
+    sim_config_str = create_simulation_config_title(solver, initial_refinement, element_budget)
     title = f'Model Evaluation Animation\n{param_str}\n{sim_config_str}'
     fig.suptitle(title, fontsize=14, fontweight='bold')
     
@@ -324,7 +326,7 @@ def create_snapshot(times, solutions, grids, coords, solver, training_params,
         # ax.set_title(f'Time = {times[frame_idx]:.3f}, Elements = {len(grids[frame_idx])-1}')
         # ENHANCED TITLE WITH LEVEL INFO 
         title = f'Time = {times[frame_idx]:.3f}, Elements = {len(grids[frame_idx])-1}\n'
-        title += f'Max Level = {current_max_level} (set: {solver.max_level}), Levels: {level_str}'
+        # title += f'Max Level = {current_max_level} (set: {solver.max_level}), Levels: {level_str}'
         ax.set_title(title, fontsize=10)
         ax.grid(True, alpha=0.3)
         
@@ -355,7 +357,7 @@ def create_snapshot(times, solutions, grids, coords, solver, training_params,
     return plot_path
 
 def create_final_plot(solver, results, training_params, include_exact=True, 
-                     output_dir=None, model_path=None):
+                     output_dir=None, model_path=None, initial_refinement=None, element_budget=None):
     """
     Create final timestep plot with metrics.
     
@@ -378,7 +380,7 @@ def create_final_plot(solver, results, training_params, include_exact=True,
     
     # Create title
     param_str = create_parameter_title(training_params)
-    sim_config_str = create_simulation_config_title(solver)
+    sim_config_str = create_simulation_config_title(solver, initial_refinement, element_budget)
     title = f'Model Evaluation Animation\n{param_str}\n{sim_config_str}'
     fig.suptitle(title, fontsize=14, fontweight='bold')
     
@@ -623,20 +625,24 @@ def run_single_model(model_path, time_final=1.0, element_budget=50, max_level=5,
     }
     
     # Create plots based on mode
+    # Create plots based on mode
     if plot_mode and output_dir:
         if plot_mode == 'animate' and collect_full_history:
             plot_path = create_animation(times, solutions, grids, coords, solver, 
-                                       training_params, include_exact, output_dir, model_path)
+                                    training_params, include_exact, output_dir, model_path,
+                                    initial_refinement, element_budget)
             results['plot_path'] = plot_path
             
         elif plot_mode == 'snapshot' and collect_full_history:
             plot_path = create_snapshot(times, solutions, grids, coords, solver,
-                                      training_params, include_exact, output_dir, model_path)
+                                    training_params, include_exact, output_dir, model_path,
+                                    initial_refinement=initial_refinement, element_budget=element_budget)
             results['plot_path'] = plot_path
             
         elif plot_mode == 'final':
             plot_path = create_final_plot(solver, results, training_params,
-                                        include_exact, output_dir, model_path)
+                                        include_exact, output_dir, model_path,
+                                        initial_refinement, element_budget)
             results['plot_path'] = plot_path
     
     if verbose:
