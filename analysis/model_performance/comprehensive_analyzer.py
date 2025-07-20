@@ -615,8 +615,8 @@ class ComprehensiveAnalyzer:
             
             # Create zones legend positioned separately
             zones_legend = ax.legend(handles=zone_patches, 
-                                loc='center right', 
-                                bbox_to_anchor=(1.02, 0.3),  # Lower on right side
+                                loc='upper left', 
+                                bbox_to_anchor=(1.02, 0.6),  # Lower on right side
                                 framealpha=0.9, 
                                 fontsize=9,
                                 title='Performance Zones')
@@ -736,7 +736,7 @@ class ComprehensiveAnalyzer:
         """Create a single parameter family plot."""
         family = self.parameter_families[family_name]
         
-        fig, ax = plt.subplots(figsize=(16, 12))
+        fig, ax = plt.subplots(figsize=(13, 8))
         
         
         # ALWAYS set proper axis limits first
@@ -805,7 +805,7 @@ class ComprehensiveAnalyzer:
         ax.set_ylabel('Final L2 Error', fontsize=12, fontweight='bold')
         ax.set_yscale('log')
         ax.grid(True, alpha=0.3)
-        ax.legend(fontsize=10, framealpha=0.9)
+        ax.legend(loc='upper left', bbox_to_anchor=(1.02, 1.0), framealpha=0.9, fontsize=9)
         
         
         # Create title
