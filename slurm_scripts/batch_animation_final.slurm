@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=batch_anim_final
-#SBATCH --array=1-2
+#SBATCH --array=1-48
 #SBATCH --time=01:00:00
 #SBATCH --mem=4G
 #SBATCH --cpus-per-task=1

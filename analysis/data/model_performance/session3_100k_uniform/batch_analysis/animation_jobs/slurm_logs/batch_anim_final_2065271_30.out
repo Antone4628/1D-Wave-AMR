@@ -1,0 +1,17 @@
+🎯 Single Animation Runner
+   Task ID: 30
+   Mode: final
+   Sweep: session3_100k_uniform
+   Jobs file: animation_jobs_final.json
+📋 Loaded job definition:
+   Job ID: final_lowest_l2_ref7_budget150_max7
+   Model Type: lowest_l2
+   Config ID: ref7_budget150_max7
+   Animation Mode: final
+
+🎬 Executing animation...
+   Model: final_model.zip
+   Config: ref7_budget150_max7
+   Mode: final
+   Command: python /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/model_performance/single_model_runner_batch.py --model-path /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/models/session3_100k_uniform/gamma_25.0_step_0.05_rl_25_budget_40/final_model.zip --plot-mode final --batch-analysis-output --eval-refinement 7 --eval-budget 150 --eval-max-level 7 --initial-refinement 7 --element-budget 150 --max-level 7
+❌ Animation timed out after 1 hour

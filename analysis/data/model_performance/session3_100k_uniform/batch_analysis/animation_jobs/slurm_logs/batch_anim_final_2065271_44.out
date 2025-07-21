@@ -1,0 +1,32 @@
+🎯 Single Animation Runner
+   Task ID: 44
+   Mode: final
+   Sweep: session3_100k_uniform
+   Jobs file: animation_jobs_final.json
+📋 Loaded job definition:
+   Job ID: final_optimal_neutral_ref6_budget80_max6
+   Model Type: optimal_neutral
+   Config ID: ref6_budget80_max6
+   Animation Mode: final
+
+🎬 Executing animation...
+   Model: final_model.zip
+   Config: ref6_budget80_max6
+   Mode: final
+   Command: python /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/model_performance/single_model_runner_batch.py --model-path /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/models/session3_100k_uniform/gamma_50.0_step_0.1_rl_25_budget_40/final_model.zip --plot-mode final --batch-analysis-output --eval-refinement 6 --eval-budget 80 --eval-max-level 6 --initial-refinement 6 --element-budget 80 --max-level 6
+✅ Animation completed successfully
+   Output: Warning: Initial refinement will create 256 elements but budget is 80
+Starting over budget - model can only coarsen or do nothing initially
+Final plot saved to /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/model_performance/session3_100k_uniform/batch_analysis/ref6_budget80_max6/final_model_g50.0_s0.1_r25_b40_final.png
+
+=== EVALUATION SUMMARY ===
+Training Parameters: Training Parameters: $\gamma_c$=50.0, step=0.1, rl_iter=25, budget=40
+Model: /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/models/session3_100k_uniform/gamma_50.0_step_0.1_rl_25_budget_40/final_model.zip
+Final L2 Error: 5.283605e-03
+Total Cost: 259438
+Final Elements: 51
+Total Adaptations: 3999
+⚠️  Expected output not found: /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/model_performance/session3_100k_uniform/batch_analysis/ref6_budget80_max6/final_optimal_neutral_ref6_budget80_max6.png
+
+🎉 Animation job 44 completed successfully!
+Animation job 44 (final mode) completed at Sun Jul 20 10:39:18 MDT 2025

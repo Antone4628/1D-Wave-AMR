@@ -1,0 +1,30 @@
+🎯 Single Animation Runner
+   Task ID: 17
+   Mode: final
+   Sweep: session3_100k_uniform
+   Jobs file: animation_jobs_final.json
+📋 Loaded job definition:
+   Job ID: final_lowest_l2_ref4_budget100_max4
+   Model Type: lowest_l2
+   Config ID: ref4_budget100_max4
+   Animation Mode: final
+
+🎬 Executing animation...
+   Model: final_model.zip
+   Config: ref4_budget100_max4
+   Mode: final
+   Command: python /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/model_performance/single_model_runner_batch.py --model-path /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/models/session3_100k_uniform/gamma_25.0_step_0.025_rl_25_budget_25/final_model.zip --plot-mode final --batch-analysis-output --eval-refinement 4 --eval-budget 100 --eval-max-level 4 --initial-refinement 4 --element-budget 100 --max-level 4
+✅ Animation completed successfully
+   Output: Final plot saved to /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/model_performance/session3_100k_uniform/batch_analysis/ref4_budget100_max4/final_model_g25.0_s0.025_r25_b25_final.png
+
+=== EVALUATION SUMMARY ===
+Training Parameters: Training Parameters: $\gamma_c$=25.0, step=0.025, rl_iter=25, budget=25
+Model: /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/models/session3_100k_uniform/gamma_25.0_step_0.025_rl_25_budget_25/final_model.zip
+Final L2 Error: 1.427963e-05
+Total Cost: 102528
+Final Elements: 64
+Total Adaptations: 0
+⚠️  Expected output not found: /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/model_performance/session3_100k_uniform/batch_analysis/ref4_budget100_max4/final_lowest_l2_ref4_budget100_max4.png
+
+🎉 Animation job 17 completed successfully!
+Animation job 17 (final mode) completed at Sun Jul 20 10:30:43 MDT 2025

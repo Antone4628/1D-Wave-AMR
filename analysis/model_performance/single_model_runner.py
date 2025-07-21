@@ -127,16 +127,21 @@ def create_parameter_title(training_params):
     else:
         return "Training Parameters: Unknown"
 
-def create_simulation_config_title(solver):
+def create_simulation_config_title(solver, initial_refinement=None, element_budget=None):
     """Create formatted simulation configuration string for titles."""
     try:
-        initial_ref = solver.initial_refinement if hasattr(solver, 'initial_refinement') else "Unknown"
-        element_budget = solver.element_budget if hasattr(solver, 'element_budget') else "Unknown" 
+        # Use passed parameters if available, otherwise try to get from solver
+        initial_ref = initial_refinement if initial_refinement is not None else (
+            solver.initial_refinement if hasattr(solver, 'initial_refinement') else "Unknown"
+        )
+        budget = element_budget if element_budget is not None else (
+            solver.element_budget if hasattr(solver, 'element_budget') else "Unknown"
+        )
         max_level = solver.max_level if hasattr(solver, 'max_level') else "Unknown"
         
-        return f"Simulation Configuration: initial refinement level: {initial_ref}, element budget: {element_budget}, max refinement level: {max_level}"
-    except:
-        return "Simulation Configuration: Unknown"
+        return f"Simulation Configuration: initial refinement level: {initial_ref}, element budget: {budget}, max refinement level: {max_level}"
+    except Exception as e:
+        return f"Simulation Configuration: Error ({str(e)})"
 
 def create_animation(times, solutions, grids, coords, solver, training_params, 
                     include_exact=True, output_dir=None, model_path=None, 
