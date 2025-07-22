@@ -511,6 +511,10 @@ def run_baseline_evaluation(baseline_config, verbose=False):
     grids = [solver.xelem.copy()]
     coords = [solver.coord.copy()]
     
+
+    # Initialize element count tracking
+    element_counts = []
+
     # Main simulation loop
     step_count = 0
     while solver.time < time_final:
@@ -518,6 +522,8 @@ def run_baseline_evaluation(baseline_config, verbose=False):
         
         if verbose:
             print(f"  Timestep {step_count}, Time: {solver.time:.3f}")
+
+        element_counts.append(len(solver.active))
         
         # Apply adaptation based on mode
         if baseline_config['mode'] == 'conventional-amr':
@@ -551,6 +557,23 @@ def run_baseline_evaluation(baseline_config, verbose=False):
         )
     else:
         grid_normalized_l2_error = l2_error  # no-amr is already on reference grid
+
+    # Calculate cost consistently with DRL evaluation
+    total_cost = sum(element_counts)
+
+    # Calculate cost ratio against no-AMR baseline
+    import math
+    number_of_timesteps = math.ceil(time_final / solver.dt)
+    initial_elements = element_counts[0] if element_counts else len(solver.active)
+    no_amr_baseline_cost = initial_elements * number_of_timesteps
+    cost_ratio = total_cost / no_amr_baseline_cost if no_amr_baseline_cost > 0 else 1.0
+
+    # Debug prints
+    print(f"DEBUG: total_cost = {total_cost}")
+    print(f"DEBUG: cost_ratio = {cost_ratio}")
+    print(f"DEBUG: number_of_timesteps = {number_of_timesteps}")
+    print(f"DEBUG: no_amr_baseline_cost = {no_amr_baseline_cost}")
+    print(f"DEBUG: element_counts length = {len(element_counts)}")
     
     # Create metrics dictionary (matching baseline_evaluator.py format)
     metrics = {
@@ -559,13 +582,19 @@ def run_baseline_evaluation(baseline_config, verbose=False):
         'evaluation_element_budget': baseline_config['element_budget'],
         'final_l2_error': l2_error,
         'grid_normalized_l2_error': grid_normalized_l2_error,
-        'total_cost': (len(times) - 1) * (len(grids[-1]) - 1),
+        'total_cost': total_cost,
         'final_elements': len(grids[-1]) - 1,  # Final number of elements
         'simulation_time': simulation_time,
         'threshold_value': baseline_config.get('threshold', 'N/A'),
         'adaptation_count': 0,  # Will be updated based on mode
-        'final_time': times[-1]
+        'final_time': times[-1],
+        'cost_ratio': cost_ratio,
+        'number_of_timesteps': number_of_timesteps, 
+        'no_amr_baseline_cost': no_amr_baseline_cost,
     }
+
+    print(f"DEBUG: metrics keys = {list(metrics.keys())}")
+    print(f"DEBUG: metrics = {metrics}")
     
     # Count adaptations by tracking element count changes
     adaptation_count = 0
@@ -589,7 +618,10 @@ def run_baseline_evaluation(baseline_config, verbose=False):
         'total_adaptations': metrics['adaptation_count'],
         'simulation_time': metrics['simulation_time'],
         'final_time': metrics['final_time'],
-        'method': metrics['method']
+        'method': metrics['method'],
+        'cost_ratio': cost_ratio,
+        'number_of_timesteps': number_of_timesteps, 
+        'no_amr_baseline_cost': no_amr_baseline_cost,
     }
     
     return results

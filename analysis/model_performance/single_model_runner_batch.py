@@ -635,6 +635,20 @@ def run_single_model(model_path, time_final=1.0, element_budget=50, max_level=5,
     
     # Calculate total computational cost (sum of element counts across all timesteps)
     total_cost = sum(element_counts)
+
+    # Calculate cost ratio against no-AMR baseline
+    import math
+    number_of_timesteps = math.ceil(time_final / solver.dt)
+    no_amr_baseline_cost = actual_initial_elements * number_of_timesteps
+    # no_amr_baseline_cost = actual_initial_elements * step_count
+    cost_ratio = total_cost / no_amr_baseline_cost
+
+    # Validation check - cost ratio should never exceed 1.0
+    if cost_ratio > 1.0:
+        if verbose:
+            print(f"WARNING: Cost ratio {cost_ratio:.3f} > 1.0. AMR should never cost more than no-AMR!")
+            print(f"  total_cost: {total_cost}, baseline_cost: {no_amr_baseline_cost}")
+            print(f"  actual_timesteps: {step_count}, calculated_timesteps: {number_of_timesteps}")
     
     # Prepare results dictionary
     results = {
@@ -653,7 +667,10 @@ def run_single_model(model_path, time_final=1.0, element_budget=50, max_level=5,
             'average_elements': np.mean(element_counts),
             'element_count_history': element_counts,
             'adaptation_count_history': adaptation_counts,
-            'model_path': model_path
+            'model_path': model_path,
+            'number_of_timesteps': number_of_timesteps,     
+            'no_amr_baseline_cost': no_amr_baseline_cost,    
+            'cost_ratio': cost_ratio 
         }
     }
     

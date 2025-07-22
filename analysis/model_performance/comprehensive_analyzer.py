@@ -159,7 +159,7 @@ class ComprehensiveAnalyzer:
         
         # Validate required columns - FIXED: Use grid_normalized_l2_error
         required_cols = ['gamma_c', 'step_domain_fraction', 'rl_iterations_per_timestep', 
-                        'element_budget', 'grid_normalized_l2_error', 'total_cost']
+                        'element_budget', 'grid_normalized_l2_error', 'cost_ratio']
         missing_cols = [col for col in required_cols if col not in df.columns]
         if missing_cols:
             raise ValueError(f"Missing required columns: {missing_cols}")
@@ -171,7 +171,7 @@ class ComprehensiveAnalyzer:
         if self.verbose:
             print(f"Data validation successful")
             print(f"Grid-normalized L2 error range: {df['grid_normalized_l2_error'].min():.2e} to {df['grid_normalized_l2_error'].max():.2e}")
-            print(f"Total cost range: {df['total_cost'].min():,} to {df['total_cost'].max():,}")
+            print(f"Cost ratio range: {df['cost_ratio'].min():,} to {df['cost_ratio'].max():,}")
         
         return df
     
@@ -261,7 +261,7 @@ class ComprehensiveAnalyzer:
     
     def _calculate_ideal_point(self):
         """Calculate the ideal point (minimum cost, minimum error intersection)."""
-        ideal_cost = self.df['total_cost'].min()
+        ideal_cost = self.df['cost_ratio'].min()
         # FIXED: Use grid_normalized_l2_error
         ideal_error = self.df['grid_normalized_l2_error'].min()
         
@@ -273,8 +273,8 @@ class ComprehensiveAnalyzer:
     def _calculate_distances_to_ideal(self):
         """Calculate normalized Euclidean distances to the ideal point."""
         # Normalize cost (linear scale)
-        cost_min, cost_max = self.df['total_cost'].min(), self.df['total_cost'].max()
-        cost_norm = (self.df['total_cost'] - cost_min) / (cost_max - cost_min)
+        cost_min, cost_max = self.df['cost_ratio'].min(), self.df['cost_ratio'].max()
+        cost_norm = (self.df['cost_ratio'] - cost_min) / (cost_max - cost_min)
         
         # Normalize error (log scale) - FIXED: Use grid_normalized_l2_error
         log_error = np.log(self.df['grid_normalized_l2_error'])
@@ -357,7 +357,7 @@ class ComprehensiveAnalyzer:
                             for _, row in df.iterrows():
                                 baseline_points.append({
                                     'grid_normalized_l2_error': row['grid_normalized_l2_error'],
-                                    'total_cost': row['total_cost'],
+                                    'cost_ratio': row['cost_ratio'],
                                     'method': method,
                                     'threshold': row.get('threshold_value', 'N/A'),
                                     'file': baseline_file
@@ -367,12 +367,12 @@ class ComprehensiveAnalyzer:
                             if self.verbose:
                                 print(f"  Loaded {method}: {len(baseline_points)} threshold points")
                                 for point in baseline_points:
-                                    print(f"    Threshold {point['threshold']}: L2={point['grid_normalized_l2_error']:.3e}, Cost={point['total_cost']:,}")
+                                    print(f"    Threshold {point['threshold']}: L2={point['grid_normalized_l2_error']:.3e}, Cost={point['cost_ratio']:,}")
                         else:
                             # Single threshold file (e.g., no-amr)
                             baseline_data[method] = [{
                                 'grid_normalized_l2_error': df['grid_normalized_l2_error'].iloc[0],
-                                'total_cost': df['total_cost'].iloc[0],
+                                'cost_ratio': df['cost_ratio'].iloc[0],
                                 'method': method,
                                 'threshold': df.get('threshold_value', [None]).iloc[0],
                                 'file': baseline_file
@@ -380,7 +380,7 @@ class ComprehensiveAnalyzer:
                             
                             if self.verbose:
                                 error = df['grid_normalized_l2_error'].iloc[0]
-                                cost = df['total_cost'].iloc[0]
+                                cost = df['cost_ratio'].iloc[0]
                                 print(f"  Loaded {method}: L2={error:.3e}, Cost={cost:,}")
                 except Exception as e:
                     if self.verbose:
@@ -428,7 +428,7 @@ class ComprehensiveAnalyzer:
                             for _, row in df.iterrows():
                                 baseline_points.append({
                                     'grid_normalized_l2_error': row['grid_normalized_l2_error'],
-                                    'total_cost': row['total_cost'],
+                                    'cost_ratio': row['cost_ratio'],
                                     'method': method,
                                     'threshold': row.get('threshold_value', 'N/A'),
                                     'file': baseline_file
@@ -442,7 +442,7 @@ class ComprehensiveAnalyzer:
                             row = df.iloc[0]
                             baseline_data[method] = [{
                                 'grid_normalized_l2_error': row['grid_normalized_l2_error'],
-                                'total_cost': row['total_cost'],
+                                'cost_ratio': row['cost_ratio'],
                                 'method': method,
                                 'threshold': row.get('threshold_value', 'single'),
                                 'file': baseline_file
@@ -476,9 +476,9 @@ class ComprehensiveAnalyzer:
                 # Other model dominates if it's both more accurate AND more efficient
                 # FIXED: Use grid_normalized_l2_error
                 if (other_row['grid_normalized_l2_error'] <= row['grid_normalized_l2_error'] and 
-                    other_row['total_cost'] <= row['total_cost'] and
+                    other_row['cost_ratio'] <= row['cost_ratio'] and
                     (other_row['grid_normalized_l2_error'] < row['grid_normalized_l2_error'] or 
-                     other_row['total_cost'] < row['total_cost'])):
+                     other_row['cost_ratio'] < row['cost_ratio'])):
                     is_dominated = True
                     break
             
@@ -486,7 +486,7 @@ class ComprehensiveAnalyzer:
                 pareto_models.append(row.to_dict())
         
         # Sort Pareto models by cost
-        pareto_models.sort(key=lambda x: x['total_cost'])
+        pareto_models.sort(key=lambda x: x['cost_ratio'])
         
         return pareto_models
     
@@ -510,7 +510,8 @@ class ComprehensiveAnalyzer:
     def _set_axis_limits(self, ax):
         """Set appropriate axis limits to include all model and baseline data."""
         # Get the data ranges - use grid_normalized_l2_error
-        cost_min, cost_max = self.df['total_cost'].min(), self.df['total_cost'].max()
+        # cost_min, cost_max = self.df['total_cost'].min(), self.df['total_cost'].max()
+        cost_min, cost_max = self.df['cost_ratio'].min(), self.df['cost_ratio'].max()
         error_min, error_max = self.df['grid_normalized_l2_error'].min(), self.df['grid_normalized_l2_error'].max()
 
         # Include baseline data in axis range calculations if available
@@ -519,10 +520,10 @@ class ComprehensiveAnalyzer:
             baseline_errors = []
             for data in self.baseline_data.values():
                 if isinstance(data, list):
-                    baseline_costs.extend([point['total_cost'] for point in data])
+                    baseline_costs.extend([point['cost_ratio'] for point in data])
                     baseline_errors.extend([point['grid_normalized_l2_error'] for point in data])
                 else:
-                    baseline_costs.append(data['total_cost'])
+                    baseline_costs.append(data['cost_ratio'])
                     baseline_errors.append(data['grid_normalized_l2_error'])
             
             if baseline_costs:
@@ -566,7 +567,7 @@ class ComprehensiveAnalyzer:
         
         # Calculate distances for each grid point
         # Need to normalize using the original data ranges, not the axis limits
-        model_cost_min, model_cost_max = self.df['total_cost'].min(), self.df['total_cost'].max()
+        model_cost_min, model_cost_max = self.df['cost_ratio'].min(), self.df['cost_ratio'].max()
         model_error_min, model_error_max = self.df['grid_normalized_l2_error'].min(), self.df['grid_normalized_l2_error'].max()
         
         cost_norm_grid = (cost_grid - model_cost_min) / (model_cost_max - model_cost_min)
@@ -667,13 +668,13 @@ class ComprehensiveAnalyzer:
                     # Use magenta gradient instead of gray
                     color = threshold_colors[i] if i < len(threshold_colors) else 'darkmagenta'
                     
-                    ax.scatter(point['total_cost'], point['grid_normalized_l2_error'],
+                    ax.scatter(point['cost_ratio'], point['grid_normalized_l2_error'],
                             marker='o', c=color, s=100,
                             alpha=0.9, label=f'{label} Baseline', 
                             edgecolors='black', linewidths=2, zorder=15)
                     
                     # Collect points for line
-                    threshold_costs.append(point['total_cost'])
+                    threshold_costs.append(point['cost_ratio'])
                     threshold_errors.append(point['grid_normalized_l2_error'])
 
                 # Connect threshold points with dotted line
@@ -688,19 +689,19 @@ class ComprehensiveAnalyzer:
             
                     
                     if self.verbose:
-                        print(f"Added baseline reference: {label} at Cost={point['total_cost']}, Error={point['grid_normalized_l2_error']:.3e}")
+                        print(f"Added baseline reference: {label} at Cost={point['cost_ratio']}, Error={point['grid_normalized_l2_error']:.3e}")
             else:
                 # Single point (no-amr or single threshold)
                 points = data if isinstance(data, list) else [data]
                 for point in points:
                     # FIXED: Use grid_normalized_l2_error
-                    ax.scatter(point['total_cost'], point['grid_normalized_l2_error'],
+                    ax.scatter(point['cost_ratio'], point['grid_normalized_l2_error'],
                             marker=style['marker'], c=style['color'], s=style['size'],
                             alpha=0.9, label=style['label'], 
                             edgecolors='black', linewidths=2, zorder=15)
                     
                     if self.verbose:
-                        print(f"Added baseline reference: {method} at Cost={point['total_cost']}, Error={point['grid_normalized_l2_error']:.3e}")
+                        print(f"Added baseline reference: {method} at Cost={point['cost_ratio']}, Error={point['grid_normalized_l2_error']:.3e}")
     
     def create_comprehensive_plots(self, include_pareto=True, include_ideal=True, 
                              include_zones=True, include_baselines=None, output_format='pdf'):
@@ -762,13 +763,13 @@ class ComprehensiveAnalyzer:
             if self.verbose:
                 print(f"Plotting {family['vary_param']}={param_value}: {len(subset)} points")
                 if len(subset) > 0:
-                    print(f"  Cost range: {subset['total_cost'].min():,} to {subset['total_cost'].max():,}")
+                    print(f"  Cost range: {subset['cost_ratio'].min():,} to {subset['cost_ratio'].max():,}")
                     print(f"  Error range: {subset['grid_normalized_l2_error'].min():.6f} to {subset['grid_normalized_l2_error'].max():.6f}")
             
             # Handle case where there are more parameter values than colors
             color_idx = i % len(family['colors'])
             
-            ax.scatter(subset['total_cost'], subset['grid_normalized_l2_error'],
+            ax.scatter(subset['cost_ratio'], subset['grid_normalized_l2_error'],
                       c=family['colors'][color_idx], s=60, alpha=0.7,
                       label=f"{family['vary_param']}={param_value}",
                       edgecolors='black', linewidths=0.5)
@@ -778,30 +779,30 @@ class ComprehensiveAnalyzer:
         optimal_idx = self.df['distance_to_ideal'].idxmin()
         optimal_point = self.df.loc[optimal_idx]
 
-        ax.scatter(optimal_point['total_cost'], optimal_point['grid_normalized_l2_error'],
+        ax.scatter(optimal_point['cost_ratio'], optimal_point['grid_normalized_l2_error'],
                 facecolors='none', s=300, marker='o', 
                 edgecolors='black', linewidths=2, alpha=0.9,
                 label='Optimal "Neutral" Model', zorder=10)
 
         if self.verbose:
-            print(f"Optimal point: Cost={optimal_point['total_cost']:,}, "
+            print(f"Optimal point: Cost={optimal_point['cost_ratio']:,}, "
                 f"Error={optimal_point['grid_normalized_l2_error']:.3e}, "
                 f"Distance={optimal_point['distance_to_ideal']:.3f}")
         
         # Add Pareto front if enabled - FIXED: Use grid_normalized_l2_error
         if pareto_models is not None:
             pareto_df = pd.DataFrame(pareto_models)
-            ax.scatter(pareto_df['total_cost'], pareto_df['grid_normalized_l2_error'],
+            ax.scatter(pareto_df['cost_ratio'], pareto_df['grid_normalized_l2_error'],
                     facecolors='none', s=200, alpha=1.0, marker='*',
                     label=f'Pareto Optimal (N={len(pareto_df)})', edgecolors='darkred', linewidths=0.5, zorder=5)
             
             # Connect Pareto points
-            pareto_sorted = pareto_df.sort_values('total_cost')
-            ax.plot(pareto_sorted['total_cost'], pareto_sorted['grid_normalized_l2_error'],
+            pareto_sorted = pareto_df.sort_values('cost_ratio')
+            ax.plot(pareto_sorted['cost_ratio'], pareto_sorted['grid_normalized_l2_error'],
                    'r--', alpha=0.7, linewidth=2, zorder=4)
         
         # Formatting
-        ax.set_xlabel('Total Computational Cost', fontsize=12, fontweight='bold')
+        ax.set_xlabel('Cost Ratio vs No-AMR', fontsize=12, fontweight='bold')
         ax.set_ylabel('Final L2 Error', fontsize=12, fontweight='bold')
         ax.set_yscale('log')
         ax.grid(True, alpha=0.3)
@@ -858,7 +859,7 @@ class ComprehensiveAnalyzer:
                 # Handle case where there are more parameter values than colors
                 color_idx = i % len(family['colors'])
                 
-                ax.scatter(subset['total_cost'], subset['grid_normalized_l2_error'],
+                ax.scatter(subset['cost_ratio'], subset['grid_normalized_l2_error'],
                           c=family['colors'][color_idx], s=40, alpha=0.7,
                           label=f"{param_value}",
                           edgecolors='black', linewidths=0.3)
@@ -868,13 +869,13 @@ class ComprehensiveAnalyzer:
             optimal_idx = self.df['distance_to_ideal'].idxmin()
             optimal_point = self.df.loc[optimal_idx]
 
-            ax.scatter(optimal_point['total_cost'], optimal_point['grid_normalized_l2_error'],
+            ax.scatter(optimal_point['cost_ratio'], optimal_point['grid_normalized_l2_error'],
                     facecolors='none', s=300, marker='o', 
                     edgecolors='black', linewidths=2, alpha=0.9,
                     label='Optimal "Neutral" Model', zorder=10)
 
             if self.verbose:
-                print(f"Optimal point: Cost={optimal_point['total_cost']:,}, "
+                print(f"Optimal point: Cost={optimal_point['cost_ratio']:,}, "
                     f"Error={optimal_point['grid_normalized_l2_error']:.3e}, "
                     f"Distance={optimal_point['distance_to_ideal']:.3f}")
 
@@ -882,17 +883,17 @@ class ComprehensiveAnalyzer:
             # Add Pareto front if enabled - FIXED: Use grid_normalized_l2_error
             if pareto_models is not None:
                 pareto_df = pd.DataFrame(pareto_models)
-                ax.scatter(pareto_df['total_cost'], pareto_df['grid_normalized_l2_error'],
+                ax.scatter(pareto_df['cost_ratio'], pareto_df['grid_normalized_l2_error'],
                     facecolors='none', s=200, alpha=1.0, marker='*',
                     label=f'Pareto Optimal (N={len(pareto_df)})', edgecolors='darkred', linewidths=0.5, zorder=5)
                 
                 # Connect Pareto points
-                pareto_sorted = pareto_df.sort_values('total_cost')
-                ax.plot(pareto_sorted['total_cost'], pareto_sorted['grid_normalized_l2_error'],
+                pareto_sorted = pareto_df.sort_values('cost_ratio')
+                ax.plot(pareto_sorted['cost_ratio'], pareto_sorted['grid_normalized_l2_error'],
                        'r--', alpha=0.7, linewidth=1.5, zorder=4)
             
             # Formatting
-            ax.set_xlabel('Total Cost', fontsize=10)
+            ax.set_xlabel('cost_ratio', fontsize=10)
             ax.set_ylabel('L2 Error', fontsize=10)
             ax.set_yscale('log')
             ax.grid(True, alpha=0.3)

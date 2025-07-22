@@ -80,7 +80,7 @@ def main():
         json.dump(results, f, indent=2, default=str)
     
     # Append to CSV (separate file for each configuration)
-    csv_file = os.path.join(output_dir, f'model_results_ref{initial_refinement}_budget{element_budget}.csv')
+    csv_file = os.path.join(output_dir, f'model_results_ref{initial_refinement}_budget{element_budget}_max{max_level}.csv')
     training_params = results['training_parameters']
     
     # Create CSV row
@@ -98,7 +98,10 @@ def main():
         results['total_adaptations'],
         results['simulation_metrics']['final_time'],
         results['simulation_metrics']['initial_elements'],
-        model_path
+        model_path,
+        results['simulation_metrics']['cost_ratio'],
+        results['simulation_metrics']['number_of_timesteps'],
+        results['simulation_metrics']['no_amr_baseline_cost']
     ]
     
     # Thread-safe CSV writing
@@ -106,7 +109,8 @@ def main():
     csv_headers = [
     'gamma_c', 'step_domain_fraction', 'rl_iterations_per_timestep', 'element_budget',
     'initial_refinement', 'evaluation_element_budget', 'final_l2_error', 'grid_normalized_l2_error', 
-    'total_cost', 'final_elements', 'total_adaptations', 'final_time', 'initial_elements', 'model_path'
+    'total_cost', 'final_elements', 'total_adaptations', 'final_time', 'initial_elements', 'model_path',
+    'cost_ratio', 'number_of_timesteps', 'no_amr_baseline_cost'
     ]
     
     with open(csv_file, 'a') as f:
