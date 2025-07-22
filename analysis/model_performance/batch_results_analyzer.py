@@ -115,7 +115,7 @@ class BatchResultsAnalyzer:
         
         # Validate required columns
         required_cols = ['gamma_c', 'step_domain_fraction', 'rl_iterations_per_timestep', 
-                        'element_budget', 'final_l2_error', 'total_cost']
+                        'element_budget', 'final_l2_error', 'cost_ratio']
         missing_cols = [col for col in required_cols if col not in df.columns]
         if missing_cols:
             raise ValueError(f"Missing required columns: {missing_cols}")
@@ -127,7 +127,7 @@ class BatchResultsAnalyzer:
         if self.verbose:
             print(f"Data validation successful")
             print(f"L2 error range: {df['final_l2_error'].min():.2e} to {df['final_l2_error'].max():.2e}")
-            print(f"Total cost range: {df['total_cost'].min():,} to {df['total_cost'].max():,}")
+            print(f"Cost Ratio range: {df['cost_ratio'].min():.3f} to {df['cost_ratio'].max():.3f}")
         
         return df
     
@@ -174,7 +174,7 @@ class BatchResultsAnalyzer:
             mask = self.df[family['vary_param']] == param_value
             subset = self.df[mask]
             
-            ax.scatter(subset['total_cost'], subset['final_l2_error'],
+            ax.scatter(subset['cost_ratio'], subset['final_l2_error'],
                       c=family['colors'][i], s=60, alpha=0.7,
                       label=f"{family['vary_param']}={param_value}",
                       edgecolors='black', linewidths=0.5)
@@ -182,18 +182,18 @@ class BatchResultsAnalyzer:
         # Overlay Pareto front if available
         if pareto_results is not None:
             pareto_df = pd.DataFrame(pareto_results['pareto_models'])
-            ax.scatter(pareto_df['total_cost'], pareto_df['final_l2_error'],
+            ax.scatter(pareto_df['cost_ratio'], pareto_df['final_l2_error'],
                       c='red', s=100, alpha=0.9, marker='*',
                       label=f"Pareto Optimal (N={len(pareto_df)})",
                       edgecolors='darkred', linewidths=1.5, zorder=5)
             
             # Connect Pareto points with lines
-            pareto_sorted = pareto_df.sort_values('total_cost')
-            ax.plot(pareto_sorted['total_cost'], pareto_sorted['final_l2_error'],
+            pareto_sorted = pareto_df.sort_values('cost_ratio')
+            ax.plot(pareto_sorted['cost_ratio'], pareto_sorted['final_l2_error'],
                    'r--', alpha=0.7, linewidth=2, zorder=4)
         
         # Formatting
-        ax.set_xlabel('Total Computational Cost', fontsize=12, fontweight='bold')
+        ax.set_xlabel('Cost Ratio vs No-AMR', fontsize=12, fontweight='bold')
         ax.set_ylabel('Final L2 Error', fontsize=12, fontweight='bold')
         ax.set_yscale('log')
         ax.grid(True, alpha=0.3)
@@ -211,7 +211,7 @@ class BatchResultsAnalyzer:
         plt.tight_layout()
         
         # Save plot
-        filename_base = f"{family_name}_family_accuracy_vs_cost"
+        filename_base = f"{family_name}_family_accuracy_vs_cost_ratio"
         self._save_plot(fig, filename_base, output_format)
         plt.close()
     
@@ -229,7 +229,7 @@ class BatchResultsAnalyzer:
                 mask = self.df[family['vary_param']] == param_value
                 subset = self.df[mask]
                 
-                ax.scatter(subset['total_cost'], subset['final_l2_error'],
+                ax.scatter(subset['cost_ratio'], subset['final_l2_error'],
                           c=family['colors'][i], s=40, alpha=0.7,
                           label=f"{param_value}",
                           edgecolors='black', linewidths=0.3)
@@ -237,13 +237,13 @@ class BatchResultsAnalyzer:
             # Add Pareto front if available
             if pareto_results is not None:
                 pareto_df = pd.DataFrame(pareto_results['pareto_models'])
-                ax.scatter(pareto_df['total_cost'], pareto_df['final_l2_error'],
+                ax.scatter(pareto_df['cost_ratio'], pareto_df['final_l2_error'],
                           c='red', s=60, alpha=0.9, marker='*',
                           label='Pareto', edgecolors='darkred', linewidths=1, zorder=5)
                 
                 # Connect Pareto points
-                pareto_sorted = pareto_df.sort_values('total_cost')
-                ax.plot(pareto_sorted['total_cost'], pareto_sorted['final_l2_error'],
+                pareto_sorted = pareto_df.sort_values('cost_ratio')
+                ax.plot(pareto_sorted['cost_ratio'], pareto_sorted['final_l2_error'],
                        'r--', alpha=0.7, linewidth=1.5, zorder=4)
             
             # Formatting for subplot
@@ -256,7 +256,7 @@ class BatchResultsAnalyzer:
         
         # Overall title
         title = f'Parameter Family Analysis: {self.sweep_name}\n'
-        title += f'Accuracy vs Cost Across 4-D Parameter Space'
+        title += f'Accuracy vs Cost_Ratio Across 4-D Parameter Space'
         if pareto_results:
             title += f' (Pareto Front: {pareto_results["pareto_optimal_count"]} models)'
         fig.suptitle(title, fontsize=16, fontweight='bold')
@@ -264,7 +264,7 @@ class BatchResultsAnalyzer:
         plt.tight_layout()
         
         # Save combined plot
-        filename_base = "combined_families_accuracy_vs_cost"
+        filename_base = "combined_families_accuracy_vs_cost_ratio"
         self._save_plot(fig, filename_base, output_format)
         plt.close()
     
@@ -287,12 +287,12 @@ class BatchResultsAnalyzer:
             ranking_metric = 'final_l2_error'
         elif criteria == 'efficiency':
             # Best efficiency (lowest cost)
-            df = df.nsmallest(top_n, 'total_cost')
-            ranking_metric = 'total_cost'
+            df = df.nsmallest(top_n, 'cost_ratio')
+            ranking_metric = 'cost_ratio'
         elif criteria == 'balanced':
             # Balanced: normalize both metrics and find best combined score
             df['norm_error'] = (df['final_l2_error'] - df['final_l2_error'].min()) / (df['final_l2_error'].max() - df['final_l2_error'].min())
-            df['norm_cost'] = (df['total_cost'] - df['total_cost'].min()) / (df['total_cost'].max() - df['total_cost'].min())
+            df['norm_cost'] = (df['cost_ratio'] - df['cost_ratio'].min()) / (df['cost_ratio'].max() - df['cost_ratio'].min())
             df['combined_score'] = df['norm_error'] + df['norm_cost']  # Lower is better
             df = df.nsmallest(top_n, 'combined_score')
             ranking_metric = 'combined_score'
@@ -311,7 +311,7 @@ class BatchResultsAnalyzer:
                 'rl_iterations_per_timestep': row['rl_iterations_per_timestep'],
                 'element_budget': row['element_budget'],
                 'final_l2_error': row['final_l2_error'],
-                'total_cost': row['total_cost'],
+                'cost_ratio': row['cost_ratio'],
                 'model_path': row['model_path']
             }
             
@@ -330,7 +330,7 @@ class BatchResultsAnalyzer:
             for model in results['top_models'][:5]:  # Show top 5
                 print(f"  Rank {model['rank']}: γ={model['gamma_c']}, step={model['step_domain_fraction']}, "
                      f"rl={model['rl_iterations_per_timestep']}, budget={model['element_budget']} "
-                     f"→ L2={model['final_l2_error']:.2e}, Cost={model['total_cost']:,}")
+                     f"→ L2={model['final_l2_error']:.2e}, Cost_Ratio={model['cost_ratio']:.3f}")
         
         return results
     
@@ -358,9 +358,9 @@ class BatchResultsAnalyzer:
                 # Other model dominates if it's both more accurate AND more efficient
                 # (allowing for ties in one dimension)
                 if (other_row['final_l2_error'] <= row['final_l2_error'] and 
-                    other_row['total_cost'] <= row['total_cost'] and
+                    other_row['cost_ratio'] <= row['cost_ratio'] and
                     (other_row['final_l2_error'] < row['final_l2_error'] or 
-                     other_row['total_cost'] < row['total_cost'])):
+                     other_row['cost_ratio'] < row['cost_ratio'])):
                     is_dominated = True
                     break
             
@@ -371,14 +371,14 @@ class BatchResultsAnalyzer:
                     'rl_iterations_per_timestep': row['rl_iterations_per_timestep'],
                     'element_budget': row['element_budget'],
                     'final_l2_error': row['final_l2_error'],
-                    'total_cost': row['total_cost'],
+                    'cost_ratio': row['cost_ratio'],
                     'final_elements': row['final_elements'],
                     'total_adaptations': row['total_adaptations'],
                     'model_path': row['model_path']
                 })
         
         # Sort Pareto models by cost (for better visualization)
-        pareto_models.sort(key=lambda x: x['total_cost'])
+        pareto_models.sort(key=lambda x: x['cost_ratio'])
         
         results = {
             'analysis_type': 'pareto_optimal',
@@ -400,7 +400,7 @@ class BatchResultsAnalyzer:
             for i, model in enumerate(pareto_models[:10]):  # Show first 10
                 print(f"  {i+1}: γ={model['gamma_c']}, step={model['step_domain_fraction']}, "
                      f"rl={model['rl_iterations_per_timestep']}, budget={model['element_budget']} "
-                     f"→ L2={model['final_l2_error']:.2e}, Cost={model['total_cost']:,}")
+                     f"→ L2={model['final_l2_error']:.2e}, Cost_Ratio={model['cost_ratio']:.3f}")
             if len(pareto_models) > 10:
                 print(f"  ... and {len(pareto_models)-10} more")
         
@@ -433,11 +433,11 @@ class BatchResultsAnalyzer:
                     'mean': float(self.df['final_l2_error'].mean()),
                     'std': float(self.df['final_l2_error'].std())
                 },
-                'total_cost': {
-                    'min': int(self.df['total_cost'].min()),
-                    'max': int(self.df['total_cost'].max()),
-                    'mean': float(self.df['total_cost'].mean()),
-                    'std': float(self.df['total_cost'].std())
+                'cost_ratio': {
+                    'min': int(self.df['cost_ratio'].min()),
+                    'max': int(self.df['cost_ratio'].max()),
+                    'mean': float(self.df['cost_ratio'].mean()),
+                    'std': float(self.df['cost_ratio'].std())
                 }
             },
             'analysis_timestamp': datetime.now().isoformat()

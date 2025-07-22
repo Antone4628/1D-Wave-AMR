@@ -71,11 +71,11 @@ class KeyModelsAnalyzer:
             print(f"   Data shapes: {[len(df) for df in self.datasets.values()]} configs each")
     
     def load_data(self):
-        """Load the three cleaned CSV files."""
+        """Load the three aggregate CSV files."""
         csv_files = {
-            'lowest_cost': 'lowest_cost_models_cleaned.csv',
-            'lowest_l2': 'lowest_l2_models_cleaned.csv', 
-            'optimal_neutral': 'optimal_neutral_models_cleaned.csv'
+            'lowest_cost': 'lowest_cost_models.csv',
+            'lowest_l2': 'lowest_l2_models.csv', 
+            'optimal_neutral': 'optimal_neutral_models.csv'
         }
         
         self.datasets = {}
@@ -148,8 +148,8 @@ class KeyModelsAnalyzer:
         for model_type, df in self.datasets.items():
             fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
             axes = [ax1, ax2, ax3, ax4]
-            metrics = ['final_l2_error', 'total_cost', 'gamma_c', 'step_domain_fraction']
-            titles = ['L2 Error', 'Total Cost', 'Gamma C', 'Step Domain Fraction']
+            metrics = ['final_l2_error', 'cost_ratio', 'gamma_c', 'step_domain_fraction']
+            titles = ['L2 Error', 'Cost Ratio', 'Gamma C', 'Step Domain Fraction']
             
             for idx, (metric, title, ax) in enumerate(zip(metrics, titles, axes)):
                 # Create 4x4 matrix for heatmap
@@ -170,8 +170,8 @@ class KeyModelsAnalyzer:
                     # Format annotation based on metric
                     if metric == 'final_l2_error':
                         annotations[ref_idx, budget_idx] = f'{value:.1e}'
-                    elif metric == 'total_cost':
-                        annotations[ref_idx, budget_idx] = f'{int(value):,}'
+                    elif metric == 'cost_ratio':
+                        annotations[ref_idx, budget_idx] = f'{int(value):.3f}'
                     else:
                         annotations[ref_idx, budget_idx] = f'{value:.3f}'
                 
@@ -265,26 +265,26 @@ class KeyModelsAnalyzer:
             fig, ax = plt.subplots(figsize=(12, 8))
             
             # Scatter plot: total cost vs L2 error
-            scatter = ax.scatter(df['total_cost'], df['final_l2_error'], 
+            scatter = ax.scatter(df['cost_ratio'], df['final_l2_error'], 
                                c=colors[model_type], alpha=0.7, s=100, 
                                edgecolors='black', linewidth=0.5)
             
             # Add config labels to points
             for _, row in df.iterrows():
                 ax.annotate(row['config_id'].replace('_budget', '\nb').replace('_max', '_m'), 
-                           (row['total_cost'], row['final_l2_error']),
+                           (row['cost_ratio'], row['final_l2_error']),
                            xytext=(5, 5), textcoords='offset points',
                            fontsize=8, alpha=0.8)
             
-            ax.set_xlabel('Total Computational Cost', fontweight='bold')
+            ax.set_xlabel('Cost Ratio vs No-AMR', fontweight='bold')
             ax.set_ylabel('Final L2 Error', fontweight='bold')
             ax.set_yscale('log')  # Log scale for L2 error
             ax.grid(True, alpha=0.3)
             
             # Add trend line
-            z = np.polyfit(df['total_cost'], np.log10(df['final_l2_error']), 1)
+            z = np.polyfit(df['cost_ratio'], np.log10(df['final_l2_error']), 1)
             p = np.poly1d(z)
-            x_trend = np.linspace(df['total_cost'].min(), df['total_cost'].max(), 100)
+            x_trend = np.linspace(df['cost_ratio'].min(), df['cost_ratio'].max(), 100)
             y_trend = 10**p(x_trend)
             ax.plot(x_trend, y_trend, '--', color='gray', alpha=0.8, 
                    label=f'Trend (slope: {z[0]:.2e})')
