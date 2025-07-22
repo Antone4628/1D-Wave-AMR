@@ -87,6 +87,8 @@ def run_baseline_evaluation(args):
 
     # SAVE INITIAL COORDINATE STATE FOR GRID-NORMALIZED L2
     initial_coord = solver.coord.copy()
+
+    actual_initial_elements = len(solver.active)
     
     if args.verbose:
         print(f"Running {args.mode} evaluation:")
@@ -119,12 +121,12 @@ def run_baseline_evaluation(args):
 
     # Get simulation data from solver
     total_cost = metrics.get('total_cost', 0)
-    initial_elements = len(solver.active) if hasattr(solver, 'active') else 64  # Fallback for ref4
+    
     final_time = args.time_final
 
     # Calculate timesteps based on final dt
     number_of_timesteps = math.ceil(final_time / solver.dt)
-    no_amr_baseline_cost = initial_elements * number_of_timesteps
+    no_amr_baseline_cost = actual_initial_elements * number_of_timesteps
     cost_ratio = total_cost / no_amr_baseline_cost if no_amr_baseline_cost > 0 else 1.0
 
     # Add new metrics
@@ -136,7 +138,7 @@ def run_baseline_evaluation(args):
     if args.verbose:
         print(f"  Cost ratio calculation:")
         print(f"    Total cost: {total_cost}")
-        print(f"    Initial elements: {initial_elements}")
+        print(f"    Initial elements: {actual_initial_elements}")
         print(f"    Number of timesteps: {number_of_timesteps}")
         print(f"    No-AMR baseline cost: {no_amr_baseline_cost}")
         print(f"    Cost ratio: {cost_ratio:.4f}")

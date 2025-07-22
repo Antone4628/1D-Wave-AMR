@@ -373,7 +373,7 @@ class ParetoKeyModelsAnalyzer:
         
         # Validate required columns - FIXED: Use grid_normalized_l2_error
         required_cols = ['gamma_c', 'step_domain_fraction', 'rl_iterations_per_timestep', 
-                        'element_budget', 'grid_normalized_l2_error', 'total_cost']
+                        'element_budget', 'grid_normalized_l2_error', 'cost_ratio']
         missing_cols = [col for col in required_cols if col not in df.columns]
         if missing_cols:
             raise ValueError(f"Missing required columns: {missing_cols}")
@@ -385,13 +385,13 @@ class ParetoKeyModelsAnalyzer:
         if self.verbose:
             print(f"Data validation successful")
             print(f"Grid-normalized L2 error range: {df['grid_normalized_l2_error'].min():.2e} to {df['grid_normalized_l2_error'].max():.2e}")
-            print(f"Total cost range: {df['total_cost'].min():,} to {df['total_cost'].max():,}")
+            print(f"Total cost range: {df['cost_ratio'].min():.3f} to {df['cost_ratio'].max():.3f}")
         
         return df
     
     def _calculate_ideal_point(self):
         """Calculate the ideal point (minimum cost, minimum error intersection)."""
-        ideal_cost = self.df['total_cost'].min()
+        ideal_cost = self.df['cost_ratio'].min()
         # FIXED: Use grid_normalized_l2_error
         ideal_error = self.df['grid_normalized_l2_error'].min()
         
@@ -403,8 +403,8 @@ class ParetoKeyModelsAnalyzer:
     def _calculate_distances_to_ideal(self):
         """Calculate normalized Euclidean distances to the ideal point."""
         # Normalize cost (linear scale)
-        cost_min, cost_max = self.df['total_cost'].min(), self.df['total_cost'].max()
-        cost_norm = (self.df['total_cost'] - cost_min) / (cost_max - cost_min)
+        cost_min, cost_max = self.df['cost_ratio'].min(), self.df['cost_ratio'].max()
+        cost_norm = (self.df['cost_ratio'] - cost_min) / (cost_max - cost_min)
         
         # Normalize error (log scale) - FIXED: Use grid_normalized_l2_error
         log_error = np.log(self.df['grid_normalized_l2_error'])
@@ -460,7 +460,7 @@ class ParetoKeyModelsAnalyzer:
         best_accuracy = self.df.loc[best_accuracy_idx].to_dict()
         
         # Find best cost model (lowest total_cost)
-        best_cost_idx = self.df['total_cost'].idxmin()
+        best_cost_idx = self.df['cost_ratio'].idxmin()
         best_cost = self.df.loc[best_cost_idx].to_dict()
         
         # Find optimal neutral model (smallest distance_to_ideal)
@@ -475,7 +475,7 @@ class ParetoKeyModelsAnalyzer:
         
         if self.verbose:
             print(f"Best Accuracy Model: Index {best_accuracy_idx}, Error: {best_accuracy['grid_normalized_l2_error']:.6f}")
-            print(f"Best Cost Model: Index {best_cost_idx}, Cost: {best_cost['total_cost']:,}")
+            print(f"Best Cost Ratio Model: Index {best_cost_idx}, Cost: {best_cost['cost_ratio']:.3f}")
             print(f"Optimal Neutral Model: Index {optimal_neutral_idx}, Distance: {optimal_neutral['distance_to_ideal']:.6f}")
         
         return key_models
@@ -530,18 +530,18 @@ class ParetoKeyModelsAnalyzer:
             
             if len(family_pareto) > 0:
                 color_idx = i % len(family['colors'])
-                ax.scatter(family_pareto['total_cost'], family_pareto['grid_normalized_l2_error'],
+                ax.scatter(family_pareto['cost_ratio'], family_pareto['grid_normalized_l2_error'],
                           c=family['colors'][color_idx], s=120, alpha=0.9,
                           label=f"{family['vary_param']}={param_value}",
                           edgecolors='black', linewidths=1.5, marker='*', zorder=5)
         
         # Connect Pareto points
-        pareto_sorted = pareto_df.sort_values('total_cost')
-        ax.plot(pareto_sorted['total_cost'], pareto_sorted['grid_normalized_l2_error'],
+        pareto_sorted = pareto_df.sort_values('cost_ratio')
+        ax.plot(pareto_sorted['cost_ratio'], pareto_sorted['grid_normalized_l2_error'],
                'r--', alpha=0.7, linewidth=2, zorder=4, label='Pareto Front')
         
         # Formatting
-        ax.set_xlabel('Total Computational Cost', fontsize=12, fontweight='bold')
+        ax.set_xlabel('Cost Ratio vs No-AMR', fontsize=12, fontweight='bold')
         ax.set_ylabel('Final L2 Error', fontsize=12, fontweight='bold')
         ax.set_yscale('log')
         ax.grid(True, alpha=0.3)
@@ -586,7 +586,7 @@ class ParetoKeyModelsAnalyzer:
             no_amr_points = self.baseline_data['no-amr']
             if len(no_amr_points) > 0:
                 point = no_amr_points[0]  # Take first (should be only) point
-                ax.scatter(point['total_cost'], point['grid_normalized_l2_error'],
+                ax.scatter(point['cost_ratio'], point['grid_normalized_l2_error'],
                         c='purple', s=120, marker='s', alpha=0.9,
                         label='No-AMR Baseline', edgecolors='black', linewidths=1, zorder=6)
                 if self.verbose:
@@ -602,7 +602,7 @@ class ParetoKeyModelsAnalyzer:
                 # Extract threshold for label
                 threshold_val = most_accurate_point.get('threshold', 'N/A')
                 
-                ax.scatter(most_accurate_point['total_cost'], most_accurate_point['grid_normalized_l2_error'],
+                ax.scatter(most_accurate_point['cost_ratio'], most_accurate_point['grid_normalized_l2_error'],
                         c='darkmagenta', s=100, marker='o', alpha=0.9,
                         label=f'Conventional AMR (t={threshold_val})', 
                         edgecolors='black', linewidths=1, zorder=6)
@@ -646,7 +646,7 @@ class ParetoKeyModelsAnalyzer:
             
             # Special handling for optimal neutral - add large black circle like comprehensive plot
             if model_type == 'optimal_neutral':
-                ax.scatter(model_data['total_cost'], model_data['grid_normalized_l2_error'],
+                ax.scatter(model_data['cost_ratio'], model_data['grid_normalized_l2_error'],
                         c='none', s=300, marker='o', alpha=0.7,
                         edgecolors='black', linewidths=2, zorder=8, label='Optimal Model')
             
@@ -666,12 +666,12 @@ class ParetoKeyModelsAnalyzer:
             x_offset = (xlim[1] - xlim[0]) * 0.1  # 10% of x-range to the right
             y_offset = model_data['grid_normalized_l2_error'] * 4  # 2x higher on log scale
             
-            label_x = model_data['total_cost'] + x_offset
+            label_x = model_data['cost_ratio'] + x_offset
             label_y = model_data['grid_normalized_l2_error'] * 3
             
             # Add annotation with arrow
             ax.annotate(full_label, 
-                       xy=(model_data['total_cost'], model_data['grid_normalized_l2_error']),
+                       xy=(model_data['cost_ratio'], model_data['grid_normalized_l2_error']),
                        xytext=(label_x, label_y),
                        fontsize=9, fontweight='bold', color=style['color'],
                        bbox=dict(boxstyle="round,pad=0.3", facecolor='white', alpha=0.8),
@@ -727,21 +727,21 @@ class ParetoKeyModelsAnalyzer:
             
             if len(family_pareto) > 0:
                 color_idx = i % len(family['colors'])
-                ax.scatter(family_pareto['total_cost'], family_pareto['grid_normalized_l2_error'],
+                ax.scatter(family_pareto['cost_ratio'], family_pareto['grid_normalized_l2_error'],
                           c=family['colors'][color_idx], s=120, alpha=0.9,
                           label=f"{family['vary_param']}={param_value}",
                           edgecolors='black', linewidths=1.5, marker='*', zorder=5)
         
         # Connect Pareto points
-        pareto_sorted = pareto_df.sort_values('total_cost')
-        ax.plot(pareto_sorted['total_cost'], pareto_sorted['grid_normalized_l2_error'],
+        pareto_sorted = pareto_df.sort_values('cost_ratio')
+        ax.plot(pareto_sorted['cost_ratio'], pareto_sorted['grid_normalized_l2_error'],
                'r--', alpha=0.7, linewidth=2, zorder=4, label='Pareto Front')
         
         # Add key model annotations
         self._annotate_key_models(ax, key_models, family_name)
         
         # Formatting
-        ax.set_xlabel('Total Computational Cost', fontsize=12, fontweight='bold')
+        ax.set_xlabel('Cost Ratio vs No-AMR', fontsize=12, fontweight='bold')
         ax.set_ylabel('Final L2 Error', fontsize=12, fontweight='bold')
         ax.set_yscale('log')
         ax.grid(True, alpha=0.3)
@@ -807,7 +807,7 @@ class ParetoKeyModelsAnalyzer:
                             for _, row in df.iterrows():
                                 baseline_points.append({
                                     'grid_normalized_l2_error': row['grid_normalized_l2_error'],
-                                    'total_cost': row['total_cost'],
+                                    'cost_ratio': row['cost_ratio'],
                                     'method': method,
                                     'threshold': row.get('threshold_value', 'N/A'),
                                     'file': baseline_file
@@ -821,7 +821,7 @@ class ParetoKeyModelsAnalyzer:
                             row = df.iloc[0]
                             baseline_data[method] = [{
                                 'grid_normalized_l2_error': row['grid_normalized_l2_error'],
-                                'total_cost': row['total_cost'],
+                                'cost_ratio': row['cost_ratio'],
                                 'method': method,
                                 'threshold': row.get('threshold_value', 'single'),
                                 'file': baseline_file
@@ -930,9 +930,9 @@ class ParetoKeyModelsAnalyzer:
                 # Other model dominates if it's both more accurate AND more efficient
                 # FIXED: Use grid_normalized_l2_error
                 if (other_row['grid_normalized_l2_error'] <= row['grid_normalized_l2_error'] and 
-                    other_row['total_cost'] <= row['total_cost'] and
+                    other_row['cost_ratio'] <= row['cost_ratio'] and
                     (other_row['grid_normalized_l2_error'] < row['grid_normalized_l2_error'] or 
-                     other_row['total_cost'] < row['total_cost'])):
+                     other_row['cost_ratio'] < row['cost_ratio'])):
                     is_dominated = True
                     break
             
@@ -940,7 +940,7 @@ class ParetoKeyModelsAnalyzer:
                 pareto_models.append(row.to_dict())
         
         # Sort Pareto models by cost
-        pareto_models.sort(key=lambda x: x['total_cost'])
+        pareto_models.sort(key=lambda x: x['cost_ratio'])
         
         return pareto_models
     
@@ -964,7 +964,7 @@ class ParetoKeyModelsAnalyzer:
     def _set_axis_limits(self, ax):
         """Set appropriate axis limits to include all model and baseline data."""
         # Get the data ranges - use grid_normalized_l2_error
-        cost_min, cost_max = self.df['total_cost'].min(), self.df['total_cost'].max()
+        cost_min, cost_max = self.df['cost_ratio'].min(), self.df['cost_ratio'].max()
         error_min, error_max = self.df['grid_normalized_l2_error'].min(), self.df['grid_normalized_l2_error'].max()
 
         # Include baseline data in axis range calculations if available
@@ -973,10 +973,10 @@ class ParetoKeyModelsAnalyzer:
             baseline_errors = []
             for data in self.baseline_data.values():
                 if isinstance(data, list):
-                    baseline_costs.extend([point['total_cost'] for point in data])
+                    baseline_costs.extend([point['cost_ratio'] for point in data])
                     baseline_errors.extend([point['grid_normalized_l2_error'] for point in data])
                 else:
-                    baseline_costs.append(data['total_cost'])
+                    baseline_costs.append(data['cost_ratio'])
                     baseline_errors.append(data['grid_normalized_l2_error'])
             
             if baseline_costs:
@@ -1020,7 +1020,7 @@ class ParetoKeyModelsAnalyzer:
         
         # Calculate distances for each grid point
         # Need to normalize using the original data ranges, not the axis limits
-        model_cost_min, model_cost_max = self.df['total_cost'].min(), self.df['total_cost'].max()
+        model_cost_min, model_cost_max = self.df['cost_ratio'].min(), self.df['cost_ratio'].max()
         model_error_min, model_error_max = self.df['grid_normalized_l2_error'].min(), self.df['grid_normalized_l2_error'].max()
         
         cost_norm_grid = (cost_grid - model_cost_min) / (model_cost_max - model_cost_min)
@@ -1122,13 +1122,13 @@ class ParetoKeyModelsAnalyzer:
                     # Use magenta gradient instead of gray
                     color = threshold_colors[i] if i < len(threshold_colors) else 'darkmagenta'
                     
-                    ax.scatter(point['total_cost'], point['grid_normalized_l2_error'],
+                    ax.scatter(point['cost_ratio'], point['grid_normalized_l2_error'],
                             marker='o', c=color, s=100,
                             alpha=0.9, label=f'{label} Baseline', 
                             edgecolors='black', linewidths=2, zorder=15)
                     
                     # Collect points for line
-                    threshold_costs.append(point['total_cost'])
+                    threshold_costs.append(point['cost_ratio'])
                     threshold_errors.append(point['grid_normalized_l2_error'])
 
                 # Connect threshold points with dotted line
@@ -1143,19 +1143,19 @@ class ParetoKeyModelsAnalyzer:
             
                     
                     if self.verbose:
-                        print(f"Added baseline reference: {label} at Cost={point['total_cost']}, Error={point['grid_normalized_l2_error']:.3e}")
+                        print(f"Added baseline reference: {label} at Cost={point['cost_ratio']}, Error={point['grid_normalized_l2_error']:.3e}")
             else:
                 # Single point (no-amr or single threshold)
                 points = data if isinstance(data, list) else [data]
                 for point in points:
                     # FIXED: Use grid_normalized_l2_error
-                    ax.scatter(point['total_cost'], point['grid_normalized_l2_error'],
+                    ax.scatter(point['cost_ratio'], point['grid_normalized_l2_error'],
                             marker=style['marker'], c=style['color'], s=style['size'],
                             alpha=0.9, label=style['label'], 
                             edgecolors='black', linewidths=2, zorder=15)
                     
                     if self.verbose:
-                        print(f"Added baseline reference: {method} at Cost={point['total_cost']}, Error={point['grid_normalized_l2_error']:.3e}")
+                        print(f"Added baseline reference: {method} at Cost={point['cost_ratio']}, Error={point['grid_normalized_l2_error']:.3e}")
     
     def create_comprehensive_plots(self, include_pareto=True, include_ideal=True, 
                              include_zones=True, include_baselines=None, output_format='pdf'):
@@ -1216,13 +1216,13 @@ class ParetoKeyModelsAnalyzer:
             if self.verbose:
                 print(f"Plotting {family['vary_param']}={param_value}: {len(subset)} points")
                 if len(subset) > 0:
-                    print(f"  Cost range: {subset['total_cost'].min():,} to {subset['total_cost'].max():,}")
+                    print(f"  Cost range: {subset['cost_ratio'].min():.3f} to {subset['cost_ratio'].max():.3f}")
                     print(f"  Error range: {subset['grid_normalized_l2_error'].min():.6f} to {subset['grid_normalized_l2_error'].max():.6f}")
             
             # Handle case where there are more parameter values than colors
             color_idx = i % len(family['colors'])
             
-            ax.scatter(subset['total_cost'], subset['grid_normalized_l2_error'],
+            ax.scatter(subset['cost_ratio'], subset['grid_normalized_l2_error'],
                       c=family['colors'][color_idx], s=60, alpha=0.7,
                       label=f"{family['vary_param']}={param_value}",
                       edgecolors='black', linewidths=0.5)
@@ -1232,30 +1232,30 @@ class ParetoKeyModelsAnalyzer:
         optimal_idx = self.df['distance_to_ideal'].idxmin()
         optimal_point = self.df.loc[optimal_idx]
 
-        ax.scatter(optimal_point['total_cost'], optimal_point['grid_normalized_l2_error'],
+        ax.scatter(optimal_point['cost_ratio'], optimal_point['grid_normalized_l2_error'],
                 facecolors='none', s=300, marker='o', 
                 edgecolors='black', linewidths=2, alpha=0.9,
                 label='Optimal "Neutral" Model', zorder=10)
 
         if self.verbose:
-            print(f"Optimal point: Cost={optimal_point['total_cost']:,}, "
+            print(f"Optimal point: Cost={optimal_point['cost_ratio']:.3f}, "
                 f"Error={optimal_point['grid_normalized_l2_error']:.3e}, "
                 f"Distance={optimal_point['distance_to_ideal']:.3f}")
         
         # Add Pareto front if enabled - FIXED: Use grid_normalized_l2_error
         if pareto_models is not None:
             pareto_df = pd.DataFrame(pareto_models)
-            ax.scatter(pareto_df['total_cost'], pareto_df['grid_normalized_l2_error'],
+            ax.scatter(pareto_df['cost_ratio'], pareto_df['grid_normalized_l2_error'],
                     facecolors='none', s=200, alpha=1.0, marker='*',
                     label=f'Pareto Optimal (N={len(pareto_df)})', edgecolors='darkred', linewidths=0.5, zorder=5)
             
             # Connect Pareto points
-            pareto_sorted = pareto_df.sort_values('total_cost')
-            ax.plot(pareto_sorted['total_cost'], pareto_sorted['grid_normalized_l2_error'],
+            pareto_sorted = pareto_df.sort_values('cost_ratio')
+            ax.plot(pareto_sorted['cost_ratio'], pareto_sorted['grid_normalized_l2_error'],
                    'r--', alpha=0.7, linewidth=2, zorder=4)
         
         # Formatting
-        ax.set_xlabel('Total Computational Cost', fontsize=12, fontweight='bold')
+        ax.set_xlabel('Cost Ratio vs No-AMR', fontsize=12, fontweight='bold')
         ax.set_ylabel('Final L2 Error', fontsize=12, fontweight='bold')
         ax.set_yscale('log')
         ax.grid(True, alpha=0.3)
@@ -1311,7 +1311,7 @@ class ParetoKeyModelsAnalyzer:
                 # Handle case where there are more parameter values than colors
                 color_idx = i % len(family['colors'])
                 
-                ax.scatter(subset['total_cost'], subset['grid_normalized_l2_error'],
+                ax.scatter(subset['cost_ratio'], subset['grid_normalized_l2_error'],
                           c=family['colors'][color_idx], s=40, alpha=0.7,
                           label=f"{param_value}",
                           edgecolors='black', linewidths=0.3)
@@ -1321,13 +1321,13 @@ class ParetoKeyModelsAnalyzer:
             optimal_idx = self.df['distance_to_ideal'].idxmin()
             optimal_point = self.df.loc[optimal_idx]
 
-            ax.scatter(optimal_point['total_cost'], optimal_point['grid_normalized_l2_error'],
+            ax.scatter(optimal_point['cost_ratio'], optimal_point['grid_normalized_l2_error'],
                     facecolors='none', s=300, marker='o', 
                     edgecolors='black', linewidths=2, alpha=0.9,
                     label='Optimal "Neutral" Model', zorder=10)
 
             if self.verbose:
-                print(f"Optimal point: Cost={optimal_point['total_cost']:,}, "
+                print(f"Optimal point: Cost={optimal_point['cost_ratio']:.3f}, "
                     f"Error={optimal_point['grid_normalized_l2_error']:.3e}, "
                     f"Distance={optimal_point['distance_to_ideal']:.3f}")
 
@@ -1335,13 +1335,13 @@ class ParetoKeyModelsAnalyzer:
             # Add Pareto front if enabled - FIXED: Use grid_normalized_l2_error
             if pareto_models is not None:
                 pareto_df = pd.DataFrame(pareto_models)
-                ax.scatter(pareto_df['total_cost'], pareto_df['grid_normalized_l2_error'],
+                ax.scatter(pareto_df['cost_ratio'], pareto_df['grid_normalized_l2_error'],
                     facecolors='none', s=200, alpha=1.0, marker='*',
                     label=f'Pareto Optimal (N={len(pareto_df)})', edgecolors='darkred', linewidths=0.5, zorder=5)
                 
                 # Connect Pareto points
-                pareto_sorted = pareto_df.sort_values('total_cost')
-                ax.plot(pareto_sorted['total_cost'], pareto_sorted['grid_normalized_l2_error'],
+                pareto_sorted = pareto_df.sort_values('cost_ratio')
+                ax.plot(pareto_sorted['cost_ratio'], pareto_sorted['grid_normalized_l2_error'],
                        'r--', alpha=0.7, linewidth=1.5, zorder=4)
             
             # Formatting

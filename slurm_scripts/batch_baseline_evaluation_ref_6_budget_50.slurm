@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=baseline_ref_6_budget_50
-#SBATCH --output=slurm-baseline-ref_6_budget_50-%j.out
-#SBATCH --error=slurm-baseline-ref_6_budget_50-%j.err
+#SBATCH --job-name=baseline_ref_6_budget_50_max_6
+#SBATCH --output=slurm-baseline-ref_6_budget_50_max_6-%j.out
+#SBATCH --error=slurm-baseline-ref_6_budget_50_max_6-%j.err
 #SBATCH --time=01:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
@@ -19,7 +19,7 @@ echo "=================================================="
 cd /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR
 
 echo "Working directory: $(pwd)"
-echo "Configuration: ref_6_budget_50"
+echo "Configuration: ref_6_budget_50_max_6"
 echo "Thresholds: 0.3,0.2,0.1,0.01,0.001,0.0001"
 echo
 
@@ -31,6 +31,7 @@ python analysis/model_performance/baseline_evaluator.py session3_100k_uniform \
     --mode conventional-amr \
     --initial-refinement 6 \
     --element-budget 50 \
+    --max-level 6 \
     --threshold-list "0.3,0.2,0.1,0.01,0.001,0.0001" \
     --verbose
 
@@ -41,7 +42,7 @@ echo "Baseline evaluation completed with exit code: $BASELINE_EXIT_CODE"
 echo "End Time: $(date)"
 
 # Check if output file was created
-EXPECTED_OUTPUT="/bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/model_performance/session3_100k_uniform/baseline_results_conventional-amr_ref6_budget50.csv"
+EXPECTED_OUTPUT="/bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR/analysis/data/model_performance/session3_100k_uniform/baseline_results_conventional-amr_ref6_budget50_max6.csv"
 
 if [ -f "$EXPECTED_OUTPUT" ]; then
     echo "✓ Baseline file created: $EXPECTED_OUTPUT"
