@@ -258,6 +258,18 @@ class ComprehensiveAnalyzer:
         # Create config-specific filename
         filename = f"{base_name}_{config_suffix}.{output_format}"
         return filename
+
+    def _format_simulation_subtitle(self):
+        """
+        Format the simulation configuration subtitle using existing config extraction.
+        
+        Returns:
+            str: Formatted subtitle string
+        """
+        config_info = self.extract_configuration_info()
+        
+        return (f"Simulation Configuration: initial refinement level: {config_info['initial_refinement']}, "
+            f"element budget: {config_info['element_budget']}, max refinement level: {config_info['max_level']}")
     
     def _calculate_ideal_point(self):
         """Calculate the ideal point (minimum cost, minimum error intersection)."""
@@ -736,8 +748,11 @@ class ComprehensiveAnalyzer:
     def _create_single_family_plot(self, family_name, pareto_models, include_ideal, include_zones, include_baselines, output_format):
         """Create a single parameter family plot."""
         family = self.parameter_families[family_name]
+
+        subtitle = self._format_simulation_subtitle()
         
-        fig, ax = plt.subplots(figsize=(13, 8))
+        # fig, ax = plt.subplots(figsize=(13, 9))
+        fig, ax = plt.subplots(figsize=(15, 7))
         
         
         # ALWAYS set proper axis limits first
@@ -815,6 +830,11 @@ class ComprehensiveAnalyzer:
             title_parts.append('with Performance Zones')
         
         ax.set_title(' '.join(title_parts), fontsize=14, fontweight='bold', pad=20)
+        fig.text(0.5, 0.93, subtitle, ha='center', va='center', fontsize=12, 
+         weight='bold', color='#333333')
+
+        
+        plt.subplots_adjust(top=0.83)  # Was 0.88, now 0.85 for more space
         
         plt.tight_layout()
         
