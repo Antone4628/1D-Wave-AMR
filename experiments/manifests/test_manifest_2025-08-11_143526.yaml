@@ -50,7 +50,7 @@ combinations:
     running: false
     submitted: false
 directory_structure:
-  base_path: results/test_param_sweep_2025-08-11_144339
+  base_path: results/test_param_sweep_2025-08-11_143526
   collection_naming: gamma_{gamma_c}_step_{step_domain}_rl_{rl_iterations}_budget_{budget}_2k
   naming_convention: gamma_{gamma_c}_step_{step_domain}_rl_{rl_iterations}_budget_{budget}
 groups:
@@ -75,7 +75,7 @@ sweep_info:
     - 0.05
     - 0.1
   test_mode: true
-  timestamp: 2025-08-11_144339
+  timestamp: 2025-08-11_143526
   total_combinations: 2
   total_groups: 1
   total_timesteps: 2000

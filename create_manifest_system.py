@@ -61,7 +61,7 @@ def generate_manifest(combinations, groups, timestamp):
             'timestamp': timestamp,
             'total_combinations': len(combinations),
             'total_groups': len(groups),
-            'total_timesteps': 50000,
+            'total_timesteps': 100000,
             'parameters': {
                 'gamma_c': [25.0, 50.0, 100.0],
                 'step_domain_fraction': [0.025, 0.05, 0.1],

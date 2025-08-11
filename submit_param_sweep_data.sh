@@ -1,11 +1,11 @@
 #!/bin/bash
 # Master submission script for parameter sweep WITH DATA EXPORT
 # Enhanced with CLI parameterization for flexible timesteps
-# Generated: 2025-06-05 09:39:08
+# Generated: 2025-08-11 15:44:28
 
 echo "Starting 81-Parameter Sweep Submission (Enhanced Data Export Version)"
 echo "===================================================================="
-echo "🎯 Sweep name: session3_100k_uniform"
+echo "🎯 Sweep name: session4_100k_uniform"
 echo "📊 Timesteps: 100k uniform"
 echo "📁 Output directory: results"
 echo "📈 Using enhanced_callback_data for structured JSON/CSV export"
@@ -75,7 +75,7 @@ echo "All jobs submitted successfully!"
 echo "Total jobs: 9"
 echo "Total parameter combinations: 81"
 echo "Training load: 81 × 100k = 8.0M total timesteps"
-echo "Sweep name: session3_100k_uniform"
+echo "Sweep name: session4_100k_uniform"
 echo ""
 echo "Job IDs:"
 echo "  Group  1: $JOB_ID_1 (100k)"
@@ -97,7 +97,7 @@ echo "Expected completion time:"
 echo "  All groups (100k): ~5 hours each"
 echo ""
 echo "Results will be saved to:"
-echo "  results/session3_100k_uniform/"
+echo "  results/session4_100k_uniform/"
 echo ""
 echo "Data collection:"
 echo "  Structured data: JSON + CSV files for immediate analysis"

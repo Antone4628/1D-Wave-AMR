@@ -1,6 +1,6 @@
 environment:
-  element_budget: {{ELEMENT_BUDGET}}
-  gamma_c: {{GAMMA_C}}
+  element_budget: '{{ELEMENT_BUDGET}}'
+  gamma_c: '{{GAMMA_C}}'
   initial_refinement:
     fixed_level: 2
     max_initial_level: 4
@@ -8,10 +8,10 @@ environment:
     probability: 0.7
   max_consecutive_no_action: 30
   max_episode_steps: 200
-  max_rl_iterations: {{MAX_RL_ITERATIONS}}
-  min_rl_iterations: {{MIN_RL_ITERATIONS}}
-  rl_iterations_per_timestep: {{RL_ITERATIONS}}
-  step_domain_fraction: {{STEP_DOMAIN_FRACTION}}
+  max_rl_iterations: '{{MAX_RL_ITERATIONS}}'
+  min_rl_iterations: '{{MIN_RL_ITERATIONS}}'
+  rl_iterations_per_timestep: '{{RL_ITERATIONS}}'
+  step_domain_fraction: '{{STEP_DOMAIN_FRACTION}}'
 solver:
   balance: false
   courant_max: 0.1

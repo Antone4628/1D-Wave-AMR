@@ -2025,7 +2025,7 @@ combinations:
     running: false
     submitted: false
 directory_structure:
-  base_path: results/full_param_sweep_2025-08-11_150254
+  base_path: results/full_param_sweep_2025-08-11_145532
   collection_naming: gamma_{gamma_c}_step_{step_domain}_rl_{rl_iterations}_budget_{budget}_20k
   naming_convention: gamma_{gamma_c}_step_{step_domain}_rl_{rl_iterations}_budget_{budget}
 groups:
@@ -2101,7 +2101,7 @@ sweep_info:
     - 0.025
     - 0.05
     - 0.1
-  timestamp: 2025-08-11_150254
+  timestamp: 2025-08-11_145532
   total_combinations: 81
   total_groups: 9
-  total_timesteps: 100000
+  total_timesteps: 50000

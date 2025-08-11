@@ -49,7 +49,7 @@ echo "  TIMESTEPS: 2000 (TEST MODE)"
 echo ""
 
 # Create results directory
-SWEEP_TIMESTAMP="2025-05-29_094907"
+SWEEP_TIMESTAMP="2025-08-11_144339"
 BASE_RESULTS_DIR="results/test_param_sweep_$SWEEP_TIMESTAMP"
 CURRENT_RESULTS_DIR="$BASE_RESULTS_DIR/gamma_${GAMMA_C}_step_${STEP_DOMAIN_FRACTION}_rl_${RL_ITERATIONS}_budget_${ELEMENT_BUDGET}"
 
@@ -58,7 +58,7 @@ mkdir -p "$CURRENT_RESULTS_DIR"
 
 # Copy and modify config
 BASE_CONFIG_TEMPLATE="experiments/configs/test_base_template.yaml"
-CURRENT_CONFIG="/tmp/config_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.yaml"
+CURRENT_CONFIG="$CURRENT_RESULTS_DIR/config.yaml"
 
 cp "$BASE_CONFIG_TEMPLATE" "$CURRENT_CONFIG"
 sed -i "s/{{GAMMA_C}}/$GAMMA_C/g" "$CURRENT_CONFIG"
@@ -70,8 +70,6 @@ sed -i "s/{{ELEMENT_BUDGET}}/$ELEMENT_BUDGET/g" "$CURRENT_CONFIG"
 
 echo "✓ Test configuration prepared"
 
-# Change to project directory and run training
-cd /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR
 
 echo "Starting TEST training (2000 timesteps)..."
 python3 experiments/run_experiments_mixed_gpu.py \

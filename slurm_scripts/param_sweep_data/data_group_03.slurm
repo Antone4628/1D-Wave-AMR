@@ -99,8 +99,8 @@ echo "  TOTAL_TIMESTEPS: $TOTAL_TIMESTEPS"
 echo ""
 
 # Create unique timestamp for this sweep (CONFIGURABLE SWEEP NAME)
-SWEEP_TIMESTAMP="20250605_093908"
-SWEEP_NAME="session3_100k_uniform"
+SWEEP_TIMESTAMP="20250811_154428"
+SWEEP_NAME="session4_100k_uniform"
 
 # Create results directory structure
 BASE_RESULTS_DIR="results/$SWEEP_NAME"

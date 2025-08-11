@@ -1,5 +1,7 @@
+fix_note: Template now generated as raw YAML string to ensure unquoted numeric placeholders
 parameter_placeholders:
   ELEMENT_BUDGET:
+    data_type: integer
     description: Maximum number of elements allowed
     sed_command: sed -i "s/{{ELEMENT_BUDGET}}/$ELEMENT_BUDGET/g" config.yaml
     values:
@@ -7,6 +9,7 @@ parameter_placeholders:
     - 30
     - 40
   GAMMA_C:
+    data_type: float
     description: Coefficient for resource penalty term
     sed_command: sed -i "s/{{GAMMA_C}}/$GAMMA_C/g" config.yaml
     values:
@@ -14,14 +17,17 @@ parameter_placeholders:
     - 50.0
     - 100.0
   MAX_RL_ITERATIONS:
+    data_type: integer
     description: Maximum RL iterations (same as RL_ITERATIONS)
     note: Set to same value as RL_ITERATIONS
     sed_command: sed -i "s/{{MAX_RL_ITERATIONS}}/$RL_ITERATIONS/g" config.yaml
   MIN_RL_ITERATIONS:
+    data_type: integer
     description: Minimum RL iterations (same as RL_ITERATIONS)
     note: Set to same value as RL_ITERATIONS
     sed_command: sed -i "s/{{MIN_RL_ITERATIONS}}/$RL_ITERATIONS/g" config.yaml
   RL_ITERATIONS:
+    data_type: integer
     description: RL iterations per timestep
     sed_command: sed -i "s/{{RL_ITERATIONS}}/$RL_ITERATIONS/g" config.yaml
     values:
@@ -29,12 +35,18 @@ parameter_placeholders:
     - 25
     - 40
   STEP_DOMAIN_FRACTION:
+    data_type: float
     description: Fraction of domain to timestep
     sed_command: sed -i "s/{{STEP_DOMAIN_FRACTION}}/$STEP_DOMAIN_FRACTION/g" config.yaml
     values:
     - 0.025
     - 0.05
     - 0.1
+  TOTAL_TIMESTEPS:
+    data_type: integer
+    description: Total training timesteps
+    note: Configurable via --timesteps parameter
+    sed_command: sed -i "s/{{TOTAL_TIMESTEPS}}/$TOTAL_TIMESTEPS/g" config.yaml
 slurm_usage_example:
 - '# In SLURM script:'
 - cp $BASE_CONFIG_TEMPLATE config.yaml
@@ -44,3 +56,4 @@ slurm_usage_example:
 - sed -i "s/{{MIN_RL_ITERATIONS}}/$RL_ITERATIONS/g" config.yaml
 - sed -i "s/{{MAX_RL_ITERATIONS}}/$RL_ITERATIONS/g" config.yaml
 - sed -i "s/{{ELEMENT_BUDGET}}/$ELEMENT_BUDGET/g" config.yaml
+- sed -i "s/{{TOTAL_TIMESTEPS}}/$TOTAL_TIMESTEPS/g" config.yaml

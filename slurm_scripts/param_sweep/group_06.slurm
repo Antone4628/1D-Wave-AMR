@@ -93,7 +93,7 @@ echo "  ELEMENT_BUDGET: $ELEMENT_BUDGET"
 echo ""
 
 # Create unique timestamp for this sweep
-SWEEP_TIMESTAMP="2025-05-29_105232"
+SWEEP_TIMESTAMP="2025-08-11_150254"
 
 # Create results directory structure
 BASE_RESULTS_DIR="results/full_param_sweep_$SWEEP_TIMESTAMP"
@@ -104,7 +104,7 @@ mkdir -p "$CURRENT_RESULTS_DIR"
 
 # Copy and modify base configuration
 BASE_CONFIG_TEMPLATE="experiments/configs/param_sweep/base_template.yaml"
-CURRENT_CONFIG="/tmp/config_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.yaml"
+CURRENT_CONFIG="$CURRENT_RESULTS_DIR/config.yaml"
 
 echo "Creating configuration file: $CURRENT_CONFIG"
 cp "$BASE_CONFIG_TEMPLATE" "$CURRENT_CONFIG"
@@ -120,11 +120,11 @@ sed -i "s/{{ELEMENT_BUDGET}}/$ELEMENT_BUDGET/g" "$CURRENT_CONFIG"
 echo "✓ Configuration file prepared"
 
 # Change to project directory
-cd /bsuhome/antonechacartegu/projects/drl-amr/1D-Wave-AMR
+cd /bsuhome/ahegedus/1D-Wave-AMR
 
 # Run training with no-timestamp flag for predictable directory structure
 echo "Starting training..."
-python3 experiments/run_experiments_mixed_gpu.py \
+python3 run_experiments_mixed_gpu.py \
     --config "$CURRENT_CONFIG" \
     --results-dir "$CURRENT_RESULTS_DIR" \
     --no-timestamp

@@ -165,7 +165,8 @@ def create_animation(times, solutions, grids, coords, solver, training_params,
     """
     # Set up plot
     plt.rcParams['animation.html'] = 'jshtml'
-    plt.style.use('ggplot')
+    # plt.style.use('ggplot')
+    plt.style.use('seaborn-v0_8-dark-palette')
     
     fig, ax = plt.subplots(figsize=(12, 8))
     
@@ -193,6 +194,7 @@ def create_animation(times, solutions, grids, coords, solver, training_params,
     
     # Initialize solution plots
     solution_line = ax.plot(coords[0], solutions[0], 'b-', linewidth=2, label='RL-AMR Solution')[0]
+    lgl_scatter = ax.scatter(coords[0], solutions[0], color='blue', s=15, zorder=5, alpha=0.8)
     
     if include_exact:
         # Calculate initial exact solution
@@ -202,7 +204,8 @@ def create_animation(times, solutions, grids, coords, solver, training_params,
     # Add vertical lines for element boundaries
     boundary_lines = []
     for x in grids[0]:
-        boundary_lines.append(ax.axvline(x, color='darkmagenta', linestyle=':', alpha=0.7, linewidth=1))
+        # boundary_lines.append(ax.axvline(x, color='darkmagenta', linestyle=':', alpha=0.7, linewidth=1))
+        boundary_lines.append(ax.axvline(x, color='darkmagenta', linestyle='-', linewidth=1, alpha=0.8))
     
     ax.legend()
     
@@ -211,6 +214,7 @@ def create_animation(times, solutions, grids, coords, solver, training_params,
         # Update solution plot
         solution_line.set_ydata(solutions[frame])
         solution_line.set_xdata(coords[frame])
+        lgl_scatter.set_offsets(np.column_stack((coords[frame], solutions[frame])))
         
         # Update exact solution if included
         if include_exact:
@@ -224,10 +228,11 @@ def create_animation(times, solutions, grids, coords, solver, training_params,
         boundary_lines.clear()
         
         for x in grids[frame]:
-            boundary_lines.append(ax.axvline(x, color='gray', linestyle=':', alpha=0.7, linewidth=1))
+            # boundary_lines.append(ax.axvline(x, color='gray', linestyle=':', alpha=0.7, linewidth=1))
+            boundary_lines.append(ax.axvline(x, color='darkmagenta', linestyle=':', alpha=0.7, linewidth=1))
         
         # Update tick marks
-        ax.set_xticks(grids[frame])
+        # ax.set_xticks(grids[frame])
         
         # Update text
         frame_text.set_text(f'Frame: {frame}/{len(solutions)-1}')
@@ -240,7 +245,8 @@ def create_animation(times, solutions, grids, coords, solver, training_params,
         fig=fig,
         func=update_data,
         frames=len(solutions),
-        interval=50,  # 50ms between frames
+        # interval=50,  # 50ms between frames
+        interval=12,
         blit=False
     )
     
@@ -250,7 +256,7 @@ def create_animation(times, solutions, grids, coords, solver, training_params,
         animation_path = os.path.join(output_dir, filename)
         
         try:
-            anim.save(animation_path, writer="ffmpeg", fps=20, dpi=100)
+            anim.save(animation_path, writer="ffmpeg", fps=80, dpi=100)
             print(f"Animation saved to {animation_path}")
         except Exception as e:
             print(f"Warning: Could not save animation: {e}")

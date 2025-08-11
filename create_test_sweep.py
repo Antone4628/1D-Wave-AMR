@@ -212,11 +212,9 @@ sed -i "s/{{{{ELEMENT_BUDGET}}}}/$ELEMENT_BUDGET/g" "$CURRENT_CONFIG"
 
 echo "✓ Test configuration prepared"
 
-# Change to project directory and run training
-cd /bsuhome/ahegedus/1D-Wave-AMR
 
 echo "Starting TEST training (2000 timesteps)..."
-python3 run_experiments_mixed_gpu.py \\
+python3 experiments/run_experiments_mixed_gpu.py \\
     --config "$CURRENT_CONFIG" \\
     --results-dir "$CURRENT_RESULTS_DIR" \\
     --no-timestamp
