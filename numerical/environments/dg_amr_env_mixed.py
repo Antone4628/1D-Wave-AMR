@@ -368,7 +368,7 @@ class DGAMREnv(gym.Env):
         global_avg_jump = np.mean(all_element_jumps) if all_element_jumps else 0.0
         
         # 5. Resource usage (keep existing calculation)
-        resource_usage = len(self.solver.active) / self.max_elements
+        resource_usage = len(self.solver.active) / self.element_budget
         
         # 6. Solution values (keep existing calculation)
         elem_nodes = self.solver.intma[:, self.current_element_index]

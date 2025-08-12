@@ -168,44 +168,162 @@ class ModelMarkerEvaluation:
         
         return sorted_elements
     
+    # def get_observation(self, element_idx):
+    #     """
+    #     Get observation for an element in the format expected by the model.
+        
+    #     Args:
+    #         element_idx: Index of element in active_grid
+                
+    #     Returns:
+    #         dict: Observation dictionary compatible with the trained model
+    #     """
+    #     # Get local solution jumps
+    #     local_jumps, _ = self.get_element_jumps(element_idx)
+        
+    #     # Calculate average of local jumps for this element
+    #     avg_local_jump = np.mean(local_jumps) if np.any(local_jumps) else 0.0
+    #     avg_local_jump = 0.0 if np.isnan(avg_local_jump) else avg_local_jump
+        
+    #     # Compute average jump across all elements
+    #     all_jumps = []
+    #     for i in range(len(self.solver.active)):
+    #         jumps, _ = self.get_element_jumps(i)
+    #         if not np.any(np.isnan(jumps)):
+    #             all_jumps.append(np.mean(jumps))
+        
+    #     avg_jump = np.mean(all_jumps) if all_jumps else 0.0
+    #     avg_jump = 0.0 if np.isnan(avg_jump) else avg_jump
+        
+    #     # Current resource usage
+    #     resource_usage = len(self.solver.active) / self.element_budget
+        
+    #     # Get local solution values
+    #     element_nodes = self.solver.intma[:, element_idx]
+    #     solution_values = self.solver.q[element_nodes]
+    #     solution_values = np.nan_to_num(solution_values)
+        
+    #     observation = {
+    #         'avg_local_jump': np.array([avg_local_jump], dtype=np.float32),
+    #         'avg_jump': np.array([avg_jump], dtype=np.float32),
+    #         'resource_usage': np.array([resource_usage], dtype=np.float32),
+    #         'solution_values': solution_values.astype(np.float32)
+    #     }
+        
+    #     return observation
+
+    def _find_left_neighbor_idx(self, element_idx: int) -> int:
+        """Find index of left neighbor in active grid. Returns -1 if none."""
+        elem = self.solver.active[element_idx]
+        if elem > 1:
+            target_elem = elem - 1
+        else:
+            # Periodic boundary: wrap to last element
+            target_elem = len(self.solver.label_mat)
+        
+        left_active_idx = np.where(self.solver.active == target_elem)[0]
+        return left_active_idx[0] if len(left_active_idx) > 0 else -1
+
+    def _find_right_neighbor_idx(self, element_idx: int) -> int:
+        """Find index of right neighbor in active grid. Returns -1 if none."""
+        elem = self.solver.active[element_idx]
+        if elem < len(self.solver.label_mat):
+            target_elem = elem + 1
+        else:
+            # Periodic boundary: wrap to first element  
+            target_elem = 1
+        
+        right_active_idx = np.where(self.solver.active == target_elem)[0]
+        return right_active_idx[0] if len(right_active_idx) > 0 else -1
+    
+    def _get_element_boundary_jumps(self, element_idx: int) -> float:
+        """
+        Calculate average boundary jump for a single element 
+        Args:
+            element_idx: Index of element in active_grid
+                    
+        Returns:
+            float: Average of left and right boundary jumps for this element
+        """
+        # Safety check
+        if element_idx >= len(self.solver.active):
+            if self.verbose:
+                print(f"Warning: Invalid element index {element_idx}, active elements: {len(self.solver.active)}")
+            return 0.0
+                
+        # Get current element's solution values
+        elem_nodes = self.solver.intma[:, element_idx]
+        elem_sol = self.solver.q[elem_nodes]
+        elem_left = elem_sol[0]   # Left boundary value
+        elem_right = elem_sol[-1] # Right boundary value
+        
+        boundary_jumps = []
+        
+        try:
+            # Left boundary jump
+            left_neighbor_idx = self._find_left_neighbor_idx(element_idx)
+            if left_neighbor_idx >= 0:
+                left_nodes = self.solver.intma[:, left_neighbor_idx]
+                left_sol = self.solver.q[left_nodes]
+                left_boundary_jump = abs(elem_left - left_sol[-1])
+                boundary_jumps.append(left_boundary_jump)
+            
+            # Right boundary jump
+            right_neighbor_idx = self._find_right_neighbor_idx(element_idx)
+            if right_neighbor_idx >= 0:
+                right_nodes = self.solver.intma[:, right_neighbor_idx]
+                right_sol = self.solver.q[right_nodes]
+                right_boundary_jump = abs(elem_right - right_sol[0])
+                boundary_jumps.append(right_boundary_jump)
+                
+        except Exception as e:
+            if self.verbose:
+                print(f"Error calculating boundary jumps for element {element_idx}: {e}")
+            return 0.0
+        
+        # Return average of boundary jumps (γK)
+        return np.mean(boundary_jumps) if boundary_jumps else 0.0
+
     def get_observation(self, element_idx):
         """
         Get observation for an element in the format expected by the model.
-        
-        Args:
-            element_idx: Index of element in active_grid
-                
-        Returns:
-            dict: Observation dictionary compatible with the trained model
+        Updated to match the 6-component observation space from training.
         """
-        # Get local solution jumps
-        local_jumps, _ = self.get_element_jumps(element_idx)
+        # 1. Current element boundary jump (γK)
+        local_avg_jump = self._get_element_boundary_jumps(element_idx)
         
-        # Calculate average of local jumps for this element
-        avg_local_jump = np.mean(local_jumps) if np.any(local_jumps) else 0.0
-        avg_local_jump = 0.0 if np.isnan(avg_local_jump) else avg_local_jump
+        # 2. Left neighbor boundary jump (γK'_left)
+        left_neighbor_idx = self._find_left_neighbor_idx(element_idx)
+        left_neighbor_avg_jump = (self._get_element_boundary_jumps(left_neighbor_idx) 
+                                if left_neighbor_idx >= 0 else 0.0)
         
-        # Compute average jump across all elements
-        all_jumps = []
+        # 3. Right neighbor boundary jump (γK'_right)  
+        right_neighbor_idx = self._find_right_neighbor_idx(element_idx)
+        right_neighbor_avg_jump = (self._get_element_boundary_jumps(right_neighbor_idx)
+                                if right_neighbor_idx >= 0 else 0.0)
+        
+        # 4. Global average jump across all active elements
+        all_element_jumps = []
         for i in range(len(self.solver.active)):
-            jumps, _ = self.get_element_jumps(i)
-            if not np.any(np.isnan(jumps)):
-                all_jumps.append(np.mean(jumps))
+            element_jump = self._get_element_boundary_jumps(i)
+            if element_jump > 0:  # Only include non-zero jumps
+                all_element_jumps.append(element_jump)
+        global_avg_jump = np.mean(all_element_jumps) if all_element_jumps else 0.0
         
-        avg_jump = np.mean(all_jumps) if all_jumps else 0.0
-        avg_jump = 0.0 if np.isnan(avg_jump) else avg_jump
-        
-        # Current resource usage
+        # 5. Resource usage
         resource_usage = len(self.solver.active) / self.element_budget
         
-        # Get local solution values
+        # 6. Solution values
         element_nodes = self.solver.intma[:, element_idx]
         solution_values = self.solver.q[element_nodes]
         solution_values = np.nan_to_num(solution_values)
         
+        # NEW 6-component observation space
         observation = {
-            'avg_local_jump': np.array([avg_local_jump], dtype=np.float32),
-            'avg_jump': np.array([avg_jump], dtype=np.float32),
+            'local_avg_jump': np.array([local_avg_jump], dtype=np.float32),
+            'left_neighbor_avg_jump': np.array([left_neighbor_avg_jump], dtype=np.float32), 
+            'right_neighbor_avg_jump': np.array([right_neighbor_avg_jump], dtype=np.float32),
+            'global_avg_jump': np.array([global_avg_jump], dtype=np.float32),
             'resource_usage': np.array([resource_usage], dtype=np.float32),
             'solution_values': solution_values.astype(np.float32)
         }
