@@ -1,6 +1,6 @@
 # Project Code Structure
 
-Auto-generated on: Thu Jun 12 20:21:22 MDT 2025
+Auto-generated on: Thu Jul 31 15:46:47 MDT 2025
 Project: 1D_wave_AMR
 
 ```
@@ -13,6 +13,8 @@ Project: 1D_wave_AMR
 │   │   │   ├── anova_results_20250605_074900.json
 │   │   │   ├── anova_results_20250611_155811.json
 │   │   │   └── anova_results_20250612_072903.json
+│   │   ├── model_performance
+│   │   │   └── session3_100k_uniform
 │   │   ├── models
 │   │   │   └── session3_100k_uniform
 │   │   ├── processed
@@ -31,8 +33,12 @@ Project: 1D_wave_AMR
 │   │   └── transfer_model_files.py
 │   ├── interactive_analysis
 │   ├── model_performance
+│   │   ├── batch_model_evaluator.py
+│   │   ├── batch_results_analyzer.py
+│   │   ├── comprehensive_analyzer.py
 │   │   ├── dg_wave_solver_evaluation.py
 │   │   ├── model_marker_evaluation.py
+│   │   ├── pareto_front_analyzer.py
 │   │   └── single_model_runner.py
 │   ├── outputs
 │   │   ├── figures
@@ -55,7 +61,15 @@ Project: 1D_wave_AMR
 │   │   └── config.py
 │   └── data_sample.py
 ├── animations
+│   ├── gamma_100.0_step_0.025_rl_10_budget_25
+│   │   ├── final_model_g100.0_s0.025_r10_b25_animate.mp4
+│   │   ├── final_model_g100.0_s0.025_r10_b25_final.pdf
+│   │   ├── final_model_g100.0_s0.025_r10_b25_final.png
+│   │   ├── final_model_g100.0_s0.025_r10_b25_snapshot.pdf
+│   │   └── final_model_g100.0_s0.025_r10_b25_snapshot.png
 │   ├── 1D_Wave_AMR_refdef_GIF.gif
+│   ├── final_model_g100.0_s0.025_r10_b25_evaluation.mp4
+│   ├── gamma_100.0_step_0.025_rl_10_budget_25_time_1.0.mp4
 │   ├── Gaussian_Pulse_Advection_AMR.gif
 │   ├── Gaussian_Pulse_Advection_Snapshots.png
 │   ├── Mixed_model_RL_AMR_1D_Wave_GIF.gif
@@ -691,11 +705,12 @@ Project: 1D_wave_AMR
 │   └── transfer_commands.sh
 ├── training
 │   └── utils
-├── CODESTRUCTURE.md
+├── barrier_function.png
 ├── create_base_config.py
 ├── create_manifest_system.py
 ├── create_slurm_scripts.py
 ├── create_test_sweep.py
+├── LOCAL_CODESTRUCTURE.md
 ├── monitor_param_sweep.py
 ├── project_structure.md
 ├── README.md

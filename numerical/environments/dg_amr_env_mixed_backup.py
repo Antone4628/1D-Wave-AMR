@@ -160,7 +160,6 @@ class DGAMREnv(gym.Env):
         super().__init__()
         self.solver = solver
         self.element_budget = element_budget
-        self.max_elements = element_budget
         self.gamma_c = gamma_c
         self.render_mode = render_mode
         self.current_element_index = 0
@@ -203,27 +202,14 @@ class DGAMREnv(gym.Env):
         self.debug_training_cycle = debug_training_cycle
         
         # Define observation space following paper section 2.2.2
-        # Define observation space (6 components)
         self.observation_space = spaces.Dict({
-            'local_avg_jump': spaces.Box(
+            'avg_local_jump': spaces.Box(
                 low=0.0,
                 high=1e3,
                 shape=(1,),
                 dtype=np.float32
             ),
-            'left_neighbor_avg_jump': spaces.Box(
-                low=0.0,
-                high=1e3,
-                shape=(1,),
-                dtype=np.float32
-            ),
-            'right_neighbor_avg_jump': spaces.Box(
-                low=0.0,
-                high=1e3,
-                shape=(1,),
-                dtype=np.float32
-            ),
-            'global_avg_jump': spaces.Box(
+            'avg_jump': spaces.Box(
                 low=0.0,
                 high=1e3,
                 shape=(1,),
@@ -263,134 +249,129 @@ class DGAMREnv(gym.Env):
             active_levels.append(level)
         return active_levels   
     
-    def _find_left_neighbor_idx(self, element_idx: int) -> int:
-        """Find index of left neighbor in active grid. Returns -1 if none."""
-        elem = self.solver.active[element_idx]
-        if elem > 1:
-            target_elem = elem - 1
-        else:
-            # Periodic boundary: wrap to last element
-            target_elem = len(self.solver.label_mat)
-        
-        left_active_idx = np.where(self.solver.active == target_elem)[0]
-        return left_active_idx[0] if len(left_active_idx) > 0 else -1
 
-    def _find_right_neighbor_idx(self, element_idx: int) -> int:
-        """Find index of right neighbor in active grid. Returns -1 if none."""
-        elem = self.solver.active[element_idx]
-        if elem < len(self.solver.label_mat):
-            target_elem = elem + 1
-        else:
-            # Periodic boundary: wrap to first element  
-            target_elem = 1
-        
-        right_active_idx = np.where(self.solver.active == target_elem)[0]
-        return right_active_idx[0] if len(right_active_idx) > 0 else -1
-    
-    def _get_element_boundary_jumps(self, element_idx: int) -> float:
+
+    def _get_element_jumps(self, element_idx: int) -> Tuple[np.ndarray, np.ndarray]:
         """
-        Calculate average boundary jump for a single element 
+        Compute solution jumps at element boundaries and interior nodes.
+        
         Args:
             element_idx: Index of element in active_grid
-                    
+                
         Returns:
-            float: Average of left and right boundary jumps for this element
+            tuple: (local_jumps, neighbor_jumps)
         """
-        # Safety check
+        # Safety check for valid element index
         if element_idx >= len(self.solver.active):
             if self.verbose:
                 print(f"Warning: Invalid element index {element_idx}, active elements: {len(self.solver.active)}")
-            return 0.0
-                
-        # Get current element's solution values
+            return np.zeros(self.solver.ngl), np.zeros(2)
+            
+        # Get element number from active grid
+        elem = self.solver.active[element_idx]
+        
+        # Extract solution values for current element
         elem_nodes = self.solver.intma[:, element_idx]
         elem_sol = self.solver.q[elem_nodes]
-        elem_left = elem_sol[0]   # Left boundary value
-        elem_right = elem_sol[-1] # Right boundary value
         
-        boundary_jumps = []
+        # Get boundary values
+        elem_left = elem_sol[0]
+        elem_right = elem_sol[-1]
+        
+        # Initialize arrays for jumps
+        local_jumps = np.zeros(self.solver.ngl)
+        neighbor_jumps = np.zeros(2)
         
         try:
-            # Left boundary jump
-            left_neighbor_idx = self._find_left_neighbor_idx(element_idx)
-            if left_neighbor_idx >= 0:
-                left_nodes = self.solver.intma[:, left_neighbor_idx]
-                left_sol = self.solver.q[left_nodes]
-                left_boundary_jump = abs(elem_left - left_sol[-1])
-                boundary_jumps.append(left_boundary_jump)
-            
-            # Right boundary jump
-            right_neighbor_idx = self._find_right_neighbor_idx(element_idx)
-            if right_neighbor_idx >= 0:
-                right_nodes = self.solver.intma[:, right_neighbor_idx]
-                right_sol = self.solver.q[right_nodes]
-                right_boundary_jump = abs(elem_right - right_sol[0])
-                boundary_jumps.append(right_boundary_jump)
+            # Handle Left Neighbor (with periodicity)
+            if elem > 1:
+                left_active_idx = np.where(self.solver.active == elem-1)[0]
+            else:
+                left_active_idx = np.where(self.solver.active == len(self.solver.label_mat))[0]
                 
+            if len(left_active_idx) > 0:
+                left_idx = left_active_idx[0]
+                left_nodes = self.solver.intma[:, left_idx]
+                left_sol = self.solver.q[left_nodes]
+                
+                # Calculate jump at left interface
+                local_jumps[0] = abs(elem_left - left_sol[-1])
+                neighbor_jumps[0] = local_jumps[0]
+                        
+            # Handle Right Neighbor (with periodicity)
+            if elem < len(self.solver.label_mat):
+                right_active_idx = np.where(self.solver.active == elem+1)[0]
+            else:
+                right_active_idx = np.where(self.solver.active == 1)[0]
+                
+            if len(right_active_idx) > 0:
+                right_idx = right_active_idx[0]
+                right_nodes = self.solver.intma[:, right_idx]
+                right_sol = self.solver.q[right_nodes]
+                
+                # Calculate jump at right interface
+                local_jumps[-1] = abs(elem_right - right_sol[0])
+                neighbor_jumps[1] = local_jumps[-1]
+                        
+            # Calculate Interior Jumps
+            for i in range(1, self.solver.ngl-1):
+                local_jumps[i] = abs(elem_sol[i] - elem_sol[i-1])
+                    
         except Exception as e:
             if self.verbose:
-                print(f"Error calculating boundary jumps for element {element_idx}: {e}")
-            return 0.0
-        
-        # Return average of boundary jumps (γK)
-        return np.mean(boundary_jumps) if boundary_jumps else 0.0
-
+                print(f"Error in _get_element_jumps: {e}")
+                import traceback
+                traceback.print_exc()
+            return np.zeros(self.solver.ngl), np.zeros(2)
+                
+        return local_jumps, neighbor_jumps
     
+
     def _get_observation(self):
         """
-        Get observation:
-        - local_avg_jump: γK (current element boundary jump average)
-        - left_neighbor_avg_jump: γK'_left (left neighbor boundary jump average)  
-        - right_neighbor_avg_jump: γK'_right (right neighbor boundary jump average)
-        - global_avg_jump: Global average across all elements
-        - resource_usage: Resource utilization p
-        - solution_values: Local DG coefficients
+        Get observation following paper section 2.2.2, including:
+        - Local average jump
+        - Global average jump 
+        - Resource usage
+        - Local solution values
         """
+        # Get local solution jumps
+        local_jumps, _ = self._get_element_jumps(self.current_element_index)
         
-        # 1. Current element boundary jump (γK)
-        local_avg_jump = self._get_element_boundary_jumps(self.current_element_index)
+        # Calculate average of local jumps for this element
+        avg_local_jump = np.mean(local_jumps) if np.any(local_jumps) else 0.0
         
-        # 2. Left neighbor boundary jump (γK'_left)
-        left_neighbor_idx = self._find_left_neighbor_idx(self.current_element_index)
-        left_neighbor_avg_jump = (self._get_element_boundary_jumps(left_neighbor_idx) 
-                                if left_neighbor_idx >= 0 else 0.0)
+        # Add safety to prevent NaN
+        avg_local_jump = 0.0 if np.isnan(avg_local_jump) else avg_local_jump
         
-        # 3. Right neighbor boundary jump (γK'_right)  
-        right_neighbor_idx = self._find_right_neighbor_idx(self.current_element_index)
-        right_neighbor_avg_jump = (self._get_element_boundary_jumps(right_neighbor_idx)
-                                if right_neighbor_idx >= 0 else 0.0)
-        
-        # 4. Global average jump across all active elements
-        all_element_jumps = []
+        # Compute average jump across all elements
+        all_jumps = []
         for i in range(len(self.solver.active)):
-            element_jump = self._get_element_boundary_jumps(i)
-            if element_jump > 0:  # Only include non-zero jumps
-                all_element_jumps.append(element_jump)
-        global_avg_jump = np.mean(all_element_jumps) if all_element_jumps else 0.0
+            jumps, _ = self._get_element_jumps(i)
+            if not np.any(np.isnan(jumps)):
+                all_jumps.append(np.mean(jumps))
         
-        # 5. Resource usage (keep existing calculation)
-        resource_usage = len(self.solver.active) / self.max_elements
+        avg_jump = np.mean(all_jumps) if all_jumps else 0.0
         
-        # 6. Solution values (keep existing calculation)
-        elem_nodes = self.solver.intma[:, self.current_element_index]
-        solution_values = self.solver.q[elem_nodes]
+        # Add safety to prevent NaN
+        avg_jump = 0.0 if np.isnan(avg_jump) else avg_jump
         
-        # Construct new 6-component observation space
+        # Current resource usage
+        resource_usage = len(self.solver.active) / self.element_budget
+        
+        # Get local solution values
+        element_nodes = self.solver.intma[:, self.current_element_index]
+        solution_values = self.solver.q[element_nodes]
+        
+        # Safety check for solution values
+        solution_values = np.nan_to_num(solution_values, nan=0.0, posinf=0.0, neginf=0.0)
+        
         observation = {
-            'local_avg_jump': np.array([local_avg_jump], dtype=np.float32),
-            'left_neighbor_avg_jump': np.array([left_neighbor_avg_jump], dtype=np.float32), 
-            'right_neighbor_avg_jump': np.array([right_neighbor_avg_jump], dtype=np.float32),
-            'global_avg_jump': np.array([global_avg_jump], dtype=np.float32),
+            'avg_local_jump': np.array([avg_local_jump], dtype=np.float32),
+            'avg_jump': np.array([avg_jump], dtype=np.float32),
             'resource_usage': np.array([resource_usage], dtype=np.float32),
             'solution_values': solution_values.astype(np.float32)
         }
-        
-        # Debug output if verbose
-        if self.verbose:
-            print(f"Element {self.current_element_index}: local={local_avg_jump:.6f}, "
-                f"left_neighbor={left_neighbor_avg_jump:.6f}, "
-                f"right_neighbor={right_neighbor_avg_jump:.6f}, "
-                f"global={global_avg_jump:.6f}")
         
         return observation
     

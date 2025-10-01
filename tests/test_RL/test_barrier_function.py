@@ -32,7 +32,8 @@ def test_barrier_function():
     plt.plot(p_values, barrier_values)
     plt.xlabel('Resource usage p')
     plt.ylabel('Barrier function B(p)')
-    plt.title('Barrier Function: B(p) = √p/(1-p)')
+    # plt.title('Barrier Function: B(p) = √p/(1-p)')
+    plt.title(r'Barrier Function: $B(p) = \frac{\sqrt{p}}{(1-p)}$')
     plt.grid(True)
     
     # Create output directory if it doesn't exist

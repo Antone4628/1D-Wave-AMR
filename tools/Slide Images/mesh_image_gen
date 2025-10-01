@@ -1,0 +1,219 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+def create_1d_mesh_plot(element_boundaries, title="1D Mesh", figsize=(10, 2)):
+    """
+    Create a simple 1D mesh visualization
+    
+    Parameters:
+    element_boundaries: list of x-coordinates for element boundaries
+    title: plot title
+    figsize: figure size tuple
+    """
+    
+    fig, ax = plt.subplots(figsize=figsize)
+    
+    # Draw the domain line
+    domain_start = min(element_boundaries)
+    domain_end = max(element_boundaries)
+    ax.hlines(0, domain_start, domain_end, colors='black', linewidth=3)
+    
+    # Draw element boundaries
+    for x in element_boundaries:
+        ax.vlines(x, -0.1, 0.1, colors='black', linewidth=2)
+    
+    # Add element size labels (optional) - choose one option below:
+    
+    # Option 1: Smaller font size
+    for i in range(len(element_boundaries)-1):
+        x_center = (element_boundaries[i] + element_boundaries[i+1]) / 2
+        element_size = element_boundaries[i+1] - element_boundaries[i]
+        ax.text(x_center, 0.15, f'{element_size:.2f}', 
+                ha='center', va='bottom', fontsize=6)
+    
+    # Option 2: Only label larger elements (uncomment to use instead)
+    # for i in range(len(element_boundaries)-1):
+    #     x_center = (element_boundaries[i] + element_boundaries[i+1]) / 2
+    #     element_size = element_boundaries[i+1] - element_boundaries[i]
+    #     if element_size > 0.05:  # Only show labels for elements larger than 0.05
+    #         ax.text(x_center, 0.15, f'{element_size:.2f}', 
+    #                 ha='center', va='bottom', fontsize=8)
+    
+    # Option 3: Alternating heights to avoid overlap (uncomment to use instead)
+    # for i in range(len(element_boundaries)-1):
+    #     x_center = (element_boundaries[i] + element_boundaries[i+1]) / 2
+    #     element_size = element_boundaries[i+1] - element_boundaries[i]
+    #     height = 0.15 if i % 2 == 0 else 0.2  # Alternate heights
+    #     ax.text(x_center, height, f'{element_size:.2f}', 
+    #             ha='center', va='bottom', fontsize=7)
+    
+    # Formatting
+    ax.set_xlim(domain_start - 0.1, domain_end + 0.1)
+    ax.set_ylim(-0.3, 0.3)
+    ax.set_xlabel('x')
+    ax.set_title(title)
+    ax.set_yticks([])  # Remove y-axis ticks
+    ax.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    return fig, ax
+
+# Example usage - create different mesh scenarios
+
+# 1. Uniform mesh
+uniform_boundaries = np.linspace(0, 1, 9)  # 8 equal elements
+fig1, ax1 = create_1d_mesh_plot(uniform_boundaries, "Uniform Mesh")
+plt.show()
+
+# 2. Over-refined mesh (small elements everywhere)
+over_refined = np.linspace(0, 1, 21)  # 20 small elements
+fig2, ax2 = create_1d_mesh_plot(over_refined, "Over-refined (Expensive)")
+plt.show()
+
+# 3. Under-refined mesh (large elements everywhere)
+under_refined = np.linspace(0, 1, 5)  # 4 large elements
+fig3, ax3 = create_1d_mesh_plot(under_refined, "Under-refined (Inaccurate)")
+plt.show()
+
+# 4. Adaptively refined mesh (fine where needed, coarse elsewhere)
+# Simulate refinement around x=0.3 (wave location)
+adaptive_boundaries = [0, 0.1, 0.2, 0.25, 0.275, 0.3, 0.325, 0.35, 0.4, 0.6, 0.8, 1.0]
+fig4, ax4 = create_1d_mesh_plot(adaptive_boundaries, "DRL-Learned Adaptation")
+plt.show()
+
+# 5. Custom function to create mesh with refinement around a specific feature
+def create_wave_adapted_mesh(wave_center=0.3, wave_width=0.2, n_fine=6, n_coarse=4):
+    """Create a mesh refined around a wave feature"""
+    
+    # Fine elements around wave
+    fine_start = wave_center - wave_width/2
+    fine_end = wave_center + wave_width/2
+    fine_elements = np.linspace(fine_start, fine_end, n_fine+1)
+    
+    # Coarse elements before wave
+    if fine_start > 0:
+        coarse_left = np.linspace(0, fine_start, n_coarse+1)[:-1]  # exclude overlap
+    else:
+        coarse_left = []
+    
+    # Coarse elements after wave  
+    if fine_end < 1:
+        coarse_right = np.linspace(fine_end, 1, n_coarse+1)[1:]  # exclude overlap
+    else:
+        coarse_right = []
+    
+    # Combine all boundaries
+    boundaries = np.concatenate([coarse_left, fine_elements, coarse_right])
+    boundaries = np.unique(np.sort(boundaries))  # Remove duplicates and sort
+    
+    return boundaries
+
+# Example of wave-adapted mesh
+wave_mesh = create_wave_adapted_mesh(wave_center=0.4, wave_width=0.3)
+fig5, ax5 = create_1d_mesh_plot(wave_mesh, "DRL-Learned Adaptation")
+plt.show()
+
+# Save figures for presentation use
+# fig4.savefig('adaptive_mesh.png', dpi=300, bbox_inches='tight')
+# fig5.savefig('drl_mesh.png', dpi=300, bbox_inches='tight')
+
+# import matplotlib.pyplot as plt
+# import numpy as np
+
+# def create_1d_mesh_plot(element_boundaries, title="1D Mesh", figsize=(10, 2)):
+#     """
+#     Create a simple 1D mesh visualization
+    
+#     Parameters:
+#     element_boundaries: list of x-coordinates for element boundaries
+#     title: plot title
+#     figsize: figure size tuple
+#     """
+    
+#     fig, ax = plt.subplots(figsize=figsize)
+    
+#     # Draw the domain line
+#     domain_start = min(element_boundaries)
+#     domain_end = max(element_boundaries)
+#     ax.hlines(0, domain_start, domain_end, colors='black', linewidth=3)
+    
+#     # Draw element boundaries
+#     for x in element_boundaries:
+#         ax.vlines(x, -0.1, 0.1, colors='black', linewidth=2)
+    
+#     # Add element size labels (optional)
+#     for i in range(len(element_boundaries)-1):
+#         x_center = (element_boundaries[i] + element_boundaries[i+1]) / 2
+#         element_size = element_boundaries[i+1] - element_boundaries[i]
+#         ax.text(x_center, 0.15, f'{element_size:.2f}', 
+#                 ha='center', va='bottom', fontsize=10)
+    
+#     # Formatting
+#     ax.set_xlim(domain_start - 0.1, domain_end + 0.1)
+#     ax.set_ylim(-0.3, 0.3)
+#     ax.set_xlabel('x')
+#     ax.set_title(title)
+#     ax.set_yticks([])  # Remove y-axis ticks
+#     ax.grid(True, alpha=0.3)
+    
+#     plt.tight_layout()
+#     return fig, ax
+
+# # Example usage - create different mesh scenarios
+
+# # 1. Uniform mesh
+# uniform_boundaries = np.linspace(0, 1, 9)  # 8 equal elements
+# fig1, ax1 = create_1d_mesh_plot(uniform_boundaries, "Uniform Mesh")
+# plt.show()
+
+# # 2. Over-refined mesh (small elements everywhere)
+# over_refined = np.linspace(0, 1, 21)  # 20 small elements
+# fig2, ax2 = create_1d_mesh_plot(over_refined, "Over-refined (Expensive)")
+# plt.show()
+
+# # 3. Under-refined mesh (large elements everywhere)
+# under_refined = np.linspace(0, 1, 5)  # 4 large elements
+# fig3, ax3 = create_1d_mesh_plot(under_refined, "Under-refined (Inaccurate)")
+# plt.show()
+
+# # 4. Adaptively refined mesh (fine where needed, coarse elsewhere)
+# # Simulate refinement around x=0.3 (wave location)
+# adaptive_boundaries = [0, 0.1, 0.2, 0.25, 0.275, 0.3, 0.325, 0.35, 0.4, 0.6, 0.8, 1.0]
+# fig4, ax4 = create_1d_mesh_plot(adaptive_boundaries, "Adaptive Mesh (Optimal)")
+# plt.show()
+
+# # 5. Custom function to create mesh with refinement around a specific feature
+# def create_wave_adapted_mesh(wave_center=0.3, wave_width=0.2, n_fine=6, n_coarse=4):
+#     """Create a mesh refined around a wave feature"""
+    
+#     # Fine elements around wave
+#     fine_start = wave_center - wave_width/2
+#     fine_end = wave_center + wave_width/2
+#     fine_elements = np.linspace(fine_start, fine_end, n_fine+1)
+    
+#     # Coarse elements before wave
+#     if fine_start > 0:
+#         coarse_left = np.linspace(0, fine_start, n_coarse+1)[:-1]  # exclude overlap
+#     else:
+#         coarse_left = []
+    
+#     # Coarse elements after wave  
+#     if fine_end < 1:
+#         coarse_right = np.linspace(fine_end, 1, n_coarse+1)[1:]  # exclude overlap
+#     else:
+#         coarse_right = []
+    
+#     # Combine all boundaries
+#     boundaries = np.concatenate([coarse_left, fine_elements, coarse_right])
+#     boundaries = np.unique(np.sort(boundaries))  # Remove duplicates and sort
+    
+#     return boundaries
+
+# # Example of wave-adapted mesh
+# wave_mesh = create_wave_adapted_mesh(wave_center=0.4, wave_width=0.3)
+# fig5, ax5 = create_1d_mesh_plot(wave_mesh, "DRL-Learned Adaptation")
+# plt.show()
+
+# # Save figures for presentation use
+# # fig4.savefig('adaptive_mesh.png', dpi=300, bbox_inches='tight')
+# # fig5.savefig('drl_mesh.png', dpi=300, bbox_inches='tight')

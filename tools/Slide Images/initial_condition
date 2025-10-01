@@ -1,0 +1,26 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create x values from -1 to 1
+x = np.linspace(-1, 1, 1000)
+
+# Calculate y values: e^(-256x^2)
+y = np.exp(-256 * x**2)
+
+# Create the plot
+plt.figure(figsize=(10, 6))
+plt.plot(x, y, linestyle='--', color='darkmagenta', linewidth=2)
+
+# Add labels and title
+plt.xlabel('x')
+plt.ylabel('$e^{-256x^2}$')
+plt.title('Plot of $u(x,0) = e^{-256x^2}$ over [-1, 1]')
+plt.grid(True, alpha=0.3)
+
+# Set axis limits
+plt.xlim(-1, 1)
+plt.ylim(-0.1, 1.1)
+
+# Show the plot
+plt.tight_layout()
+plt.show()

@@ -1,0 +1,127 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Set up clean presentation style
+plt.style.use('default')
+plt.rcParams.update({
+    'font.size': 14,
+    'font.family': 'sans-serif',
+    'axes.linewidth': 2,
+    'lines.linewidth': 3,
+    'figure.facecolor': 'white'
+})
+
+def plot_dg_elements_with_nodes():
+    """Show DG elements with co-located boundary LGL nodes"""
+    
+    # Element boundaries
+    main_element = [0.25, 0.5]
+    left_neighbor = [0, 0.25]  # Only show right half
+    right_neighbor = [0.5, 0.75]  # Only show left half
+    
+    # Approximate LGL node positions (4 nodes per element)
+    # Left neighbor nodes (only showing the right half)
+    left_nodes = np.array([0.0625, 0.1458, 0.2042, 0.25])  # rightmost at boundary
+    
+    # Main element nodes (boundaries at 0.25 and 0.5)
+    main_nodes = np.array([0.25, 0.3333, 0.4167, 0.5])  # leftmost and rightmost at boundaries
+    
+    # Right neighbor nodes (only showing the left half)
+    right_nodes = np.array([0.5, 0.5417, 0.6042, 0.6875])  # leftmost at boundary
+    
+    fig, ax = plt.subplots(figsize=(12, 6))
+    
+    # Draw element spans as thick horizontal lines
+    ax.plot(left_neighbor, [0, 0], 'r-', linewidth=1, alpha=0.6, label='Left Neighbor')
+    ax.plot(main_element, [0, 0], 'b-', linewidth=2, label='Main Element')  
+    ax.plot(right_neighbor, [0, 0], 'g-', linewidth=1, alpha=0.6, label='Right Neighbor')
+    
+    # Plot LGL nodes with distinct styling
+    # Left neighbor nodes (hollow red circles)
+    for i, node in enumerate(left_nodes):
+        ax.plot(node, 0, 'o', color='red', markersize=12, 
+               markerfacecolor='white', markeredgecolor='red', 
+               markeredgewidth=1, zorder=10)
+        ax.text(node, 0.15, f'L{i+1}', ha='center', va='bottom', 
+               fontsize=10, fontweight='bold', color='red', alpha=0.8)
+    
+    # Main element nodes (solid blue circles)
+    for i, node in enumerate(main_nodes):
+        ax.plot(node, 0, '.', color='blue', markersize=10, 
+               markerfacecolor='blue', alpha = 0.5, markeredgecolor='darkblue', 
+               markeredgewidth=2, zorder=15)
+        ax.text(node, -0.15, f'M{i+1}', ha='center', va='top', 
+               fontsize=12, fontweight='bold', color='blue')
+    
+    # Right neighbor nodes (hollow green circles)
+    for i, node in enumerate(right_nodes):
+        ax.plot(node, 0, 'o', color='green', markersize=12, 
+               markerfacecolor='white', markeredgecolor='green', 
+               markeredgewidth=1, zorder=10)
+        ax.text(node, 0.15, f'R{i+1}', ha='center', va='bottom', 
+               fontsize=10, fontweight='bold', color='green', alpha=0.8)
+    
+    # Add vertical dashed lines at element boundaries to emphasize co-location
+    ax.axvline(x=0.25, color='orange', linewidth=3, linestyle='--', alpha=0.8, zorder=5)
+    ax.axvline(x=0.5, color='orange', linewidth=3, linestyle='--', alpha=0.8, zorder=5)
+    
+    # Annotations highlighting key concept
+    ax.annotate('Co-located boundary nodes\n(independent values)', 
+               xy=(0.25, 0.05), xytext=(0.15, 0.35), ha='center',
+               fontsize=12, fontweight='bold', color='orange',
+               bbox=dict(boxstyle="round,pad=0.3", facecolor='lightyellow', alpha=0.9),
+               arrowprops=dict(arrowstyle='->', color='orange', lw=2))
+    
+    ax.annotate('Co-located boundary nodes\n(independent values)', 
+               xy=(0.5, 0.05), xytext=(0.6, 0.35), ha='center',
+               fontsize=12, fontweight='bold', color='orange', 
+               bbox=dict(boxstyle="round,pad=0.3", facecolor='lightyellow', alpha=0.9),
+               arrowprops=dict(arrowstyle='->', color='orange', lw=2))
+    
+    # Element labels
+    ax.text(0.125, -0.25, 'Left Neighbor\n(partial view)', ha='center', va='top', 
+           fontsize=12, fontweight='bold', color='red', alpha=0.8)
+    ax.text(0.375, -0.25, 'Main Element\n(RL focus)', ha='center', va='top', 
+           fontsize=14, fontweight='bold', color='blue')
+    ax.text(0.625, -0.25, 'Right Neighbor\n(partial view)', ha='center', va='top', 
+           fontsize=12, fontweight='bold', color='green', alpha=0.8)
+    
+    # Formatting
+    ax.set_xlim(-0.05, 0.8)
+    ax.set_ylim(-0.4, 0.5)
+    ax.set_xlabel('Spatial Position', fontsize=16, fontweight='bold')
+    ax.set_ylabel('')  # No y-label needed
+    ax.set_yticks([])  # Remove y-axis ticks
+    ax.grid(True, alpha=0.3, axis='x')  # Only x-grid
+    ax.spines['left'].set_visible(False)
+    ax.spines['right'].set_visible(False) 
+    ax.spines['top'].set_visible(False)
+    
+    # Custom legend
+    legend_elements = [
+        plt.Line2D([0], [0], color='blue', lw=6, label='Main Element'),
+        plt.Line2D([0], [0], color='red', lw=4, alpha=0.8, label='Neighbor Elements'),
+        plt.Line2D([0], [0], marker='o', color='blue', markersize=10, 
+                  linestyle='None', markerfacecolor='blue', label='Main Element Nodes'),
+        plt.Line2D([0], [0], marker='o', color='red', markersize=8, 
+                  linestyle='None', markerfacecolor='white', 
+                  markeredgecolor='red', markeredgewidth=2, label='Neighbor Nodes')
+    ]
+    ax.legend(handles=legend_elements, loc='upper right', 
+             frameon=True, fancybox=True, shadow=True)
+    
+    plt.title('DG Method: Co-located Boundary Nodes with Independent Values',
+             fontsize=16, fontweight='bold', pad=20)
+    plt.tight_layout()
+    return fig
+
+if __name__ == "__main__":
+    print("Creating simple DG node visualization...")
+    
+    fig = plot_dg_elements_with_nodes()
+    fig.savefig('dg_nodes_simple.png', dpi=300, bbox_inches='tight', 
+                facecolor='white', edgecolor='none')
+    
+    plt.show()
+    print("✓ Visualization saved: dg_nodes_simple.png")
+    print("Shows co-located boundary nodes clearly!")
