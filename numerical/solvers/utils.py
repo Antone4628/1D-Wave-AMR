@@ -1,6 +1,24 @@
 import numpy as np
+from scipy.special import erf
+"""
+DRAFT: Modified exact_solution() for utils.py
 
-def exact_solution(coord, npoin, time, icase):
+This file contains the proposed modifications to add generalization test cases.
+Review carefully before integrating into the actual utils.py file.
+
+KEY CHANGES:
+1. Added optional parameters k=5, omega=np.pi with defaults
+2. Added import for scipy.special.erf at top of utils.py
+3. Added icase 10 (tanh), 11 (erf), 12 (sigmoid)
+
+BACKWARDS COMPATIBILITY:
+- All existing calls like exact_solution(coord, npoin, time, icase) will work unchanged
+- New parameters only used by icase 10, 11, 12
+"""
+
+
+
+def exact_solution(coord, npoin, time, icase, k=5, omega=np.pi):
     """
     Computes exact solution for test cases.
     
@@ -8,135 +26,422 @@ def exact_solution(coord, npoin, time, icase):
         coord (array): Grid coordinates
         npoin (int): Number of points
         time (float): Current time
-        icase (int): Test case number (1-9)
+        icase (int): Test case number (1-12)
+        k (float): Steepness parameter for icase 10-12 (default: 5)
+        omega (float): Frequency parameter for icase 10-12 (default: np.pi)
         
     Returns:
         tuple: (qe, u) Solution values and wave speed
     """
-    # constants
+    # ================================================================
+    # EXISTING CONSTANTS (unchanged)
+    # ================================================================
     w = 1
     visc = 0
     h = 0
     xc = 0
     xmin = -1
     xmax = 1
-    x1 = xmax-xmin
+    x1 = xmax - xmin  # Domain length = 2
     sigma0 = 0.125
     rc = 0.125
     sigma = np.sqrt(sigma0**2 + 2*visc*time)
-    u = w*x1
+    u = w * x1  # Wave speed = 2.0
     alph = 1.0
-    # beta = 64.0
-    # beta = 128.0
     beta = 256.0
-    # beta = 512.0
     
-    # initialize
+    # Initialize solution array
     qe = np.zeros(npoin)
     
+    # Time wrapping for periodic domain (wave returns after t=1 with c=2, L=2)
     timec = time - np.floor(time)
     
+    # ================================================================
+    # EXISTING CASES (1-9) - UNCHANGED
+    # ================================================================
     for i in range(npoin):
         x = coord[i]
-        xbar = xc + u*timec
-        if(xbar >= xmax):
-            xbar = xmin + (xbar-xmax)
-        r = x-xbar
+        xbar = xc + u * timec
+        if xbar >= xmax:
+            xbar = xmin + (xbar - xmax)
+        r = x - xbar
         domain_length = xmax - xmin
         r = r - domain_length * np.round(r / domain_length)
         
-        # if(icase == 1):
-        #     qe[i] = np.exp(-beta*(x-xbar)**2)
-        if(icase == 1):
-            # CRITICAL: For periodic boundaries with sharp Gaussians,
-            # we MUST include periodic images to ensure continuity
-            
-            # Main Gaussian pulse
-            qe[i] = np.exp(-beta*(x-xbar)**2)
-            
-            # Add periodic images to ensure qe(-1) ≈ qe(1)
-            # For beta=256, we need images when the main pulse is near boundaries
-            domain_length = x1  # 2.0
-            
-            # Left periodic image (wraps from left to appear on right)
+        if icase == 1:
+            # Gaussian pulse with periodic images
+            qe[i] = np.exp(-beta * (x - xbar)**2)
+            # Add periodic images for continuity at boundaries
+            domain_length = x1
             xbar_left = xbar - domain_length
-            qe[i] += np.exp(-beta*(x-xbar_left)**2)
-            
-            # Right periodic image (wraps from right to appear on left)
+            qe[i] += np.exp(-beta * (x - xbar_left)**2)
             xbar_right = xbar + domain_length
-            qe[i] += np.exp(-beta*(x-xbar_right)**2)
+            qe[i] += np.exp(-beta * (x - xbar_right)**2)
             
-            # Note: For beta=256, contributions from images beyond ±1 period
-            # are negligible (< 1e-15) and can be ignored
-        elif(icase == 2):
-            if(abs(r) <= rc):
+        elif icase == 2:
+            if abs(r) <= rc:
                 qe[i] = 1
-        elif(icase == 3):
-            qe[i] = sigma0/sigma*np.exp(-(x-xbar)**2/(2*sigma**2))
-        elif(icase == 4):
-            if(abs(r) <= rc):
+                
+        elif icase == 3:
+            qe[i] = sigma0 / sigma * np.exp(-(x - xbar)**2 / (2 * sigma**2))
+            
+        elif icase == 4:
+            if abs(r) <= rc:
                 qe[i] = 1
-        elif(icase == 5):
-            if(x <= xc):
+                
+        elif icase == 5:
+            if x <= xc:
                 qe[i] = 1
-        elif(icase == 6):
-            qe[i] = np.sin(((x + 1)*np.pi)/2.0)
-        elif(icase ==7):
-            qe[i] = 1-np.tanh(alph*(1-4*((x)-1/4)))
-        elif(icase == 8):
-            qe[i]= np.sin(np.pi * x)
-
-        elif(icase == 9):
-            # Section 4.3 unsteady Gaussian pulse from the paper
-            # Parameters: mu = -4, sigma^2 = 0.25, c = 1
+                
+        elif icase == 6:
+            qe[i] = np.sin(((x + 1) * np.pi) / 2.0)
+            
+        elif icase == 7:
+            qe[i] = 1 - np.tanh(alph * (1 - 4 * ((x) - 1/4)))
+            
+        elif icase == 8:
+            qe[i] = np.sin(np.pi * x)
+            
+        elif icase == 9:
+            # Large domain Gaussian pulse (domain [-4, 4])
             mu = -4
             sigma_sq = 0.25
             c = 1.0
-            
-            # The solution for the advection equation with constant velocity c
-            # is u(x,t) = u0(x - ct)
-            x_shifted = x - c*time
-            
-            # CRITICAL FIX: To properly handle periodic boundaries, we need to consider
-            # contributions from all periodic images of the Gaussian
+            x_shifted = x - c * time
             domain_length = 8
-            
-            # Sum contributions from the main pulse and one periodic image on each side
-            # This ensures smoothness at the boundaries
-            main_pulse = np.exp(-1/(2*sigma_sq)*((x_shifted - mu)**2))
-            left_image = np.exp(-1/(2*sigma_sq)*((x_shifted - mu + domain_length)**2))
-            right_image = np.exp(-1/(2*sigma_sq)*((x_shifted - mu - domain_length)**2))
-            
-            # The final solution is the sum of all contributions
+            main_pulse = np.exp(-1 / (2 * sigma_sq) * ((x_shifted - mu)**2))
+            left_image = np.exp(-1 / (2 * sigma_sq) * ((x_shifted - mu + domain_length)**2))
+            right_image = np.exp(-1 / (2 * sigma_sq) * ((x_shifted - mu - domain_length)**2))
             qe[i] = main_pulse + left_image + right_image
-            
-            # Use unit wave speed for this case
             u = 1.0
-        # elif(icase == 9):
-        #     # Section 4.3 unsteady Gaussian pulse from the paper
-        #     # Parameters: mu = -4, sigma^2 = 0.25, c = 1
-        #     mu = -4
-        #     sigma_sq = 0.25
-        #     c = 1
             
-        #     # The solution for the advection equation with constant velocity c
-        #     # is u(x,t) = u0(x - ct)
-        #     x_shifted = x - c*time
+        # ================================================================
+        # NEW CASES (10-12) - GENERALIZATION TEST FUNCTIONS
+        # ================================================================
+        elif icase == 10:
+            # Hyperbolic tangent smooth square wave
+            # u_tanh(x,t) = tanh(k * sin(omega * (x - c*t)))
+            #
+            # Features:
+            # - Sharp transitions at x ≈ 0 and x ≈ ±1 (at t=0)
+            # - Flat plateaus at ±1 between transitions
+            # - Smooth and differentiable everywhere
+            # - Automatically periodic since sin(omega*(-1)) = sin(omega*(1)) = 0
+            #
+            # Parameters: k controls steepness, omega controls frequency
             
-        #     # Apply periodic boundary if needed (domain is [-4,4])
-        #     domain_length = 8
-        #     if x_shifted < -4:
-        #         x_shifted += domain_length
-        #     elif x_shifted > 4:
-        #         x_shifted -= domain_length
-                
-        #     # Gaussian pulse: exp(-1/(2*sigma^2)*(x-mu)^2)
-        #     qe[i] = np.exp(-1/(2*sigma_sq)*(x_shifted - mu)**2)
+            c_wave = u  # Use standard wave speed (2.0)
+            xi = x - c_wave * timec  # Advected coordinate
+            qe[i] = np.tanh(k * np.sin(omega * xi))
             
-        #     # Use unit wave speed for this case
-        #     u = 1.0
+        elif icase == 11:
+            # Error function smooth square wave
+            # u_erf(x,t) = erf(k * sin(omega * (x - c*t)))
+            #
+            # Features:
+            # - Similar to tanh but slightly different saturation profile
+            # - Based on Gaussian integral (related to training IC)
+            # - Smooth and differentiable everywhere
+            
+            c_wave = u
+            xi = x - c_wave * timec
+            qe[i] = erf(k * np.sin(omega * xi))
+            
+        elif icase == 12:
+            # Sigmoid smooth square wave (shifted to [-1, 1] range)
+            # u_sigmoid(x,t) = 2 / (1 + exp(-k * sin(omega * (x - c*t)))) - 1
+            #
+            # Features:
+            # - Gentlest transitions of the three
+            # - Tests lower bound of model sensitivity to gradients
+            # - May challenge models trained on sharper Gaussian
+            
+            c_wave = u
+            xi = x - c_wave * timec
+            qe[i] = 2.0 / (1.0 + np.exp(-k * np.sin(omega * xi))) - 1.0
+
+        elif icase == 13:
+            # Multi-Gaussian: Two separated pulses
+            # Tests whether model can split budget between multiple features
+            #
+            # Features:
+            #   - Two localized features requiring refinement
+            #   - Large flat region between pulses
+            #   - Similar shape to training but different spatial distribution
+            
+            c_wave = u  # Wave speed = 2.0
+            beta_pulse = 256.0  # Match training Gaussian sharpness
+            x1_init = -0.5  # Left pulse initial center
+            x2_init = 0.5   # Right pulse initial center
+            
+            # Advected pulse centers with periodic wrapping
+            timec_local = time - np.floor(time)
+            x1_center = x1_init + c_wave * timec_local
+            x2_center = x2_init + c_wave * timec_local
+            
+            # Wrap centers to domain [-1, 1]
+            domain_length = 2.0
+            if x1_center > 1.0:
+                x1_center = x1_center - domain_length
+            if x2_center > 1.0:
+                x2_center = x2_center - domain_length
+            
+            # Two Gaussian pulses with periodic images
+            pulse1 = np.exp(-beta_pulse * (x - x1_center)**2)
+            pulse1 += np.exp(-beta_pulse * (x - x1_center - domain_length)**2)
+            pulse1 += np.exp(-beta_pulse * (x - x1_center + domain_length)**2)
+            
+            pulse2 = np.exp(-beta_pulse * (x - x2_center)**2)
+            pulse2 += np.exp(-beta_pulse * (x - x2_center - domain_length)**2)
+            pulse2 += np.exp(-beta_pulse * (x - x2_center + domain_length)**2)
+            
+            qe[i] = pulse1 + pulse2
+
+        elif icase == 14:
+            # Bump function with compact support
+            # Exactly zero outside support region - tests "nothing to refine"
+            #
+            # Features:
+            #   - Smooth (C^infinity) and infinitely differentiable
+            #   - EXACTLY zero outside support (not just approximately)
+            #   - Sharp but smooth transition at edges
+            
+            c_wave = u  # Wave speed = 2.0
+            a = 0.3  # Support radius
+            
+            # Advected center with periodic wrapping
+            timec_local = time - np.floor(time)
+            center = c_wave * timec_local
+            
+            # Wrap center to domain [-1, 1]
+            if center > 1.0:
+                center = center - 2.0
+            
+            # Distance from center (considering periodicity)
+            dist = x - center
+            domain_length = 2.0
+            
+            # Wrap distance for periodic domain
+            if dist > 1.0:
+                dist = dist - domain_length
+            elif dist < -1.0:
+                dist = dist + domain_length
+            
+            # Bump function: exp(-1/(1-r^2)) for |r| < 1, else 0
+            r = dist / a
+            if abs(r) < 1.0:
+                qe[i] = np.exp(-1.0 / (1.0 - r**2))
+            else:
+                qe[i] = 0.0
+
+        elif icase == 15:
+            # Sech² (Soliton profile)
+            # Classic soliton shape from KdV equation
+            #
+            # Features:
+            #   - Algebraic tail decay (slower than Gaussian)
+            #   - Single localized feature
+            #   - Common in nonlinear wave physics
+            
+            c_wave = u  # Wave speed = 2.0
+            k_sech = 10.0  # Width parameter
+            
+            # Advected center with periodic wrapping
+            timec_local = time - np.floor(time)
+            center = c_wave * timec_local
+            
+            # Wrap center to domain [-1, 1]
+            if center > 1.0:
+                center = center - 2.0
+            
+            # Distance from center (considering periodicity)
+            dist = x - center
+            domain_length = 2.0
+            
+            # Use closest periodic image
+            if dist > 1.0:
+                dist = dist - domain_length
+            elif dist < -1.0:
+                dist = dist + domain_length
+            
+            # sech²(k*x) = 1/cosh²(k*x)
+            qe[i] = 1.0 / np.cosh(k_sech * dist)**2
+
+        elif icase == 16:
+            # Mexican Hat (Ricker wavelet)
+            # Central positive peak with negative side lobes
+            #
+            # Features:
+            #   - Non-monotonic profile (has negative values)
+            #   - Multiple gradient regions at different scales
+            #   - Common in seismology and signal processing
+            
+            c_wave = u  # Wave speed = 2.0
+            sigma = 8.0  # Width parameter (larger = narrower)
+            
+            # Advected center with periodic wrapping
+            timec_local = time - np.floor(time)
+            center = c_wave * timec_local
+            
+            # Wrap center to domain [-1, 1]
+            if center > 1.0:
+                center = center - 2.0
+            
+            # Distance from center (considering periodicity)
+            dist = x - center
+            domain_length = 2.0
+            
+            # Use closest periodic image
+            if dist > 1.0:
+                dist = dist - domain_length
+            elif dist < -1.0:
+                dist = dist + domain_length
+            
+            # Mexican hat: (1 - 2(πσξ)²) * exp(-(πσξ)²)
+            pi_sigma_xi = np.pi * sigma * dist
+            qe[i] = (1.0 - 2.0 * pi_sigma_xi**2) * np.exp(-pi_sigma_xi**2)
     
     return qe, u
+
+
+
+# def exact_solution(coord, npoin, time, icase):
+#     """
+#     Computes exact solution for test cases.
+    
+#     Args:
+#         coord (array): Grid coordinates
+#         npoin (int): Number of points
+#         time (float): Current time
+#         icase (int): Test case number (1-9)
+        
+#     Returns:
+#         tuple: (qe, u) Solution values and wave speed
+#     """
+#     # constants
+#     w = 1
+#     visc = 0
+#     h = 0
+#     xc = 0
+#     xmin = -1
+#     xmax = 1
+#     x1 = xmax-xmin
+#     sigma0 = 0.125
+#     rc = 0.125
+#     sigma = np.sqrt(sigma0**2 + 2*visc*time)
+#     u = w*x1
+#     alph = 1.0
+#     # beta = 64.0
+#     # beta = 128.0
+#     beta = 256.0
+#     # beta = 512.0
+    
+#     # initialize
+#     qe = np.zeros(npoin)
+    
+#     timec = time - np.floor(time)
+    
+#     for i in range(npoin):
+#         x = coord[i]
+#         xbar = xc + u*timec
+#         if(xbar >= xmax):
+#             xbar = xmin + (xbar-xmax)
+#         r = x-xbar
+#         domain_length = xmax - xmin
+#         r = r - domain_length * np.round(r / domain_length)
+        
+#         # if(icase == 1):
+#         #     qe[i] = np.exp(-beta*(x-xbar)**2)
+#         if(icase == 1):
+#             # CRITICAL: For periodic boundaries with sharp Gaussians,
+#             # we MUST include periodic images to ensure continuity
+            
+#             # Main Gaussian pulse
+#             qe[i] = np.exp(-beta*(x-xbar)**2)
+            
+#             # Add periodic images to ensure qe(-1) ≈ qe(1)
+#             # For beta=256, we need images when the main pulse is near boundaries
+#             domain_length = x1  # 2.0
+            
+#             # Left periodic image (wraps from left to appear on right)
+#             xbar_left = xbar - domain_length
+#             qe[i] += np.exp(-beta*(x-xbar_left)**2)
+            
+#             # Right periodic image (wraps from right to appear on left)
+#             xbar_right = xbar + domain_length
+#             qe[i] += np.exp(-beta*(x-xbar_right)**2)
+            
+#             # Note: For beta=256, contributions from images beyond ±1 period
+#             # are negligible (< 1e-15) and can be ignored
+#         elif(icase == 2):
+#             if(abs(r) <= rc):
+#                 qe[i] = 1
+#         elif(icase == 3):
+#             qe[i] = sigma0/sigma*np.exp(-(x-xbar)**2/(2*sigma**2))
+#         elif(icase == 4):
+#             if(abs(r) <= rc):
+#                 qe[i] = 1
+#         elif(icase == 5):
+#             if(x <= xc):
+#                 qe[i] = 1
+#         elif(icase == 6):
+#             qe[i] = np.sin(((x + 1)*np.pi)/2.0)
+#         elif(icase ==7):
+#             qe[i] = 1-np.tanh(alph*(1-4*((x)-1/4)))
+#         elif(icase == 8):
+#             qe[i]= np.sin(np.pi * x)
+
+#         elif(icase == 9):
+#             # Section 4.3 unsteady Gaussian pulse from the paper
+#             # Parameters: mu = -4, sigma^2 = 0.25, c = 1
+#             mu = -4
+#             sigma_sq = 0.25
+#             c = 1.0
+            
+#             # The solution for the advection equation with constant velocity c
+#             # is u(x,t) = u0(x - ct)
+#             x_shifted = x - c*time
+            
+#             # CRITICAL FIX: To properly handle periodic boundaries, we need to consider
+#             # contributions from all periodic images of the Gaussian
+#             domain_length = 8
+            
+#             # Sum contributions from the main pulse and one periodic image on each side
+#             # This ensures smoothness at the boundaries
+#             main_pulse = np.exp(-1/(2*sigma_sq)*((x_shifted - mu)**2))
+#             left_image = np.exp(-1/(2*sigma_sq)*((x_shifted - mu + domain_length)**2))
+#             right_image = np.exp(-1/(2*sigma_sq)*((x_shifted - mu - domain_length)**2))
+            
+#             # The final solution is the sum of all contributions
+#             qe[i] = main_pulse + left_image + right_image
+            
+#             # Use unit wave speed for this case
+#             u = 1.0
+#         # elif(icase == 9):
+#         #     # Section 4.3 unsteady Gaussian pulse from the paper
+#         #     # Parameters: mu = -4, sigma^2 = 0.25, c = 1
+#         #     mu = -4
+#         #     sigma_sq = 0.25
+#         #     c = 1
+            
+#         #     # The solution for the advection equation with constant velocity c
+#         #     # is u(x,t) = u0(x - ct)
+#         #     x_shifted = x - c*time
+            
+#         #     # Apply periodic boundary if needed (domain is [-4,4])
+#         #     domain_length = 8
+#         #     if x_shifted < -4:
+#         #         x_shifted += domain_length
+#         #     elif x_shifted > 4:
+#         #         x_shifted -= domain_length
+                
+#         #     # Gaussian pulse: exp(-1/(2*sigma^2)*(x-mu)^2)
+#         #     qe[i] = np.exp(-1/(2*sigma_sq)*(x_shifted - mu)**2)
+            
+#         #     # Use unit wave speed for this case
+#         #     u = 1.0
+    
+#     return qe, u
 
 # def eff(coord, npoin, fcase, u):
 #     """
