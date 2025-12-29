@@ -177,7 +177,7 @@ def create_animation(times, solutions, grids, coords, solver, training_params,
     fig.suptitle(title, fontsize=14, fontweight='bold')
     
     ax.set_xlim([-1, 1])
-    ax.set_ylim([-0.1, 1.2])
+    ax.set_ylim([-1.1, 1.2])
     ax.set_xlabel('Domain Position')
     ax.set_ylabel('Solution Value')
     

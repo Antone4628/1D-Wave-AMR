@@ -1,6 +1,6 @@
 # Project Code Structure
 
-Auto-generated on: Thu Jul 31 15:43:46 MDT 2025
+Auto-generated on: Tue Dec 23 09:14:41 MST 2025
 Project: 1D-Wave-AMR
 
 ```
@@ -10,9 +10,11 @@ Project: 1D-Wave-AMR
 │   │   └── quick_overview.py
 │   ├── data
 │   │   ├── model_performance
-│   │   │   └── session3_100k_uniform
+│   │   │   ├── session3_100k_uniform
+│   │   │   └── session4_100k_uniform
 │   │   ├── models
-│   │   │   └── session3_100k_uniform
+│   │   │   ├── session3_100k_uniform
+│   │   │   └── session4_100k_uniform
 │   │   └── processed
 │   │       ├── full_param_sweep_data_20250601_105453
 │   │       └── session3_100k_uniform
@@ -54,6 +56,9 @@ Project: 1D-Wave-AMR
 │   ├── utilities
 │   │   ├── __init__.py
 │   │   └── config.py
+│   ├── verification
+│   │   ├── verify_new_icases.png
+│   │   └── verify_new_icases.py
 │   └── data_sample.py
 ├── animations
 │   ├── baselines
@@ -63,9 +68,21 @@ Project: 1D-Wave-AMR
 │   │   │   └── baseline_no-amr_ref4_budget80_snapshot.png
 │   │   └── no-amr_ref5_budget150
 │   │       └── baseline_no-amr_ref5_budget150_final.png
+│   ├── gamma_100.0_step_0.025_rl_10_budget_30
+│   │   ├── final_model_g100.0_s0.025_r10_b30_animate.mp4
+│   │   ├── final_model_g100.0_s0.025_r10_b30_snapshot.pdf
+│   │   └── final_model_g100.0_s0.025_r10_b30_snapshot.png
+│   ├── gamma_100.0_step_0.10_rl_10_budget_30
+│   ├── gamma_100.0_step_0.10_rl_25_budget_40
 │   ├── gamma_100.0_step_0.1_rl_10_budget_25
 │   │   ├── final_model_g100.0_s0.1_r10_b25_final.pdf
 │   │   └── final_model_g100.0_s0.1_r10_b25_final.png
+│   ├── gamma_100.0_step_0.1_rl_10_budget_30
+│   │   ├── final_model_g100.0_s0.1_r10_b30_animate.mp4
+│   │   ├── final_model_g100.0_s0.1_r10_b30_snapshot.pdf
+│   │   └── final_model_g100.0_s0.1_r10_b30_snapshot.png
+│   ├── gamma_100.0_step_0.1_rl_25_budget_40
+│   │   └── final_model_g100.0_s0.1_r25_b40_animate.mp4
 │   ├── gamma_100.0_step_0.1_rl_40_budget_40
 │   │   ├── final_model_g100.0_s0.1_r40_b40_snapshot.pdf
 │   │   └── final_model_g100.0_s0.1_r40_b40_snapshot.png
@@ -74,6 +91,14 @@ Project: 1D-Wave-AMR
 │   │   ├── final_model_g25.0_s0.025_r10_b25_final.png
 │   │   ├── final_model_g25.0_s0.025_r10_b25_snapshot.pdf
 │   │   └── final_model_g25.0_s0.025_r10_b25_snapshot.png
+│   ├── gamma_25.0_step_0.05_rl_40_budget_30
+│   │   ├── final_model_g25.0_s0.05_r40_b30_snapshot.pdf
+│   │   └── final_model_g25.0_s0.05_r40_b30_snapshot.png
+│   ├── gamma_25.0_step_0.10_rl_25_budget_40
+│   ├── gamma_25.0_step_0.1_rl_25_budget_40
+│   │   ├── final_model_g25.0_s0.1_r25_b40_animate.mp4
+│   │   ├── final_model_g25.0_s0.1_r25_b40_snapshot.pdf
+│   │   └── final_model_g25.0_s0.1_r25_b40_snapshot.png
 │   ├── gamma_25.0_step_0.1_rl_40_budget_30
 │   │   ├── final_model_g25.0_s0.1_r40_b30_final.pdf
 │   │   ├── final_model_g25.0_s0.1_r40_b30_final.png
@@ -85,12 +110,23 @@ Project: 1D-Wave-AMR
 │   │   ├── final_model_g50.0_s0.05_r10_b25_snapshot.pdf
 │   │   └── final_model_g50.0_s0.05_r10_b25_snapshot.png
 │   ├── gamma_50.0_step_0.10_rl_25_budget_30
-│   └── gamma_50.0_step_0.1_rl_25_budget_30
-│       ├── final_model_g50.0_s0.1_r25_b30_animate.mp4
-│       ├── final_model_g50.0_s0.1_r25_b30_final.pdf
-│       ├── final_model_g50.0_s0.1_r25_b30_final.png
-│       ├── final_model_g50.0_s0.1_r25_b30_snapshot.pdf
-│       └── final_model_g50.0_s0.1_r25_b30_snapshot.png
+│   ├── gamma_50.0_step_0.1_rl_10_budget_30
+│   │   ├── final_model_g50.0_s0.1_r10_b30_animate.mp4
+│   │   ├── final_model_g50.0_s0.1_r10_b30_snapshot.pdf
+│   │   └── final_model_g50.0_s0.1_r10_b30_snapshot.png
+│   ├── gamma_50.0_step_0.1_rl_25_budget_30
+│   │   ├── final_model_g50.0_s0.1_r25_b30_animate.mp4
+│   │   ├── final_model_g50.0_s0.1_r25_b30_final.pdf
+│   │   ├── final_model_g50.0_s0.1_r25_b30_final.png
+│   │   ├── final_model_g50.0_s0.1_r25_b30_snapshot.pdf
+│   │   └── final_model_g50.0_s0.1_r25_b30_snapshot.png
+│   ├── gamma_50.0_step_0.1_rl_25_budget_40
+│   │   ├── final_model_g50.0_s0.1_r25_b40_snapshot.pdf
+│   │   └── final_model_g50.0_s0.1_r25_b40_snapshot.png
+│   └── gamma_50.0_step_0.1_rl_40_budget_40
+│       ├── final_model_g50.0_s0.1_r40_b40_animate.mp4
+│       ├── final_model_g50.0_s0.1_r40_b40_snapshot.pdf
+│       └── final_model_g50.0_s0.1_r40_b40_snapshot.png
 ├── anova_results_session3_100k_uniform_20250715_153315
 │   ├── anova_detailed_session3_100k_uniform.json
 │   └── pingouin_anova_results_session3_100k_uniform.pdf
@@ -233,9 +269,13 @@ Project: 1D-Wave-AMR
 │   │   └── test_config.yaml
 │   ├── manifests
 │   │   ├── full_param_sweep_2025-05-29_105232.yaml
+│   │   ├── full_param_sweep_2025-08-11_145532.yaml
+│   │   ├── full_param_sweep_2025-08-11_150254.yaml
 │   │   ├── latest_manifest.yaml
 │   │   ├── latest_test_manifest.yaml
-│   │   └── test_manifest_2025-05-29_094907.yaml
+│   │   ├── test_manifest_2025-05-29_094907.yaml
+│   │   ├── test_manifest_2025-08-11_143526.yaml
+│   │   └── test_manifest_2025-08-11_144339.yaml
 │   ├── results
 │   │   ├── gamma_c_100.0
 │   │   │   ├── run_20250523_094718
@@ -305,6 +345,24 @@ Project: 1D-Wave-AMR
 │   │   ├── group_01_1889088_7.out
 │   │   ├── group_01_1889088_8.err
 │   │   ├── group_01_1889088_8.out
+│   │   ├── group_01_2101110_0.err
+│   │   ├── group_01_2101110_0.out
+│   │   ├── group_01_2101110_1.err
+│   │   ├── group_01_2101110_1.out
+│   │   ├── group_01_2101110_2.err
+│   │   ├── group_01_2101110_2.out
+│   │   ├── group_01_2101110_3.err
+│   │   ├── group_01_2101110_3.out
+│   │   ├── group_01_2101110_4.err
+│   │   ├── group_01_2101110_4.out
+│   │   ├── group_01_2101110_5.err
+│   │   ├── group_01_2101110_5.out
+│   │   ├── group_01_2101110_6.err
+│   │   ├── group_01_2101110_6.out
+│   │   ├── group_01_2101110_7.err
+│   │   ├── group_01_2101110_7.out
+│   │   ├── group_01_2101110_8.err
+│   │   ├── group_01_2101110_8.out
 │   │   ├── group_02_1888930_0.err
 │   │   ├── group_02_1888930_0.out
 │   │   ├── group_02_1888930_1.err
@@ -359,6 +417,24 @@ Project: 1D-Wave-AMR
 │   │   ├── group_02_1889093_7.out
 │   │   ├── group_02_1889093_8.err
 │   │   ├── group_02_1889093_8.out
+│   │   ├── group_02_2101118_0.err
+│   │   ├── group_02_2101118_0.out
+│   │   ├── group_02_2101118_1.err
+│   │   ├── group_02_2101118_1.out
+│   │   ├── group_02_2101118_2.err
+│   │   ├── group_02_2101118_2.out
+│   │   ├── group_02_2101118_3.err
+│   │   ├── group_02_2101118_3.out
+│   │   ├── group_02_2101118_4.err
+│   │   ├── group_02_2101118_4.out
+│   │   ├── group_02_2101118_5.err
+│   │   ├── group_02_2101118_5.out
+│   │   ├── group_02_2101118_6.err
+│   │   ├── group_02_2101118_6.out
+│   │   ├── group_02_2101118_7.err
+│   │   ├── group_02_2101118_7.out
+│   │   ├── group_02_2101118_8.err
+│   │   ├── group_02_2101118_8.out
 │   │   ├── group_03_1888933_0.err
 │   │   ├── group_03_1888933_0.out
 │   │   ├── group_03_1888933_1.err
@@ -413,6 +489,24 @@ Project: 1D-Wave-AMR
 │   │   ├── group_03_1889094_7.out
 │   │   ├── group_03_1889094_8.err
 │   │   ├── group_03_1889094_8.out
+│   │   ├── group_03_2101124_0.err
+│   │   ├── group_03_2101124_0.out
+│   │   ├── group_03_2101124_1.err
+│   │   ├── group_03_2101124_1.out
+│   │   ├── group_03_2101124_2.err
+│   │   ├── group_03_2101124_2.out
+│   │   ├── group_03_2101124_3.err
+│   │   ├── group_03_2101124_3.out
+│   │   ├── group_03_2101124_4.err
+│   │   ├── group_03_2101124_4.out
+│   │   ├── group_03_2101124_5.err
+│   │   ├── group_03_2101124_5.out
+│   │   ├── group_03_2101124_6.err
+│   │   ├── group_03_2101124_6.out
+│   │   ├── group_03_2101124_7.err
+│   │   ├── group_03_2101124_7.out
+│   │   ├── group_03_2101124_8.err
+│   │   ├── group_03_2101124_8.out
 │   │   ├── group_04_1888935_0.err
 │   │   ├── group_04_1888935_0.out
 │   │   ├── group_04_1888935_1.err
@@ -467,6 +561,24 @@ Project: 1D-Wave-AMR
 │   │   ├── group_04_1889095_7.out
 │   │   ├── group_04_1889095_8.err
 │   │   ├── group_04_1889095_8.out
+│   │   ├── group_04_2101133_0.err
+│   │   ├── group_04_2101133_0.out
+│   │   ├── group_04_2101133_1.err
+│   │   ├── group_04_2101133_1.out
+│   │   ├── group_04_2101133_2.err
+│   │   ├── group_04_2101133_2.out
+│   │   ├── group_04_2101133_3.err
+│   │   ├── group_04_2101133_3.out
+│   │   ├── group_04_2101133_4.err
+│   │   ├── group_04_2101133_4.out
+│   │   ├── group_04_2101133_5.err
+│   │   ├── group_04_2101133_5.out
+│   │   ├── group_04_2101133_6.err
+│   │   ├── group_04_2101133_6.out
+│   │   ├── group_04_2101133_7.err
+│   │   ├── group_04_2101133_7.out
+│   │   ├── group_04_2101133_8.err
+│   │   ├── group_04_2101133_8.out
 │   │   ├── group_05_1888940_0.err
 │   │   ├── group_05_1888940_0.out
 │   │   ├── group_05_1888940_1.err
@@ -521,6 +633,24 @@ Project: 1D-Wave-AMR
 │   │   ├── group_05_1889096_7.out
 │   │   ├── group_05_1889096_8.err
 │   │   ├── group_05_1889096_8.out
+│   │   ├── group_05_2101141_0.err
+│   │   ├── group_05_2101141_0.out
+│   │   ├── group_05_2101141_1.err
+│   │   ├── group_05_2101141_1.out
+│   │   ├── group_05_2101141_2.err
+│   │   ├── group_05_2101141_2.out
+│   │   ├── group_05_2101141_3.err
+│   │   ├── group_05_2101141_3.out
+│   │   ├── group_05_2101141_4.err
+│   │   ├── group_05_2101141_4.out
+│   │   ├── group_05_2101141_5.err
+│   │   ├── group_05_2101141_5.out
+│   │   ├── group_05_2101141_6.err
+│   │   ├── group_05_2101141_6.out
+│   │   ├── group_05_2101141_7.err
+│   │   ├── group_05_2101141_7.out
+│   │   ├── group_05_2101141_8.err
+│   │   ├── group_05_2101141_8.out
 │   │   ├── group_06_1888945_0.err
 │   │   ├── group_06_1888945_0.out
 │   │   ├── group_06_1888945_1.err
@@ -575,6 +705,24 @@ Project: 1D-Wave-AMR
 │   │   ├── group_06_1889097_7.out
 │   │   ├── group_06_1889097_8.err
 │   │   ├── group_06_1889097_8.out
+│   │   ├── group_06_2101148_0.err
+│   │   ├── group_06_2101148_0.out
+│   │   ├── group_06_2101148_1.err
+│   │   ├── group_06_2101148_1.out
+│   │   ├── group_06_2101148_2.err
+│   │   ├── group_06_2101148_2.out
+│   │   ├── group_06_2101148_3.err
+│   │   ├── group_06_2101148_3.out
+│   │   ├── group_06_2101148_4.err
+│   │   ├── group_06_2101148_4.out
+│   │   ├── group_06_2101148_5.err
+│   │   ├── group_06_2101148_5.out
+│   │   ├── group_06_2101148_6.err
+│   │   ├── group_06_2101148_6.out
+│   │   ├── group_06_2101148_7.err
+│   │   ├── group_06_2101148_7.out
+│   │   ├── group_06_2101148_8.err
+│   │   ├── group_06_2101148_8.out
 │   │   ├── group_07_1888952_0.err
 │   │   ├── group_07_1888952_0.out
 │   │   ├── group_07_1888952_1.err
@@ -629,6 +777,24 @@ Project: 1D-Wave-AMR
 │   │   ├── group_07_1889098_7.out
 │   │   ├── group_07_1889098_8.err
 │   │   ├── group_07_1889098_8.out
+│   │   ├── group_07_2101156_0.err
+│   │   ├── group_07_2101156_0.out
+│   │   ├── group_07_2101156_1.err
+│   │   ├── group_07_2101156_1.out
+│   │   ├── group_07_2101156_2.err
+│   │   ├── group_07_2101156_2.out
+│   │   ├── group_07_2101156_3.err
+│   │   ├── group_07_2101156_3.out
+│   │   ├── group_07_2101156_4.err
+│   │   ├── group_07_2101156_4.out
+│   │   ├── group_07_2101156_5.err
+│   │   ├── group_07_2101156_5.out
+│   │   ├── group_07_2101156_6.err
+│   │   ├── group_07_2101156_6.out
+│   │   ├── group_07_2101156_7.err
+│   │   ├── group_07_2101156_7.out
+│   │   ├── group_07_2101156_8.err
+│   │   ├── group_07_2101156_8.out
 │   │   ├── group_08_1888958_0.err
 │   │   ├── group_08_1888958_0.out
 │   │   ├── group_08_1888958_1.err
@@ -683,6 +849,24 @@ Project: 1D-Wave-AMR
 │   │   ├── group_08_1889099_7.out
 │   │   ├── group_08_1889099_8.err
 │   │   ├── group_08_1889099_8.out
+│   │   ├── group_08_2101165_0.err
+│   │   ├── group_08_2101165_0.out
+│   │   ├── group_08_2101165_1.err
+│   │   ├── group_08_2101165_1.out
+│   │   ├── group_08_2101165_2.err
+│   │   ├── group_08_2101165_2.out
+│   │   ├── group_08_2101165_3.err
+│   │   ├── group_08_2101165_3.out
+│   │   ├── group_08_2101165_4.err
+│   │   ├── group_08_2101165_4.out
+│   │   ├── group_08_2101165_5.err
+│   │   ├── group_08_2101165_5.out
+│   │   ├── group_08_2101165_6.err
+│   │   ├── group_08_2101165_6.out
+│   │   ├── group_08_2101165_7.err
+│   │   ├── group_08_2101165_7.out
+│   │   ├── group_08_2101165_8.err
+│   │   ├── group_08_2101165_8.out
 │   │   ├── group_09_1888964_0.err
 │   │   ├── group_09_1888964_0.out
 │   │   ├── group_09_1888964_1.err
@@ -736,7 +920,25 @@ Project: 1D-Wave-AMR
 │   │   ├── group_09_1889100_7.err
 │   │   ├── group_09_1889100_7.out
 │   │   ├── group_09_1889100_8.err
-│   │   └── group_09_1889100_8.out
+│   │   ├── group_09_1889100_8.out
+│   │   ├── group_09_2101174_0.err
+│   │   ├── group_09_2101174_0.out
+│   │   ├── group_09_2101174_1.err
+│   │   ├── group_09_2101174_1.out
+│   │   ├── group_09_2101174_2.err
+│   │   ├── group_09_2101174_2.out
+│   │   ├── group_09_2101174_3.err
+│   │   ├── group_09_2101174_3.out
+│   │   ├── group_09_2101174_4.err
+│   │   ├── group_09_2101174_4.out
+│   │   ├── group_09_2101174_5.err
+│   │   ├── group_09_2101174_5.out
+│   │   ├── group_09_2101174_6.err
+│   │   ├── group_09_2101174_6.out
+│   │   ├── group_09_2101174_7.err
+│   │   ├── group_09_2101174_7.out
+│   │   ├── group_09_2101174_8.err
+│   │   └── group_09_2101174_8.out
 │   ├── param_sweep_data
 │   │   ├── group_01_1912820_0.err
 │   │   ├── group_01_1912820_0.out
@@ -782,6 +984,78 @@ Project: 1D-Wave-AMR
 │   │   ├── group_01_1969957_7.out
 │   │   ├── group_01_1969957_8.err
 │   │   ├── group_01_1969957_8.out
+│   │   ├── group_01_2101194_0.err
+│   │   ├── group_01_2101194_0.out
+│   │   ├── group_01_2101194_1.err
+│   │   ├── group_01_2101194_1.out
+│   │   ├── group_01_2101194_2.err
+│   │   ├── group_01_2101194_2.out
+│   │   ├── group_01_2101194_3.err
+│   │   ├── group_01_2101194_3.out
+│   │   ├── group_01_2101194_4.err
+│   │   ├── group_01_2101194_4.out
+│   │   ├── group_01_2101194_5.err
+│   │   ├── group_01_2101194_5.out
+│   │   ├── group_01_2101194_6.err
+│   │   ├── group_01_2101194_6.out
+│   │   ├── group_01_2101194_7.err
+│   │   ├── group_01_2101194_7.out
+│   │   ├── group_01_2101194_8.err
+│   │   ├── group_01_2101194_8.out
+│   │   ├── group_01_2101279_0.err
+│   │   ├── group_01_2101279_0.out
+│   │   ├── group_01_2101279_1.err
+│   │   ├── group_01_2101279_1.out
+│   │   ├── group_01_2101279_2.err
+│   │   ├── group_01_2101279_2.out
+│   │   ├── group_01_2101279_3.err
+│   │   ├── group_01_2101279_3.out
+│   │   ├── group_01_2101279_4.err
+│   │   ├── group_01_2101279_4.out
+│   │   ├── group_01_2101279_5.err
+│   │   ├── group_01_2101279_5.out
+│   │   ├── group_01_2101279_6.err
+│   │   ├── group_01_2101279_6.out
+│   │   ├── group_01_2101279_7.err
+│   │   ├── group_01_2101279_7.out
+│   │   ├── group_01_2101279_8.err
+│   │   ├── group_01_2101279_8.out
+│   │   ├── group_01_2101367_0.err
+│   │   ├── group_01_2101367_0.out
+│   │   ├── group_01_2101367_1.err
+│   │   ├── group_01_2101367_1.out
+│   │   ├── group_01_2101367_2.err
+│   │   ├── group_01_2101367_2.out
+│   │   ├── group_01_2101367_3.err
+│   │   ├── group_01_2101367_3.out
+│   │   ├── group_01_2101367_4.err
+│   │   ├── group_01_2101367_4.out
+│   │   ├── group_01_2101367_5.err
+│   │   ├── group_01_2101367_5.out
+│   │   ├── group_01_2101367_6.err
+│   │   ├── group_01_2101367_6.out
+│   │   ├── group_01_2101367_7.err
+│   │   ├── group_01_2101367_7.out
+│   │   ├── group_01_2101367_8.err
+│   │   ├── group_01_2101367_8.out
+│   │   ├── group_01_2101450_0.err
+│   │   ├── group_01_2101450_0.out
+│   │   ├── group_01_2101450_1.err
+│   │   ├── group_01_2101450_1.out
+│   │   ├── group_01_2101450_2.err
+│   │   ├── group_01_2101450_2.out
+│   │   ├── group_01_2101450_3.err
+│   │   ├── group_01_2101450_3.out
+│   │   ├── group_01_2101450_4.err
+│   │   ├── group_01_2101450_4.out
+│   │   ├── group_01_2101450_5.err
+│   │   ├── group_01_2101450_5.out
+│   │   ├── group_01_2101450_6.err
+│   │   ├── group_01_2101450_6.out
+│   │   ├── group_01_2101450_7.err
+│   │   ├── group_01_2101450_7.out
+│   │   ├── group_01_2101450_8.err
+│   │   ├── group_01_2101450_8.out
 │   │   ├── group_02_1912821_0.err
 │   │   ├── group_02_1912821_0.out
 │   │   ├── group_02_1912821_1.err
@@ -818,6 +1092,78 @@ Project: 1D-Wave-AMR
 │   │   ├── group_02_1969963_7.out
 │   │   ├── group_02_1969963_8.err
 │   │   ├── group_02_1969963_8.out
+│   │   ├── group_02_2101199_0.err
+│   │   ├── group_02_2101199_0.out
+│   │   ├── group_02_2101199_1.err
+│   │   ├── group_02_2101199_1.out
+│   │   ├── group_02_2101199_2.err
+│   │   ├── group_02_2101199_2.out
+│   │   ├── group_02_2101199_3.err
+│   │   ├── group_02_2101199_3.out
+│   │   ├── group_02_2101199_4.err
+│   │   ├── group_02_2101199_4.out
+│   │   ├── group_02_2101199_5.err
+│   │   ├── group_02_2101199_5.out
+│   │   ├── group_02_2101199_6.err
+│   │   ├── group_02_2101199_6.out
+│   │   ├── group_02_2101199_7.err
+│   │   ├── group_02_2101199_7.out
+│   │   ├── group_02_2101199_8.err
+│   │   ├── group_02_2101199_8.out
+│   │   ├── group_02_2101284_0.err
+│   │   ├── group_02_2101284_0.out
+│   │   ├── group_02_2101284_1.err
+│   │   ├── group_02_2101284_1.out
+│   │   ├── group_02_2101284_2.err
+│   │   ├── group_02_2101284_2.out
+│   │   ├── group_02_2101284_3.err
+│   │   ├── group_02_2101284_3.out
+│   │   ├── group_02_2101284_4.err
+│   │   ├── group_02_2101284_4.out
+│   │   ├── group_02_2101284_5.err
+│   │   ├── group_02_2101284_5.out
+│   │   ├── group_02_2101284_6.err
+│   │   ├── group_02_2101284_6.out
+│   │   ├── group_02_2101284_7.err
+│   │   ├── group_02_2101284_7.out
+│   │   ├── group_02_2101284_8.err
+│   │   ├── group_02_2101284_8.out
+│   │   ├── group_02_2101372_0.err
+│   │   ├── group_02_2101372_0.out
+│   │   ├── group_02_2101372_1.err
+│   │   ├── group_02_2101372_1.out
+│   │   ├── group_02_2101372_2.err
+│   │   ├── group_02_2101372_2.out
+│   │   ├── group_02_2101372_3.err
+│   │   ├── group_02_2101372_3.out
+│   │   ├── group_02_2101372_4.err
+│   │   ├── group_02_2101372_4.out
+│   │   ├── group_02_2101372_5.err
+│   │   ├── group_02_2101372_5.out
+│   │   ├── group_02_2101372_6.err
+│   │   ├── group_02_2101372_6.out
+│   │   ├── group_02_2101372_7.err
+│   │   ├── group_02_2101372_7.out
+│   │   ├── group_02_2101372_8.err
+│   │   ├── group_02_2101372_8.out
+│   │   ├── group_02_2101455_0.err
+│   │   ├── group_02_2101455_0.out
+│   │   ├── group_02_2101455_1.err
+│   │   ├── group_02_2101455_1.out
+│   │   ├── group_02_2101455_2.err
+│   │   ├── group_02_2101455_2.out
+│   │   ├── group_02_2101455_3.err
+│   │   ├── group_02_2101455_3.out
+│   │   ├── group_02_2101455_4.err
+│   │   ├── group_02_2101455_4.out
+│   │   ├── group_02_2101455_5.err
+│   │   ├── group_02_2101455_5.out
+│   │   ├── group_02_2101455_6.err
+│   │   ├── group_02_2101455_6.out
+│   │   ├── group_02_2101455_7.err
+│   │   ├── group_02_2101455_7.out
+│   │   ├── group_02_2101455_8.err
+│   │   ├── group_02_2101455_8.out
 │   │   ├── group_03_1912826_0.err
 │   │   ├── group_03_1912826_0.out
 │   │   ├── group_03_1912826_1.err
@@ -854,6 +1200,78 @@ Project: 1D-Wave-AMR
 │   │   ├── group_03_1969965_7.out
 │   │   ├── group_03_1969965_8.err
 │   │   ├── group_03_1969965_8.out
+│   │   ├── group_03_2101200_0.err
+│   │   ├── group_03_2101200_0.out
+│   │   ├── group_03_2101200_1.err
+│   │   ├── group_03_2101200_1.out
+│   │   ├── group_03_2101200_2.err
+│   │   ├── group_03_2101200_2.out
+│   │   ├── group_03_2101200_3.err
+│   │   ├── group_03_2101200_3.out
+│   │   ├── group_03_2101200_4.err
+│   │   ├── group_03_2101200_4.out
+│   │   ├── group_03_2101200_5.err
+│   │   ├── group_03_2101200_5.out
+│   │   ├── group_03_2101200_6.err
+│   │   ├── group_03_2101200_6.out
+│   │   ├── group_03_2101200_7.err
+│   │   ├── group_03_2101200_7.out
+│   │   ├── group_03_2101200_8.err
+│   │   ├── group_03_2101200_8.out
+│   │   ├── group_03_2101285_0.err
+│   │   ├── group_03_2101285_0.out
+│   │   ├── group_03_2101285_1.err
+│   │   ├── group_03_2101285_1.out
+│   │   ├── group_03_2101285_2.err
+│   │   ├── group_03_2101285_2.out
+│   │   ├── group_03_2101285_3.err
+│   │   ├── group_03_2101285_3.out
+│   │   ├── group_03_2101285_4.err
+│   │   ├── group_03_2101285_4.out
+│   │   ├── group_03_2101285_5.err
+│   │   ├── group_03_2101285_5.out
+│   │   ├── group_03_2101285_6.err
+│   │   ├── group_03_2101285_6.out
+│   │   ├── group_03_2101285_7.err
+│   │   ├── group_03_2101285_7.out
+│   │   ├── group_03_2101285_8.err
+│   │   ├── group_03_2101285_8.out
+│   │   ├── group_03_2101373_0.err
+│   │   ├── group_03_2101373_0.out
+│   │   ├── group_03_2101373_1.err
+│   │   ├── group_03_2101373_1.out
+│   │   ├── group_03_2101373_2.err
+│   │   ├── group_03_2101373_2.out
+│   │   ├── group_03_2101373_3.err
+│   │   ├── group_03_2101373_3.out
+│   │   ├── group_03_2101373_4.err
+│   │   ├── group_03_2101373_4.out
+│   │   ├── group_03_2101373_5.err
+│   │   ├── group_03_2101373_5.out
+│   │   ├── group_03_2101373_6.err
+│   │   ├── group_03_2101373_6.out
+│   │   ├── group_03_2101373_7.err
+│   │   ├── group_03_2101373_7.out
+│   │   ├── group_03_2101373_8.err
+│   │   ├── group_03_2101373_8.out
+│   │   ├── group_03_2101456_0.err
+│   │   ├── group_03_2101456_0.out
+│   │   ├── group_03_2101456_1.err
+│   │   ├── group_03_2101456_1.out
+│   │   ├── group_03_2101456_2.err
+│   │   ├── group_03_2101456_2.out
+│   │   ├── group_03_2101456_3.err
+│   │   ├── group_03_2101456_3.out
+│   │   ├── group_03_2101456_4.err
+│   │   ├── group_03_2101456_4.out
+│   │   ├── group_03_2101456_5.err
+│   │   ├── group_03_2101456_5.out
+│   │   ├── group_03_2101456_6.err
+│   │   ├── group_03_2101456_6.out
+│   │   ├── group_03_2101456_7.err
+│   │   ├── group_03_2101456_7.out
+│   │   ├── group_03_2101456_8.err
+│   │   ├── group_03_2101456_8.out
 │   │   ├── group_04_1912827_0.err
 │   │   ├── group_04_1912827_0.out
 │   │   ├── group_04_1912827_1.err
@@ -890,6 +1308,78 @@ Project: 1D-Wave-AMR
 │   │   ├── group_04_1969966_7.out
 │   │   ├── group_04_1969966_8.err
 │   │   ├── group_04_1969966_8.out
+│   │   ├── group_04_2101202_0.err
+│   │   ├── group_04_2101202_0.out
+│   │   ├── group_04_2101202_1.err
+│   │   ├── group_04_2101202_1.out
+│   │   ├── group_04_2101202_2.err
+│   │   ├── group_04_2101202_2.out
+│   │   ├── group_04_2101202_3.err
+│   │   ├── group_04_2101202_3.out
+│   │   ├── group_04_2101202_4.err
+│   │   ├── group_04_2101202_4.out
+│   │   ├── group_04_2101202_5.err
+│   │   ├── group_04_2101202_5.out
+│   │   ├── group_04_2101202_6.err
+│   │   ├── group_04_2101202_6.out
+│   │   ├── group_04_2101202_7.err
+│   │   ├── group_04_2101202_7.out
+│   │   ├── group_04_2101202_8.err
+│   │   ├── group_04_2101202_8.out
+│   │   ├── group_04_2101287_0.err
+│   │   ├── group_04_2101287_0.out
+│   │   ├── group_04_2101287_1.err
+│   │   ├── group_04_2101287_1.out
+│   │   ├── group_04_2101287_2.err
+│   │   ├── group_04_2101287_2.out
+│   │   ├── group_04_2101287_3.err
+│   │   ├── group_04_2101287_3.out
+│   │   ├── group_04_2101287_4.err
+│   │   ├── group_04_2101287_4.out
+│   │   ├── group_04_2101287_5.err
+│   │   ├── group_04_2101287_5.out
+│   │   ├── group_04_2101287_6.err
+│   │   ├── group_04_2101287_6.out
+│   │   ├── group_04_2101287_7.err
+│   │   ├── group_04_2101287_7.out
+│   │   ├── group_04_2101287_8.err
+│   │   ├── group_04_2101287_8.out
+│   │   ├── group_04_2101374_0.err
+│   │   ├── group_04_2101374_0.out
+│   │   ├── group_04_2101374_1.err
+│   │   ├── group_04_2101374_1.out
+│   │   ├── group_04_2101374_2.err
+│   │   ├── group_04_2101374_2.out
+│   │   ├── group_04_2101374_3.err
+│   │   ├── group_04_2101374_3.out
+│   │   ├── group_04_2101374_4.err
+│   │   ├── group_04_2101374_4.out
+│   │   ├── group_04_2101374_5.err
+│   │   ├── group_04_2101374_5.out
+│   │   ├── group_04_2101374_6.err
+│   │   ├── group_04_2101374_6.out
+│   │   ├── group_04_2101374_7.err
+│   │   ├── group_04_2101374_7.out
+│   │   ├── group_04_2101374_8.err
+│   │   ├── group_04_2101374_8.out
+│   │   ├── group_04_2101457_0.err
+│   │   ├── group_04_2101457_0.out
+│   │   ├── group_04_2101457_1.err
+│   │   ├── group_04_2101457_1.out
+│   │   ├── group_04_2101457_2.err
+│   │   ├── group_04_2101457_2.out
+│   │   ├── group_04_2101457_3.err
+│   │   ├── group_04_2101457_3.out
+│   │   ├── group_04_2101457_4.err
+│   │   ├── group_04_2101457_4.out
+│   │   ├── group_04_2101457_5.err
+│   │   ├── group_04_2101457_5.out
+│   │   ├── group_04_2101457_6.err
+│   │   ├── group_04_2101457_6.out
+│   │   ├── group_04_2101457_7.err
+│   │   ├── group_04_2101457_7.out
+│   │   ├── group_04_2101457_8.err
+│   │   ├── group_04_2101457_8.out
 │   │   ├── group_05_1912828_0.err
 │   │   ├── group_05_1912828_0.out
 │   │   ├── group_05_1912828_1.err
@@ -926,6 +1416,78 @@ Project: 1D-Wave-AMR
 │   │   ├── group_05_1969967_7.out
 │   │   ├── group_05_1969967_8.err
 │   │   ├── group_05_1969967_8.out
+│   │   ├── group_05_2101203_0.err
+│   │   ├── group_05_2101203_0.out
+│   │   ├── group_05_2101203_1.err
+│   │   ├── group_05_2101203_1.out
+│   │   ├── group_05_2101203_2.err
+│   │   ├── group_05_2101203_2.out
+│   │   ├── group_05_2101203_3.err
+│   │   ├── group_05_2101203_3.out
+│   │   ├── group_05_2101203_4.err
+│   │   ├── group_05_2101203_4.out
+│   │   ├── group_05_2101203_5.err
+│   │   ├── group_05_2101203_5.out
+│   │   ├── group_05_2101203_6.err
+│   │   ├── group_05_2101203_6.out
+│   │   ├── group_05_2101203_7.err
+│   │   ├── group_05_2101203_7.out
+│   │   ├── group_05_2101203_8.err
+│   │   ├── group_05_2101203_8.out
+│   │   ├── group_05_2101291_0.err
+│   │   ├── group_05_2101291_0.out
+│   │   ├── group_05_2101291_1.err
+│   │   ├── group_05_2101291_1.out
+│   │   ├── group_05_2101291_2.err
+│   │   ├── group_05_2101291_2.out
+│   │   ├── group_05_2101291_3.err
+│   │   ├── group_05_2101291_3.out
+│   │   ├── group_05_2101291_4.err
+│   │   ├── group_05_2101291_4.out
+│   │   ├── group_05_2101291_5.err
+│   │   ├── group_05_2101291_5.out
+│   │   ├── group_05_2101291_6.err
+│   │   ├── group_05_2101291_6.out
+│   │   ├── group_05_2101291_7.err
+│   │   ├── group_05_2101291_7.out
+│   │   ├── group_05_2101291_8.err
+│   │   ├── group_05_2101291_8.out
+│   │   ├── group_05_2101379_0.err
+│   │   ├── group_05_2101379_0.out
+│   │   ├── group_05_2101379_1.err
+│   │   ├── group_05_2101379_1.out
+│   │   ├── group_05_2101379_2.err
+│   │   ├── group_05_2101379_2.out
+│   │   ├── group_05_2101379_3.err
+│   │   ├── group_05_2101379_3.out
+│   │   ├── group_05_2101379_4.err
+│   │   ├── group_05_2101379_4.out
+│   │   ├── group_05_2101379_5.err
+│   │   ├── group_05_2101379_5.out
+│   │   ├── group_05_2101379_6.err
+│   │   ├── group_05_2101379_6.out
+│   │   ├── group_05_2101379_7.err
+│   │   ├── group_05_2101379_7.out
+│   │   ├── group_05_2101379_8.err
+│   │   ├── group_05_2101379_8.out
+│   │   ├── group_05_2101458_0.err
+│   │   ├── group_05_2101458_0.out
+│   │   ├── group_05_2101458_1.err
+│   │   ├── group_05_2101458_1.out
+│   │   ├── group_05_2101458_2.err
+│   │   ├── group_05_2101458_2.out
+│   │   ├── group_05_2101458_3.err
+│   │   ├── group_05_2101458_3.out
+│   │   ├── group_05_2101458_4.err
+│   │   ├── group_05_2101458_4.out
+│   │   ├── group_05_2101458_5.err
+│   │   ├── group_05_2101458_5.out
+│   │   ├── group_05_2101458_6.err
+│   │   ├── group_05_2101458_6.out
+│   │   ├── group_05_2101458_7.err
+│   │   ├── group_05_2101458_7.out
+│   │   ├── group_05_2101458_8.err
+│   │   ├── group_05_2101458_8.out
 │   │   ├── group_06_1912829_0.err
 │   │   ├── group_06_1912829_0.out
 │   │   ├── group_06_1912829_1.err
@@ -962,6 +1524,78 @@ Project: 1D-Wave-AMR
 │   │   ├── group_06_1969969_7.out
 │   │   ├── group_06_1969969_8.err
 │   │   ├── group_06_1969969_8.out
+│   │   ├── group_06_2101205_0.err
+│   │   ├── group_06_2101205_0.out
+│   │   ├── group_06_2101205_1.err
+│   │   ├── group_06_2101205_1.out
+│   │   ├── group_06_2101205_2.err
+│   │   ├── group_06_2101205_2.out
+│   │   ├── group_06_2101205_3.err
+│   │   ├── group_06_2101205_3.out
+│   │   ├── group_06_2101205_4.err
+│   │   ├── group_06_2101205_4.out
+│   │   ├── group_06_2101205_5.err
+│   │   ├── group_06_2101205_5.out
+│   │   ├── group_06_2101205_6.err
+│   │   ├── group_06_2101205_6.out
+│   │   ├── group_06_2101205_7.err
+│   │   ├── group_06_2101205_7.out
+│   │   ├── group_06_2101205_8.err
+│   │   ├── group_06_2101205_8.out
+│   │   ├── group_06_2101292_0.err
+│   │   ├── group_06_2101292_0.out
+│   │   ├── group_06_2101292_1.err
+│   │   ├── group_06_2101292_1.out
+│   │   ├── group_06_2101292_2.err
+│   │   ├── group_06_2101292_2.out
+│   │   ├── group_06_2101292_3.err
+│   │   ├── group_06_2101292_3.out
+│   │   ├── group_06_2101292_4.err
+│   │   ├── group_06_2101292_4.out
+│   │   ├── group_06_2101292_5.err
+│   │   ├── group_06_2101292_5.out
+│   │   ├── group_06_2101292_6.err
+│   │   ├── group_06_2101292_6.out
+│   │   ├── group_06_2101292_7.err
+│   │   ├── group_06_2101292_7.out
+│   │   ├── group_06_2101292_8.err
+│   │   ├── group_06_2101292_8.out
+│   │   ├── group_06_2101380_0.err
+│   │   ├── group_06_2101380_0.out
+│   │   ├── group_06_2101380_1.err
+│   │   ├── group_06_2101380_1.out
+│   │   ├── group_06_2101380_2.err
+│   │   ├── group_06_2101380_2.out
+│   │   ├── group_06_2101380_3.err
+│   │   ├── group_06_2101380_3.out
+│   │   ├── group_06_2101380_4.err
+│   │   ├── group_06_2101380_4.out
+│   │   ├── group_06_2101380_5.err
+│   │   ├── group_06_2101380_5.out
+│   │   ├── group_06_2101380_6.err
+│   │   ├── group_06_2101380_6.out
+│   │   ├── group_06_2101380_7.err
+│   │   ├── group_06_2101380_7.out
+│   │   ├── group_06_2101380_8.err
+│   │   ├── group_06_2101380_8.out
+│   │   ├── group_06_2101459_0.err
+│   │   ├── group_06_2101459_0.out
+│   │   ├── group_06_2101459_1.err
+│   │   ├── group_06_2101459_1.out
+│   │   ├── group_06_2101459_2.err
+│   │   ├── group_06_2101459_2.out
+│   │   ├── group_06_2101459_3.err
+│   │   ├── group_06_2101459_3.out
+│   │   ├── group_06_2101459_4.err
+│   │   ├── group_06_2101459_4.out
+│   │   ├── group_06_2101459_5.err
+│   │   ├── group_06_2101459_5.out
+│   │   ├── group_06_2101459_6.err
+│   │   ├── group_06_2101459_6.out
+│   │   ├── group_06_2101459_7.err
+│   │   ├── group_06_2101459_7.out
+│   │   ├── group_06_2101459_8.err
+│   │   ├── group_06_2101459_8.out
 │   │   ├── group_07_1912830_0.err
 │   │   ├── group_07_1912830_0.out
 │   │   ├── group_07_1912830_1.err
@@ -998,6 +1632,78 @@ Project: 1D-Wave-AMR
 │   │   ├── group_07_1969970_7.out
 │   │   ├── group_07_1969970_8.err
 │   │   ├── group_07_1969970_8.out
+│   │   ├── group_07_2101206_0.err
+│   │   ├── group_07_2101206_0.out
+│   │   ├── group_07_2101206_1.err
+│   │   ├── group_07_2101206_1.out
+│   │   ├── group_07_2101206_2.err
+│   │   ├── group_07_2101206_2.out
+│   │   ├── group_07_2101206_3.err
+│   │   ├── group_07_2101206_3.out
+│   │   ├── group_07_2101206_4.err
+│   │   ├── group_07_2101206_4.out
+│   │   ├── group_07_2101206_5.err
+│   │   ├── group_07_2101206_5.out
+│   │   ├── group_07_2101206_6.err
+│   │   ├── group_07_2101206_6.out
+│   │   ├── group_07_2101206_7.err
+│   │   ├── group_07_2101206_7.out
+│   │   ├── group_07_2101206_8.err
+│   │   ├── group_07_2101206_8.out
+│   │   ├── group_07_2101294_0.err
+│   │   ├── group_07_2101294_0.out
+│   │   ├── group_07_2101294_1.err
+│   │   ├── group_07_2101294_1.out
+│   │   ├── group_07_2101294_2.err
+│   │   ├── group_07_2101294_2.out
+│   │   ├── group_07_2101294_3.err
+│   │   ├── group_07_2101294_3.out
+│   │   ├── group_07_2101294_4.err
+│   │   ├── group_07_2101294_4.out
+│   │   ├── group_07_2101294_5.err
+│   │   ├── group_07_2101294_5.out
+│   │   ├── group_07_2101294_6.err
+│   │   ├── group_07_2101294_6.out
+│   │   ├── group_07_2101294_7.err
+│   │   ├── group_07_2101294_7.out
+│   │   ├── group_07_2101294_8.err
+│   │   ├── group_07_2101294_8.out
+│   │   ├── group_07_2101381_0.err
+│   │   ├── group_07_2101381_0.out
+│   │   ├── group_07_2101381_1.err
+│   │   ├── group_07_2101381_1.out
+│   │   ├── group_07_2101381_2.err
+│   │   ├── group_07_2101381_2.out
+│   │   ├── group_07_2101381_3.err
+│   │   ├── group_07_2101381_3.out
+│   │   ├── group_07_2101381_4.err
+│   │   ├── group_07_2101381_4.out
+│   │   ├── group_07_2101381_5.err
+│   │   ├── group_07_2101381_5.out
+│   │   ├── group_07_2101381_6.err
+│   │   ├── group_07_2101381_6.out
+│   │   ├── group_07_2101381_7.err
+│   │   ├── group_07_2101381_7.out
+│   │   ├── group_07_2101381_8.err
+│   │   ├── group_07_2101381_8.out
+│   │   ├── group_07_2101461_0.err
+│   │   ├── group_07_2101461_0.out
+│   │   ├── group_07_2101461_1.err
+│   │   ├── group_07_2101461_1.out
+│   │   ├── group_07_2101461_2.err
+│   │   ├── group_07_2101461_2.out
+│   │   ├── group_07_2101461_3.err
+│   │   ├── group_07_2101461_3.out
+│   │   ├── group_07_2101461_4.err
+│   │   ├── group_07_2101461_4.out
+│   │   ├── group_07_2101461_5.err
+│   │   ├── group_07_2101461_5.out
+│   │   ├── group_07_2101461_6.err
+│   │   ├── group_07_2101461_6.out
+│   │   ├── group_07_2101461_7.err
+│   │   ├── group_07_2101461_7.out
+│   │   ├── group_07_2101461_8.err
+│   │   ├── group_07_2101461_8.out
 │   │   ├── group_08_1912831_0.err
 │   │   ├── group_08_1912831_0.out
 │   │   ├── group_08_1912831_1.err
@@ -1034,6 +1740,78 @@ Project: 1D-Wave-AMR
 │   │   ├── group_08_1969971_7.out
 │   │   ├── group_08_1969971_8.err
 │   │   ├── group_08_1969971_8.out
+│   │   ├── group_08_2101209_0.err
+│   │   ├── group_08_2101209_0.out
+│   │   ├── group_08_2101209_1.err
+│   │   ├── group_08_2101209_1.out
+│   │   ├── group_08_2101209_2.err
+│   │   ├── group_08_2101209_2.out
+│   │   ├── group_08_2101209_3.err
+│   │   ├── group_08_2101209_3.out
+│   │   ├── group_08_2101209_4.err
+│   │   ├── group_08_2101209_4.out
+│   │   ├── group_08_2101209_5.err
+│   │   ├── group_08_2101209_5.out
+│   │   ├── group_08_2101209_6.err
+│   │   ├── group_08_2101209_6.out
+│   │   ├── group_08_2101209_7.err
+│   │   ├── group_08_2101209_7.out
+│   │   ├── group_08_2101209_8.err
+│   │   ├── group_08_2101209_8.out
+│   │   ├── group_08_2101297_0.err
+│   │   ├── group_08_2101297_0.out
+│   │   ├── group_08_2101297_1.err
+│   │   ├── group_08_2101297_1.out
+│   │   ├── group_08_2101297_2.err
+│   │   ├── group_08_2101297_2.out
+│   │   ├── group_08_2101297_3.err
+│   │   ├── group_08_2101297_3.out
+│   │   ├── group_08_2101297_4.err
+│   │   ├── group_08_2101297_4.out
+│   │   ├── group_08_2101297_5.err
+│   │   ├── group_08_2101297_5.out
+│   │   ├── group_08_2101297_6.err
+│   │   ├── group_08_2101297_6.out
+│   │   ├── group_08_2101297_7.err
+│   │   ├── group_08_2101297_7.out
+│   │   ├── group_08_2101297_8.err
+│   │   ├── group_08_2101297_8.out
+│   │   ├── group_08_2101385_0.err
+│   │   ├── group_08_2101385_0.out
+│   │   ├── group_08_2101385_1.err
+│   │   ├── group_08_2101385_1.out
+│   │   ├── group_08_2101385_2.err
+│   │   ├── group_08_2101385_2.out
+│   │   ├── group_08_2101385_3.err
+│   │   ├── group_08_2101385_3.out
+│   │   ├── group_08_2101385_4.err
+│   │   ├── group_08_2101385_4.out
+│   │   ├── group_08_2101385_5.err
+│   │   ├── group_08_2101385_5.out
+│   │   ├── group_08_2101385_6.err
+│   │   ├── group_08_2101385_6.out
+│   │   ├── group_08_2101385_7.err
+│   │   ├── group_08_2101385_7.out
+│   │   ├── group_08_2101385_8.err
+│   │   ├── group_08_2101385_8.out
+│   │   ├── group_08_2101462_0.err
+│   │   ├── group_08_2101462_0.out
+│   │   ├── group_08_2101462_1.err
+│   │   ├── group_08_2101462_1.out
+│   │   ├── group_08_2101462_2.err
+│   │   ├── group_08_2101462_2.out
+│   │   ├── group_08_2101462_3.err
+│   │   ├── group_08_2101462_3.out
+│   │   ├── group_08_2101462_4.err
+│   │   ├── group_08_2101462_4.out
+│   │   ├── group_08_2101462_5.err
+│   │   ├── group_08_2101462_5.out
+│   │   ├── group_08_2101462_6.err
+│   │   ├── group_08_2101462_6.out
+│   │   ├── group_08_2101462_7.err
+│   │   ├── group_08_2101462_7.out
+│   │   ├── group_08_2101462_8.err
+│   │   ├── group_08_2101462_8.out
 │   │   ├── group_09_1912832_0.err
 │   │   ├── group_09_1912832_0.out
 │   │   ├── group_09_1912832_1.err
@@ -1069,7 +1847,79 @@ Project: 1D-Wave-AMR
 │   │   ├── group_09_1969972_7.err
 │   │   ├── group_09_1969972_7.out
 │   │   ├── group_09_1969972_8.err
-│   │   └── group_09_1969972_8.out
+│   │   ├── group_09_1969972_8.out
+│   │   ├── group_09_2101211_0.err
+│   │   ├── group_09_2101211_0.out
+│   │   ├── group_09_2101211_1.err
+│   │   ├── group_09_2101211_1.out
+│   │   ├── group_09_2101211_2.err
+│   │   ├── group_09_2101211_2.out
+│   │   ├── group_09_2101211_3.err
+│   │   ├── group_09_2101211_3.out
+│   │   ├── group_09_2101211_4.err
+│   │   ├── group_09_2101211_4.out
+│   │   ├── group_09_2101211_5.err
+│   │   ├── group_09_2101211_5.out
+│   │   ├── group_09_2101211_6.err
+│   │   ├── group_09_2101211_6.out
+│   │   ├── group_09_2101211_7.err
+│   │   ├── group_09_2101211_7.out
+│   │   ├── group_09_2101211_8.err
+│   │   ├── group_09_2101211_8.out
+│   │   ├── group_09_2101300_0.err
+│   │   ├── group_09_2101300_0.out
+│   │   ├── group_09_2101300_1.err
+│   │   ├── group_09_2101300_1.out
+│   │   ├── group_09_2101300_2.err
+│   │   ├── group_09_2101300_2.out
+│   │   ├── group_09_2101300_3.err
+│   │   ├── group_09_2101300_3.out
+│   │   ├── group_09_2101300_4.err
+│   │   ├── group_09_2101300_4.out
+│   │   ├── group_09_2101300_5.err
+│   │   ├── group_09_2101300_5.out
+│   │   ├── group_09_2101300_6.err
+│   │   ├── group_09_2101300_6.out
+│   │   ├── group_09_2101300_7.err
+│   │   ├── group_09_2101300_7.out
+│   │   ├── group_09_2101300_8.err
+│   │   ├── group_09_2101300_8.out
+│   │   ├── group_09_2101387_0.err
+│   │   ├── group_09_2101387_0.out
+│   │   ├── group_09_2101387_1.err
+│   │   ├── group_09_2101387_1.out
+│   │   ├── group_09_2101387_2.err
+│   │   ├── group_09_2101387_2.out
+│   │   ├── group_09_2101387_3.err
+│   │   ├── group_09_2101387_3.out
+│   │   ├── group_09_2101387_4.err
+│   │   ├── group_09_2101387_4.out
+│   │   ├── group_09_2101387_5.err
+│   │   ├── group_09_2101387_5.out
+│   │   ├── group_09_2101387_6.err
+│   │   ├── group_09_2101387_6.out
+│   │   ├── group_09_2101387_7.err
+│   │   ├── group_09_2101387_7.out
+│   │   ├── group_09_2101387_8.err
+│   │   ├── group_09_2101387_8.out
+│   │   ├── group_09_2101463_0.err
+│   │   ├── group_09_2101463_0.out
+│   │   ├── group_09_2101463_1.err
+│   │   ├── group_09_2101463_1.out
+│   │   ├── group_09_2101463_2.err
+│   │   ├── group_09_2101463_2.out
+│   │   ├── group_09_2101463_3.err
+│   │   ├── group_09_2101463_3.out
+│   │   ├── group_09_2101463_4.err
+│   │   ├── group_09_2101463_4.out
+│   │   ├── group_09_2101463_5.err
+│   │   ├── group_09_2101463_5.out
+│   │   ├── group_09_2101463_6.err
+│   │   ├── group_09_2101463_6.out
+│   │   ├── group_09_2101463_7.err
+│   │   ├── group_09_2101463_7.out
+│   │   ├── group_09_2101463_8.err
+│   │   └── group_09_2101463_8.out
 │   ├── parameter_sweeps
 │   │   └── step_domain_fraction
 │   │       ├── run_2025-05-26_105842
@@ -5001,6 +5851,168 @@ Project: 1D-Wave-AMR
 │   ├── batch_ref_4_budget_100_max_4_2067209_81.out
 │   ├── batch_ref_4_budget_100_max_4_2067209_9.err
 │   ├── batch_ref_4_budget_100_max_4_2067209_9.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_1.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_1.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_10.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_10.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_11.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_11.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_12.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_12.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_13.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_13.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_14.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_14.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_15.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_15.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_16.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_16.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_17.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_17.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_18.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_18.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_19.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_19.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_2.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_2.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_20.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_20.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_21.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_21.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_22.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_22.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_23.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_23.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_24.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_24.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_25.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_25.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_26.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_26.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_27.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_27.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_28.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_28.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_29.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_29.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_3.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_3.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_30.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_30.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_31.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_31.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_32.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_32.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_33.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_33.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_34.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_34.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_35.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_35.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_36.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_36.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_37.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_37.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_38.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_38.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_39.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_39.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_4.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_4.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_40.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_40.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_41.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_41.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_42.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_42.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_43.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_43.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_44.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_44.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_45.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_45.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_46.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_46.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_47.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_47.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_48.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_48.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_49.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_49.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_5.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_5.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_50.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_50.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_51.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_51.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_52.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_52.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_53.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_53.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_54.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_54.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_55.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_55.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_56.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_56.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_57.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_57.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_58.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_58.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_59.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_59.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_6.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_6.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_60.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_60.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_61.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_61.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_62.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_62.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_63.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_63.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_64.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_64.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_65.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_65.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_66.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_66.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_67.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_67.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_68.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_68.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_69.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_69.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_7.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_7.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_70.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_70.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_71.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_71.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_72.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_72.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_73.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_73.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_74.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_74.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_75.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_75.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_76.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_76.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_77.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_77.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_78.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_78.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_79.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_79.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_8.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_8.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_80.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_80.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_81.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_81.out
+│   ├── batch_ref_4_budget_100_max_4_2104049_9.err
+│   ├── batch_ref_4_budget_100_max_4_2104049_9.out
 │   ├── batch_ref_4_budget_150_2038355_1.err
 │   ├── batch_ref_4_budget_150_2038355_1.out
 │   ├── batch_ref_4_budget_150_2038355_10.err
@@ -6297,6 +7309,168 @@ Project: 1D-Wave-AMR
 │   ├── batch_ref_4_budget_50_max_4_2067047_81.out
 │   ├── batch_ref_4_budget_50_max_4_2067047_9.err
 │   ├── batch_ref_4_budget_50_max_4_2067047_9.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_1.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_1.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_10.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_10.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_11.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_11.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_12.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_12.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_13.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_13.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_14.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_14.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_15.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_15.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_16.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_16.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_17.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_17.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_18.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_18.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_19.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_19.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_2.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_2.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_20.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_20.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_21.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_21.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_22.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_22.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_23.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_23.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_24.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_24.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_25.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_25.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_26.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_26.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_27.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_27.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_28.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_28.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_29.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_29.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_3.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_3.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_30.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_30.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_31.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_31.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_32.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_32.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_33.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_33.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_34.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_34.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_35.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_35.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_36.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_36.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_37.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_37.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_38.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_38.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_39.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_39.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_4.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_4.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_40.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_40.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_41.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_41.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_42.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_42.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_43.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_43.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_44.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_44.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_45.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_45.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_46.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_46.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_47.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_47.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_48.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_48.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_49.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_49.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_5.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_5.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_50.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_50.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_51.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_51.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_52.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_52.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_53.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_53.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_54.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_54.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_55.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_55.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_56.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_56.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_57.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_57.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_58.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_58.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_59.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_59.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_6.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_6.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_60.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_60.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_61.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_61.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_62.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_62.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_63.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_63.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_64.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_64.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_65.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_65.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_66.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_66.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_67.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_67.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_68.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_68.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_69.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_69.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_7.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_7.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_70.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_70.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_71.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_71.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_72.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_72.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_73.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_73.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_74.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_74.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_75.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_75.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_76.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_76.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_77.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_77.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_78.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_78.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_79.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_79.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_8.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_8.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_80.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_80.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_81.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_81.out
+│   ├── batch_ref_4_budget_50_max_4_2103886_9.err
+│   ├── batch_ref_4_budget_50_max_4_2103886_9.out
 │   ├── batch_ref_4_budget_80_2000367_1.err
 │   ├── batch_ref_4_budget_80_2000367_1.out
 │   ├── batch_ref_4_budget_80_2000367_10.err
@@ -7755,6 +8929,168 @@ Project: 1D-Wave-AMR
 │   ├── batch_ref_4_budget_80_max_4_2067128_81.out
 │   ├── batch_ref_4_budget_80_max_4_2067128_9.err
 │   ├── batch_ref_4_budget_80_max_4_2067128_9.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_1.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_1.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_10.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_10.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_11.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_11.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_12.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_12.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_13.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_13.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_14.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_14.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_15.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_15.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_16.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_16.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_17.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_17.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_18.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_18.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_19.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_19.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_2.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_2.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_20.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_20.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_21.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_21.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_22.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_22.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_23.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_23.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_24.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_24.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_25.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_25.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_26.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_26.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_27.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_27.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_28.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_28.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_29.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_29.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_3.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_3.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_30.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_30.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_31.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_31.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_32.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_32.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_33.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_33.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_34.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_34.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_35.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_35.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_36.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_36.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_37.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_37.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_38.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_38.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_39.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_39.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_4.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_4.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_40.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_40.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_41.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_41.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_42.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_42.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_43.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_43.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_44.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_44.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_45.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_45.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_46.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_46.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_47.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_47.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_48.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_48.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_49.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_49.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_5.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_5.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_50.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_50.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_51.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_51.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_52.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_52.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_53.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_53.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_54.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_54.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_55.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_55.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_56.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_56.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_57.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_57.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_58.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_58.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_59.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_59.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_6.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_6.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_60.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_60.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_61.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_61.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_62.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_62.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_63.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_63.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_64.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_64.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_65.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_65.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_66.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_66.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_67.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_67.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_68.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_68.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_69.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_69.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_7.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_7.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_70.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_70.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_71.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_71.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_72.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_72.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_73.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_73.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_74.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_74.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_75.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_75.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_76.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_76.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_77.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_77.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_78.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_78.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_79.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_79.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_8.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_8.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_80.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_80.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_81.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_81.out
+│   ├── batch_ref_4_budget_80_max_4_2103968_9.err
+│   ├── batch_ref_4_budget_80_max_4_2103968_9.out
 │   ├── batch_ref_5_budget_100_2025039_1.err
 │   ├── batch_ref_5_budget_100_2025039_1.out
 │   ├── batch_ref_5_budget_100_2025039_10.err
@@ -8241,6 +9577,168 @@ Project: 1D-Wave-AMR
 │   ├── batch_ref_5_budget_100_max_5_2067311_81.out
 │   ├── batch_ref_5_budget_100_max_5_2067311_9.err
 │   ├── batch_ref_5_budget_100_max_5_2067311_9.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_1.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_1.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_10.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_10.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_11.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_11.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_12.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_12.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_13.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_13.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_14.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_14.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_15.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_15.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_16.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_16.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_17.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_17.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_18.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_18.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_19.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_19.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_2.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_2.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_20.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_20.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_21.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_21.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_22.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_22.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_23.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_23.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_24.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_24.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_25.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_25.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_26.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_26.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_27.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_27.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_28.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_28.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_29.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_29.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_3.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_3.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_30.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_30.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_31.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_31.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_32.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_32.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_33.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_33.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_34.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_34.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_35.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_35.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_36.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_36.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_37.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_37.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_38.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_38.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_39.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_39.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_4.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_4.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_40.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_40.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_41.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_41.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_42.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_42.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_43.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_43.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_44.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_44.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_45.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_45.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_46.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_46.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_47.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_47.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_48.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_48.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_49.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_49.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_5.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_5.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_50.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_50.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_51.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_51.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_52.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_52.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_53.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_53.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_54.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_54.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_55.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_55.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_56.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_56.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_57.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_57.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_58.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_58.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_59.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_59.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_6.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_6.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_60.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_60.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_61.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_61.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_62.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_62.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_63.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_63.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_64.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_64.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_65.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_65.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_66.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_66.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_67.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_67.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_68.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_68.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_69.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_69.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_7.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_7.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_70.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_70.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_71.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_71.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_72.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_72.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_73.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_73.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_74.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_74.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_75.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_75.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_76.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_76.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_77.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_77.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_78.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_78.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_79.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_79.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_8.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_8.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_80.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_80.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_81.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_81.out
+│   ├── batch_ref_5_budget_100_max_5_2104292_9.err
+│   ├── batch_ref_5_budget_100_max_5_2104292_9.out
 │   ├── batch_ref_5_budget_110_2040027_1.err
 │   ├── batch_ref_5_budget_110_2040027_1.out
 │   ├── batch_ref_5_budget_110_2040027_10.err
@@ -10509,6 +12007,168 @@ Project: 1D-Wave-AMR
 │   ├── batch_ref_5_budget_50_max_5_2067290_81.out
 │   ├── batch_ref_5_budget_50_max_5_2067290_9.err
 │   ├── batch_ref_5_budget_50_max_5_2067290_9.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_1.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_1.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_10.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_10.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_11.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_11.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_12.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_12.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_13.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_13.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_14.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_14.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_15.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_15.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_16.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_16.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_17.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_17.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_18.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_18.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_19.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_19.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_2.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_2.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_20.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_20.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_21.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_21.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_22.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_22.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_23.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_23.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_24.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_24.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_25.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_25.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_26.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_26.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_27.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_27.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_28.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_28.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_29.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_29.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_3.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_3.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_30.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_30.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_31.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_31.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_32.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_32.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_33.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_33.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_34.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_34.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_35.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_35.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_36.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_36.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_37.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_37.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_38.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_38.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_39.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_39.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_4.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_4.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_40.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_40.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_41.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_41.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_42.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_42.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_43.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_43.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_44.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_44.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_45.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_45.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_46.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_46.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_47.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_47.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_48.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_48.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_49.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_49.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_5.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_5.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_50.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_50.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_51.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_51.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_52.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_52.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_53.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_53.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_54.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_54.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_55.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_55.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_56.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_56.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_57.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_57.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_58.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_58.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_59.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_59.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_6.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_6.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_60.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_60.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_61.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_61.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_62.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_62.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_63.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_63.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_64.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_64.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_65.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_65.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_66.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_66.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_67.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_67.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_68.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_68.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_69.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_69.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_7.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_7.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_70.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_70.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_71.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_71.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_72.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_72.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_73.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_73.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_74.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_74.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_75.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_75.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_76.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_76.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_77.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_77.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_78.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_78.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_79.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_79.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_8.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_8.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_80.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_80.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_81.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_81.out
+│   ├── batch_ref_5_budget_50_max_5_2104130_9.err
+│   ├── batch_ref_5_budget_50_max_5_2104130_9.out
 │   ├── batch_ref_5_budget_60_2040034_1.err
 │   ├── batch_ref_5_budget_60_2040034_1.out
 │   ├── batch_ref_5_budget_60_2040034_10.err
@@ -11319,6 +12979,168 @@ Project: 1D-Wave-AMR
 │   ├── batch_ref_5_budget_80_max_5_2067309_81.out
 │   ├── batch_ref_5_budget_80_max_5_2067309_9.err
 │   ├── batch_ref_5_budget_80_max_5_2067309_9.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_1.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_1.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_10.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_10.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_11.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_11.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_12.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_12.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_13.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_13.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_14.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_14.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_15.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_15.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_16.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_16.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_17.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_17.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_18.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_18.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_19.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_19.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_2.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_2.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_20.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_20.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_21.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_21.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_22.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_22.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_23.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_23.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_24.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_24.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_25.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_25.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_26.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_26.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_27.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_27.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_28.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_28.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_29.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_29.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_3.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_3.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_30.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_30.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_31.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_31.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_32.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_32.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_33.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_33.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_34.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_34.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_35.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_35.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_36.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_36.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_37.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_37.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_38.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_38.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_39.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_39.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_4.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_4.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_40.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_40.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_41.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_41.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_42.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_42.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_43.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_43.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_44.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_44.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_45.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_45.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_46.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_46.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_47.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_47.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_48.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_48.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_49.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_49.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_5.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_5.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_50.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_50.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_51.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_51.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_52.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_52.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_53.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_53.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_54.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_54.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_55.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_55.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_56.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_56.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_57.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_57.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_58.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_58.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_59.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_59.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_6.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_6.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_60.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_60.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_61.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_61.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_62.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_62.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_63.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_63.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_64.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_64.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_65.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_65.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_66.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_66.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_67.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_67.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_68.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_68.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_69.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_69.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_7.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_7.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_70.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_70.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_71.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_71.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_72.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_72.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_73.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_73.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_74.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_74.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_75.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_75.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_76.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_76.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_77.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_77.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_78.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_78.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_79.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_79.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_8.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_8.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_80.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_80.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_81.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_81.out
+│   ├── batch_ref_5_budget_80_max_5_2104211_9.err
+│   ├── batch_ref_5_budget_80_max_5_2104211_9.out
 │   ├── batch_ref_5_budget_90_2040037_1.err
 │   ├── batch_ref_5_budget_90_2040037_1.out
 │   ├── batch_ref_5_budget_90_2040037_10.err
@@ -11967,6 +13789,168 @@ Project: 1D-Wave-AMR
 │   ├── batch_ref_6_budget_100_max_6_2067314_81.out
 │   ├── batch_ref_6_budget_100_max_6_2067314_9.err
 │   ├── batch_ref_6_budget_100_max_6_2067314_9.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_1.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_1.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_10.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_10.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_11.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_11.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_12.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_12.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_13.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_13.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_14.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_14.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_15.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_15.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_16.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_16.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_17.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_17.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_18.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_18.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_19.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_19.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_2.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_2.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_20.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_20.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_21.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_21.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_22.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_22.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_23.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_23.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_24.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_24.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_25.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_25.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_26.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_26.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_27.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_27.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_28.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_28.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_29.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_29.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_3.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_3.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_30.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_30.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_31.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_31.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_32.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_32.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_33.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_33.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_34.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_34.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_35.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_35.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_36.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_36.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_37.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_37.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_38.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_38.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_39.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_39.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_4.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_4.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_40.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_40.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_41.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_41.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_42.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_42.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_43.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_43.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_44.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_44.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_45.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_45.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_46.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_46.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_47.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_47.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_48.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_48.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_49.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_49.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_5.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_5.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_50.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_50.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_51.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_51.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_52.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_52.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_53.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_53.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_54.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_54.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_55.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_55.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_56.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_56.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_57.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_57.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_58.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_58.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_59.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_59.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_6.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_6.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_60.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_60.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_61.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_61.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_62.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_62.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_63.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_63.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_64.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_64.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_65.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_65.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_66.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_66.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_67.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_67.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_68.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_68.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_69.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_69.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_7.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_7.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_70.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_70.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_71.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_71.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_72.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_72.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_73.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_73.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_74.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_74.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_75.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_75.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_76.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_76.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_77.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_77.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_78.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_78.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_79.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_79.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_8.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_8.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_80.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_80.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_81.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_81.out
+│   ├── batch_ref_6_budget_100_max_6_2104349_9.err
+│   ├── batch_ref_6_budget_100_max_6_2104349_9.out
 │   ├── batch_ref_6_budget_150_2038360_1.err
 │   ├── batch_ref_6_budget_150_2038360_1.out
 │   ├── batch_ref_6_budget_150_2038360_10.err
@@ -13425,6 +15409,168 @@ Project: 1D-Wave-AMR
 │   ├── batch_ref_6_budget_50_max_6_2067312_81.out
 │   ├── batch_ref_6_budget_50_max_6_2067312_9.err
 │   ├── batch_ref_6_budget_50_max_6_2067312_9.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_1.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_1.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_10.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_10.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_11.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_11.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_12.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_12.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_13.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_13.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_14.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_14.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_15.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_15.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_16.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_16.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_17.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_17.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_18.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_18.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_19.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_19.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_2.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_2.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_20.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_20.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_21.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_21.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_22.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_22.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_23.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_23.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_24.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_24.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_25.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_25.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_26.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_26.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_27.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_27.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_28.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_28.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_29.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_29.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_3.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_3.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_30.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_30.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_31.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_31.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_32.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_32.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_33.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_33.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_34.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_34.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_35.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_35.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_36.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_36.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_37.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_37.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_38.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_38.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_39.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_39.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_4.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_4.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_40.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_40.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_41.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_41.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_42.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_42.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_43.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_43.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_44.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_44.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_45.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_45.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_46.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_46.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_47.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_47.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_48.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_48.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_49.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_49.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_5.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_5.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_50.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_50.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_51.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_51.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_52.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_52.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_53.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_53.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_54.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_54.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_55.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_55.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_56.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_56.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_57.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_57.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_58.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_58.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_59.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_59.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_6.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_6.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_60.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_60.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_61.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_61.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_62.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_62.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_63.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_63.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_64.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_64.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_65.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_65.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_66.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_66.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_67.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_67.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_68.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_68.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_69.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_69.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_7.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_7.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_70.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_70.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_71.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_71.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_72.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_72.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_73.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_73.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_74.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_74.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_75.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_75.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_76.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_76.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_77.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_77.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_78.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_78.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_79.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_79.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_8.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_8.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_80.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_80.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_81.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_81.out
+│   ├── batch_ref_6_budget_50_max_6_2104345_9.err
+│   ├── batch_ref_6_budget_50_max_6_2104345_9.out
 │   ├── batch_ref_6_budget_80_2038359_1.err
 │   ├── batch_ref_6_budget_80_2038359_1.out
 │   ├── batch_ref_6_budget_80_2038359_10.err
@@ -14235,6 +16381,168 @@ Project: 1D-Wave-AMR
 │   ├── batch_ref_6_budget_80_max_6_2067313_81.out
 │   ├── batch_ref_6_budget_80_max_6_2067313_9.err
 │   ├── batch_ref_6_budget_80_max_6_2067313_9.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_1.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_1.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_10.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_10.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_11.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_11.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_12.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_12.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_13.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_13.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_14.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_14.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_15.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_15.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_16.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_16.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_17.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_17.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_18.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_18.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_19.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_19.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_2.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_2.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_20.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_20.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_21.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_21.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_22.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_22.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_23.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_23.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_24.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_24.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_25.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_25.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_26.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_26.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_27.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_27.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_28.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_28.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_29.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_29.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_3.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_3.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_30.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_30.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_31.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_31.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_32.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_32.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_33.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_33.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_34.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_34.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_35.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_35.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_36.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_36.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_37.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_37.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_38.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_38.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_39.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_39.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_4.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_4.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_40.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_40.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_41.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_41.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_42.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_42.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_43.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_43.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_44.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_44.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_45.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_45.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_46.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_46.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_47.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_47.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_48.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_48.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_49.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_49.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_5.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_5.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_50.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_50.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_51.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_51.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_52.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_52.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_53.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_53.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_54.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_54.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_55.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_55.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_56.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_56.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_57.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_57.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_58.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_58.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_59.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_59.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_6.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_6.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_60.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_60.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_61.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_61.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_62.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_62.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_63.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_63.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_64.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_64.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_65.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_65.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_66.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_66.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_67.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_67.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_68.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_68.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_69.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_69.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_7.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_7.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_70.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_70.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_71.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_71.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_72.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_72.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_73.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_73.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_74.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_74.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_75.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_75.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_76.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_76.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_77.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_77.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_78.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_78.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_79.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_79.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_8.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_8.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_80.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_80.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_81.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_81.out
+│   ├── batch_ref_6_budget_80_max_6_2104346_9.err
+│   ├── batch_ref_6_budget_80_max_6_2104346_9.out
 │   ├── batch_ref_7_budget_100_2038461_1.err
 │   ├── batch_ref_7_budget_100_2038461_1.out
 │   ├── batch_ref_7_budget_100_2038461_10.err
@@ -16214,7 +18522,15 @@ Project: 1D-Wave-AMR
 │   ├── test_param_sweep_1888920_0.err
 │   ├── test_param_sweep_1888920_0.out
 │   ├── test_param_sweep_1888920_1.err
-│   └── test_param_sweep_1888920_1.out
+│   ├── test_param_sweep_1888920_1.out
+│   ├── test_param_sweep_2101093_0.err
+│   ├── test_param_sweep_2101093_0.out
+│   ├── test_param_sweep_2101093_1.err
+│   ├── test_param_sweep_2101093_1.out
+│   ├── test_param_sweep_2101099_0.err
+│   ├── test_param_sweep_2101099_0.out
+│   ├── test_param_sweep_2101099_1.err
+│   └── test_param_sweep_2101099_1.out
 ├── notebooks
 │   └── interactive_amr_testing.ipynb
 ├── numerical
@@ -18046,6 +20362,250 @@ Project: 1D-Wave-AMR
 │   │       ├── monitor.csv
 │   │       ├── performance.txt
 │   │       └── training_report.pdf
+│   ├── full_param_sweep_2025-08-11_150254
+│   │   ├── gamma_100.0_step_0.025_rl_10_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.025_rl_10_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.025_rl_10_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.025_rl_25_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.025_rl_25_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.025_rl_25_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.025_rl_40_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.025_rl_40_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.025_rl_40_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.05_rl_10_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.05_rl_10_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.05_rl_10_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.05_rl_25_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.05_rl_25_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.05_rl_25_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.05_rl_40_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.05_rl_40_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.05_rl_40_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.1_rl_10_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.1_rl_10_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.1_rl_10_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.1_rl_25_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.1_rl_25_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.1_rl_25_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.1_rl_40_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.1_rl_40_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_100.0_step_0.1_rl_40_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.025_rl_10_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.025_rl_10_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.025_rl_10_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.025_rl_25_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.025_rl_25_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.025_rl_25_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.025_rl_40_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.025_rl_40_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.025_rl_40_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.05_rl_10_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.05_rl_10_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.05_rl_10_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.05_rl_25_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.05_rl_25_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.05_rl_25_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.05_rl_40_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.05_rl_40_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.05_rl_40_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.1_rl_10_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.1_rl_10_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.1_rl_10_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.1_rl_25_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.1_rl_25_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.1_rl_25_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.1_rl_40_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.1_rl_40_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_25.0_step_0.1_rl_40_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.025_rl_10_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.025_rl_10_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.025_rl_10_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.025_rl_25_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.025_rl_25_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.025_rl_25_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.025_rl_40_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.025_rl_40_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.025_rl_40_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.05_rl_10_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.05_rl_10_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.05_rl_10_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.05_rl_25_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.05_rl_25_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.05_rl_25_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.05_rl_40_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.05_rl_40_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.05_rl_40_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.1_rl_10_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.1_rl_10_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.1_rl_10_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.1_rl_25_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.1_rl_25_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.1_rl_25_budget_40
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.1_rl_40_budget_25
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   ├── gamma_50.0_step_0.1_rl_40_budget_30
+│   │   │   ├── config.yaml
+│   │   │   └── job_failed.yaml
+│   │   └── gamma_50.0_step_0.1_rl_40_budget_40
+│   │       ├── config.yaml
+│   │       └── job_failed.yaml
 │   ├── full_param_sweep_data_20250601_105453
 │   │   ├── gamma_100.0_step_0.025_rl_10_budget_25
 │   │   │   ├── models
@@ -21782,6 +24342,1951 @@ Project: 1D-Wave-AMR
 │   │       ├── model_90000_steps.zip
 │   │       ├── monitor.csv
 │   │       └── performance.txt
+│   ├── session4_100k_uniform
+│   │   ├── gamma_100.0_step_0.025_rl_10_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.025_rl_10_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.025_rl_10_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.025_rl_10_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.025_rl_10_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.025_rl_10_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.025_rl_10_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.025_rl_10_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.025_rl_10_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.025_rl_10_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.025_rl_10_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.025_rl_10_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.025_rl_25_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.025_rl_25_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.025_rl_25_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.025_rl_25_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.025_rl_25_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.025_rl_25_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.025_rl_25_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.025_rl_25_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.025_rl_25_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.025_rl_25_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.025_rl_25_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.025_rl_25_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.025_rl_40_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.025_rl_40_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.025_rl_40_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.025_rl_40_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.025_rl_40_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.025_rl_40_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.025_rl_40_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.025_rl_40_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.025_rl_40_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.025_rl_40_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.025_rl_40_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.025_rl_40_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.05_rl_10_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.05_rl_10_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.05_rl_10_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.05_rl_10_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.05_rl_10_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.05_rl_10_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.05_rl_10_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.05_rl_10_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.05_rl_10_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.05_rl_10_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.05_rl_10_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.05_rl_10_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.05_rl_25_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.05_rl_25_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.05_rl_25_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.05_rl_25_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.05_rl_25_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.05_rl_25_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.05_rl_25_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.05_rl_25_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.05_rl_25_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.05_rl_25_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.05_rl_25_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.05_rl_25_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.05_rl_40_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.05_rl_40_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.05_rl_40_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.05_rl_40_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.05_rl_40_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.05_rl_40_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.05_rl_40_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.05_rl_40_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.05_rl_40_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.05_rl_40_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.05_rl_40_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.05_rl_40_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.1_rl_10_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.1_rl_10_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.1_rl_10_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.1_rl_10_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.1_rl_10_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.1_rl_10_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.1_rl_10_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.1_rl_10_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.1_rl_10_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.1_rl_10_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.1_rl_10_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.1_rl_10_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.1_rl_25_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.1_rl_25_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.1_rl_25_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.1_rl_25_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.1_rl_25_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.1_rl_25_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.1_rl_25_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.1_rl_25_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.1_rl_25_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.1_rl_25_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.1_rl_25_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.1_rl_25_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.1_rl_40_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.1_rl_40_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.1_rl_40_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.1_rl_40_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.1_rl_40_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.1_rl_40_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.1_rl_40_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.1_rl_40_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_100.0_step_0.1_rl_40_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_100.0_step_0.1_rl_40_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_100.0_step_0.1_rl_40_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_100.0_step_0.1_rl_40_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.025_rl_10_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.025_rl_10_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.025_rl_10_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.025_rl_10_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.025_rl_10_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.025_rl_10_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.025_rl_10_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.025_rl_10_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.025_rl_10_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.025_rl_10_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.025_rl_10_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.025_rl_10_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.025_rl_25_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.025_rl_25_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.025_rl_25_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.025_rl_25_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.025_rl_25_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.025_rl_25_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.025_rl_25_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.025_rl_25_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.025_rl_25_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.025_rl_25_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.025_rl_25_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.025_rl_25_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.025_rl_40_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.025_rl_40_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.025_rl_40_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.025_rl_40_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.025_rl_40_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.025_rl_40_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.025_rl_40_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.025_rl_40_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.025_rl_40_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.025_rl_40_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.025_rl_40_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.025_rl_40_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.05_rl_10_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.05_rl_10_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.05_rl_10_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.05_rl_10_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.05_rl_10_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.05_rl_10_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.05_rl_10_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.05_rl_10_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.05_rl_10_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.05_rl_10_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.05_rl_10_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.05_rl_10_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.05_rl_25_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.05_rl_25_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.05_rl_25_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.05_rl_25_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.05_rl_25_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.05_rl_25_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.05_rl_25_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.05_rl_25_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.05_rl_25_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.05_rl_25_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.05_rl_25_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.05_rl_25_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.05_rl_40_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.05_rl_40_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.05_rl_40_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.05_rl_40_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.05_rl_40_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.05_rl_40_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.05_rl_40_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.05_rl_40_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.05_rl_40_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.05_rl_40_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.05_rl_40_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.05_rl_40_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.1_rl_10_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.1_rl_10_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.1_rl_10_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.1_rl_10_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.1_rl_10_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.1_rl_10_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.1_rl_10_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.1_rl_10_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.1_rl_10_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.1_rl_10_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.1_rl_10_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.1_rl_10_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.1_rl_25_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.1_rl_25_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.1_rl_25_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.1_rl_25_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.1_rl_25_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.1_rl_25_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.1_rl_25_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.1_rl_25_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.1_rl_25_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.1_rl_25_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.1_rl_25_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.1_rl_25_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.1_rl_40_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.1_rl_40_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.1_rl_40_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.1_rl_40_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.1_rl_40_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.1_rl_40_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.1_rl_40_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.1_rl_40_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_25.0_step_0.1_rl_40_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_25.0_step_0.1_rl_40_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_25.0_step_0.1_rl_40_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_25.0_step_0.1_rl_40_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.025_rl_10_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.025_rl_10_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.025_rl_10_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.025_rl_10_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.025_rl_10_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.025_rl_10_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.025_rl_10_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.025_rl_10_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.025_rl_10_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.025_rl_10_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.025_rl_10_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.025_rl_10_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.025_rl_25_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.025_rl_25_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.025_rl_25_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.025_rl_25_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.025_rl_25_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.025_rl_25_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.025_rl_25_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.025_rl_25_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.025_rl_25_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.025_rl_25_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.025_rl_25_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.025_rl_25_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.025_rl_40_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.025_rl_40_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.025_rl_40_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.025_rl_40_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.025_rl_40_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.025_rl_40_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.025_rl_40_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.025_rl_40_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.025_rl_40_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.025_rl_40_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.025_rl_40_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.025_rl_40_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.05_rl_10_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.05_rl_10_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.05_rl_10_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.05_rl_10_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.05_rl_10_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.05_rl_10_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.05_rl_10_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.05_rl_10_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.05_rl_10_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.05_rl_10_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.05_rl_10_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.05_rl_10_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.05_rl_25_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.05_rl_25_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.05_rl_25_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.05_rl_25_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.05_rl_25_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.05_rl_25_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.05_rl_25_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.05_rl_25_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.05_rl_25_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.05_rl_25_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.05_rl_25_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.05_rl_25_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.05_rl_40_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.05_rl_40_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.05_rl_40_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.05_rl_40_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.05_rl_40_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.05_rl_40_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.05_rl_40_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.05_rl_40_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.05_rl_40_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.05_rl_40_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.05_rl_40_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.05_rl_40_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.1_rl_10_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.1_rl_10_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.1_rl_10_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.1_rl_10_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.1_rl_10_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.1_rl_10_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.1_rl_10_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.1_rl_10_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.1_rl_10_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.1_rl_10_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.1_rl_10_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.1_rl_10_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.1_rl_25_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.1_rl_25_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.1_rl_25_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.1_rl_25_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.1_rl_25_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.1_rl_25_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.1_rl_25_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.1_rl_25_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.1_rl_25_budget_40
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.1_rl_25_budget_40_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.1_rl_25_budget_40_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.1_rl_25_budget_40_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.1_rl_40_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.1_rl_40_budget_25_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.1_rl_40_budget_25_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.1_rl_40_budget_25_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   ├── gamma_50.0_step_0.1_rl_40_budget_30
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── gamma_50.0_step_0.1_rl_40_budget_30_100k_training_metrics.json
+│   │   │   ├── gamma_50.0_step_0.1_rl_40_budget_30_100k_training_report.pdf
+│   │   │   ├── gamma_50.0_step_0.1_rl_40_budget_30_100k_training_summary.csv
+│   │   │   ├── job_completed.yaml
+│   │   │   ├── job_failed.yaml
+│   │   │   ├── model_100000_steps.zip
+│   │   │   ├── model_10000_steps.zip
+│   │   │   ├── model_20000_steps.zip
+│   │   │   ├── model_30000_steps.zip
+│   │   │   ├── model_40000_steps.zip
+│   │   │   ├── model_50000_steps.zip
+│   │   │   ├── model_60000_steps.zip
+│   │   │   ├── model_70000_steps.zip
+│   │   │   ├── model_80000_steps.zip
+│   │   │   ├── model_90000_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   └── performance.txt
+│   │   └── gamma_50.0_step_0.1_rl_40_budget_40
+│   │       ├── models
+│   │       ├── tensorboard
+│   │       ├── config.yaml
+│   │       ├── device_info.txt
+│   │       ├── evaluation.txt
+│   │       ├── final_model.zip
+│   │       ├── gamma_50.0_step_0.1_rl_40_budget_40_100k_training_metrics.json
+│   │       ├── gamma_50.0_step_0.1_rl_40_budget_40_100k_training_report.pdf
+│   │       ├── gamma_50.0_step_0.1_rl_40_budget_40_100k_training_summary.csv
+│   │       ├── job_completed.yaml
+│   │       ├── job_failed.yaml
+│   │       ├── model_100000_steps.zip
+│   │       ├── model_10000_steps.zip
+│   │       ├── model_20000_steps.zip
+│   │       ├── model_30000_steps.zip
+│   │       ├── model_40000_steps.zip
+│   │       ├── model_50000_steps.zip
+│   │       ├── model_60000_steps.zip
+│   │       ├── model_70000_steps.zip
+│   │       ├── model_80000_steps.zip
+│   │       ├── model_90000_steps.zip
+│   │       ├── monitor.csv
+│   │       └── performance.txt
 │   ├── step_domain_sweep_2025-05-28_090828
 │   │   ├── step_domain_0.05
 │   │   │   ├── gamma_c_100.0_gpu
@@ -21802,49 +26307,63 @@ Project: 1D-Wave-AMR
 │   │   └── step_domain_0.15
 │   │       ├── gamma_c_100.0_gpu
 │   │       └── run_info.yaml
-│   └── test_param_sweep_2025-05-29_094907
+│   ├── test_param_sweep_2025-05-29_094907
+│   │   ├── gamma_25.0_step_0.05_rl_10_budget_25
+│   │   │   ├── models
+│   │   │   ├── tensorboard
+│   │   │   ├── config.yaml
+│   │   │   ├── device_info.txt
+│   │   │   ├── evaluation.txt
+│   │   │   ├── final_model.zip
+│   │   │   ├── model_1000_steps.zip
+│   │   │   ├── model_1200_steps.zip
+│   │   │   ├── model_1400_steps.zip
+│   │   │   ├── model_1600_steps.zip
+│   │   │   ├── model_1800_steps.zip
+│   │   │   ├── model_2000_steps.zip
+│   │   │   ├── model_200_steps.zip
+│   │   │   ├── model_400_steps.zip
+│   │   │   ├── model_600_steps.zip
+│   │   │   ├── model_800_steps.zip
+│   │   │   ├── monitor.csv
+│   │   │   ├── performance.txt
+│   │   │   ├── test_completed.yaml
+│   │   │   └── training_report.pdf
+│   │   └── gamma_50.0_step_0.1_rl_25_budget_30
+│   │       ├── models
+│   │       ├── tensorboard
+│   │       ├── config.yaml
+│   │       ├── device_info.txt
+│   │       ├── evaluation.txt
+│   │       ├── final_model.zip
+│   │       ├── model_1000_steps.zip
+│   │       ├── model_1200_steps.zip
+│   │       ├── model_1400_steps.zip
+│   │       ├── model_1600_steps.zip
+│   │       ├── model_1800_steps.zip
+│   │       ├── model_2000_steps.zip
+│   │       ├── model_200_steps.zip
+│   │       ├── model_400_steps.zip
+│   │       ├── model_600_steps.zip
+│   │       ├── model_800_steps.zip
+│   │       ├── monitor.csv
+│   │       ├── performance.txt
+│   │       ├── test_completed.yaml
+│   │       └── training_report.pdf
+│   ├── test_param_sweep_2025-08-11_143526
+│   │   ├── gamma_25.0_step_0.05_rl_10_budget_25
+│   │   │   └── config.yaml
+│   │   └── gamma_50.0_step_0.1_rl_25_budget_30
+│   │       └── config.yaml
+│   └── test_param_sweep_2025-08-11_144339
 │       ├── gamma_25.0_step_0.05_rl_10_budget_25
 │       │   ├── models
 │       │   ├── tensorboard
-│       │   ├── config.yaml
-│       │   ├── device_info.txt
-│       │   ├── evaluation.txt
-│       │   ├── final_model.zip
-│       │   ├── model_1000_steps.zip
-│       │   ├── model_1200_steps.zip
-│       │   ├── model_1400_steps.zip
-│       │   ├── model_1600_steps.zip
-│       │   ├── model_1800_steps.zip
-│       │   ├── model_2000_steps.zip
-│       │   ├── model_200_steps.zip
-│       │   ├── model_400_steps.zip
-│       │   ├── model_600_steps.zip
-│       │   ├── model_800_steps.zip
-│       │   ├── monitor.csv
-│       │   ├── performance.txt
-│       │   ├── test_completed.yaml
-│       │   └── training_report.pdf
+│       │   └── config.yaml
 │       └── gamma_50.0_step_0.1_rl_25_budget_30
 │           ├── models
 │           ├── tensorboard
-│           ├── config.yaml
-│           ├── device_info.txt
-│           ├── evaluation.txt
-│           ├── final_model.zip
-│           ├── model_1000_steps.zip
-│           ├── model_1200_steps.zip
-│           ├── model_1400_steps.zip
-│           ├── model_1600_steps.zip
-│           ├── model_1800_steps.zip
-│           ├── model_2000_steps.zip
-│           ├── model_200_steps.zip
-│           ├── model_400_steps.zip
-│           ├── model_600_steps.zip
-│           ├── model_800_steps.zip
-│           ├── monitor.csv
-│           ├── performance.txt
-│           ├── test_completed.yaml
-│           └── training_report.pdf
+│           └── config.yaml
 ├── scripts
 │   ├── 1D_wave_amr.py
 │   └── forest_example.py
@@ -22237,6 +26756,7 @@ Project: 1D-Wave-AMR
 ├── baseline_management.sh
 ├── batch_analysis_runner.py
 ├── batch_animation_runner.py
+├── BORAH_CODESTRUCTURE.md
 ├── CODESTRUCTURE.md
 ├── collect_training_reports.py
 ├── create_base_config.py

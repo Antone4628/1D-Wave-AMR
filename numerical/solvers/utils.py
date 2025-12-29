@@ -558,6 +558,86 @@ def eff(coord, npoin, fcase, wave_speed, time=0.0):
         elif fcase == 9:
             # Forcing for Gaussian pulse (should be zero for pure advection)
             f[i] = 0
+
+        elif fcase == 10:
+            # Tanh smooth square wave: u = tanh(k*sin(omega*(x - c*t)))
+            k = 5
+            omega = np.pi
+            xi = x - wave_speed * timec
+            # Periodic wrapping
+            domain_length = 2.0
+            xi = xi - domain_length * np.round(xi / domain_length)
+            arg = k * np.sin(omega * xi)
+            sech_sq = 1.0 / np.cosh(arg)**2
+            f[i] = wave_speed * k * omega * np.cos(omega * xi) * sech_sq
+            
+        elif fcase == 11:
+            # Erf smooth square wave: u = erf(k*sin(omega*(x - c*t)))
+            k = 5
+            omega = np.pi
+            xi = x - wave_speed * timec
+            domain_length = 2.0
+            xi = xi - domain_length * np.round(xi / domain_length)
+            arg = k * np.sin(omega * xi)
+            f[i] = wave_speed * (2.0 / np.sqrt(np.pi)) * k * omega * np.cos(omega * xi) * np.exp(-arg**2)
+            
+        elif fcase == 12:
+            # Sigmoid smooth square wave: u = 2/(1 + exp(-k*sin(omega*(x-ct)))) - 1
+            k = 5
+            omega = np.pi
+            xi = x - wave_speed * timec
+            domain_length = 2.0
+            xi = xi - domain_length * np.round(xi / domain_length)
+            y = k * np.sin(omega * xi)
+            sigmoid_y = 1.0 / (1.0 + np.exp(-y))
+            f[i] = wave_speed * 2.0 * k * omega * np.cos(omega * xi) * sigmoid_y * (1.0 - sigmoid_y)
+            
+        elif fcase == 13:
+            # Multi-Gaussian: u = exp(-β(x-x₁-ct)²) + exp(-β(x-x₂-ct)²)
+            beta_mg = 256.0
+            x1, x2 = -0.5, 0.5
+            xi1 = x - x1 - wave_speed * timec
+            xi2 = x - x2 - wave_speed * timec
+            domain_length = 2.0
+            xi1 = xi1 - domain_length * np.round(xi1 / domain_length)
+            xi2 = xi2 - domain_length * np.round(xi2 / domain_length)
+            f[i] = -2.0 * wave_speed * beta_mg * (
+                xi1 * np.exp(-beta_mg * xi1**2) + 
+                xi2 * np.exp(-beta_mg * xi2**2)
+            )
+            
+        elif fcase == 14:
+            # Bump function (compact support)
+            a = 0.3
+            xi = x - wave_speed * timec
+            domain_length = 2.0
+            xi = xi - domain_length * np.round(xi / domain_length)
+            if np.abs(xi) < a:
+                xi_norm = xi / a
+                denom = 1.0 - xi_norm**2
+                u_val = np.exp(-1.0 / denom)
+                f[i] = wave_speed * u_val * (-2.0 * xi / a**2) / denom**2
+            else:
+                f[i] = 0.0
+                
+        elif fcase == 15:
+            # Sech² soliton: u = sech²(k(x - ct))
+            k = 5
+            xi = x - wave_speed * timec
+            domain_length = 2.0
+            xi = xi - domain_length * np.round(xi / domain_length)
+            sech_val = 1.0 / np.cosh(k * xi)
+            tanh_val = np.tanh(k * xi)
+            f[i] = -2.0 * wave_speed * k * sech_val**2 * tanh_val
+            
+        elif fcase == 16:
+            # Mexican hat (Ricker wavelet)
+            sigma = 4.0
+            xi = x - wave_speed * timec
+            domain_length = 2.0
+            xi = xi - domain_length * np.round(xi / domain_length)
+            y = np.pi * sigma * xi
+            f[i] = wave_speed * (-2.0) * (np.pi * sigma)**2 * xi * np.exp(-y**2) * (3.0 - 2.0 * y**2)
     
     return f
 
