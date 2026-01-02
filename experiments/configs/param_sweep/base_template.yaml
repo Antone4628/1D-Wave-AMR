@@ -23,7 +23,7 @@ solver:
   nop: 4
   max_level: 8
   courant_max: 0.1
-  icase: 1
+  icase: {{ICASE}}
   initial_elements:
   - -1
   - -0.4

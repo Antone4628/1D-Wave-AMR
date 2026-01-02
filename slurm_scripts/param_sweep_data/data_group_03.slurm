@@ -86,8 +86,8 @@ case $SLURM_ARRAY_TASK_ID in
 esac
 
 # Set uniform timesteps for all combinations
-TOTAL_TIMESTEPS=100000
-echo "🎯 Using uniform training: 100k timesteps for all combinations"
+TOTAL_TIMESTEPS=200000
+echo "🎯 Using uniform training: 200k timesteps for all combinations"
 
 # Print current parameter configuration
 echo "Current parameters:"
@@ -96,11 +96,13 @@ echo "  STEP_DOMAIN_FRACTION: $STEP_DOMAIN_FRACTION"
 echo "  RL_ITERATIONS: $RL_ITERATIONS"
 echo "  ELEMENT_BUDGET: $ELEMENT_BUDGET"
 echo "  TOTAL_TIMESTEPS: $TOTAL_TIMESTEPS"
+echo "  ICASE: $ICASE"
 echo ""
 
 # Create unique timestamp for this sweep (CONFIGURABLE SWEEP NAME)
-SWEEP_TIMESTAMP="20250811_154428"
-SWEEP_NAME="session4_100k_uniform"
+SWEEP_TIMESTAMP="20260102_073610"
+SWEEP_NAME="session5_mexican_hat_200k"
+ICASE="16"
 
 # Create results directory structure
 BASE_RESULTS_DIR="results/$SWEEP_NAME"
@@ -124,6 +126,7 @@ sed -i "s/{{MIN_RL_ITERATIONS}}/$RL_ITERATIONS/g" "$CURRENT_CONFIG"
 sed -i "s/{{MAX_RL_ITERATIONS}}/$RL_ITERATIONS/g" "$CURRENT_CONFIG"
 sed -i "s/{{ELEMENT_BUDGET}}/$ELEMENT_BUDGET/g" "$CURRENT_CONFIG"
 sed -i "s/{{TOTAL_TIMESTEPS}}/$TOTAL_TIMESTEPS/g" "$CURRENT_CONFIG"
+sed -i "s/{{ICASE}}/$ICASE/g" "$CURRENT_CONFIG"
 
 echo "✓ Configuration file prepared with $TOTAL_TIMESTEPS timesteps"
 

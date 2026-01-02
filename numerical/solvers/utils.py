@@ -622,7 +622,7 @@ def eff(coord, npoin, fcase, wave_speed, time=0.0):
                 
         elif fcase == 15:
             # Sech² soliton: u = sech²(k(x - ct))
-            k = 5
+            k = 10
             xi = x - wave_speed * timec
             domain_length = 2.0
             xi = xi - domain_length * np.round(xi / domain_length)
@@ -632,7 +632,7 @@ def eff(coord, npoin, fcase, wave_speed, time=0.0):
             
         elif fcase == 16:
             # Mexican hat (Ricker wavelet)
-            sigma = 4.0
+            sigma = 8.0
             xi = x - wave_speed * timec
             domain_length = 2.0
             xi = xi - domain_length * np.round(xi / domain_length)

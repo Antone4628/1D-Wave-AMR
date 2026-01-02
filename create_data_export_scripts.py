@@ -82,6 +82,13 @@ Examples:
         action='store_true',
         help='Show what would be created without actually creating files'
     )
+
+    parser.add_argument(
+        '--icase',
+        type=int,
+        default=1,
+        help='Test case for training (1=Gaussian, 10=tanh square, 16=Mexican hat)'
+    )
     
     return parser.parse_args()
 
@@ -166,11 +173,13 @@ echo "  STEP_DOMAIN_FRACTION: $STEP_DOMAIN_FRACTION"
 echo "  RL_ITERATIONS: $RL_ITERATIONS"
 echo "  ELEMENT_BUDGET: $ELEMENT_BUDGET"
 echo "  TOTAL_TIMESTEPS: $TOTAL_TIMESTEPS"
+echo "  ICASE: $ICASE"
 echo ""
 
 # Create unique timestamp for this sweep (CONFIGURABLE SWEEP NAME)
 SWEEP_TIMESTAMP="{timestamp}"
 SWEEP_NAME="{sweep_name}"
+ICASE="{icase}"
 
 # Create results directory structure
 BASE_RESULTS_DIR="{output_dir}/$SWEEP_NAME"
@@ -194,6 +203,7 @@ sed -i "s/{{{{MIN_RL_ITERATIONS}}}}/$RL_ITERATIONS/g" "$CURRENT_CONFIG"
 sed -i "s/{{{{MAX_RL_ITERATIONS}}}}/$RL_ITERATIONS/g" "$CURRENT_CONFIG"
 sed -i "s/{{{{ELEMENT_BUDGET}}}}/$ELEMENT_BUDGET/g" "$CURRENT_CONFIG"
 sed -i "s/{{{{TOTAL_TIMESTEPS}}}}/$TOTAL_TIMESTEPS/g" "$CURRENT_CONFIG"
+sed -i "s/{{{{ICASE}}}}/$ICASE/g" "$CURRENT_CONFIG"
 
 echo "✓ Configuration file prepared with $TOTAL_TIMESTEPS timesteps"
 
@@ -327,7 +337,8 @@ fi'''
         timestep_logic=timestep_logic,
         timestamp=timestamp,
         sweep_name=sweep_name,
-        output_dir=args.output_dir
+        output_dir=args.output_dir,
+        icase=args.icase
     )
     
     return script_content
