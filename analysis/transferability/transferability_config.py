@@ -7,10 +7,47 @@ Tests whether RL-trained AMR policies generalize beyond Gaussian pulse training.
 
 # Models to evaluate (from session4_100k_uniform)
 # These were selected to represent different training configurations
+# MODELS = [
+#     {
+#         'name': 'gamma_50.0_step_0.1_rl_10_budget_30',
+#         'path': 'analysis/data/models/session4_100k_uniform/gamma_50.0_step_0.1_rl_10_budget_30/final_model.zip',
+#         'eval_config': {
+#             'initial_refinement': 6,
+#             'element_budget': 100,
+#             'max_level': 6,
+#         },
+#     },
+#     {
+#         'name': 'gamma_100.0_step_0.1_rl_10_budget_30',
+#         'path': 'analysis/data/models/session4_100k_uniform/gamma_100.0_step_0.1_rl_10_budget_30/final_model.zip',
+#         'eval_config': {
+#             'initial_refinement': 6,
+#             'element_budget': 50,
+#             'max_level': 6,
+#         },
+#     },
+#     {
+#         'name': 'gamma_25.0_step_0.1_rl_25_budget_40',
+#         'path': 'analysis/data/models/session4_100k_uniform/gamma_25.0_step_0.1_rl_25_budget_40/final_model.zip',
+#         'eval_config': {
+#             'initial_refinement': 6,
+#             'element_budget': 50,
+#             'max_level': 6,
+#         },
+#     },
+#     {
+#         'name': 'gamma_50.0_step_0.1_rl_40_budget_40',
+#         'path': 'analysis/data/models/session4_100k_uniform/gamma_50.0_step_0.1_rl_40_budget_40/final_model.zip',
+#         'eval_config': {
+#             'initial_refinement': 6,
+#             'element_budget': 80,
+#             'max_level': 6,
+#         },
+#     },
+# ]
 MODELS = [
     {
         'name': 'gamma_50.0_step_0.1_rl_10_budget_30',
-        'path': 'analysis/data/models/session4_100k_uniform/gamma_50.0_step_0.1_rl_10_budget_30/final_model.zip',
         'eval_config': {
             'initial_refinement': 6,
             'element_budget': 100,
@@ -19,7 +56,6 @@ MODELS = [
     },
     {
         'name': 'gamma_100.0_step_0.1_rl_10_budget_30',
-        'path': 'analysis/data/models/session4_100k_uniform/gamma_100.0_step_0.1_rl_10_budget_30/final_model.zip',
         'eval_config': {
             'initial_refinement': 6,
             'element_budget': 50,
@@ -28,7 +64,6 @@ MODELS = [
     },
     {
         'name': 'gamma_25.0_step_0.1_rl_25_budget_40',
-        'path': 'analysis/data/models/session4_100k_uniform/gamma_25.0_step_0.1_rl_25_budget_40/final_model.zip',
         'eval_config': {
             'initial_refinement': 6,
             'element_budget': 50,
@@ -37,7 +72,6 @@ MODELS = [
     },
     {
         'name': 'gamma_50.0_step_0.1_rl_40_budget_40',
-        'path': 'analysis/data/models/session4_100k_uniform/gamma_50.0_step_0.1_rl_40_budget_40/final_model.zip',
         'eval_config': {
             'initial_refinement': 6,
             'element_budget': 80,
