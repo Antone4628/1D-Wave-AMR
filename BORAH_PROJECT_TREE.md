@@ -1,6 +1,6 @@
 # Project Tree
 
-Generated: 2025-12-29 13:49:45
+Generated: 2026-01-07 16:07:19
 Project: 1D-Wave-AMR
 Included: .py
 Data dirs: collapsed
@@ -43,8 +43,9 @@ Data dirs: collapsed
 │   │   ├── anova_analysis_pingouin.py
 │   │   └── test_imports.py
 │   ├── transferability/
-│   │   ├── animations/ [4 dirs, 0 files]
-│   │   ├── results/ [0 dirs, 29 files]
+│   │   ├── animations/ [5 dirs, 0 files]
+│   │   ├── logs/ [0 dirs, 0 files]
+│   │   ├── results/ [0 dirs, 36 files]
 │   │   ├── collect_results.py
 │   │   ├── generate_job_list.py
 │   │   ├── transferability_config.py
@@ -53,6 +54,7 @@ Data dirs: collapsed
 │   │   ├── __init__.py
 │   │   └── config.py
 │   ├── verification/
+│   │   ├── verify_eff_derivatives.py
 │   │   ├── verify_new_icases.py
 │   │   └── verify_new_icases_updated.py
 │   └── data_sample.py
@@ -130,7 +132,7 @@ Data dirs: collapsed
 │   │   ├── utils.py
 │   │   └── wave.py
 │   └── __init__.py
-├── results/ [11 dirs, 0 files]
+├── results/ [12 dirs, 0 files]
 ├── scripts/
 │   ├── 1D_wave_amr.py
 │   └── forest_example.py

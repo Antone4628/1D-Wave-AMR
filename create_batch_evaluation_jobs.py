@@ -46,7 +46,7 @@ def validate_sweep_models(sweep_name):
 #     print(f"Created {job_file}")
 #     return job_file
 
-def create_slurm_job(refinement_level, element_budget, max_level, sweep_name):
+def create_slurm_job(refinement_level, element_budget, max_level, sweep_name, icase=1):
     """Create a SLURM job file for specific refinement level and element budget."""
     
     # Read template
@@ -59,6 +59,7 @@ def create_slurm_job(refinement_level, element_budget, max_level, sweep_name):
     job_content = job_content.replace('ELEMENT_BUDGET', str(element_budget))
     job_content = job_content.replace('MAX_LEVEL', str(max_level))
     job_content = job_content.replace('SWEEP_NAME', sweep_name)
+    job_content = job_content.replace('ICASE', str(icase))
     
     # Write job file
     job_file = f'slurm_scripts/batch_model_evaluation_ref_{refinement_level}_budget_{element_budget}.slurm'
@@ -95,6 +96,13 @@ Examples:
         required=True,
         help='Name of the parameter sweep (e.g., session4_100k_uniform)'
     )
+
+    parser.add_argument(
+        '--icase',
+        type=int,
+        default=1,
+        help='Test case identifier (default: 1 for Gaussian, 16 for Mexican hat)'
+    )
     
     args = parser.parse_args()
     
@@ -124,7 +132,8 @@ Examples:
     
     job_files = []
     for refinement_level, element_budget, max_level in configs: 
-        job_file = create_slurm_job(refinement_level, element_budget, max_level, sweep_name)
+        # job_file = create_slurm_job(refinement_level, element_budget, max_level, sweep_name)
+        job_file = create_slurm_job(refinement_level, element_budget, max_level, sweep_name, args.icase)
         job_files.append((job_file, refinement_level, element_budget, max_level))
     # if len(sys.argv) < 2:
     #     print("Usage: python create_batch_evaluation_jobs.py <config1> [config2] ...")

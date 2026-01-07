@@ -71,7 +71,8 @@ def main():
                         help='Name of sweep (e.g., session5_mexican_hat_200k)')
     args = parser.parse_args()
     
-    generate_job_list(args.output, args.plot_mode)
+    
+    generate_job_list(args.output, args.plot_mode, args.sweep_name)
 
 
 if __name__ == '__main__':

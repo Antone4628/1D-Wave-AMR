@@ -1,0 +1,109 @@
+DRL-AMR FLAGSHIP MODELS SUMMARY REPORT
+==================================================
+Generated: 2026-01-06 07:33:21
+Analysis: session5_mexican_hat_200k
+
+METHODOLOGY:
+- Combined 27 key models from 3 performance categories (9 models each)
+- Calculated global ideal point across all 27 models
+- Used within-category normalization for distance calculations
+- Selected flagship model with minimum distance-to-ideal per category
+
+GLOBAL IDEAL POINT:
+  Cost Ratio: 0.055761
+  L2 Error: 7.01e-07
+
+==================================================
+FLAGSHIP MODELS (3 OF 729 TOTAL CANDIDATES)
+==================================================
+
+MOST COMPUTATIONALLY EFFICIENT FLAGSHIP MODEL:
+----------------------------------------
+Configuration ID: ref4_budget100_max4
+
+Training Parameters:
+  Reward scaling (γc): 100.0
+  Element budget (N_max): 25
+  Step domain fraction (Δ_dom): 0.050
+  RL iterations per timestep (N_rl): 10
+
+Simulation Configuration:
+  Initial refinement level: 4
+  Initial number of elements: 256
+  Element budget: 100
+  Initial resource usage ratio: 10.240
+  Max refinement level: 4
+
+Performance Metrics:
+  Final L2 Error: 3.376575e-01
+  Grid-normalized L2 Error: 3.566830e-01
+  Cost Ratio vs No-AMR: 0.266806
+  Computational Cost Savings: 73.3%
+  Distance to Ideal: 15.331517
+  Performance Category: lowest_cost
+
+MOST ACCURATE FLAGSHIP MODEL:
+----------------------------------------
+Configuration ID: ref5_budget100_max5
+
+Training Parameters:
+  Reward scaling (γc): 50.0
+  Element budget (N_max): 25
+  Step domain fraction (Δ_dom): 0.025
+  RL iterations per timestep (N_rl): 40
+
+Simulation Configuration:
+  Initial refinement level: 5
+  Initial number of elements: 1024
+  Element budget: 100
+  Initial resource usage ratio: 40.960
+  Max refinement level: 5
+
+Performance Metrics:
+  Final L2 Error: 2.705007e-03
+  Grid-normalized L2 Error: 2.768719e-03
+  Cost Ratio vs No-AMR: 0.191002
+  Computational Cost Savings: 80.9%
+  Distance to Ideal: 0.812468
+  Performance Category: lowest_l2
+
+BEST BALANCED PERFORMANCE FLAGSHIP MODEL:
+----------------------------------------
+Configuration ID: ref5_budget100_max5
+
+Training Parameters:
+  Reward scaling (γc): 50.0
+  Element budget (N_max): 25
+  Step domain fraction (Δ_dom): 0.025
+  RL iterations per timestep (N_rl): 40
+
+Simulation Configuration:
+  Initial refinement level: 5
+  Initial number of elements: 1024
+  Element budget: 100
+  Initial resource usage ratio: 40.960
+  Max refinement level: 5
+
+Performance Metrics:
+  Final L2 Error: 2.705007e-03
+  Grid-normalized L2 Error: 2.768719e-03
+  Cost Ratio vs No-AMR: 0.191002
+  Computational Cost Savings: 80.9%
+  Distance to Ideal: 3.926706
+  Performance Category: optimal_neutral
+
+==================================================
+IMPACT SUMMARY:
+==================================================
+These 3 flagship models represent the optimal computational efficiency,
+accuracy, and balanced performance achievable through DRL-AMR across
+the entire 729-model parameter space explored.
+
+Key Findings:
+- Computational efficiency range: 26.7% to 19.1% of no-AMR cost
+- Accuracy range: 2.71e-03 to 3.38e-01 L2 error
+- Optimal balance achieves 80.9% cost savings
+  with 2.71e-03 L2 error
+
+These models will be featured in thesis results, conference presentations,
+and animation generation as definitive DRL-AMR capabilities demonstration.
